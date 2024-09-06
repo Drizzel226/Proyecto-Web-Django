@@ -1,0 +1,29 @@
+<!-- porque/paso1.html -->
+{% extends 'miapp/base.html' %}
+{% block content %}
+<div class="form-container">
+    <h1 style="text-align: center;">Paso 4</h1>
+
+    {% if messages %}
+    <div class="messages">
+        {% for message in messages %}
+        <div class="alert alert-{{ message.tags }}">
+            {{ message }}
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary btn-block">Guardar</button>
+    </form>
+<h1></h1>
+    <div style="text-align: left;">
+        <a href="{% url 'paso3' %}" class="btn btn-primary"><-- Paso 3</a>
+        <a href="{% url 'paso5' %}" class="btn btn-primary">Paso 5 --></a>
+    </div>
+{% endblock %}
+
+

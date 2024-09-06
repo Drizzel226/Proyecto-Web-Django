@@ -1,0 +1,82 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}GajardoOne Planta NPR{% endblock %}</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
+</head>
+<body>
+    <!-- Barra superior -->
+    <div class="top-bar">
+        <i class="fas fa-bars menu-icon" id="menu-toggle"></i>
+        <div class="logo">
+            <img src="{% static 'images/Logo1.png' %}" alt="TPM Logo">
+        </div>
+        <span>GajardoOne Planta NPR</span>
+        <div class="right">
+            {% if user.is_authenticated %}
+                <div class="user-menu">
+                    <span class="user-name">{{ user_name }}</span>
+                    <img src="{% static 'images/flecha.png' %}" alt="Flecha" class="arrow-icon">
+                    <div class="dropdown-content">
+                        <a href="{% url 'logout' %}">Cerrar sesión</a>
+                    </div>
+                </div>
+            {% else %}
+                <a href="{% url 'social:begin' 'google-oauth2' %}" class="login-btn">
+                    <i class="fas fa-user"></i> Acceder
+                </a>
+            {% endif %}
+        </div>
+    </div>
+    
+
+    <!-- Contenedor principal -->
+    <div class="container">
+        <!-- Barra lateral -->
+        <div class="sidebar" id="sidebar">
+            <nav>
+                <ul>
+                    <li><a href="{% url 'inicio' %}" class="{% if request.resolver_match.url_name == 'inicio' %}active{% endif %}">Menu Principal</a></li>
+                    <li><a href="{% url 'porque' %}" class="{% if request.resolver_match.url_name == 'porque' %}active{% endif %}">5 Por qué</a></li>
+                    <li><a href="{% url 'miniproyectos' %}" class="{% if request.resolver_match.url_name == 'miniproyectos' %}active{% endif %}">Miniproyectos</a></li>
+                    <li><a href="{% url 'kaizer' %}" class="{% if request.resolver_match.url_name == 'kaizer' %}active{% endif %}">Kaizer</a></li>
+                    <li><a href="{% url 'visu' %}" class="{% if request.resolver_match.url_name == 'visu' %}active{% endif %}">Visualizacion</a></li>
+                    <li><a href="{% url 'dashboard' %}" class="{% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}">Dashboard</a></li>
+                </ul>
+            </nav>
+        </div>
+        <!-- Contenido principal -->
+        <div class="content" id="content">
+            {% block content %}
+            {% endblock %}
+        </div>
+    </div>
+
+    <!-- Script para manejar el comportamiento de la barra lateral -->
+    <script>
+        const menuToggle = document.getElementById('menu-toggle');
+        const sidebar = document.getElementById('sidebar');
+        const content = document.getElementById('content');
+
+        // Inicialmente la barra lateral está visible
+        let sidebarVisible = true;
+
+        menuToggle.addEventListener('click', function() {
+            if (sidebarVisible) {
+                sidebar.classList.add('hidden');
+                content.classList.add('sidebar-hidden');
+            } else {
+                sidebar.classList.remove('hidden');
+                content.classList.remove('sidebar-hidden');
+            }
+            sidebarVisible = !sidebarVisible;
+        });
+    </script>
+</body>
+</html>

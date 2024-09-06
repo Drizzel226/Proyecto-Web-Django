@@ -1,0 +1,12 @@
+{% extends 'miapp/base.html' %}
+
+{% block title %}kaizer{% endblock %}
+
+{% block content %}
+<h1 style="text-align: center;">kaizer</h1>
+<form method="post">
+    {% csrf_token %}
+    <textarea name="texto"></textarea>
+    <button type="submit">Enviar</button>
+</form>
+{% endblock %}

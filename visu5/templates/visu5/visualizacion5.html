@@ -1,0 +1,49 @@
+{% extends 'miapp/base.html' %}
+
+{% block title %}Análisis 5 Por qué{% endblock %}
+
+{% block content %}
+<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+    <h1>Visualización 5 Por qué</h1>
+    <a href="{% url 'porque' %}" class="btn-verde btn-lg">Agregar</a>
+</div>
+    
+ 
+</style>
+<table class="tabla-datos">
+    <thead>
+        <tr>
+            <th></th>
+            <th>id</th>
+            <th>Nombre</th>
+            <th>Email</th>
+            <th>Asunto</th>
+            <th>Mensaje</th>
+            <th>Categoría</th>
+            <th>Prioridad</th>
+            <th>Seguimiento</th>
+            <th>Fecha Creación</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for dato in datos %}
+        <tr>
+            <td>{{ forloop.counter }}</td>
+            <td>{{ dato.id }}</td>
+            <td>{{ dato.nombre }}</td>
+            <td>{{ dato.email }}</td>
+            <td>{{ dato.asunto }}</td>
+            <td>{{ dato.mensaje }}</td>
+            <td>{{ dato.categoria }}</td>
+            <td>{{ dato.prioridad }}</td>
+            <td>{{ dato.seguimiento }}</td>
+            <td>{{ dato.fecha_creacion }}</td>
+            <td>
+                <a href="{% url 'editar_porque' pk=dato.pk %}" class="btn-verde">Editar</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
