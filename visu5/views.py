@@ -5,6 +5,7 @@ from porque.forms import PorqueForm
 # Create your views here.
 
 
+
 def visu(request):
 
     datos = Porque.objects.all()
