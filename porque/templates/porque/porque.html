@@ -1,11 +1,10 @@
 {% extends 'miapp/base.html' %}
 
-{% block title %}Análisis 5 Porqué{% endblock %}
+{% block title %}Análisis 5 Por qué{% endblock %}
 
 {% block content %}
-
 <div class="form-container">
-    <h1 style="text-align: center;">Análisis 5 Por qué</h1>
+    <h1 style="text-align: center;">Análisis 5W</h1>
 
     {% if messages %}
     <div class="messages">
@@ -19,15 +18,62 @@
 
     <form method="post">
         {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit" class="btn btn-primary btn-block">Iniciar Análisis 5 Porqué</button>
-    </form>
+        <fieldset>
+            <legend>Enunciado</legend>
 
-    <hr>
-    
-    <!-- Botón que lleva al Paso 2 -->
-    <div style="text-align: center;">
-        <a href="{% url 'paso2' %}" class="btn btn-primary">Paso 2</a>
-    </div>
+            <div class="form-group">
+                <label for="area">Área</label>
+                <input type="text" id="area" name="area" class="form-control">
+            </div>
+
+            <div class="form-group">
+                <label for="linea">Línea</label>
+                <input type="text" id="linea" name="linea" class="form-control">
+            </div>
+
+            <div class="form-group">
+                <label for="subcategoria">Subcategoría</label>
+                <input type="text" id="subcategoria" name="subcategoria" class="form-control">
+            </div>
+
+            <div class="form-group">
+                <label for="miembros_equipo">Miembros del equipo</label>
+                <input type="text" id="miembros_equipo" name="miembros_equipo" class="form-control">
+            </div>
+
+            <div class="form-group">
+                <label for="pilar">Pilar</label>
+                <input type="text" id="pilar" name="pilar" class="form-control">
+            </div>
+
+            <div class="form-group">
+                <label for="impacto">Impacto</label>
+                <textarea id="impacto" name="impacto" class="form-control"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="kpi_iceo">KPI ICEO</label>
+                <input type="text" id="kpi_iceo" name="kpi_iceo" class="form-control">
+            </div>
+
+            <div class="form-group">
+                <label for="kpi_secundario">KPI Secundario/KAI</label>
+                <input type="text" id="kpi_secundario" name="kpi_secundario" class="form-control">
+            </div>
+
+            <div class="form-group">
+                <label for="fecha_inicio">Fecha Inicio</label>
+                <input type="date" id="fecha_inicio" name="fecha_inicio" class="form-control">
+            </div>
+
+            <div class="form-group">
+                <label for="fecha_cierre">Fecha Estimada de Cierre</label>
+                <input type="date" id="fecha_cierre" name="fecha_cierre" class="form-control">
+            </div>
+
+            <button type="submit" class="btn-primary">Guardar y Continuar</button>
+            <button type="reset" class="btn-secondary">Cancelar</button>
+        </fieldset>
+    </form>
 </div>
 {% endblock %}

@@ -1,20 +1,25 @@
 # myapp/models.py
+from django.utils import timezone
+
+
 
 from django.db import models
 
-
 class Porque(models.Model):
-    nombre = models.CharField(max_length=100)
-    email = models.EmailField()
-    asunto = models.CharField(max_length=200)
-    mensaje = models.TextField()
-    categoria = models.CharField(max_length=50)
-    prioridad = models.CharField(max_length=20)
-    seguimiento = models.BooleanField(default=False)
-    fecha_creacion = models.DateTimeField(auto_now_add=True)
+    area = models.CharField(max_length=100)
+    linea = models.CharField(max_length=100)
+    subcategoria = models.CharField(max_length=100)
+    miembros_equipo = models.CharField(max_length=200)
+    pilar = models.CharField(max_length=100)
+    impacto = models.TextField()
+    kpi_iceo = models.CharField(max_length=100)
+    kpi_secundario = models.CharField(max_length=100)
+    fecha_inicio = models.DateField()
+    fecha_cierre = models.DateField()
 
     def __str__(self):
-        return f"{self.asunto} - {self.fecha_creacion}"
+        return f"{self.area} - {self.linea}"
+
     
 
 
@@ -26,30 +31,4 @@ class Paso2(models.Model):
 
     def __str__(self):
         return self.campo1
-    
-class Paso3(models.Model):
-    campo1 = models.CharField(max_length=100)
-    campo2 = models.CharField(max_length=200)
-    campo3 = models.TextField()
-    # Otros campos necesarios
-
-    def __str__(self):
-        return self.campo1
-
-class Paso4(models.Model):
-    campo1 = models.CharField(max_length=100)
-    campo2 = models.CharField(max_length=200)
-    campo3 = models.TextField()
-    # Otros campos necesarios
-
-    def __str__(self):
-        return self.campo1
-
-class Paso5(models.Model):
-    campo1 = models.CharField(max_length=100)
-    campo2 = models.CharField(max_length=200)
-    campo3 = models.TextField()
-    # Otros campos necesarios
-
-    def __str__(self):
-        return self.campo1
+ 

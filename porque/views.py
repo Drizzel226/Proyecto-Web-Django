@@ -3,7 +3,8 @@ from .forms import PorqueForm
 from django.contrib import messages
 from google.oauth2 import service_account
 from googleapiclient.discovery import build
-from .forms import Paso2Form, Paso3Form, Paso4Form, Paso5Form  # Asegúrate de crear el formulario Paso2Form
+from .forms import Paso2Form
+
 
 
 
@@ -11,12 +12,7 @@ def porque_view(request):
     if request.method == 'POST':
         form = PorqueForm(request.POST)
         if form.is_valid():
-            # Guardar los datos en la base de datos de Django
             form.save()
-
-            # Enviar los datos a Google Sheets
-            enviar_a_google_sheets(form.cleaned_data)
-
             messages.success(request, 'Formulario enviado con éxito.')
             return redirect('porque')
         else:
@@ -29,6 +25,23 @@ def porque_view(request):
 
 
 
+def paso2_view(request):
+    if request.method == 'POST':
+        form = Paso2Form(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Paso 2 completado con éxito.')
+            return redirect('paso2')
+        else:
+            messages.error(request, 'Por favor corrige los errores.')
+    else:
+        form = Paso2Form()
+
+    return render(request, 'porque/paso2.html', {'form': form})
+
+
+
+"""
 def enviar_a_google_sheets(data):
     # Ruta al archivo JSON con las credenciales
     SERVICE_ACCOUNT_FILE = 'C:\\Users\\ccu\\Desktop\\Proyecto\\Random\\json.json'
@@ -74,62 +87,4 @@ def enviar_a_google_sheets(data):
     ).execute()
 
 
-
-
-def paso2_view(request):
-    if request.method == 'POST':
-        form = Paso2Form(request.POST)
-        if form.is_valid():
-            form.save()
-            messages.success(request, 'Paso 2 completado con éxito.')
-            return redirect('paso2')
-        else:
-            messages.error(request, 'Por favor corrige los errores.')
-    else:
-        form = Paso2Form()
-
-    return render(request, 'porque/paso2.html', {'form': form})
-
-
-
-def paso3_view(request):
-    if request.method == 'POST':
-        form = Paso3Form(request.POST)
-        if form.is_valid():
-            form.save()
-            messages.success(request, 'Paso 3 completado con éxito.')
-            return redirect('paso3')
-        else:
-            messages.error(request, 'Por favor corrige los errores.')
-    else:
-        form = Paso3Form()
-
-    return render(request, 'porque/paso3.html', {'form': form})
-
-def paso4_view(request):
-    if request.method == 'POST':
-        form = Paso4Form(request.POST)
-        if form.is_valid():
-            form.save()
-            messages.success(request, 'Paso 4 completado con éxito.')
-            return redirect('paso4')
-        else:
-            messages.error(request, 'Por favor corrige los errores.')
-    else:
-        form = Paso4Form()
-
-    return render(request, 'porque/paso4.html', {'form': form})
-
-def paso5_view(request):
-    if request.method == 'POST':
-        form = Paso5Form(request.POST)
-        if form.is_valid():
-            form.save()
-            messages.success(request, 'Paso 5 completado con éxito.')
-            return redirect('paso5')
-        else:
-            messages.error(request, 'Por favor corrige los errores.')
-    else:
-        form = Paso5Form()
-
-    return render(request, 'porque/paso5.html', {'form': form})
+"""

@@ -6,7 +6,10 @@ from porque.models import Porque
 
 class PorqueAdmin(admin.ModelAdmin):
 
-    list_display = ("nombre", "email", "asunto", "mensaje", "categoria", "prioridad", "seguimiento")
+    list_display = [
+            'area', 'linea', 'subcategoria', 'miembros_equipo', 'pilar', 
+            'impacto', 'kpi_iceo', 'kpi_secundario', 'fecha_inicio', 'fecha_cierre'
+        ]
 
 
 
