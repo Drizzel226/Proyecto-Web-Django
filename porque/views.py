@@ -8,28 +8,56 @@ from googleapiclient.discovery import build
 
 
 
+
 def porque_view(request):
+    SERVICE_ACCOUNT_FILE = 'C:\\Users\\ccu\\Desktop\\Proyecto\\Random\\json.json'
+    SCOPES = ['https://www.googleapis.com/auth/spreadsheets']
+    SPREADSHEET_ID = '1EQxXtEN6arH3AW_7-3AQ0YVf6Q6HXUNth2y1Oy-oVHM'
+    
+    creds = service_account.Credentials.from_service_account_file(
+        SERVICE_ACCOUNT_FILE, scopes=SCOPES)
+
+    service = build('sheets', 'v4', credentials=creds)
+    sheet = service.spreadsheets()
+
+    def obtener_opciones(rango):
+        result = sheet.values().get(spreadsheetId=SPREADSHEET_ID, range=rango).execute()
+        return [opcion[0] for opcion in result.get('values', []) if opcion]
+
+    opciones_area = obtener_opciones('Opciones!A2:A')
+    opciones_subarea = obtener_opciones('Opciones!B2:B')
+    opciones_maquina = obtener_opciones('Opciones!C2:C')
+    
+
     if request.method == 'POST':
         form = PorqueForm(request.POST)
         if form.is_valid():
-            form.save()
-
-            # Enviar los datos a Google Sheets y manejar errores
+            porque_instance = form.save()
             try:
-                enviar_a_google_sheets(form.cleaned_data)
+                enviar_a_google_sheets(porque_instance)
                 messages.success(request, 'Formulario enviado con éxito y datos guardados en Google Sheets.')
             except Exception as e:
                 messages.error(request, f'El formulario fue guardado, pero ocurrió un error al enviar a Google Sheets: {e}')
-
-            return redirect('porque')
+            return redirect('paso2')
         else:
+            print(form.errors)
             messages.error(request, 'Por favor corrige los errores.')
     else:
         form = PorqueForm()
 
-    return render(request, 'porque/porque.html', {'form': form})
+    context = {
+        'form': form,
+        'opciones_area': opciones_area,
+        'opciones_subarea': opciones_subarea,
+        'opciones_maquina': opciones_maquina,
+    }
 
-def enviar_a_google_sheets(data):
+    return render(request, 'porque/porque.html', context)
+
+
+
+
+def enviar_a_google_sheets(porque_instance):
     try:
         # Ruta al archivo JSON con las credenciales
         SERVICE_ACCOUNT_FILE = 'C:\\Users\\ccu\\Desktop\\Proyecto\\Random\\json.json'
@@ -46,21 +74,21 @@ def enviar_a_google_sheets(data):
         RANGE_NAME = 'porque!A2'  # El rango donde se añadirán los datos
 
         # Convierte las fechas a formato de cadena
-        fecha_inicio_str = data['fecha_inicio'].isoformat()
-        fecha_cierre_str = data['fecha_cierre'].isoformat()
+        fecha_inicio_str = porque_instance.fecha_inicio.isoformat()
+        fecha_cierre_str = porque_instance.fecha_cierre.isoformat()
 
-        # Datos que se van a agregar
+        # Datos que se van a agregar, incluyendo el ID
         values = [
             [
-                data['id'],
-                data['area'],
-                data['linea'],
-                data['subcategoria'],
-                data['miembros_equipo'],
-                data['pilar'],
-                data['impacto'],
-                data['kpi_iceo'],
-                data['kpi_secundario'],
+                porque_instance.id,  # Accede al ID desde la instancia
+                porque_instance.area,
+                porque_instance.subarea,
+                porque_instance.maquina,
+                porque_instance.miembros_equipo,
+                porque_instance.pilar,
+                porque_instance.impacto,
+                porque_instance.kpi_iceo,
+                porque_instance.kpi_secundario,
                 fecha_inicio_str,
                 fecha_cierre_str,
             ],
@@ -85,6 +113,7 @@ def enviar_a_google_sheets(data):
 
     except Exception as e:
         print(f"Error al enviar datos a Google Sheets: {e}")
+
 
 
 

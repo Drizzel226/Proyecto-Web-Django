@@ -3,8 +3,8 @@ from django.db import models
 
 class Porque(models.Model):
     area = models.CharField(max_length=100)
-    linea = models.CharField(max_length=100)
-    subcategoria = models.CharField(max_length=100)
+    subarea = models.CharField(max_length=100)
+    maquina = models.CharField(max_length=100)
     miembros_equipo = models.CharField(max_length=200)
     pilar = models.CharField(max_length=100)
     impacto = models.TextField()

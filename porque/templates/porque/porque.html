@@ -1,10 +1,10 @@
 {% extends 'miapp/base.html' %}
 
-{% block title %}Análisis 5W{% endblock %}
+{% block title %}5 POR QUÉ{% endblock %}
 
 {% block content %}
 <div class="form-container">
-    <h1 id="analisis-5w" class="text-center">Análisis 5W</h1>
+    <h1 id="analisis-5w" class="text-center">5 POR QUÉ</h1>
 
     {% if messages %}
     <div class="messages">
@@ -18,70 +18,48 @@
 
     <form method="post" class="analisis-5w-form">
         {% csrf_token %}
-        
+    
         <div class="form-row">
             <div class="form-group col-md-6">
-                <label for="categoria">Categoría</label>
-                <select id="categoria" name="categoria" class="form-control">
-                    <option value="">Seleccione una categoría</option>
-                    <option value="calidad">Calidad</option>
-                    <option value="produccion">Producción</option>
-                    <option value="mantenimiento">Mantenimiento</option>
-                    <option value="seguridad">Seguridad</option>
-                </select>
-            </div>
-            <div class="form-group col-md-6">
-                <label for="subcategoria">Subcategoría</label>
-                <select id="subcategoria" name="subcategoria" class="form-control">
-                    <option value="">Seleccione una subcategoría</option>
-                    <option value="calidad">Calidad</option>
-                    <option value="produccion">Producción</option>
-                    <option value="mantenimiento">Mantenimiento</option>
-                    <option value="seguridad">Seguridad</option>
-                    <!-- Las opciones se poblarán dinámicamente basadas en la categoría seleccionada -->
-                </select>
-            </div>
-        </div>
-
-        <div class="form-row">
-            <div class="form-group col-md-4">
                 <label for="area">Área</label>
                 <select id="area" name="area" class="form-control">
                     <option value="">Seleccione un área</option>
-                    <option value="produccion">Producción</option>
-                    <option value="almacen">Almacén</option>
-                    <option value="logistica">Logística</option>
+                    {% for opcion in opciones_area %}
+                        <option value="{{ opcion }}">{{ opcion }}</option>
+                    {% endfor %}
                 </select>
             </div>
-            <div class="form-group col-md-4">
-                <label for="linea">Línea</label>
-                <select id="linea" name="linea" class="form-control">
+            <div class="form-group col-md-6">
+                <label for="subarea">Subarea</label>
+                <select id="subarea" name="subarea" class="form-control">
                     <option value="">Seleccione una línea</option>
-                    <option value="linea1">Línea 1</option>
-                    <option value="linea2">Línea 2</option>
-                    <option value="linea3">Línea 3</option>
+                    {% for opcion in opciones_subarea %}
+                        <option value="{{ opcion }}">{{ opcion }}</option>
+                    {% endfor %}
                 </select>
             </div>
-            <div class="form-group col-md-4">
-                <label for="maquina">Máquina</label>
+        </div>
+    
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label for="maquina">Maquina</label>
                 <select id="maquina" name="maquina" class="form-control">
-                    <option value="">Seleccione una máquina</option>
-                    <option value="maquina1">Máquina 1</option>
-                    <option value="maquina2">Máquina 2</option>
-                    <option value="maquina3">Máquina 3</option>
+                    <option value="">Seleccione una subcategoría</option>
+                    {% for opcion in opciones_maquina %}
+                    <option value="{{ opcion }}">{{ opcion }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="form-group col-md-6">
+                <label for="miembros">Miembros del equipo</label>
+                <select id="miembros" name="miembros_equipo" class="form-control" multiple>
+                    <option value="miembro1">Juan Pérez</option>
+                    <option value="miembro2">María García</option>
+                    <option value="miembro3">Carlos López</option>
                 </select>
             </div>
         </div>
-
-        <div class="form-group">
-            <label for="miembros">Miembros del equipo</label>
-            <select id="miembros" name="miembros" class="form-control" multiple>
-                <option value="miembro1">Juan Pérez</option>
-                <option value="miembro2">María García</option>
-                <option value="miembro3">Carlos López</option>
-            </select>
-        </div>
-
+    
         <div class="form-row">
             <div class="form-group col-md-6">
                 <label for="pilar">Pilar</label>
@@ -92,7 +70,7 @@
                 <input type="text" id="impacto" name="impacto" class="form-control">
             </div>
         </div>
-
+    
         <div class="form-row">
             <div class="form-group col-md-6">
                 <label for="kpi_iceo">KPI ICEO</label>
@@ -108,7 +86,7 @@
                 </select>
             </div>
         </div>
-
+    
         <div class="form-row">
             <div class="form-group col-md-6">
                 <label for="fecha_inicio">Fecha Inicio</label>
@@ -119,11 +97,12 @@
                 <input type="date" id="fecha_cierre" name="fecha_cierre" class="form-control">
             </div>
         </div>
-
+    
         <div class="form-actions">
             <button type="button" class="btn btn-secondary">Cancelar</button>
             <button type="submit" class="btn btn-primary">Guardar y Continuar</button>
         </div>
     </form>
+    
 </div>
 {% endblock %}
