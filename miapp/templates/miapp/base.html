@@ -7,8 +7,7 @@
     <title>{% block title %}GajardoOne Planta NPR{% endblock %}</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0/dist/css/select2.min.css" rel="stylesheet" />
 </head>
 <body>
     <!-- Barra superior -->
@@ -38,8 +37,6 @@
         </div>
     </div>
     
-    
-
     <!-- Contenedor principal -->
     <div class="container">
         <!-- Barra lateral -->
@@ -62,13 +59,24 @@
         </div>
     </div>
 
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0/dist/js/select2.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            // Inicializa Select2 en todos los selectores de miembros
+            $('#miembros').select2({
+                placeholder: "Seleccione miembros del equipo",
+                allowClear: true
+            });
+        });
+    </script>
+
     <!-- Script para manejar el comportamiento de la barra lateral -->
     <script>
         const menuToggle = document.getElementById('menu-toggle');
         const sidebar = document.getElementById('sidebar');
         const content = document.getElementById('content');
 
-        // Inicialmente la barra lateral está visible
         let sidebarVisible = true;
 
         menuToggle.addEventListener('click', function() {

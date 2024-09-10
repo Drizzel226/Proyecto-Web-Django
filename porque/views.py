@@ -27,7 +27,7 @@ def porque_view(request):
     opciones_area = obtener_opciones('Opciones!A2:A')
     opciones_subarea = obtener_opciones('Opciones!B2:B')
     opciones_maquina = obtener_opciones('Opciones!C2:C')
-    
+    opciones_miembros = obtener_opciones('Opciones!D2:D')  # Nueva línea para obtener miembros
 
     if request.method == 'POST':
         form = PorqueForm(request.POST)
@@ -50,9 +50,11 @@ def porque_view(request):
         'opciones_area': opciones_area,
         'opciones_subarea': opciones_subarea,
         'opciones_maquina': opciones_maquina,
+        'opciones_miembros': opciones_miembros,  # Incluye las opciones de miembros en el contexto
     }
 
     return render(request, 'porque/porque.html', context)
+
 
 
 
