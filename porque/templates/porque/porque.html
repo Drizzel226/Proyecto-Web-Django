@@ -18,7 +18,7 @@
 
     <form method="post" class="analisis-5w-form">
         {% csrf_token %}
-
+    
         <div class="form-row">
             <div class="form-group col-md-6">
                 <label for="area">Área</label>
@@ -39,7 +39,7 @@
                 </select>
             </div>
         </div>
-
+    
         <div class="form-row">
             <div class="form-group col-md-6">
                 <label for="maquina">Maquina</label>
@@ -52,14 +52,18 @@
             </div>
             <div class="form-group col-md-6">
                 <label for="miembros">Miembros del equipo</label>
-                <select id="miembros" name="miembros_equipo" class="form-control" multiple>
-                    {% for opcion in opciones_miembros %}
-                        <option value="{{ opcion }}">{{ opcion }}</option>
-                    {% endfor %}
-                </select>                
+                <select id="miembros" name="miembros_equipo" class="form-control">
+                    <option>Juan Pérez</option>
+                    <option>María García</option>
+                    <option>Carlos López</option>
+                    <option>Diego Gajardo</option>
+                    <option>Tami</option>
+                    <option>Dani</option>
+                    <option>Rodri</option>
+                </select> 
             </div>
         </div>
-
+    
         <div class="form-row">
             <div class="form-group col-md-6">
                 <label for="pilar">Pilar</label>
@@ -70,7 +74,7 @@
                 <input type="text" id="impacto" name="impacto" class="form-control">
             </div>
         </div>
-
+    
         <div class="form-row">
             <div class="form-group col-md-6">
                 <label for="kpi_iceo">KPI ICEO</label>
@@ -86,7 +90,7 @@
                 </select>
             </div>
         </div>
-
+    
         <div class="form-row">
             <div class="form-group col-md-6">
                 <label for="fecha_inicio">Fecha Inicio</label>
@@ -97,22 +101,12 @@
                 <input type="date" id="fecha_cierre" name="fecha_cierre" class="form-control">
             </div>
         </div>
-
+    
         <div class="form-actions">
             <button type="button" class="btn btn-secondary">Cancelar</button>
             <button type="submit" class="btn btn-primary">Guardar y Continuar</button>
         </div>
     </form>
+    
 </div>
-
-<!-- Script para inicializar Select2 -->
-<script>
-    $(document).ready(function() {
-        console.log("Inicializando Select2");
-        $('#miembros').select2({
-            placeholder: "Seleccione miembros del equipo",
-            allowClear: true
-        });
-    });
-</script>
 {% endblock %}
