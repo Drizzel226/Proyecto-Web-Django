@@ -52,6 +52,7 @@ def enviar_a_google_sheets(data):
         # Datos que se van a agregar
         values = [
             [
+                data['id'],
                 data['area'],
                 data['linea'],
                 data['subcategoria'],

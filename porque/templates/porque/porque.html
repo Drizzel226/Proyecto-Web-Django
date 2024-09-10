@@ -1,10 +1,10 @@
 {% extends 'miapp/base.html' %}
 
-{% block title %}Análisis 5 Por qué{% endblock %}
+{% block title %}Análisis 5W{% endblock %}
 
 {% block content %}
 <div class="form-container">
-    <h1 style="text-align: center;">Análisis 5W</h1>
+    <h1 id="analisis-5w" class="text-center">Análisis 5W</h1>
 
     {% if messages %}
     <div class="messages">
@@ -16,69 +16,114 @@
     </div>
     {% endif %}
 
-    <form method="post">
+    <form method="post" class="analisis-5w-form">
         {% csrf_token %}
-        <fieldset>
-
-            <div class="form-group">
-                <label for="area">Área</label>
-                <input type="text" id="area" name="area" class="form-control">
+        
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label for="categoria">Categoría</label>
+                <select id="categoria" name="categoria" class="form-control">
+                    <option value="">Seleccione una categoría</option>
+                    <option value="calidad">Calidad</option>
+                    <option value="produccion">Producción</option>
+                    <option value="mantenimiento">Mantenimiento</option>
+                    <option value="seguridad">Seguridad</option>
+                </select>
             </div>
-
-            <div class="form-group">
-                <label for="linea">Línea</label>
-                <input type="text" id="linea" name="linea" class="form-control">
-            </div>
-
-            <div class="form-group">
+            <div class="form-group col-md-6">
                 <label for="subcategoria">Subcategoría</label>
-                <input type="text" id="subcategoria" name="subcategoria" class="form-control">
+                <select id="subcategoria" name="subcategoria" class="form-control">
+                    <option value="">Seleccione una subcategoría</option>
+                    <option value="calidad">Calidad</option>
+                    <option value="produccion">Producción</option>
+                    <option value="mantenimiento">Mantenimiento</option>
+                    <option value="seguridad">Seguridad</option>
+                    <!-- Las opciones se poblarán dinámicamente basadas en la categoría seleccionada -->
+                </select>
             </div>
+        </div>
 
-            <div class="form-group">
-                <label for="miembros_equipo">Miembros del equipo</label>
-                <input type="text" id="miembros_equipo" name="miembros_equipo" class="form-control">
+        <div class="form-row">
+            <div class="form-group col-md-4">
+                <label for="area">Área</label>
+                <select id="area" name="area" class="form-control">
+                    <option value="">Seleccione un área</option>
+                    <option value="produccion">Producción</option>
+                    <option value="almacen">Almacén</option>
+                    <option value="logistica">Logística</option>
+                </select>
             </div>
+            <div class="form-group col-md-4">
+                <label for="linea">Línea</label>
+                <select id="linea" name="linea" class="form-control">
+                    <option value="">Seleccione una línea</option>
+                    <option value="linea1">Línea 1</option>
+                    <option value="linea2">Línea 2</option>
+                    <option value="linea3">Línea 3</option>
+                </select>
+            </div>
+            <div class="form-group col-md-4">
+                <label for="maquina">Máquina</label>
+                <select id="maquina" name="maquina" class="form-control">
+                    <option value="">Seleccione una máquina</option>
+                    <option value="maquina1">Máquina 1</option>
+                    <option value="maquina2">Máquina 2</option>
+                    <option value="maquina3">Máquina 3</option>
+                </select>
+            </div>
+        </div>
 
-            <div class="form-group">
+        <div class="form-group">
+            <label for="miembros">Miembros del equipo</label>
+            <select id="miembros" name="miembros" class="form-control" multiple>
+                <option value="miembro1">Juan Pérez</option>
+                <option value="miembro2">María García</option>
+                <option value="miembro3">Carlos López</option>
+            </select>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group col-md-6">
                 <label for="pilar">Pilar</label>
                 <input type="text" id="pilar" name="pilar" class="form-control">
             </div>
-
-            <div class="form-group">
+            <div class="form-group col-md-6">
                 <label for="impacto">Impacto</label>
-                <textarea id="impacto" name="impacto" class="form-control"></textarea>
+                <input type="text" id="impacto" name="impacto" class="form-control">
             </div>
+        </div>
 
-            <div class="form-group">
+        <div class="form-row">
+            <div class="form-group col-md-6">
                 <label for="kpi_iceo">KPI ICEO</label>
                 <input type="text" id="kpi_iceo" name="kpi_iceo" class="form-control">
             </div>
-
-            <div class="form-group">
-                <label for="kpi_secundario">KPI Secundario</label>
-                <input type="text" id="kpi_secundario" name="kpi_secundario" class="form-control">
+            <div class="form-group col-md-6">
+                <label for="kpi_secundario">KPI Secundario(KAI)</label>
+                <select id="kpi_secundario" name="kpi_secundario" class="form-control">
+                    <option value="">Seleccione un KPI secundario</option>
+                    <option value="kpi1">Eficiencia Global de Equipos (OEE)</option>
+                    <option value="kpi2">Tasa de Defectos</option>
+                    <option value="kpi3">Tiempo Medio Entre Fallos (MTBF)</option>
+                </select>
             </div>
+        </div>
 
-            <div class="form-group">
+        <div class="form-row">
+            <div class="form-group col-md-6">
                 <label for="fecha_inicio">Fecha Inicio</label>
-                <input type="date" id="fecha_inicio" name="fecha_inicio" class="form-control">
+                <input type="date" id="fecha_inicio" name="fecha_inicio" class="form-control" value="2024-09-10">
             </div>
-
-            <div class="form-group">
+            <div class="form-group col-md-6">
                 <label for="fecha_cierre">Fecha Estimada de Cierre</label>
                 <input type="date" id="fecha_cierre" name="fecha_cierre" class="form-control">
             </div>
+        </div>
 
-            <button type="submit" class="btn-primary">Guardar y Continuar</button>
-            <button type="reset" class="btn-secondary">Cancelar</button>
-        </fieldset>
+        <div class="form-actions">
+            <button type="button" class="btn btn-secondary">Cancelar</button>
+            <button type="submit" class="btn btn-primary">Guardar y Continuar</button>
+        </div>
     </form>
-    <div style="text-align: center;">
-        <a href="{% url 'paso2' %}" class="btn btn-primary btn-block">Siguiente</a>
-    </div>
-</div>
-<div style="text-align: center;">
-    <a href="{% url 'paso2' %}" class="btn btn-primary btn-block">Siguiente</a>
 </div>
 {% endblock %}

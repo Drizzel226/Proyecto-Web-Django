@@ -1,24 +1,40 @@
-/* Color base */
+/* Variables de color */
 :root {
-    --verde-base: #265339; /* Verde base */
-    --verde-oscuro: #449148; /* Verde más oscuro */
-    --verde-claro: #c2e7c3; /* Verde más claro */
+    --verde-base: #265339;
+    --verde-oscuro: #449148;
+    --verde-claro: #c2e7c3;
+    --blanco: #ffffff;
+    --gris-claro: #f0f2f5;
+    --gris-oscuro: #2c3e50;
+    --azul: #4285f4;
+    --azul-hover: #1567eb;
+    --verde-activo: #3F5D31;
 }
 
-/* Estilo global para el cuerpo y el documento */
+/* Estilos globales */
 body, html {
     margin: 0;
     padding: 0;
     height: 100%;
-    font-family: Arial, sans-serif;
+    font-family: 'Roboto', Arial, sans-serif;
+    background-color: var(--gris-claro);
+    color: var(--gris-oscuro);
 }
 
-/* Barra superior (top-bar) */
-.top-bar {
-    background-color: var(--verde-base); /* Verde base */
-    color: white; /* Texto blanco */
-    padding: 10px;
+/* Layout principal */
+.container {
     display: flex;
+    height: calc(100% - 50px);
+    margin-top: 50px;
+}
+
+/* Barra superior */
+.top-bar {
+    background-color: var(--verde-base);
+    color: var(--blanco);
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
     align-items: center;
     position: fixed;
     top: 0;
@@ -28,31 +44,33 @@ body, html {
     height: 50px;
 }
 
-/* Icono de menú (tres rayas) */
+.left-content {
+    display: flex;
+    align-items: center;
+}
+
+.logo img {
+    height: 40px;
+    margin-right: 15px;
+}
+
+.company-name {
+    font-size: 18px;
+    font-weight: bold;
+}
 .menu-icon {
     font-size: 24px;
     margin-right: 20px;
     cursor: pointer;
-    color: white; /* Texto blanco para el icono */
+    color: var(--blanco);
 }
 
-/* Logo en la barra superior */
-.logo img {
-    height: 40px;
-    margin-right: 10px;
-}
 
-/* Contenedor principal que incluye la barra lateral y el contenido */
-.container {
-    display: flex;
-    height: calc(100% - 50px);
-    margin-top: 50px;
-}
 
-/* Barra lateral (sidebar) */
+/* Barra lateral */
 .sidebar {
-    width: 200px; /* Ancho reducido a 200px */
-    background-color: var(--verde-claro); /* Verde claro */
+    width: 200px;
+    background-color: var(--verde-claro);
     position: fixed;
     left: 0;
     top: 50px;
@@ -63,19 +81,13 @@ body, html {
     padding-top: 20px;
 }
 
-/* Estado cuando la barra lateral está oculta */
 .sidebar.hidden {
-    left: -200px; /* Ajustado a 200px para coincidir con el nuevo ancho */
+    left: -200px;
 }
 
-/* Menú de navegación en la barra lateral */
 .sidebar nav ul {
     list-style-type: none;
     padding: 0;
-    margin-top: 0;
-}
-
-.sidebar nav ul li:first-child {
     margin-top: 10px;
 }
 
@@ -83,32 +95,31 @@ body, html {
     margin-bottom: 10px;
 }
 
-/* Enlaces en la barra lateral */
 .sidebar nav ul li a {
     display: block;
     padding: 10px 15px;
-    background-color: var(--verde-oscuro); /* Verde oscuro */
-    color: white; /* Texto blanco */
+    background-color: var(--verde-oscuro);
+    color: var(--blanco);
     text-decoration: none;
     border-radius: 5px;
     transition: background-color 0.3s ease;
 }
 
-.sidebar nav ul li a:hover {
-    background-color: var(--verde-base); /* Verde base al pasar el ratón */
+.sidebar nav ul li a:hover,
+.sidebar nav ul li a.active {
+    background-color: var(--verde-activo);
 }
 
-/* Contenido principal (content) */
+/* Contenido principal */
 .content {
     flex-grow: 1;
     padding: 20px;
-    margin-left: 200px; /* Ajustado a 200px para coincidir con el nuevo ancho */
+    margin-left: 200px;
     transition: margin-left 0.3s ease-in-out;
-    width: calc(100% - 200px); /* Ajustado para compensar la barra lateral más estrecha */
+    width: calc(100% - 200px);
     box-sizing: border-box;
 }
 
-/* Estado cuando la barra lateral está oculta */
 .content.sidebar-hidden {
     margin-left: 0;
     width: 100%;
@@ -120,79 +131,56 @@ body, html {
     border-collapse: collapse;
 }
 
-.tabla-datos th, .tabla-datos td {
-    border: 1px solid #ddd;
+.tabla-datos th,
+.tabla-datos td {
+    border: 1px solid var(--verde-claro);
     padding: 8px;
     text-align: left;
 }
 
 .tabla-datos thead {
-    background-color: var(--verde-claro); /* Verde muy claro para el encabezado de la tabla */
+    background-color: var(--verde-claro);
 }
 
 .tabla-datos tr:nth-child(even) {
-    background-color: var(--verde-claro); /* Fondo verde claro para filas pares */
+    background-color: var(--verde-claro);
 }
 
-/* Estilo para enlaces de acción en la tabla */
-.enlace-accion {
-    margin-right: 5px;
-    color: var(--verde-oscuro); /* Verde oscuro para las acciones */
-    text-decoration: none;
-}
-
-.image-container {
-    text-align: center;
-}
-
-.centered-image {
-    width: 30%;
-    height: auto;
-}
-
-/* Estilo para los botones verdes */
+/* Enlaces y botones */
+.enlace-accion,
 .btn-verde {
-    background-color: var(--verde-oscuro); /* Verde base */
-    color: white; /* Texto blanco */
-    padding: 10px 20px; /* Relleno */
-    border: none; /* Sin borde */
-    border-radius: 5px; /* Bordes redondeados */
-    cursor: pointer; /* Cursor de mano */
-    text-decoration: none; /* Sin subrayado */
-    display: inline-block; /* Para mantenerlo en línea */
-    font-size: 14px; /* Tamaño de letra */
+    color: var(--verde-oscuro);
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.btn-verde {
+    background-color: var(--verde-oscuro);
+    color: var(--blanco);
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
 }
 
 .btn-verde:hover {
-    background-color: var(--verde-base); /* Verde más oscuro al pasar el ratón */
+    background-color: var(--verde-base);
 }
 
 .btn-lg {
-    font-size: 1.25rem; /* Aumenta el tamaño del texto */
-    padding: 10px 30px; /* Aumenta el tamaño del botón */
+    font-size: 1.25rem;
+    padding: 10px 30px;
 }
 
-/* Estilo para los formularios */
-body {
-    background-color: #f0f2f5;
-    font-family: 'Roboto', sans-serif;
-}
-
+/* Formularios */
 .form-container {
-    background-color: #ffffff;
+    background-color: var(--blanco);
     padding: 40px;
     border-radius: 12px;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
     margin: 50px auto;
-    max-width: 700px;
-}
-
-h1 {
-    color: var(--verde-base); /* Verde base para el título */
-    margin-bottom: 30px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 1px;
+    max-width: 900px;
 }
 
 .form-group {
@@ -202,118 +190,292 @@ h1 {
 .form-group label {
     font-weight: 600;
     margin-bottom: 8px;
-    color: #2c3e50;
+    display: block;
 }
 
 .form-control {
+    width: 100%;
     padding: 12px;
     border-radius: 8px;
-    border: 2px solid #bdc3c7;
+    border: 2px solid var(--verde-claro);
     transition: border-color 0.3s ease;
 }
 
 .form-control:focus {
-    border-color: var(--verde-oscuro); /* Verde base al enfocar */
-    box-shadow: 0 0 0 0.2rem rgba(76, 175, 80, 0.25);
+    border-color: var(--verde-oscuro);
+    outline: none;
 }
 
-.btn-primary {
-    background-color:  var(--verde-oscuro); /* Verde oscuro */
-    border-color:  var(--verde-oscuro); /* Borde */
-    padding: 12px 25px;
-    border-radius: 8px;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    transition: all 0.3s ease;
-    color: white; /* Color del texto */
+/* Login y User menu */
+.login-btn,
+.user-menu {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    color: var(--blanco);
+    background-color: var(--verde-oscuro);
+    padding: 10px 20px;
+    border-radius: 30px;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 14px;
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-.btn-primary:hover {
-    background-color: var(--verde-base); /* Verde más oscuro al pasar el ratón */
-    border-color: var(--verde-base); /* Verde más oscuro al pasar el ratón */
-    transform: translateY(-2px);
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+.login-btn:hover,
+.user-menu:hover {
+    background-color: var(--verde-base);
 }
 
-.btn-secondary {
-    background-color: #ccc;
-    color: #333;
-    padding: 10px 15px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
-}
-
-.btn-secondary:hover {
-    background-color: #aaa;
-}
-
-/* Mensajes de error o éxito */
-.messages {
-    margin-bottom: 20px;
-}
-
-.alert {
-    padding: 15px;
-    margin-bottom: 20px;
-    border: 1px solid transparent;
+.dropdown-content {
+    display: none;
+    position: absolute;
+    right: 0;
+    background-color: var(--blanco);
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
     border-radius: 4px;
 }
 
-.alert-success {
-    color: #155724;
-    background-color: #d4edda;
-    border-color: #c3e6cb;
+.dropdown-content a {
+    color: var(--gris-oscuro);
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
 }
 
-/* Estado activo en el sidebar */
-.sidebar nav ul li a.active {
-    background-color: #3F5D31; /* Color verde oscuro para el elemento activo */
-    font-weight: bold; /* Opcional: hacer el texto más grueso */
+.dropdown-content a:hover {
+    background-color: var(--gris-claro);
 }
 
-/* Estilos para el botón de inicio de sesión */
+.user-menu:hover .dropdown-content {
+    display: block;
+}
+
+/* Utilidades */
+.image-container {
+    text-align: center;
+}
+
+.centered-image {
+    width: 30%;
+    height: auto;
+}
+
+/* Media Queries para responsividad */
+@media (max-width: 768px) {
+    .sidebar {
+        width: 100%;
+        left: -100%;
+    }
+
+    .content {
+        margin-left: 0;
+        width: 100%;
+    }
+
+    .top-bar {
+        flex-direction: column;
+        height: auto;
+    }
+
+    .form-container {
+        padding: 20px;
+    }
+}
+
+/* ... (estilos existentes) ... */
+
+/* Estilos para el formulario de Análisis 5W */
+.analisis-5w-form {
+    background-color: var(--blanco);
+    border: 1px solid var(--verde-claro);
+    border-radius: 8px;
+    padding: 20px;
+    margin-top: 20px;
+}
+
+.analisis-5w-form .form-row {
+    display: flex;
+    flex-wrap: wrap;
+    margin-right: -15px;
+    margin-left: -15px;
+}
+
+.analisis-5w-form .form-group {
+    margin-bottom: 1rem;
+    padding-right: 15px;
+    padding-left: 15px;
+}
+
+.analisis-5w-form .col-md-4,
+.analisis-5w-form .col-md-6 {
+    flex: 0 0 33.333333%;
+    max-width: 33.333333%;
+}
+
+.analisis-5w-form label {
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+    display: block;
+}
+
+.analisis-5w-form select,
+.analisis-5w-form input[type="text"],
+.analisis-5w-form input[type="date"] {
+    width: 100%;
+    padding: 0.375rem 0.75rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    color: var(--gris-oscuro);
+    background-color: var(--blanco);
+    background-clip: padding-box;
+    border: 1px solid var(--verde-claro);
+    border-radius: 0.25rem;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.analisis-5w-form select {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23333' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.75rem center;
+    background-size: 12px 12px;
+    padding-right: 2.25rem;
+}
+
+.analisis-5w-form .form-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 1rem;
+}
+
+.analisis-5w-form .btn {
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    border-radius: 0.25rem;
+    cursor: pointer;
+}
+
+.analisis-5w-form .btn-secondary {
+    color: var(--blanco);
+    background-color: var(--gris-oscuro);
+    border-color: var(--gris-oscuro);
+}
+
+.analisis-5w-form .btn-primary {
+    color: var(--blanco);
+    background-color: var(--verde-oscuro);
+    border-color: var(--verde-oscuro);
+}
+
+.analisis-5w-form .btn-secondary:hover,
+.analisis-5w-form .btn-primary:hover {
+    opacity: 0.9;
+}
+
+/* Estilo para el encabezado "Enunciado" */
+.analisis-5w-form::before {
+    content: "";
+    display: block;
+    background-color: var(--verde-claro);
+    color: var(--verde-oscuro);
+    padding: 10px;
+    margin: -20px -20px 20px -20px;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    font-weight: bold;
+}
+
+/* Media query para responsividad */
+@media (max-width: 768px) {
+    .analisis-5w-form .col-md-4,
+    .analisis-5w-form .col-md-6 {
+        flex: 0 0 100%;
+        max-width: 100%;
+    }
+}
+
+/* USUARiO ARRIBA A LA DERECHA */
+
 .login-btn {
     display: flex;
     align-items: center;
     gap: 5px;
-    color: #fff;
-    background-color: #4285f4;
+    color: #ffffff; /* Color azul */
+    background-color:var(--verde-oscuro); /* Fondo blanco */
     padding: 10px 20px;
-    border-radius: 5px;
-    text-decoration: none;
+    border-radius: 30px; /* Bordes redondeados */
+    border: 1px solid #4285f4; /* Borde azul */
+    text-decoration: none; /* Sin subrayado */
+    font-weight: bold;
+    font-size: 14px;
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .login-btn i {
+    font-size: 16px;
     margin-right: 8px;
+    color: var(--verde-base);
 }
 
-/* Estilos para la información del usuario logueado */
-.user-info {
-    display: flex;
-    align-items: center;
-    gap: 10px;
+.login-btn:hover {
+    background-color: #6f7888; /* Fondo azul al pasar el ratón */
+    color: #ffffff; /* Texto blanco al pasar el ratón */
 }
 
-.user-info i {
-    color: #fff;
+.login-btn i:hover {
+    color: #ffffff; /* Icono blanco al pasar el ratón */
+}
+.user-name {
+    font-size: 16px;
+    font-weight: bold;
+    color: white; /* Cambia este color según lo necesites */
+    padding: 10px 20px;
+}
+.user-menu {
+    position: relative;
+    display: inline-block;
 }
 
-.user-info a {
-    color: #fff;
+.arrow-icon {
+    width: 12px; /* Ajusta el tamaño de la flecha */
+    margin-left: 8px;
+    cursor: pointer;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    right: 0;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(105, 16, 207, 0.2);
+    z-index: 1;
+    border-radius: 4px;
+}
+
+.dropdown-content a {
+    color: black;
+    padding: 12px 16px;
     text-decoration: none;
-    margin-left: 10px;
+    display: block;
 }
 
-/* Barra superior */
-.top-bar {
-    display: flex;
-    justify-content: space-between; /* Espacio entre el logo/texto y el botón de inicio de sesión */
-    align-items: center;
+.dropdown-content a:hover {
+    background-color: #f1f1f1;
 }
 
-.top-bar .right {
-    margin-left: auto; /* Mueve el contenido de la clase 'right' a la derecha */
+.user-menu:hover .dropdown-content {
+    display: block;
+}
+.arrow-icon {
+    width: 15px; /* Tamaño de la flecha */
+    margin-left: -10px; /* Reducido para acercar la flecha al nombre */
+    cursor: pointer;
+    background-color: transparent; /* Asegura que el fondo sea transparente */
+    display: inline-block;
+    vertical-align: middle; /* Alinea verticalmente la flecha con el texto */
 }

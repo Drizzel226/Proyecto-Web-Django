@@ -14,11 +14,14 @@
     <!-- Barra superior -->
     <div class="top-bar">
         <i class="fas fa-bars menu-icon" id="menu-toggle"></i>
-        <div class="logo">
-            <img src="{% static 'images/Logo1.png' %}" alt="TPM Logo">
+        <div class="left-content">
+            <div class="logo">
+                <img src="{% static 'images/Logo1.png' %}" alt="TPM Logo">
+            </div>
+            <span class="company-name">GajardoOne Planta NPR</span>
         </div>
-        <span>GajardoOne Planta NPR</span>
-        <div class="right">
+    
+        <div class="right-content right">
             {% if user.is_authenticated %}
                 <div class="user-menu">
                     <span class="user-name">{{ user_name }}</span>
@@ -34,6 +37,7 @@
             {% endif %}
         </div>
     </div>
+    
     
 
     <!-- Contenedor principal -->
