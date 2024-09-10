@@ -3,7 +3,7 @@ from .forms import PorqueForm, Paso2Form
 from django.contrib import messages
 from google.oauth2 import service_account
 from googleapiclient.discovery import build
-
+from .models import MiembroEquipo
 
 
 
@@ -27,7 +27,6 @@ def porque_view(request):
     opciones_area = obtener_opciones('Opciones!A2:A')
     opciones_subarea = obtener_opciones('Opciones!B2:B')
     opciones_maquina = obtener_opciones('Opciones!C2:C')
-    opciones_miembros = obtener_opciones('Opciones!D2:D')  # Nueva línea para obtener miembros
 
     if request.method == 'POST':
         form = PorqueForm(request.POST)
@@ -40,17 +39,19 @@ def porque_view(request):
                 messages.error(request, f'El formulario fue guardado, pero ocurrió un error al enviar a Google Sheets: {e}')
             return redirect('paso2')
         else:
-            print(form.errors)
             messages.error(request, 'Por favor corrige los errores.')
     else:
         form = PorqueForm()
+
+    # Obtener opciones de MiembroEquipo y pasarlas al template
+    opciones_miembros = MiembroEquipo.objects.all()
 
     context = {
         'form': form,
         'opciones_area': opciones_area,
         'opciones_subarea': opciones_subarea,
         'opciones_maquina': opciones_maquina,
-        'opciones_miembros': opciones_miembros,  # Incluye las opciones de miembros en el contexto
+        'opciones_miembros': opciones_miembros,
     }
 
     return render(request, 'porque/porque.html', context)
@@ -61,32 +62,28 @@ def porque_view(request):
 
 def enviar_a_google_sheets(porque_instance):
     try:
-        # Ruta al archivo JSON con las credenciales
         SERVICE_ACCOUNT_FILE = 'C:\\Users\\ccu\\Desktop\\Proyecto\\Random\\json.json'
-
-        # Alcances que se requieren
         SCOPES = ['https://www.googleapis.com/auth/spreadsheets']
-
-        # Credenciales
-        creds = service_account.Credentials.from_service_account_file(
-                SERVICE_ACCOUNT_FILE, scopes=SCOPES)
-
-        # ID de tu Google Sheet
         SPREADSHEET_ID = '1EQxXtEN6arH3AW_7-3AQ0YVf6Q6HXUNth2y1Oy-oVHM'
-        RANGE_NAME = 'porque!A2'  # El rango donde se añadirán los datos
+        RANGE_NAME = 'porque!A2'
 
-        # Convierte las fechas a formato de cadena
+        creds = service_account.Credentials.from_service_account_file(SERVICE_ACCOUNT_FILE, scopes=SCOPES)
+        service = build('sheets', 'v4', credentials=creds)
+        sheet = service.spreadsheets()
+
         fecha_inicio_str = porque_instance.fecha_inicio.isoformat()
         fecha_cierre_str = porque_instance.fecha_cierre.isoformat()
 
-        # Datos que se van a agregar, incluyendo el ID
+        # Convertir miembros_equipo a una cadena
+        miembros_equipo_str = ', '.join([miembro.nombre for miembro in porque_instance.miembros_equipo.all()])
+
         values = [
             [
-                porque_instance.id,  # Accede al ID desde la instancia
+                porque_instance.id,
                 porque_instance.area,
                 porque_instance.subarea,
                 porque_instance.maquina,
-                porque_instance.miembros_equipo,
+                miembros_equipo_str,
                 porque_instance.pilar,
                 porque_instance.impacto,
                 porque_instance.kpi_iceo,
@@ -96,14 +93,7 @@ def enviar_a_google_sheets(porque_instance):
             ],
         ]
 
-        # Cuerpo de la petición
-        body = {
-            'values': values
-        }
-
-        # Llamar a la API para agregar la fila
-        service = build('sheets', 'v4', credentials=creds)
-        sheet = service.spreadsheets()
+        body = {'values': values}
         result = sheet.values().append(
             spreadsheetId=SPREADSHEET_ID,
             range=RANGE_NAME,
@@ -115,7 +105,6 @@ def enviar_a_google_sheets(porque_instance):
 
     except Exception as e:
         print(f"Error al enviar datos a Google Sheets: {e}")
-
 
 
 

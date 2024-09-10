@@ -34,9 +34,13 @@
             <td>{{ forloop.counter }}</td>
             <td>{{ dato.id }}</td>
             <td>{{ dato.area }}</td>
-            <td>{{ dato.linea }}</td>
-            <td>{{ dato.subcategoria }}</td>
-            <td>{{ dato.miembros_equipo }}</td>
+            <td>{{ dato.subarea }}</td>
+            <td>{{ dato.maquina }}</td>
+            <td>
+                {% for miembro in dato.miembros_equipo.all %}
+                    {{ miembro.nombre }}{% if not forloop.last %}, {% endif %}
+                {% endfor %}
+            </td>            
             <td>{{ dato.pilar }}</td>
             <td>{{ dato.impacto }}</td>
             <td>{{ dato.kpi_iceo }}</td>

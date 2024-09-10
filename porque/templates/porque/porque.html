@@ -52,15 +52,12 @@
             </div>
             <div class="form-group col-md-6">
                 <label for="miembros">Miembros del equipo</label>
-                <select id="miembros" name="miembros_equipo" class="form-control">
-                    <option>Juan Pérez</option>
-                    <option>María García</option>
-                    <option>Carlos López</option>
-                    <option>Diego Gajardo</option>
-                    <option>Tami</option>
-                    <option>Dani</option>
-                    <option>Rodri</option>
-                </select> 
+                <select id="miembros" name="miembros_equipo" class="form-control" multiple>
+                    {% for miembro in opciones_miembros %}
+                        <option value="{{ miembro.id }}">{{ miembro.nombre }}</option>
+                    {% endfor %}
+                </select>
+                
             </div>
         </div>
     
