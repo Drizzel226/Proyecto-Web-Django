@@ -7,7 +7,6 @@
     <title>{% block title %}GajardoOne Planta NPR{% endblock %}</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
-    
 </head>
 <body>
     <!-- Barra superior -->
@@ -36,8 +35,6 @@
             {% endif %}
         </div>
     </div>
-    
-    
 
     <!-- Contenedor principal -->
     <div class="container">
@@ -46,11 +43,13 @@
             <nav>
                 <ul>
                     <li><a href="{% url 'inicio' %}" class="{% if request.resolver_match.url_name == 'inicio' %}active{% endif %}">Menu Principal</a></li>
-                    <li><a href="{% url 'porque' %}" class="{% if request.resolver_match.url_name == 'porque' %}active{% endif %}">5 Por qué</a></li>
-                    <li><a href="{% url 'miniproyectos' %}" class="{% if request.resolver_match.url_name == 'miniproyectos' %}active{% endif %}">Miniproyectos</a></li>
-                    <li><a href="{% url 'kaizer' %}" class="{% if request.resolver_match.url_name == 'kaizer' %}active{% endif %}">Kaizer</a></li>
-                    <li><a href="{% url 'visu' %}" class="{% if request.resolver_match.url_name == 'visu' %}active{% endif %}">Visualizacion</a></li>
-                    <li><a href="{% url 'dashboard' %}" class="{% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}">Dashboard</a></li>
+                    {% if user.is_authenticated %}
+                        <li><a href="{% url 'porque' %}" class="{% if request.resolver_match.url_name == 'porque' %}active{% endif %}">5 Por qué</a></li>
+                        <li><a href="{% url 'miniproyectos' %}" class="{% if request.resolver_match.url_name == 'miniproyectos' %}active{% endif %}">Miniproyectos</a></li>
+                        <li><a href="{% url 'kaizer' %}" class="{% if request.resolver_match.url_name == 'kaizer' %}active{% endif %}">Kaizer</a></li>
+                        <li><a href="{% url 'visu' %}" class="{% if request.resolver_match.url_name == 'visu' %}active{% endif %}">Visualizacion</a></li>
+                        <li><a href="{% url 'dashboard' %}" class="{% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}">Dashboard</a></li>
+                    {% endif %}
                 </ul>
             </nav>
         </div>
