@@ -13,3 +13,12 @@ class PorqueAdmin(admin.ModelAdmin):
     mostrar_miembros_equipo.short_description = 'Miembros del Equipo'
 
 admin.site.register(Porque, PorqueAdmin)
+
+
+from django.contrib import admin
+from porque.models import MiembroEquipo
+
+@admin.register(MiembroEquipo)
+class MiembroEquipoAdmin(admin.ModelAdmin):
+    list_display = ('nombre', 'email')  # Puedes ajustar las columnas que quieras mostrar
+

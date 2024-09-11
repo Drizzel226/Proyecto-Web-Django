@@ -1,4 +1,3 @@
-from django.utils import timezone
 from django.db import models
 
 class Porque(models.Model):
@@ -19,9 +18,32 @@ class Porque(models.Model):
 
 class MiembroEquipo(models.Model):
     nombre = models.CharField(max_length=100)
+    email = models.EmailField()
 
     def __str__(self):
         return self.nombre
+
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+from .models import MiembroEquipo
+from .utils import exportar_miembros
+
+@receiver(post_save, sender=MiembroEquipo)
+def actualizar_google_sheets(sender, instance, **kwargs):
+    exportar_miembros()  # Actualiza Google Sheets cada vez que un miembro se guarda
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

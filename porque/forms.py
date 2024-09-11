@@ -2,16 +2,20 @@ from django import forms
 from .models import Porque, Paso2, MiembroEquipo
 
 
+from django import forms
+from .models import Porque, MiembroEquipo
+
 class PorqueForm(forms.ModelForm):
     miembros_equipo = forms.ModelMultipleChoiceField(
         queryset=MiembroEquipo.objects.all(),
-        widget=forms.CheckboxSelectMultiple
+        widget=forms.SelectMultiple(attrs={'class': 'form-control select2'})
     )
 
     class Meta:
         model = Porque
         fields = ['area', 'subarea', 'maquina', 'miembros_equipo', 'pilar', 
                   'impacto', 'kpi_iceo', 'kpi_secundario', 'fecha_inicio', 'fecha_cierre']
+
 
 
     def clean(self):
