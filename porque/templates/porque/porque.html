@@ -18,7 +18,17 @@
 
     <form method="post" class="analisis-5w-form">
         {% csrf_token %}
-    
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label for="subarea">Subarea</label>
+                <select id="subarea" name="subarea" class="form-control">
+                    <option value="">Seleccione una línea</option>
+                    {% for opcion in opciones_subarea %}
+                        <option value="{{ opcion }}">{{ opcion }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
         <div class="form-row">
             <div class="form-group col-md-6">
                 <label for="area">Área</label>
@@ -30,18 +40,6 @@
                 </select>
             </div>
             <div class="form-group col-md-6">
-                <label for="subarea">Subarea</label>
-                <select id="subarea" name="subarea" class="form-control">
-                    <option value="">Seleccione una línea</option>
-                    {% for opcion in opciones_subarea %}
-                        <option value="{{ opcion }}">{{ opcion }}</option>
-                    {% endfor %}
-                </select>
-            </div>
-        </div>
-    
-        <div class="form-row">
-            <div class="form-group col-md-6">
                 <label for="maquina">Maquina</label>
                 <select id="maquina" name="maquina" class="form-control">
                     <option value="">Seleccione una subcategoría</option>
@@ -50,6 +48,10 @@
                     {% endfor %}
                 </select>
             </div>
+
+        </div>
+    
+        <div class="form-row">
             <div class="form-group col-md-6">
                 <label for="miembros">Miembros del equipo</label>
                 <select id="miembros" name="miembros_equipo" class="form-control" multiple>
@@ -85,6 +87,7 @@
                     <option value="kpi1">Eficiencia Global de Equipos (OEE)</option>
                     <option value="kpi2">Tasa de Defectos</option>
                     <option value="kpi3">Tiempo Medio Entre Fallos (MTBF)</option>
+                    <option >kpi hola</option>
                 </select>
             </div>
         </div>
@@ -105,7 +108,13 @@
             <button type="submit" class="btn btn-primary">Guardar y Continuar</button>
         </div>
     </form>
+
+    
+
+    
 </div>
+
+
 
 <!-- Incluir Select2 y jQuery -->
 <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
@@ -134,5 +143,5 @@
         });
     });
 </script>
-
 {% endblock %}
+

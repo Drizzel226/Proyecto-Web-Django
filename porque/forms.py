@@ -1,5 +1,5 @@
 from django import forms
-from .models import Porque, Paso2, MiembroEquipo
+from .models import Porque, MiembroEquipo
 
 
 from django import forms
@@ -22,8 +22,3 @@ class PorqueForm(forms.ModelForm):
         cleaned_data = super().clean()
         # Aquí puedes añadir validaciones adicionales si es necesario
         return cleaned_data
-
-class Paso2Form(forms.ModelForm):
-    class Meta:
-        model = Paso2
-        fields = ['campo_1', 'campo2', 'campo3']

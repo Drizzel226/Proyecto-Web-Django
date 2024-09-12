@@ -1,5 +1,5 @@
 from django.contrib import admin
-from porque.models import Porque
+from porque.models import Porque, MiembroEquipo
 
 # Register your models here.
 
@@ -14,9 +14,6 @@ class PorqueAdmin(admin.ModelAdmin):
 
 admin.site.register(Porque, PorqueAdmin)
 
-
-from django.contrib import admin
-from porque.models import MiembroEquipo
 
 @admin.register(MiembroEquipo)
 class MiembroEquipoAdmin(admin.ModelAdmin):

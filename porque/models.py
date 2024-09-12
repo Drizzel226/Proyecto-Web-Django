@@ -32,27 +32,3 @@ from .utils import exportar_miembros
 def actualizar_google_sheets(sender, instance, **kwargs):
     exportar_miembros()  # Actualiza Google Sheets cada vez que un miembro se guarda
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-class Paso2(models.Model):
-    campo_1 = models.CharField(max_length=100)
-    campo2 = models.CharField(max_length=200)
-    campo3 = models.TextField()
-    # Otros campos necesarios
-
-    def __str__(self):
-        return self.campo1
- 
