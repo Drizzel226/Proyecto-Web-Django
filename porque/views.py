@@ -1,13 +1,10 @@
 from django.shortcuts import render, redirect
-from .forms import PorqueForm
+from .forms import PorqueForm, Paso1Form
 from django.contrib import messages
 from google.oauth2 import service_account
 from googleapiclient.discovery import build
 from .models import MiembroEquipo
-
-
-
-
+from django.utils.timezone import now
 
 def porque_view(request):
     SERVICE_ACCOUNT_FILE = 'C:\\Users\\ccu\\Desktop\\Proyecto\\Random\\json.json'
@@ -29,25 +26,30 @@ def porque_view(request):
     opciones_maquina = obtener_opciones('Opciones!C2:C')
 
     if request.method == 'POST':
-        form = PorqueForm(request.POST)
-        if form.is_valid():
-            porque_instance = form.save()
+        form1 = PorqueForm(request.POST, prefix="form1")
+        form2 = Paso1Form(request.POST, prefix="form2")
+        
+        if form1.is_valid() and form2.is_valid():
+            porque_instance = form1.save()
+            form2.save()
             try:
                 enviar_a_google_sheets(porque_instance)
-                messages.success(request, 'Formulario enviado con éxito y datos guardados en Google Sheets.')
+                messages.success(request, 'Formularios guardados con éxito y datos enviados a Google Sheets.')
             except Exception as e:
-                messages.error(request, f'El formulario fue guardado, pero ocurrió un error al enviar a Google Sheets: {e}')
-            return redirect('')
+                messages.error(request, f'Los formularios fueron guardados, pero ocurrió un error al enviar a Google Sheets: {e}')
+            return redirect('porque')
         else:
             messages.error(request, 'Por favor corrige los errores.')
     else:
-        form = PorqueForm()
+        form1 = PorqueForm(prefix="form1", initial={'fecha_inicio': now().date()})
+        form2 = Paso1Form(prefix="form2")
 
     # Obtener opciones de MiembroEquipo y pasarlas al template
     opciones_miembros = MiembroEquipo.objects.all()
 
     context = {
-        'form': form,
+        'form1': form1,
+        'form2': form2,
         'opciones_area': opciones_area,
         'opciones_subarea': opciones_subarea,
         'opciones_maquina': opciones_maquina,
@@ -55,10 +57,6 @@ def porque_view(request):
     }
 
     return render(request, 'porque/porque.html', context)
-
-
-
-
 
 def enviar_a_google_sheets(porque_instance):
     try:
@@ -109,3 +107,14 @@ def enviar_a_google_sheets(porque_instance):
         print(f"Error al enviar datos a Google Sheets: {e}")
 
 
+def paso1_view(request):
+    if request.method == 'POST':
+        form = Paso1Form(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Formulario del Paso 1 guardado con éxito.')
+            return redirect('paso1')
+    else:
+        form = Paso1Form()
+
+    return render(request, 'porque/paso1.html', {'form': form})

@@ -1,5 +1,5 @@
 from django.contrib import admin
-from porque.models import Porque, MiembroEquipo
+from porque.models import Porque, MiembroEquipo, Paso1
 
 # Register your models here.
 
@@ -19,3 +19,7 @@ admin.site.register(Porque, PorqueAdmin)
 class MiembroEquipoAdmin(admin.ModelAdmin):
     list_display = ('nombre', 'email')  # Puedes ajustar las columnas que quieras mostrar
 
+
+@admin.register(Paso1)
+class Paso1Admin(admin.ModelAdmin):
+    list_display = ('descripcion_problema', 'donde_ocurre', 'como_ocurre', 'cuando_ocurre', 'quien_presente', 'senal_antes')

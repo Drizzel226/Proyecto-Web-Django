@@ -37,3 +37,39 @@ from .utils import exportar_miembros
 def actualizar_google_sheets(sender, instance, **kwargs):
     exportar_miembros()  # Actualiza Google Sheets cada vez que un miembro se guarda
 
+
+
+
+
+
+
+from django.db import models
+
+class Paso1(models.Model):
+    # Campos existentes
+    descripcion_problema = models.TextField("Descripción del problema")
+    donde_ocurre = models.TextField("¿Dónde ocurre?")
+    como_ocurre = models.TextField("¿Cómo ocurre?")
+    cuando_ocurre = models.TextField("¿Cuándo ocurrió?")
+    quien_presente = models.TextField("¿Quién estaba presente?")
+
+    senal_antes = models.CharField(
+        "Señal antes de que ocurra el problema",
+        max_length=100,
+        choices=[
+            ('alarma', 'Alarma'),
+            ('fuga', 'Fuga'),
+            ('cavitacion', 'Cavitación'),
+            ('ruido', 'Ruido'),
+            ('otros', 'Otros'),
+            ('nia', 'N/A'),
+        ]
+    )
+    descripcion_senal = models.TextField("Descripción de la señal", blank=True, null=True)
+
+    # Campos adicionales
+    falla_funcional = models.TextField("Falla funcional", help_text="Describa la falla funcional que se observó")
+    imagen_falla_funcional = models.ImageField(upload_to='imagenes_fallas/', blank=True, null=True)
+
+    def __str__(self):
+        return f"Paso 1: {self.descripcion_problema[:50]}..."

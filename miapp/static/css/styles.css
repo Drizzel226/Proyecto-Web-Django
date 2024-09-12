@@ -511,3 +511,13 @@ body, html {
     display: inline-block;
     vertical-align: middle; /* Alinea verticalmente la flecha con el texto */
 }
+/* Estilos para los títulos de secciones */
+h2.text-danger {
+    background-color: #FF0000; /* Color de fondo rojo */
+    color: #FFFFFF; /* Texto blanco */
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    font-size: 18px;
+    font-weight: bold;
+}

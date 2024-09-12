@@ -16,16 +16,17 @@
     </div>
     {% endif %}
 
-    <form method="post" class="analisis-5w-form">
+    <!-- Primer Formulario: PorqueForm -->
+    <form method="post" class="analisis-5w-form" id="form1">
         {% csrf_token %}
         <div class="form-row">
             <div class="form-group col-md-6">
-                <label for="categoria">Categoría</label>
-                <input type="text" id="categoria" name="categoria" class="form-control" readonly>
+                <label for="form1_categoria">Categoría</label>
+                <input type="text" id="form1_categoria" name="categoria" class="form-control" readonly>
             </div>
             <div class="form-group col-md-6">
-                <label for="subcategoria">Subcategoría</label>
-                <select id="subcategoria" name="subcategoria" class="form-control">
+                <label for="form1_subcategoria">Subcategoría</label>
+                <select id="form1_subcategoria" name="subcategoria" class="form-control">
                     <option value="">Seleccione una subcategoría</option>
                     <option value="Microbiología">Microbiología</option>
                     <option value="Break Down">Break Down</option>
@@ -36,8 +37,8 @@
 
         <div class="form-row">
             <div class="form-group col-md-6">
-                <label for="area">Área</label>
-                <select id="area" name="area" class="form-control">
+                <label for="form1_area">Área</label>
+                <select id="form1_area" name="area" class="form-control">
                     <option value="">Seleccione un área</option>
                     {% for opcion in opciones_area %}
                         <option value="{{ opcion }}">{{ opcion }}</option>
@@ -45,8 +46,8 @@
                 </select>
             </div>
             <div class="form-group col-md-6">
-                <label for="subarea">Subarea</label>
-                <select id="subarea" name="subarea" class="form-control">
+                <label for="form1_subarea">Subárea</label>
+                <select id="form1_subarea" name="subarea" class="form-control">
                     <option value="">Seleccione una línea</option>
                     {% for opcion in opciones_subarea %}
                         <option value="{{ opcion }}">{{ opcion }}</option>
@@ -54,11 +55,11 @@
                 </select>
             </div>
         </div>
-    
+
         <div class="form-row">
             <div class="form-group col-md-6">
-                <label for="maquina">Maquina</label>
-                <select id="maquina" name="maquina" class="form-control">
+                <label for="form1_maquina">Máquina</label>
+                <select id="form1_maquina" name="maquina" class="form-control">
                     <option value="">Seleccione una subcategoría</option>
                     {% for opcion in opciones_maquina %}
                     <option value="{{ opcion }}">{{ opcion }}</option>
@@ -66,56 +67,55 @@
                 </select>
             </div>
             <div class="form-group col-md-6">
-                <label for="miembros">Miembros del equipo</label>
-                <select id="miembros" name="miembros_equipo" class="form-control" multiple>
+                <label for="form1_miembros">Miembros del equipo</label>
+                <select id="form1_miembros" name="miembros_equipo" class="form-control" multiple>
                     {% for miembro in opciones_miembros %}
                         <option value="{{ miembro.id }}" data-email="{{ miembro.email }}">
                             {{ miembro.nombre }}
                         </option>
                     {% endfor %}
-                </select> 
+                </select>
             </div>
         </div>
-    
+
         <div class="form-row">
             <div class="form-group col-md-6">
-                <label for="pilar">Pilar</label>
-                <input type="text" id="pilar" name="pilar" class="form-control" readonly>
+                <label for="form1_pilar">Pilar</label>
+                <input type="text" id="form1_pilar" name="pilar" class="form-control" readonly>
             </div>
             <div class="form-group col-md-6">
-                <label for="impacto">Impacto</label>
-                <input type="text" id="impacto" name="impacto" class="form-control">
+                <label for="form1_impacto">Impacto</label>
+                <input type="text" id="form1_impacto" name="impacto" class="form-control">
             </div>
         </div>
-    
+
         <div class="form-row">
             <div class="form-group col-md-6">
-                <label for="kpi_iceo">KPI ICEO</label>
-                <input type="text" id="kpi_iceo" name="kpi_iceo" class="form-control" readonly>
+                <label for="form1_kpi_iceo">KPI ICEO</label>
+                <input type="text" id="form1_kpi_iceo" name="kpi_iceo" class="form-control" readonly>
             </div>
             <div class="form-group col-md-6">
-                <label for="kpi_secundario">KPI Secundario(KAI)</label>
-                <select id="kpi_secundario" name="kpi_secundario" class="form-control">
+                <label for="form1_kpi_secundario">KPI Secundario(KAI)</label>
+                <select id="form1_kpi_secundario" name="kpi_secundario" class="form-control">
                     <option value="">Seleccione un KPI secundario</option>
                     <option value="kpi1">Eficiencia Global de Equipos (OEE)</option>
                     <option value="kpi2">Tasa de Defectos</option>
                     <option value="kpi3">Tiempo Medio Entre Fallos (MTBF)</option>
-                    <option >kpi hola</option>
                 </select>
             </div>
         </div>
-    
+
         <div class="form-row">
             <div class="form-group col-md-6">
-                <label for="fecha_inicio">Fecha Inicio</label>
-                <input type="date" id="fecha_inicio" name="fecha_inicio" class="form-control" value="2024-09-10">
+                <label for="form1_fecha_inicio">Fecha Inicio</label>
+                <input type="date" id="form1_fecha_inicio" name="fecha_inicio" class="form-control">
             </div>
             <div class="form-group col-md-6">
-                <label for="fecha_cierre">Fecha Estimada de Cierre</label>
-                <input type="date" id="fecha_cierre" name="fecha_cierre" class="form-control">
+                <label for="form1_fecha_cierre">Fecha Estimada de Cierre</label>
+                <input type="date" id="form1_fecha_cierre" name="fecha_cierre" class="form-control">
             </div>
         </div>
-    
+
         <div class="form-actions">
             <button type="button" class="btn btn-secondary">Cancelar</button>
             <button type="submit" class="btn btn-primary">Guardar y Continuar</button>
@@ -123,37 +123,111 @@
     </form>
 </div>
 
+<!-- PASO 1 (Formulario Paso1Form) -->
+<div class="form-container">
+    <h1 id="paso1" class="text-center">Paso 1: Descripción del Problema</h1>
+
+    <form method="post" class="analisis-5w-form" id="form2" enctype="multipart/form-data">
+        {% csrf_token %}
+        
+        <h2 class="text-danger">Descripción del problema</h2>
+        
+        <div class="form-row">
+            <div class="form-group col-md-12">
+                {{ form2.descripcion_problema.label_tag }}
+                {{ form2.descripcion_problema }}
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group col-md-12">
+                {{ form2.donde_ocurre.label_tag }}
+                {{ form2.donde_ocurre }}
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group col-md-12">
+                {{ form2.como_ocurre.label_tag }}
+                {{ form2.como_ocurre }}
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group col-md-12">
+                {{ form2.cuando_ocurre.label_tag }}
+                {{ form2.cuando_ocurre }}
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group col-md-12">
+                {{ form2.quien_presente.label_tag }}
+                {{ form2.quien_presente }}
+            </div>
+        </div>
+
+        <h2 class="text-danger">Señal antes de que ocurra el problema</h2>
+
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                {{ form2.senal_antes.label_tag }}
+                {{ form2.senal_antes }}
+            </div>
+            <div class="form-group col-md6">
+                {{ form2.descripcion_senal.label_tag }}
+                {{ form2.descripcion_senal }}
+            </div>
+        </div>
+
+        <h2 class="text-danger">Falla funcional</h2>
+
+        <div class="form-row">
+            <div class="form-group col-md-12">
+                {{ form2.falla_funcional.label_tag }}
+                {{ form2.falla_funcional }}
+            </div>
+            <div class="form-group col-md-6">
+                {{ form2.imagen_falla_funcional.label_tag }}
+                {{ form2.imagen_falla_funcional }}
+            </div>
+        </div>
+
+        <div class="form-actions">
+            <button type="button" class="btn btn-secondary">Cancelar</button>
+            <button type="submit" class="btn btn-primary">Guardar y Continuar</button>
+        </div>
+    </form>
+</div>
+
+
 <!-- Incluir Select2 y jQuery -->
 <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
-<!-- Inicialización de Select2 -->
+<!-- Inicialización de Select2 y otros scripts para ambos formularios -->
 <script type="text/javascript">
     $(document).ready(function() {
-        function formatState (state) {
+        // Formateo de opciones de Select2
+        function formatState(state) {
             if (!state.id) {
                 return state.text;
             }
             var email = $(state.element).data('email');
-            var $state = $(
-                '<span><strong>' + state.text + '</strong><br/><small>' + email + '</small></span>'
-            );
+            var $state = $('<span><strong>' + state.text + '</strong><br/><small>' + email + '</small></span>');
             return $state;
         }
 
-        $('#miembros').select2({
+        // Inicializar Select2 para el primer formulario
+        $('#form1_miembros').select2({
             placeholder: "Selecciona miembros del equipo",
             templateResult: formatState,
             templateSelection: formatState,
             allowClear: true
         });
-    });
-</script>
 
-<script type="text/javascript">
-    $(document).ready(function() {
-        // Mapeo de subcategorías a sus respectivas categorías, pilar, y KPI ICEO
+        // Mapeo de subcategorías para categorías, pilar y KPI ICEO
         const mappings = {
             "Microbiología": {
                 categoria: "CALIDAD",
@@ -165,40 +239,55 @@
                 pilar: "Pilar CA/MA",
                 kpi_iceo: "OPINONA"
             }
-            // Agrega aquí más mapeos según sea necesario
         };
 
-        // Función para actualizar los valores
-        function actualizarValores(subcategoria) {
+        // Función para actualizar los valores en el primer formulario
+        function actualizarValoresForm1(subcategoria) {
             if (mappings[subcategoria]) {
-                $("#categoria").val(mappings[subcategoria].categoria);
-                $("#pilar").val(mappings[subcategoria].pilar);
-                $("#kpi_iceo").val(mappings[subcategoria].kpi_iceo);
+                $("#form1_categoria").val(mappings[subcategoria].categoria);
+                $("#form1_pilar").val(mappings[subcategoria].pilar);
+                $("#form1_kpi_iceo").val(mappings[subcategoria].kpi_iceo);
             } else {
-                $("#categoria").val('');
-                $("#pilar").val('');
-                $("#kpi_iceo").val('');
+                $("#form1_categoria").val('');
+                $("#form1_pilar").val('');
+                $("#form1_kpi_iceo").val('');
             }
         }
 
-        // Evento para detectar cambios en el campo subcategoría
-        $("#subcategoria").change(function() {
+        // Evento de cambio para subcategoría en el primer formulario
+        $("#form1_subcategoria").change(function() {
             const subcategoria = $(this).val();
-            actualizarValores(subcategoria);
+            actualizarValoresForm1(subcategoria);
         });
-    });
-</script>
 
-<script type="text/javascript">
-    $(document).ready(function() {
-        // Configura la fecha actual en el campo Fecha Inicio
+        // Función para actualizar los valores en el segundo formulario
+        function actualizarValoresForm2(subcategoria) {
+            if (mappings[subcategoria]) {
+                $("#form2_categoria").val(mappings[subcategoria].categoria);
+                $("#form2_pilar").val(mappings[subcategoria].pilar);
+                $("#form2_kpi_iceo").val(mappings[subcategoria].kpi_iceo);
+            } else {
+                $("#form2_categoria").val('');
+                $("#form2_pilar").val('');
+                $("#form2_kpi_iceo").val('');
+            }
+        }
+
+        // Evento de cambio para subcategoría en el segundo formulario
+        $("#form2_subcategoria").change(function() {
+            const subcategoria = $(this).val();
+            actualizarValoresForm2(subcategoria);
+        });
+
+        // Configurar la fecha actual en el campo Fecha Inicio del primer formulario
         var today = new Date();
         var day = ("0" + today.getDate()).slice(-2);
         var month = ("0" + (today.getMonth() + 1)).slice(-2);
-        var todayFormatted = today.getFullYear() + "-" + (month) + "-" + (day);
-        $('#fecha_inicio').val(todayFormatted);
-
-        // (Aquí sigue el resto del código existente para subcategorías...)
+        var todayFormatted = today.getFullYear() + "-" + month + "-" + day;
+        $('#form1_fecha_inicio').val(todayFormatted);
+        
+        // Configurar la fecha actual en el campo Fecha Inicio del segundo formulario
+        $('#form2_fecha_inicio').val(todayFormatted);
     });
 </script>
 {% endblock %}
