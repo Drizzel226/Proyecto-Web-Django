@@ -16,37 +16,23 @@
     </div>
     {% endif %}
 
-
-
-
-
     <form method="post" class="analisis-5w-form">
         {% csrf_token %}
-            <div class="form-row">
+        <div class="form-row">
             <div class="form-group col-md-6">
                 <label for="categoria">Categoría</label>
-                <select id="categoria" name="categoria" class="form-control">
-                    <option value="">Seleccione un área</option>
-
-                </select>
+                <input type="text" id="categoria" name="categoria" class="form-control" readonly>
             </div>
             <div class="form-group col-md-6">
-                <label for="subcategoria">Subategoría</label>
+                <label for="subcategoria">Subcategoría</label>
                 <select id="subcategoria" name="subcategoria" class="form-control">
-                    <option value="">IMPORTANTE</option>
-                        <option>DDDD</option>
-                        <option>EEEE</option>
-                        <option>FFFF</option>
+                    <option value="">Seleccione una subcategoría</option>
+                    <option value="Microbiología">Microbiología</option>
+                    <option value="Break Down">Break Down</option>
+                    <!-- Agrega más opciones aquí -->
                 </select>
             </div>
         </div>
-
-
-
-
-
-
-
 
         <div class="form-row">
             <div class="form-group col-md-6">
@@ -94,7 +80,7 @@
         <div class="form-row">
             <div class="form-group col-md-6">
                 <label for="pilar">Pilar</label>
-                <input type="text" id="pilar" name="pilar" class="form-control">
+                <input type="text" id="pilar" name="pilar" class="form-control" readonly>
             </div>
             <div class="form-group col-md-6">
                 <label for="impacto">Impacto</label>
@@ -105,7 +91,7 @@
         <div class="form-row">
             <div class="form-group col-md-6">
                 <label for="kpi_iceo">KPI ICEO</label>
-                <input type="text" id="kpi_iceo" name="kpi_iceo" class="form-control">
+                <input type="text" id="kpi_iceo" name="kpi_iceo" class="form-control" readonly>
             </div>
             <div class="form-group col-md-6">
                 <label for="kpi_secundario">KPI Secundario(KAI)</label>
@@ -137,8 +123,6 @@
     </form>
 </div>
 
-
-
 <!-- Incluir Select2 y jQuery -->
 <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -166,5 +150,55 @@
         });
     });
 </script>
-{% endblock %}
 
+<script type="text/javascript">
+    $(document).ready(function() {
+        // Mapeo de subcategorías a sus respectivas categorías, pilar, y KPI ICEO
+        const mappings = {
+            "Microbiología": {
+                categoria: "CALIDAD",
+                pilar: "Pilar Calidad",
+                kpi_iceo: "Calidad de procesos"
+            },
+            "Break Down": {
+                categoria: "OPINONA",
+                pilar: "Pilar CA/MA",
+                kpi_iceo: "OPINONA"
+            }
+            // Agrega aquí más mapeos según sea necesario
+        };
+
+        // Función para actualizar los valores
+        function actualizarValores(subcategoria) {
+            if (mappings[subcategoria]) {
+                $("#categoria").val(mappings[subcategoria].categoria);
+                $("#pilar").val(mappings[subcategoria].pilar);
+                $("#kpi_iceo").val(mappings[subcategoria].kpi_iceo);
+            } else {
+                $("#categoria").val('');
+                $("#pilar").val('');
+                $("#kpi_iceo").val('');
+            }
+        }
+
+        // Evento para detectar cambios en el campo subcategoría
+        $("#subcategoria").change(function() {
+            const subcategoria = $(this).val();
+            actualizarValores(subcategoria);
+        });
+    });
+</script>
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        // Configura la fecha actual en el campo Fecha Inicio
+        var today = new Date();
+        var day = ("0" + today.getDate()).slice(-2);
+        var month = ("0" + (today.getMonth() + 1)).slice(-2);
+        var todayFormatted = today.getFullYear() + "-" + (month) + "-" + (day);
+        $('#fecha_inicio').val(todayFormatted);
+
+        // (Aquí sigue el resto del código existente para subcategorías...)
+    });
+</script>
+{% endblock %}

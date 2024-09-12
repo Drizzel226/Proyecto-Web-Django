@@ -37,7 +37,7 @@ def porque_view(request):
                 messages.success(request, 'Formulario enviado con éxito y datos guardados en Google Sheets.')
             except Exception as e:
                 messages.error(request, f'El formulario fue guardado, pero ocurrió un error al enviar a Google Sheets: {e}')
-            return 
+            return redirect('')
         else:
             messages.error(request, 'Por favor corrige los errores.')
     else:
