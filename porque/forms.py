@@ -13,7 +13,7 @@ class PorqueForm(forms.ModelForm):
 
     class Meta:
         model = Porque
-        fields = ['area', 'subarea', 'maquina', 'miembros_equipo', 'pilar', 
+        fields = ['categoria','subcategoria', 'area', 'subarea', 'maquina', 'miembros_equipo', 'pilar', 
                   'impacto', 'kpi_iceo', 'kpi_secundario', 'fecha_inicio', 'fecha_cierre']
 
 

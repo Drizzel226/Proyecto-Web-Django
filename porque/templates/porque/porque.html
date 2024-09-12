@@ -16,19 +16,38 @@
     </div>
     {% endif %}
 
+
+
+
+
     <form method="post" class="analisis-5w-form">
         {% csrf_token %}
-        <div class="form-row">
+            <div class="form-row">
             <div class="form-group col-md-6">
-                <label for="subarea">Subarea</label>
-                <select id="subarea" name="subarea" class="form-control">
-                    <option value="">Seleccione una línea</option>
-                    {% for opcion in opciones_subarea %}
-                        <option value="{{ opcion }}">{{ opcion }}</option>
-                    {% endfor %}
+                <label for="categoria">Categoría</label>
+                <select id="categoria" name="categoria" class="form-control">
+                    <option value="">Seleccione un área</option>
+
+                </select>
+            </div>
+            <div class="form-group col-md-6">
+                <label for="subcategoria">Subategoría</label>
+                <select id="subcategoria" name="subcategoria" class="form-control">
+                    <option value="">IMPORTANTE</option>
+                        <option>DDDD</option>
+                        <option>EEEE</option>
+                        <option>FFFF</option>
                 </select>
             </div>
         </div>
+
+
+
+
+
+
+
+
         <div class="form-row">
             <div class="form-group col-md-6">
                 <label for="area">Área</label>
@@ -40,6 +59,18 @@
                 </select>
             </div>
             <div class="form-group col-md-6">
+                <label for="subarea">Subarea</label>
+                <select id="subarea" name="subarea" class="form-control">
+                    <option value="">Seleccione una línea</option>
+                    {% for opcion in opciones_subarea %}
+                        <option value="{{ opcion }}">{{ opcion }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+    
+        <div class="form-row">
+            <div class="form-group col-md-6">
                 <label for="maquina">Maquina</label>
                 <select id="maquina" name="maquina" class="form-control">
                     <option value="">Seleccione una subcategoría</option>
@@ -48,10 +79,6 @@
                     {% endfor %}
                 </select>
             </div>
-
-        </div>
-    
-        <div class="form-row">
             <div class="form-group col-md-6">
                 <label for="miembros">Miembros del equipo</label>
                 <select id="miembros" name="miembros_equipo" class="form-control" multiple>
@@ -108,10 +135,6 @@
             <button type="submit" class="btn btn-primary">Guardar y Continuar</button>
         </div>
     </form>
-
-    
-
-    
 </div>
 
 

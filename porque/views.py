@@ -80,6 +80,8 @@ def enviar_a_google_sheets(porque_instance):
         values = [
             [
                 porque_instance.id,
+                porque_instance.categoria,
+                porque_instance.subcategoria,
                 porque_instance.area,
                 porque_instance.subarea,
                 porque_instance.maquina,

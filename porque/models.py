@@ -1,6 +1,8 @@
 from django.db import models
 
 class Porque(models.Model):
+    categoria = models.CharField(max_length=100)
+    subcategoria = models.CharField(max_length=100)
     area = models.CharField(max_length=100)
     subarea = models.CharField(max_length=100)
     maquina = models.CharField(max_length=100)
@@ -22,6 +24,9 @@ class MiembroEquipo(models.Model):
 
     def __str__(self):
         return self.nombre
+
+
+
 
 from django.db.models.signals import post_save
 from django.dispatch import receiver

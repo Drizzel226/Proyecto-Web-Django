@@ -5,7 +5,7 @@ from porque.models import Porque, MiembroEquipo
 
 
 class PorqueAdmin(admin.ModelAdmin):
-    list_display = ('area', 'subarea', 'maquina', 'mostrar_miembros_equipo', 'pilar', 
+    list_display = ('categoria','subcategoria', 'area', 'subarea', 'maquina', 'mostrar_miembros_equipo', 'pilar', 
                     'impacto', 'kpi_iceo', 'kpi_secundario', 'fecha_inicio', 'fecha_cierre')
 
     def mostrar_miembros_equipo(self, obj):
