@@ -22,4 +22,4 @@ class MiembroEquipoAdmin(admin.ModelAdmin):
 
 @admin.register(Paso1)
 class Paso1Admin(admin.ModelAdmin):
-    list_display = ('descripcion_problema', 'donde_ocurre', 'como_ocurre', 'cuando_ocurre', 'quien_presente', 'senal_antes')
+    list_display = ('que_ocurre','como_ocurre', 'donde_ocurre',  'cuando_ocurre', 'quien_presente', 'senal_antes')

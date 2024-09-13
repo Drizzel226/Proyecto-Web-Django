@@ -32,9 +32,9 @@ class Paso1Form(forms.ModelForm):
     class Meta:
         model = Paso1
         fields = [
-            'descripcion_problema', 
-            'donde_ocurre', 
-            'como_ocurre', 
+            'que_ocurre', 
+            'como_ocurre',
+            'donde_ocurre',  
             'cuando_ocurre', 
             'quien_presente', 
             'senal_antes', 
@@ -43,9 +43,9 @@ class Paso1Form(forms.ModelForm):
             'imagen_falla_funcional',  # Campo nuevo
         ]
         widgets = {
-            'descripcion_problema': forms.Textarea(attrs={'class': 'form-control'}),
-            'donde_ocurre': forms.Textarea(attrs={'class': 'form-control'}),
+            'que_ocurre': forms.Textarea(attrs={'class': 'form-control'}),
             'como_ocurre': forms.Textarea(attrs={'class': 'form-control'}),
+            'donde_ocurre': forms.Textarea(attrs={'class': 'form-control'}),
             'cuando_ocurre': forms.Textarea(attrs={'class': 'form-control'}),
             'quien_presente': forms.Textarea(attrs={'class': 'form-control'}),
             'senal_antes': forms.Select(attrs={'class': 'form-control'}),

@@ -521,3 +521,57 @@ h2.text-danger {
     font-size: 18px;
     font-weight: bold;
 }
+/* Estilos específicos para el formulario Paso 1 */
+#form2 {
+    background-color: #fff;
+    border-radius: 10px;
+    padding: 20px;
+    border: 2px solid #FF0000;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+#form2 h2.text-danger {
+    background-color: #FF0000;
+    color: #fff;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+#form2 .form-row {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+#form2 .form-group {
+    width: 100%;
+}
+
+#form2 .form-control {
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    padding: 10px;
+    width: 100%;
+}
+
+#form2 .btn-primary {
+    background-color: #28a745;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    color: #fff;
+    font-size: 16px;
+}
+
+#form2 .btn-secondary {
+    background-color: #dc3545;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    color: #fff;
+    font-size: 16px;
+}

@@ -47,11 +47,11 @@ from django.db import models
 
 class Paso1(models.Model):
     # Campos existentes
-    descripcion_problema = models.TextField("Descripción del problema")
-    donde_ocurre = models.TextField("¿Dónde ocurre?")
-    como_ocurre = models.TextField("¿Cómo ocurre?")
-    cuando_ocurre = models.TextField("¿Cuándo ocurrió?")
-    quien_presente = models.TextField("¿Quién estaba presente?")
+    que_ocurre = models.TextField("¿Qué ocurre? ¿En qué parte de la máquina o materal se visualiza el problema?")
+    como_ocurre = models.TextField("¿Cómo ocurre? Describir desde el punto de vista físico el mecanismo de acción visibilizado en el momento.")
+    donde_ocurre = models.TextField("¿Dónde ocurre? Producto, equipo, zona de la máquina, etc.")
+    cuando_ocurre = models.TextField("¿Cuando ocurrió? Producción, arranque, saneado, cambio de formato, mantención, etc.")
+    quien_presente = models.TextField("¿Quién estaba presente cuando ocurrió? ¿El problema pasa en todos los turnos?")
 
     senal_antes = models.CharField(
         "Señal antes de que ocurra el problema",
@@ -72,4 +72,4 @@ class Paso1(models.Model):
     imagen_falla_funcional = models.ImageField(upload_to='imagenes_fallas/', blank=True, null=True)
 
     def __str__(self):
-        return f"Paso 1: {self.descripcion_problema[:50]}..."
+        return f"Paso 1: {self.que_ocurre[:50]}..."
