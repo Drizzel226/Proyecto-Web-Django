@@ -6,13 +6,8 @@ from googleapiclient.discovery import build
 from .models import MiembroEquipo, Porque
 from django.utils.timezone import now
 
-from django.shortcuts import render, redirect, get_object_or_404
-from .forms import PorqueForm
-from django.contrib import messages
-from .models import MiembroEquipo, Porque
 
 def porque_view(request, pk=None):
-    # Configuración de Google Sheets
     SERVICE_ACCOUNT_FILE = 'C:\\Users\\ccu\\Desktop\\Proyecto\\Random\\json.json'
     SCOPES = ['https://www.googleapis.com/auth/spreadsheets']
     SPREADSHEET_ID = '1EQxXtEN6arH3AW_7-3AQ0YVf6Q6HXUNth2y1Oy-oVHM'
@@ -37,7 +32,7 @@ def porque_view(request, pk=None):
         if form.is_valid():
             porque_instance = form.save(commit=False)
 
-            if 'seccion1' in request.POST:
+            if 'guardar_primera_parte' in request.POST:
                 porque_instance.save()
                 messages.success(request, 'Primera parte guardada con éxito. Ahora puedes completar el Paso 1.')
                 return redirect('porque', pk=porque_instance.pk)
