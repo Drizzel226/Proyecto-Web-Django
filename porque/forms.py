@@ -37,3 +37,15 @@ class PorqueForm(forms.ModelForm):
             'falla_funcional': forms.Textarea(attrs={'class': 'form-control'}),
             'imagen_falla_funcional': forms.ClearableFileInput(attrs={'class': 'form-control'}),
         }
+from django import forms
+from .models import Porque
+
+class PorqueForm(forms.ModelForm):
+    class Meta:
+        model = Porque
+        fields = '__all__'  # O selecciona los campos que necesitas
+
+    def __init__(self, *args, **kwargs):
+        super(PorqueForm, self).__init__(*args, **kwargs)
+        for field in self.fields.values():
+            field.required = False  # Esto hace que todos los campos no sean obligatorios

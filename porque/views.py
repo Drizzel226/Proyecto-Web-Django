@@ -6,7 +6,13 @@ from googleapiclient.discovery import build
 from .models import MiembroEquipo, Porque
 from django.utils.timezone import now
 
+from django.shortcuts import render, redirect, get_object_or_404
+from .forms import PorqueForm
+from django.contrib import messages
+from .models import MiembroEquipo, Porque
+
 def porque_view(request, pk=None):
+    # Configuración de Google Sheets
     SERVICE_ACCOUNT_FILE = 'C:\\Users\\ccu\\Desktop\\Proyecto\\Random\\json.json'
     SCOPES = ['https://www.googleapis.com/auth/spreadsheets']
     SPREADSHEET_ID = '1EQxXtEN6arH3AW_7-3AQ0YVf6Q6HXUNth2y1Oy-oVHM'
@@ -23,26 +29,29 @@ def porque_view(request, pk=None):
     opciones_subarea = obtener_opciones('Opciones!B2:B')
     opciones_maquina = obtener_opciones('Opciones!C2:C')
 
-    # Obtener la instancia del objeto Porque si existe, o crear uno nuevo si no
     porque_instance = get_object_or_404(Porque, pk=pk) if pk else None
 
     if request.method == 'POST':
         form = PorqueForm(request.POST, request.FILES, instance=porque_instance)
-        
+
         if form.is_valid():
-            porque_instance = form.save()
-            try:
-                enviar_a_google_sheets(porque_instance)
-                messages.success(request, 'Formulario guardado con éxito y datos enviados a Google Sheets.')
-            except Exception as e:
-                messages.error(request, f'El formulario fue guardado, pero ocurrió un error al enviar a Google Sheets: {e}')
-            return redirect('porque', pk=porque_instance.pk)
+            porque_instance = form.save(commit=False)
+
+            if 'seccion1' in request.POST:
+                porque_instance.save()
+                messages.success(request, 'Primera parte guardada con éxito. Ahora puedes completar el Paso 1.')
+                return redirect('porque', pk=porque_instance.pk)
+            else:
+                porque_instance.save()
+                messages.success(request, 'Formulario completo guardado con éxito.')
+                return redirect('porque', pk=porque_instance.pk)
         else:
             messages.error(request, 'Por favor corrige los errores.')
     else:
         form = PorqueForm(instance=porque_instance)
 
-    # Obtener opciones de MiembroEquipo y pasarlas al template
+    mostrar_paso1 = porque_instance is not None
+
     opciones_miembros = MiembroEquipo.objects.all()
 
     context = {
@@ -51,9 +60,13 @@ def porque_view(request, pk=None):
         'opciones_subarea': opciones_subarea,
         'opciones_maquina': opciones_maquina,
         'opciones_miembros': opciones_miembros,
+        'mostrar_paso1': mostrar_paso1,
     }
 
     return render(request, 'porque/porque.html', context)
+
+
+
 
 def enviar_a_google_sheets(porque_instance):
     try:
