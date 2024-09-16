@@ -1,27 +1,26 @@
 from django.db import models
 
 class Porque(models.Model):
-    categoria = models.CharField(max_length=100)
-    subcategoria = models.CharField(max_length=100)
-    area = models.CharField(max_length=100)
-    subarea = models.CharField(max_length=100)
-    maquina = models.CharField(max_length=100)
+    # Campos que no son obligatorios
+    categoria = models.CharField(max_length=100, blank=True, null=True)
+    subcategoria = models.CharField(max_length=100, blank=True, null=True)
+    area = models.CharField(max_length=100, blank=True, null=True)
+    subarea = models.CharField(max_length=100, blank=True, null=True)
+    maquina = models.CharField(max_length=100, blank=True, null=True)
     miembros_equipo = models.ManyToManyField('MiembroEquipo')
-    pilar = models.CharField(max_length=100)
-    impacto = models.TextField()
-    kpi_iceo = models.CharField(max_length=100)
-    kpi_secundario = models.CharField(max_length=100)
-    fecha_inicio = models.DateField()
-    fecha_cierre = models.DateField()
+    pilar = models.CharField(max_length=100, blank=True, null=True)
+    impacto = models.TextField(blank=True, null=True)
+    kpi_iceo = models.CharField(max_length=100, blank=True, null=True)
+    kpi_secundario = models.CharField(max_length=100, blank=True, null=True)
+    fecha_inicio = models.DateField(blank=True, null=True)
+    fecha_cierre = models.DateField(blank=True, null=True)
 
-
-
-    # Campos existentes
-    que_ocurre = models.TextField("¿Qué ocurre? ¿En qué parte de la máquina o materal se visualiza el problema?")
-    como_ocurre = models.TextField("¿Cómo ocurre? Describir desde el punto de vista físico el mecanismo de acción visibilizado en el momento.")
-    donde_ocurre = models.TextField("¿Dónde ocurre? Producto, equipo, zona de la máquina, etc.")
-    cuando_ocurre = models.TextField("¿Cuando ocurrió? Producción, arranque, saneado, cambio de formato, mantención, etc.")
-    quien_presente = models.TextField("¿Quién estaba presente cuando ocurrió? ¿El problema pasa en todos los turnos?")
+    # Campos adicionales
+    que_ocurre = models.TextField("¿Qué ocurre?", blank=True, null=True)
+    como_ocurre = models.TextField("¿Cómo ocurre?", blank=True, null=True)
+    donde_ocurre = models.TextField("¿Dónde ocurre?", blank=True, null=True)
+    cuando_ocurre = models.TextField("¿Cuándo ocurre?", blank=True, null=True)
+    quien_presente = models.TextField("¿Quién estaba presente?", blank=True, null=True)
 
     senal_antes = models.CharField(
         "Señal antes de que ocurra el problema",
@@ -33,17 +32,13 @@ class Porque(models.Model):
             ('ruido', 'Ruido'),
             ('otros', 'Otros'),
             ('nia', 'N/A'),
-        ]
+        ],
+        blank=True, null=True
     )
     descripcion_senal = models.TextField("Descripción de la señal", blank=True, null=True)
 
-    # Campos adicionales
-    falla_funcional = models.TextField("Falla funcional", help_text="Describa la falla funcional que se observó")
+    falla_funcional = models.TextField("Falla funcional", blank=True, null=True)
     imagen_falla_funcional = models.ImageField(upload_to='imagenes_fallas/', blank=True, null=True)
-
-    def __str__(self):
-        return f"{self.area}"
-
 
 class MiembroEquipo(models.Model):
     nombre = models.CharField(max_length=100)
@@ -51,7 +46,6 @@ class MiembroEquipo(models.Model):
 
     def __str__(self):
         return self.nombre
-
 
 
 

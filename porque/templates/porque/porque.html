@@ -20,136 +20,170 @@
     <form method="post" class="analisis-5w-form" id="form" enctype="multipart/form-data">
         {% csrf_token %}
         
-        <!-- Paso 0: Inscripción -->
-        <div class="form-row">
-            <div class="form-group col-md-6">
-                {{ form.categoria.label_tag }}
-                {{ form.categoria }}
+        <!-- Sección 1: Datos iniciales -->
+        <div id="seccion1">
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="categoria">Categoría</label>
+                    <input type="text" id="categoria" name="categoria" class="form-control" readonly>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="subcategoria">Subcategoría</label>
+                    <select id="subcategoria" name="subcategoria" class="form-control">
+                        <option value="">Seleccione una subcategoría</option>
+                        <option value="Microbiología">Microbiología</option>
+                        <option value="Break Down">Break Down</option>
+                    </select>
+                </div>
             </div>
-            <div class="form-group col-md-6">
-                {{ form.subcategoria.label_tag }}
-                {{ form.subcategoria }}
+
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="area">Área</label>
+                    <select id="area" name="area" class="form-control">
+                        <option value="">Seleccione un área</option>
+                        {% for opcion in opciones_area %}
+                            <option value="{{ opcion }}">{{ opcion }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="subarea">Subárea</label>
+                    <select id="subarea" name="subarea" class="form-control">
+                        <option value="">Seleccione una línea</option>
+                        {% for opcion in opciones_subarea %}
+                            <option value="{{ opcion }}">{{ opcion }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
             </div>
-        </div>
-        <div class="form-row">
-            <div class="form-group col-md-6">
-                {{ form.area.label_tag }}
-                {{ form.area }}
+
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="maquina">Máquina</label>
+                    <select id="maquina" name="maquina" class="form-control">
+                        <option value="">Seleccione una máquina</option>
+                        {% for opcion in opciones_maquina %}
+                            <option value="{{ opcion }}">{{ opcion }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="miembros_equipo">Miembros del equipo</label>
+                    <select id="miembros_equipo" name="miembros_equipo" class="form-control" multiple>
+                        {% for miembro in opciones_miembros %}
+                            <option value="{{ miembro.id }}" data-email="{{ miembro.email }}">
+                                {{ miembro.nombre }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
             </div>
-            <div class="form-group col-md-6">
-                {{ form.subarea.label_tag }}
-                {{ form.subarea }}
+
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="pilar">Pilar</label>
+                    <input type="text" id="pilar" name="pilar" class="form-control" readonly>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="impacto">Impacto</label>
+                    <input type="text" id="impacto" name="impacto" class="form-control">
+                </div>
             </div>
-        </div>
-        <div class="form-row">
-            <div class="form-group col-md-6">
-                {{ form.maquina.label_tag }}
-                {{ form.maquina }}
+
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="kpi_iceo">KPI ICEO</label>
+                    <input type="text" id="kpi_iceo" name="kpi_iceo" class="form-control" readonly>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="kpi_secundario">KPI Secundario (KAI)</label>
+                    <select id="kpi_secundario" name="kpi_secundario" class="form-control">
+                        <option value="">Seleccione un KPI secundario</option>
+                        <option value="kpi1">Eficiencia Global de Equipos (OEE)</option>
+                        <option value="kpi2">Tasa de Defectos</option>
+                        <option value="kpi3">Tiempo Medio Entre Fallos (MTBF)</option>
+                    </select>
+                </div>
             </div>
-            <div class="form-group col-md-6">
-                {{ form.miembros_equipo.label_tag }}
-                <select id="miembros_equipo" name="miembros_equipo" class="form-control" multiple>
-                    {% for miembro in opciones_miembros %}
-                        <option value="{{ miembro.id }}" data-email="{{ miembro.email }}">
-                            {{ miembro.nombre }}
-                        </option>
-                    {% endfor %}
-                </select>
-            </div>
-        </div>
-        <div class="form-row">
-            <div class="form-group col-md-6">
-                {{ form.pilar.label_tag }}
-                {{ form.pilar }}
-            </div>
-            <div class="form-group col-md-6">
-                {{ form.impacto.label_tag }}
-                {{ form.impacto }}
-            </div>
-        </div>
-        <div class="form-row">
-            <div class="form-group col-md-6">
-                {{ form.kpi_iceo.label_tag }}
-                {{ form.kpi_iceo }}
-            </div>
-            <div class="form-group col-md-6">
-                {{ form.kpi_secundario.label_tag }}
-                {{ form.kpi_secundario }}
-            </div>
-        </div>
-        <div class="form-row">
-            <div class="form-group col-md-6">
-                {{ form.fecha_inicio.label_tag }}
-                {{ form.fecha_inicio }}
-            </div>
-            <div class="form-group col-md-6">
-                {{ form.fecha_cierre.label_tag }}
-                {{ form.fecha_cierre }}
+
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="fecha_inicio">Fecha Inicio</label>
+                    <input type="date" id="fecha_inicio" name="fecha_inicio" class="form-control">
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="fecha_cierre">Fecha Estimada de Cierre</label>
+                    <input type="date" id="fecha_cierre" name="fecha_cierre" class="form-control">
+                </div>
             </div>
         </div>
 
-        <!-- Paso 1 -->
-        <h2 class="text-danger">Paso 1: Descripción del Problema</h2>
-        <div class="form-row">
-            <div class="form-group col-md-12">
-                {{ form.que_ocurre.label_tag }}
-                {{ form.que_ocurre }}
+        <!-- Sección 2: Solo visible si la Sección 1 ha sido completada -->
+        {% if mostrar_paso1 %}
+        <div id="paso1-section">
+            <h2 class="text-danger">Paso 1: Descripción del Problema</h2>
+            <div class="form-row">
+                <div class="form-group col-md-12">
+                    {{ form.que_ocurre.label_tag }}
+                    {{ form.que_ocurre }}
+                </div>
             </div>
-        </div>
-        <div class="form-row">
-            <div class="form-group col-md-12">
-                {{ form.como_ocurre.label_tag }}
-                {{ form.como_ocurre }}
+            <div class="form-row">
+                <div class="form-group col-md-12">
+                    {{ form.como_ocurre.label_tag }}
+                    {{ form.como_ocurre }}
+                </div>
             </div>
-        </div>
-        <div class="form-row">
-            <div class="form-group col-md-12">
-                {{ form.donde_ocurre.label_tag }}
-                {{ form.donde_ocurre }}
+            <div class="form-row">
+                <div class="form-group col-md-12">
+                    {{ form.donde_ocurre.label_tag }}
+                    {{ form.donde_ocurre }}
+                </div>
             </div>
-        </div>
-        <div class="form-row">
-            <div class="form-group col-md-12">
-                {{ form.cuando_ocurre.label_tag }}
-                {{ form.cuando_ocurre }}
+            <div class="form-row">
+                <div class="form-group col-md-12">
+                    {{ form.cuando_ocurre.label_tag }}
+                    {{ form.cuando_ocurre }}
+                </div>
             </div>
-        </div>
-        <div class="form-row">
-            <div class="form-group col-md-12">
-                {{ form.quien_presente.label_tag }}
-                {{ form.quien_presente }}
+            <div class="form-row">
+                <div class="form-group col-md-12">
+                    {{ form.quien_presente.label_tag }}
+                    {{ form.quien_presente }}
+                </div>
             </div>
-        </div>
 
-        <!-- Señal antes de que ocurra el problema -->
-        <h2 class="text-danger">Señal antes de que ocurra el problema</h2>
-        <div class="form-row">
-            <div class="form-group col-md-6">
-                {{ form.senal_antes.label_tag }}
-                {{ form.senal_antes }}
+            <!-- Señal antes de que ocurra el problema -->
+            <h2 class="text-danger">Señal antes de que ocurra el problema</h2>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    {{ form.senal_antes.label_tag }}
+                    {{ form.senal_antes }}
+                </div>
+                <div class="form-group col-md-6">
+                    {{ form.descripcion_senal.label_tag }}
+                    {{ form.descripcion_senal }}
+                </div>
             </div>
-            <div class="form-group col-md-6">
-                {{ form.descripcion_senal.label_tag }}
-                {{ form.descripcion_senal }}
-            </div>
-        </div>
 
-        <!-- Falla funcional -->
-        <h2 class="text-danger">Falla funcional</h2>
-        <div class="form-row">
-            <div class="form-group col-md-12">
-                {{ form.falla_funcional.label_tag }}
-                {{ form.falla_funcional }}
-            </div>
-            <div class="form-group col-md-6">
-                {{ form.imagen_falla_funcional.label_tag }}
-                {{ form.imagen_falla_funcional }}
+            <!-- Falla funcional -->
+            <h2 class="text-danger">Falla funcional</h2>
+            <div class="form-row">
+                <div class="form-group col-md-12">
+                    {{ form.falla_funcional.label_tag }}
+                    {{ form.falla_funcional }}
+                </div>
+                <div class="form-group col-md-6">
+                    {{ form.imagen_falla_funcional.label_tag }}
+                    {{ form.imagen_falla_funcional }}
+                </div>
             </div>
         </div>
+        {% endif %}
 
         <div class="form-actions">
-            <button type="button" class="btn btn-secondary">Cancelar</button>
-            <button type="submit" class="btn btn-primary">Guardar y Continuar</button>
+            <button type="submit" class="btn btn-primary" name="seccion1">Guardar y Continuar</button>
         </div>
     </form>
 </div>
@@ -159,10 +193,9 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
-<!-- Inicialización de Select2 y otros scripts para ambos formularios -->
+<!-- Inicialización de Select2 y otros scripts -->
 <script type="text/javascript">
     $(document).ready(function() {
-        // Formateo de opciones de Select2
         function formatState(state) {
             if (!state.id) {
                 return state.text;
@@ -172,7 +205,6 @@
             return $state;
         }
 
-        // Inicializar Select2 para miembros del equipo
         $('#miembros_equipo').select2({
             placeholder: "Selecciona miembros del equipo",
             templateResult: formatState,
@@ -180,7 +212,6 @@
             allowClear: true
         });
 
-        // Mapeo de subcategorías para categorías, pilar y KPI ICEO
         const mappings = {
             "Microbiología": {
                 categoria: "CALIDAD",
@@ -194,31 +225,28 @@
             }
         };
 
-        // Función para actualizar los valores en el formulario
         function actualizarValoresForm(subcategoria) {
             if (mappings[subcategoria]) {
-                $("#form_categoria").val(mappings[subcategoria].categoria);
-                $("#form_pilar").val(mappings[subcategoria].pilar);
-                $("#form_kpi_iceo").val(mappings[subcategoria].kpi_iceo);
+                $("#categoria").val(mappings[subcategoria].categoria);
+                $("#pilar").val(mappings[subcategoria].pilar);
+                $("#kpi_iceo").val(mappings[subcategoria].kpi_iceo);
             } else {
-                $("#form_categoria").val('');
-                $("#form_pilar").val('');
-                $("#form_kpi_iceo").val('');
+                $("#categoria").val('');
+                $("#pilar").val('');
+                $("#kpi_iceo").val('');
             }
         }
 
-        // Evento de cambio para subcategoría en el formulario
         $("#subcategoria").change(function() {
             const subcategoria = $(this).val();
             actualizarValoresForm(subcategoria);
         });
 
-        // Configurar la fecha actual en el campo Fecha Inicio del formulario
         var today = new Date();
         var day = ("0" + today.getDate()).slice(-2);
         var month = ("0" + (today.getMonth() + 1)).slice(-2);
         var todayFormatted = today.getFullYear() + "-" + month + "-" + day;
-        $('#form_fecha_inicio').val(todayFormatted);
+        $('#fecha_inicio').val(todayFormatted);
     });
 </script>
 {% endblock %}
