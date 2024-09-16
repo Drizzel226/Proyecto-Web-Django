@@ -180,7 +180,7 @@ body, html {
     border-radius: 12px;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
     margin: 50px auto;
-    max-width: 900px;
+    max-width: 1500px;
 }
 
 .form-group {
@@ -311,8 +311,8 @@ body, html {
 
 .analisis-5w-form .col-md-4,
 .analisis-5w-form .col-md-6 {
-    flex: 0 0 33.333333%;
-    max-width: 33.333333%;
+    flex: 0 0 40%;
+    max-width: 40%;
 }
 
 .analisis-5w-form label {
@@ -531,7 +531,7 @@ h2.text-danger {
 }
 
 #form2 h2.text-danger {
-    background-color: #FF0000;
+    background-color: #FF0000; /* Descripcion problema */
     color: #fff;
     padding: 10px;
     border-radius: 5px;
@@ -575,3 +575,23 @@ h2.text-danger {
     color: #fff;
     font-size: 16px;
 }
+/* Estilo específico para el encabezado de form2 */
+#form2.analisis-5w-form::before {
+    content: "Paso 1: Descripción del Problema";
+    display: block;
+    background-color: #FF0000; /* Cambiar el fondo a rojo */
+    color: #FFFFFF; /* Cambiar el texto a blanco */
+    padding: 10px;
+    margin: -20px -20px 20px -20px;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    font-weight: bold;
+}
+#form2 .form-control {
+    width: 90%; /* Ajusta el ancho a la mitad del contenedor */
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    padding: 10px;
+}
+
+

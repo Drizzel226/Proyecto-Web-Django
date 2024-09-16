@@ -16,59 +16,39 @@
     </div>
     {% endif %}
 
-    <!-- Primer Formulario: PorqueForm -->
-    <form method="post" class="analisis-5w-form" id="form1">
+    <!-- Formulario Unificado -->
+    <form method="post" class="analisis-5w-form" id="form" enctype="multipart/form-data">
         {% csrf_token %}
+        
+        <!-- Paso 0: Inscripción -->
         <div class="form-row">
             <div class="form-group col-md-6">
-                <label for="form1_categoria">Categoría</label>
-                <input type="text" id="form1_categoria" name="categoria" class="form-control" readonly>
+                {{ form.categoria.label_tag }}
+                {{ form.categoria }}
             </div>
             <div class="form-group col-md-6">
-                <label for="form1_subcategoria">Subcategoría</label>
-                <select id="form1_subcategoria" name="subcategoria" class="form-control">
-                    <option value="">Seleccione una subcategoría</option>
-                    <option value="Microbiología">Microbiología</option>
-                    <option value="Break Down">Break Down</option>
-                    <!-- Agrega más opciones aquí -->
-                </select>
+                {{ form.subcategoria.label_tag }}
+                {{ form.subcategoria }}
             </div>
         </div>
-
         <div class="form-row">
             <div class="form-group col-md-6">
-                <label for="form1_area">Área</label>
-                <select id="form1_area" name="area" class="form-control">
-                    <option value="">Seleccione un área</option>
-                    {% for opcion in opciones_area %}
-                        <option value="{{ opcion }}">{{ opcion }}</option>
-                    {% endfor %}
-                </select>
+                {{ form.area.label_tag }}
+                {{ form.area }}
             </div>
             <div class="form-group col-md-6">
-                <label for="form1_subarea">Subárea</label>
-                <select id="form1_subarea" name="subarea" class="form-control">
-                    <option value="">Seleccione una línea</option>
-                    {% for opcion in opciones_subarea %}
-                        <option value="{{ opcion }}">{{ opcion }}</option>
-                    {% endfor %}
-                </select>
+                {{ form.subarea.label_tag }}
+                {{ form.subarea }}
             </div>
         </div>
-
         <div class="form-row">
             <div class="form-group col-md-6">
-                <label for="form1_maquina">Máquina</label>
-                <select id="form1_maquina" name="maquina" class="form-control">
-                    <option value="">Seleccione una subcategoría</option>
-                    {% for opcion in opciones_maquina %}
-                    <option value="{{ opcion }}">{{ opcion }}</option>
-                    {% endfor %}
-                </select>
+                {{ form.maquina.label_tag }}
+                {{ form.maquina }}
             </div>
             <div class="form-group col-md-6">
-                <label for="form1_miembros">Miembros del equipo</label>
-                <select id="form1_miembros" name="miembros_equipo" class="form-control" multiple>
+                {{ form.miembros_equipo.label_tag }}
+                <select id="miembros_equipo" name="miembros_equipo" class="form-control" multiple>
                     {% for miembro in opciones_miembros %}
                         <option value="{{ miembro.id }}" data-email="{{ miembro.email }}">
                             {{ miembro.nombre }}
@@ -77,119 +57,93 @@
                 </select>
             </div>
         </div>
-
         <div class="form-row">
             <div class="form-group col-md-6">
-                <label for="form1_pilar">Pilar</label>
-                <input type="text" id="form1_pilar" name="pilar" class="form-control" readonly>
+                {{ form.pilar.label_tag }}
+                {{ form.pilar }}
             </div>
             <div class="form-group col-md-6">
-                <label for="form1_impacto">Impacto</label>
-                <input type="text" id="form1_impacto" name="impacto" class="form-control">
+                {{ form.impacto.label_tag }}
+                {{ form.impacto }}
             </div>
         </div>
-
         <div class="form-row">
             <div class="form-group col-md-6">
-                <label for="form1_kpi_iceo">KPI ICEO</label>
-                <input type="text" id="form1_kpi_iceo" name="kpi_iceo" class="form-control" readonly>
+                {{ form.kpi_iceo.label_tag }}
+                {{ form.kpi_iceo }}
             </div>
             <div class="form-group col-md-6">
-                <label for="form1_kpi_secundario">KPI Secundario(KAI)</label>
-                <select id="form1_kpi_secundario" name="kpi_secundario" class="form-control">
-                    <option value="">Seleccione un KPI secundario</option>
-                    <option value="kpi1">Eficiencia Global de Equipos (OEE)</option>
-                    <option value="kpi2">Tasa de Defectos</option>
-                    <option value="kpi3">Tiempo Medio Entre Fallos (MTBF)</option>
-                </select>
+                {{ form.kpi_secundario.label_tag }}
+                {{ form.kpi_secundario }}
             </div>
         </div>
-
         <div class="form-row">
             <div class="form-group col-md-6">
-                <label for="form1_fecha_inicio">Fecha Inicio</label>
-                <input type="date" id="form1_fecha_inicio" name="fecha_inicio" class="form-control">
+                {{ form.fecha_inicio.label_tag }}
+                {{ form.fecha_inicio }}
             </div>
             <div class="form-group col-md-6">
-                <label for="form1_fecha_cierre">Fecha Estimada de Cierre</label>
-                <input type="date" id="form1_fecha_cierre" name="fecha_cierre" class="form-control">
+                {{ form.fecha_cierre.label_tag }}
+                {{ form.fecha_cierre }}
             </div>
         </div>
 
-        <div class="form-actions">
-            <button type="button" class="btn btn-secondary">Cancelar</button>
-            <button type="submit" class="btn btn-primary">Guardar y Continuar</button>
-        </div>
-    </form>
-</div>
-
-<!-- PASO 1 (Formulario Paso1Form) -->
-<div class="form-container">
-    <h1 id="paso1" class="text-center">Paso 1: Descripción del Problema</h1>
-
-    <form method="post" class="analisis-5w-form" id="form2" enctype="multipart/form-data">
-        {% csrf_token %}
-        
-        <h2 class="text-danger">Descripción del problema</h2>
-        
+        <!-- Paso 1 -->
+        <h2 class="text-danger">Paso 1: Descripción del Problema</h2>
         <div class="form-row">
             <div class="form-group col-md-12">
-                {{ form2.que_ocurre.label_tag }}
-                {{ form2.que_ocurre }}
+                {{ form.que_ocurre.label_tag }}
+                {{ form.que_ocurre }}
             </div>
         </div>
-
         <div class="form-row">
             <div class="form-group col-md-12">
-                {{ form2.como_ocurre.label_tag }}
-                {{ form2.como_ocurre }}
+                {{ form.como_ocurre.label_tag }}
+                {{ form.como_ocurre }}
             </div>
         </div>
-
         <div class="form-row">
             <div class="form-group col-md-12">
-                {{ form2.donde_ocurre.label_tag }}
-                {{ form2.donde_ocurre }}
+                {{ form.donde_ocurre.label_tag }}
+                {{ form.donde_ocurre }}
             </div>
         </div>
-
         <div class="form-row">
             <div class="form-group col-md-12">
-                {{ form2.cuando_ocurre.label_tag }}
-                {{ form2.cuando_ocurre }}
+                {{ form.cuando_ocurre.label_tag }}
+                {{ form.cuando_ocurre }}
             </div>
         </div>
-
         <div class="form-row">
             <div class="form-group col-md-12">
-                {{ form2.quien_presente.label_tag }}
-                {{ form2.quien_presente }}
+                {{ form.quien_presente.label_tag }}
+                {{ form.quien_presente }}
             </div>
         </div>
 
+        <!-- Señal antes de que ocurra el problema -->
         <h2 class="text-danger">Señal antes de que ocurra el problema</h2>
-
         <div class="form-row">
             <div class="form-group col-md-6">
-                {{ form2.senal_antes.label_tag }}
-                {{ form2.senal_antes }}
+                {{ form.senal_antes.label_tag }}
+                {{ form.senal_antes }}
             </div>
-            <div class="form-group col-md6">
-                {{ form2.descripcion_senal.label_tag }}
-                {{ form2.descripcion_senal }}
+            <div class="form-group col-md-6">
+                {{ form.descripcion_senal.label_tag }}
+                {{ form.descripcion_senal }}
             </div>
         </div>
 
+        <!-- Falla funcional -->
         <h2 class="text-danger">Falla funcional</h2>
-
         <div class="form-row">
             <div class="form-group col-md-12">
-                {{ form2.falla_funcional.label_tag }}
-                {{ form2.falla_funcional }}
+                {{ form.falla_funcional.label_tag }}
+                {{ form.falla_funcional }}
             </div>
             <div class="form-group col-md-6">
-                {{ form2.imagen_falla_funcional.label_tag }}
-                {{ form2.imagen_falla_funcional }}
+                {{ form.imagen_falla_funcional.label_tag }}
+                {{ form.imagen_falla_funcional }}
             </div>
         </div>
 
@@ -199,7 +153,6 @@
         </div>
     </form>
 </div>
-
 
 <!-- Incluir Select2 y jQuery -->
 <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
@@ -219,8 +172,8 @@
             return $state;
         }
 
-        // Inicializar Select2 para el primer formulario
-        $('#form1_miembros').select2({
+        // Inicializar Select2 para miembros del equipo
+        $('#miembros_equipo').select2({
             placeholder: "Selecciona miembros del equipo",
             templateResult: formatState,
             templateSelection: formatState,
@@ -241,53 +194,31 @@
             }
         };
 
-        // Función para actualizar los valores en el primer formulario
-        function actualizarValoresForm1(subcategoria) {
+        // Función para actualizar los valores en el formulario
+        function actualizarValoresForm(subcategoria) {
             if (mappings[subcategoria]) {
-                $("#form1_categoria").val(mappings[subcategoria].categoria);
-                $("#form1_pilar").val(mappings[subcategoria].pilar);
-                $("#form1_kpi_iceo").val(mappings[subcategoria].kpi_iceo);
+                $("#form_categoria").val(mappings[subcategoria].categoria);
+                $("#form_pilar").val(mappings[subcategoria].pilar);
+                $("#form_kpi_iceo").val(mappings[subcategoria].kpi_iceo);
             } else {
-                $("#form1_categoria").val('');
-                $("#form1_pilar").val('');
-                $("#form1_kpi_iceo").val('');
+                $("#form_categoria").val('');
+                $("#form_pilar").val('');
+                $("#form_kpi_iceo").val('');
             }
         }
 
-        // Evento de cambio para subcategoría en el primer formulario
-        $("#form1_subcategoria").change(function() {
+        // Evento de cambio para subcategoría en el formulario
+        $("#subcategoria").change(function() {
             const subcategoria = $(this).val();
-            actualizarValoresForm1(subcategoria);
+            actualizarValoresForm(subcategoria);
         });
 
-        // Función para actualizar los valores en el segundo formulario
-        function actualizarValoresForm2(subcategoria) {
-            if (mappings[subcategoria]) {
-                $("#form2_categoria").val(mappings[subcategoria].categoria);
-                $("#form2_pilar").val(mappings[subcategoria].pilar);
-                $("#form2_kpi_iceo").val(mappings[subcategoria].kpi_iceo);
-            } else {
-                $("#form2_categoria").val('');
-                $("#form2_pilar").val('');
-                $("#form2_kpi_iceo").val('');
-            }
-        }
-
-        // Evento de cambio para subcategoría en el segundo formulario
-        $("#form2_subcategoria").change(function() {
-            const subcategoria = $(this).val();
-            actualizarValoresForm2(subcategoria);
-        });
-
-        // Configurar la fecha actual en el campo Fecha Inicio del primer formulario
+        // Configurar la fecha actual en el campo Fecha Inicio del formulario
         var today = new Date();
         var day = ("0" + today.getDate()).slice(-2);
         var month = ("0" + (today.getMonth() + 1)).slice(-2);
         var todayFormatted = today.getFullYear() + "-" + month + "-" + day;
-        $('#form1_fecha_inicio').val(todayFormatted);
-        
-        // Configurar la fecha actual en el campo Fecha Inicio del segundo formulario
-        $('#form2_fecha_inicio').val(todayFormatted);
+        $('#form_fecha_inicio').val(todayFormatted);
     });
 </script>
 {% endblock %}
