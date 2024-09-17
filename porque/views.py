@@ -7,6 +7,14 @@ from .models import MiembroEquipo, Porque
 from django.utils.timezone import now
 
 
+from django.shortcuts import render, redirect, get_object_or_404
+from .forms import PorqueForm
+from django.contrib import messages
+from google.oauth2 import service_account
+from googleapiclient.discovery import build
+from .models import MiembroEquipo, Porque
+from django.utils.timezone import now
+
 def porque_view(request, pk=None):
     SERVICE_ACCOUNT_FILE = 'C:\\Users\\ccu\\Desktop\\Proyecto\\Random\\json.json'
     SCOPES = ['https://www.googleapis.com/auth/spreadsheets']
@@ -30,14 +38,16 @@ def porque_view(request, pk=None):
         form = PorqueForm(request.POST, request.FILES, instance=porque_instance)
 
         if form.is_valid():
-            porque_instance = form.save(commit=False)
+            porque_instance = form.save(commit=False)  # Guardamos la instancia, pero no el ManyToMany aún
+            porque_instance.save()  # Guardamos la instancia para generar un ID si es nuevo
+
+            form.save_m2m()  # Guardamos las relaciones ManyToMany como miembros_equipo
 
             if 'guardar_primera_parte' in request.POST:
-                porque_instance.save()
                 messages.success(request, 'Primera parte guardada con éxito. Ahora puedes completar el Paso 1.')
                 return redirect('porque', pk=porque_instance.pk)
             else:
-                porque_instance.save()
+                enviar_a_google_sheets(porque_instance)  # Enviar datos a Google Sheets al guardar completo
                 messages.success(request, 'Formulario completo guardado con éxito.')
                 return redirect('porque', pk=porque_instance.pk)
         else:
