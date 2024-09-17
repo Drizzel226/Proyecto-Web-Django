@@ -19,20 +19,21 @@
     <!-- Formulario Unificado -->
     <form method="post" class="analisis-5w-form" id="form" enctype="multipart/form-data">
         {% csrf_token %}
-        
-        <!-- Sección 1: Datos iniciales -->
+
+        <!-- Sección Paso 0: Datos iniciales -->
         <div id="seccion1">
+            <h2 class="text-primary">Paso 0: Datos Iniciales</h2>
             <div class="form-row">
                 <div class="form-group col-md-6">
                     <label for="categoria">Categoría</label>
-                    <input type="text" id="categoria" name="categoria" class="form-control" readonly>
+                    <input type="text" id="categoria" name="categoria" class="form-control" value="{{ form.categoria.value }}" readonly>
                 </div>
                 <div class="form-group col-md-6">
                     <label for="subcategoria">Subcategoría</label>
                     <select id="subcategoria" name="subcategoria" class="form-control">
                         <option value="">Seleccione una subcategoría</option>
-                        <option value="Microbiología">Microbiología</option>
-                        <option value="Break Down">Break Down</option>
+                        <option value="Microbiología" {% if form.subcategoria.value == "Microbiología" %}selected{% endif %}>Microbiología</option>
+                        <option value="Break Down" {% if form.subcategoria.value == "Break Down" %}selected{% endif %}>Break Down</option>
                     </select>
                 </div>
             </div>
@@ -43,7 +44,7 @@
                     <select id="area" name="area" class="form-control">
                         <option value="">Seleccione un área</option>
                         {% for opcion in opciones_area %}
-                            <option value="{{ opcion }}">{{ opcion }}</option>
+                            <option value="{{ opcion }}" {% if form.area.value == opcion %}selected{% endif %}>{{ opcion }}</option>
                         {% endfor %}
                     </select>
                 </div>
@@ -52,7 +53,7 @@
                     <select id="subarea" name="subarea" class="form-control">
                         <option value="">Seleccione una línea</option>
                         {% for opcion in opciones_subarea %}
-                            <option value="{{ opcion }}">{{ opcion }}</option>
+                            <option value="{{ opcion }}" {% if form.subarea.value == opcion %}selected{% endif %}>{{ opcion }}</option>
                         {% endfor %}
                     </select>
                 </div>
@@ -64,15 +65,15 @@
                     <select id="maquina" name="maquina" class="form-control">
                         <option value="">Seleccione una máquina</option>
                         {% for opcion in opciones_maquina %}
-                            <option value="{{ opcion }}">{{ opcion }}</option>
+                            <option value="{{ opcion }}" {% if form.maquina.value == opcion %}selected{% endif %}>{{ opcion }}</option>
                         {% endfor %}
                     </select>
                 </div>
                 <div class="form-group col-md-6">
                     <label for="miembros_equipo">Miembros del equipo</label>
-                    <select id="miembros_equipo" name="miembros_equipo" class="form-control" multiple>
+                    <select id="miembros_equipo" name="miembros_equipo" class="form-control select2" multiple>
                         {% for miembro in opciones_miembros %}
-                            <option value="{{ miembro.id }}" data-email="{{ miembro.email }}">
+                            <option value="{{ miembro.id }}" data-email="{{ miembro.email }}" {% if miembro.id in form.miembros_equipo.value %}selected{% endif %}>
                                 {{ miembro.nombre }}
                             </option>
                         {% endfor %}
@@ -83,26 +84,26 @@
             <div class="form-row">
                 <div class="form-group col-md-6">
                     <label for="pilar">Pilar</label>
-                    <input type="text" id="pilar" name="pilar" class="form-control" readonly>
+                    <input type="text" id="pilar" name="pilar" class="form-control" value="{{ form.pilar.value }}" readonly>
                 </div>
                 <div class="form-group col-md-6">
                     <label for="impacto">Impacto</label>
-                    <input type="text" id="impacto" name="impacto" class="form-control">
+                    <input type="text" id="impacto" name="impacto" class="form-control" value="{{ form.impacto.value }}">
                 </div>
             </div>
 
             <div class="form-row">
                 <div class="form-group col-md-6">
                     <label for="kpi_iceo">KPI ICEO</label>
-                    <input type="text" id="kpi_iceo" name="kpi_iceo" class="form-control" readonly>
+                    <input type="text" id="kpi_iceo" name="kpi_iceo" class="form-control" value="{{ form.kpi_iceo.value }}" readonly>
                 </div>
                 <div class="form-group col-md-6">
                     <label for="kpi_secundario">KPI Secundario (KAI)</label>
                     <select id="kpi_secundario" name="kpi_secundario" class="form-control">
                         <option value="">Seleccione un KPI secundario</option>
-                        <option value="kpi1">Eficiencia Global de Equipos (OEE)</option>
-                        <option value="kpi2">Tasa de Defectos</option>
-                        <option value="kpi3">Tiempo Medio Entre Fallos (MTBF)</option>
+                        <option value="kpi1" {% if form.kpi_secundario.value == "kpi1" %}selected{% endif %}>Eficiencia Global de Equipos (OEE)</option>
+                        <option value="kpi2" {% if form.kpi_secundario.value == "kpi2" %}selected{% endif %}>Tasa de Defectos</option>
+                        <option value="kpi3" {% if form.kpi_secundario.value == "kpi3" %}selected{% endif %}>Tiempo Medio Entre Fallos (MTBF)</option>
                     </select>
                 </div>
             </div>
@@ -110,16 +111,16 @@
             <div class="form-row">
                 <div class="form-group col-md-6">
                     <label for="fecha_inicio">Fecha Inicio</label>
-                    <input type="date" id="fecha_inicio" name="fecha_inicio" class="form-control">
+                    <input type="date" id="fecha_inicio" name="fecha_inicio" class="form-control" value="{{ form.fecha_inicio.value }}">
                 </div>
                 <div class="form-group col-md-6">
                     <label for="fecha_cierre">Fecha Estimada de Cierre</label>
-                    <input type="date" id="fecha_cierre" name="fecha_cierre" class="form-control">
+                    <input type="date" id="fecha_cierre" name="fecha_cierre" class="form-control" value="{{ form.fecha_cierre.value }}">
                 </div>
             </div>
         </div>
 
-        <!-- Sección 2: Solo visible si la Sección 1 ha sido completada -->
+        <!-- Sección Paso 1: Descripción del Problema (visible después del Paso 0) -->
         {% if mostrar_paso1 %}
         <div id="paso1-section">
             <h2 class="text-danger">Paso 1: Descripción del Problema</h2>
