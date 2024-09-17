@@ -7,14 +7,6 @@ from .models import MiembroEquipo, Porque
 from django.utils.timezone import now
 
 
-from django.shortcuts import render, redirect, get_object_or_404
-from .forms import PorqueForm
-from django.contrib import messages
-from google.oauth2 import service_account
-from googleapiclient.discovery import build
-from .models import MiembroEquipo, Porque
-from django.utils.timezone import now
-
 def porque_view(request, pk=None):
     SERVICE_ACCOUNT_FILE = 'C:\\Users\\ccu\\Desktop\\Proyecto\\Random\\json.json'
     SCOPES = ['https://www.googleapis.com/auth/spreadsheets']
