@@ -124,10 +124,12 @@
 
         <!-- Sección Paso 1: Descripción del Problema (visible después del Paso 0) -->
         {% if mostrar_paso1 %}
-        <div id="paso1-section" class="recuadro-paso mt-4">
-            <h2 class="text-danger collapsible" style="cursor: pointer;" onclick="toggleVisibility('contenido-paso1')">
-                <span style="margin-right: 10px;">&#x25BC;</span> Paso 1: Descripción del Problema
-            </h2>
+        <div id="paso1-section" class="recuadro-paso mt-4" style="border: 1px solid #ff0000;">
+            <div class="paso-header" style="background-color: #ff0000; color: white; padding: 10px 15px; border-radius: 5px;">
+                <h2 class="collapsible" style="cursor: pointer; margin: 0;" onclick="toggleVisibility('contenido-paso1')">
+                    <span style="margin-right: 10px;">&#x25BC;</span> Paso 1: Descripción del Problema
+                </h2>
+            </div>
             <div id="contenido-paso1">
                 <div class="form-row">
                     <div class="form-group col-md-12">
@@ -190,11 +192,79 @@
         {% endif %}
 
 
+
+
+
+
+        <!-- Sección Paso 2: Comprender y Restaurar Condiciones Básicas -->
+        <div id="paso2-section" class="recuadro-paso mt-4" style="border: 1px solid #e6007e;">
+            <div class="paso-header" style="background-color: #e6007e; color: white; padding: 10px 15px; border-radius: 5px;">
+                <h2 class="collapsible" style="cursor: pointer; margin: 0;" onclick="toggleVisibility('contenido-paso2')">
+                    <span style="margin-right: 10px;">&#x25BC;</span> Paso 2: Comprender y Restaurar Condiciones Básicas
+                </h2>
+            </div>
+            <h3></h3>
+            <div id="contenido-paso2">
+                
+                <!-- Bloque 1: Principio de funcionamiento -->
+                <div class="sub-section" style="margin-bottom: 20px;">
+                    <div class="sub-header" style="background-color: #e6007e; color: white; padding: 10px 15px; border-radius: 5px;">
+                        <h3 style="margin: 0;">Principio de funcionamiento</h3>
+                    </div>
+                    <div class="sub-content" style="padding: 10px; border: 1px solid #e6007e; border-radius: 5px;">
+                        <div class="form-row">
+                            <div class="form-group col-md-12">
+                                {{ form.falla_funcional.label_tag }}
+                                {{ form.falla_funcional }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Bloque 2: Restablecimiento de condiciones básicas y verificación de herramientas -->
+                <div class="sub-section" style="margin-bottom: 20px;">
+                    <div class="sub-header" style="background-color: #e6007e; color: white; padding: 10px 15px; border-radius: 5px;">
+                        <h3 style="margin: 0;">Restablecimiento de condiciones básicas y verificación de herramientas</h3>
+                    </div>
+                    <div class="sub-content" style="padding: 10px; border: 1px solid #e6007e; border-radius: 5px;">
+                        <div class="form-row">
+                            <div class="form-group col-md-12">
+                                {{ form.falla_funcional.label_tag }}
+                                {{ form.falla_funcional }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bloque 3: Modo de Falla -->
+                <div class="sub-section" style="margin-bottom: 20px;">
+                    <div class="sub-header" style="background-color: #e6007e; color: white; padding: 10px 15px; border-radius: 5px;">
+                        <h3 style="margin: 0;">Modo de Falla</h3>
+                    </div>
+                    <div class="sub-content" style="padding: 10px; border: 1px solid #e6007e; border-radius: 5px;">
+                        <div class="form-row">
+                            <div class="form-group col-md-12">
+                                {{ form.falla_funcional.label_tag }}
+                                {{ form.falla_funcional }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                
+            </div>
+        </div>
+
+
         <div class="form-actions">
             <button type="submit" class="btn btn-primary" name="seccion1">Guardar y Continuar</button>
         </div>
     </form>
 </div>
+
+
+
+
 
 <!-- Incluir Select2 y jQuery -->
 <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
@@ -256,7 +326,7 @@
         var todayFormatted = today.getFullYear() + "-" + month + "-" + day;
         $('#fecha_inicio').val(todayFormatted);
     });
-    
+
     function toggleVisibility(id) {
         var content = document.getElementById(id);
         var icon = content.previousElementSibling.querySelector('span');
@@ -273,6 +343,7 @@
     // Por defecto, hacer que el contenido esté colapsado al cargar la página
     document.addEventListener("DOMContentLoaded", function() {
         toggleVisibility('contenido-paso1');
+        toggleVisibility('contenido-paso2');
     });
 </script>   
 {% endblock %}
