@@ -31,6 +31,11 @@ def porque_view(request, pk=None):
 
         if form.is_valid():
             porque_instance = form.save(commit=False)  # Guardamos la instancia, pero no el ManyToMany aún
+
+            if not porque_instance.fecha_inicio:
+                # Solo establecer la fecha de inicio si no ha sido establecida previamente
+                porque_instance.fecha_inicio = now().date()
+
             porque_instance.save()  # Guardamos la instancia para generar un ID si es nuevo
 
             form.save_m2m()  # Guardamos las relaciones ManyToMany como miembros_equipo
@@ -61,7 +66,6 @@ def porque_view(request, pk=None):
     }
 
     return render(request, 'porque/porque.html', context)
-
 
 
 
