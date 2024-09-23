@@ -21,7 +21,8 @@
         {% csrf_token %}
 
         <!-- Sección Paso 0: Datos iniciales -->
-        <div id="seccion1">
+        <div id="seccion1" class="recuadro-paso">
+            <h2 class="text-primary">Paso 0: Datos Iniciales</h2>
             <div class="form-row">
                 <div class="form-group col-md-6">
                     <label for="categoria">Categoría</label>
@@ -113,76 +114,81 @@
                     <label for="fecha_inicio">Fecha Inicio</label>
                     <input type="date" id="fecha_inicio" name="fecha_inicio" class="form-control" value="{{ form.fecha_inicio.value }}" readonly>
                 </div>
-               {% endif %}
-               <div class="form-group col-md-6">
-                <label for="fecha_cierre">Fecha Estimada de Cierre</label>
-                <input type="date" id="fecha_cierre" name="fecha_cierre" class="form-control" value="{{ form.fecha_cierre.value|date:'Y-m-d' }}">
-            </div>
+                {% endif %}
+                <div class="form-group col-md-6">
+                    <label for="fecha_cierre">Fecha Estimada de Cierre</label>
+                    <input type="date" id="fecha_cierre" name="fecha_cierre" class="form-control" value="{{ form.fecha_cierre.value|date:'Y-m-d' }}">
+                </div>
             </div>
         </div>
 
         <!-- Sección Paso 1: Descripción del Problema (visible después del Paso 0) -->
         {% if mostrar_paso1 %}
-        <div id="paso1-section">
-            <h2 class="text-danger">Paso 1: Descripción del Problema</h2>
-            <div class="form-row">
-                <div class="form-group col-md-12">
-                    {{ form.que_ocurre.label_tag }}
-                    {{ form.que_ocurre }}
+        <div id="paso1-section" class="recuadro-paso mt-4">
+            <h2 class="text-danger collapsible" style="cursor: pointer;" onclick="toggleVisibility('contenido-paso1')">
+                <span style="margin-right: 10px;">&#x25BC;</span> Paso 1: Descripción del Problema
+            </h2>
+            <div id="contenido-paso1">
+                <div class="form-row">
+                    <div class="form-group col-md-12">
+                        {{ form.que_ocurre.label_tag }}
+                        {{ form.que_ocurre }}
+                    </div>
                 </div>
-            </div>
-            <div class="form-row">
-                <div class="form-group col-md-12">
-                    {{ form.como_ocurre.label_tag }}
-                    {{ form.como_ocurre }}
+                <div class="form-row">
+                    <div class="form-group col-md-12">
+                        {{ form.como_ocurre.label_tag }}
+                        {{ form.como_ocurre }}
+                    </div>
                 </div>
-            </div>
-            <div class="form-row">
-                <div class="form-group col-md-12">
-                    {{ form.donde_ocurre.label_tag }}
-                    {{ form.donde_ocurre }}
+                <div class="form-row">
+                    <div class="form-group col-md-12">
+                        {{ form.donde_ocurre.label_tag }}
+                        {{ form.donde_ocurre }}
+                    </div>
                 </div>
-            </div>
-            <div class="form-row">
-                <div class="form-group col-md-12">
-                    {{ form.cuando_ocurre.label_tag }}
-                    {{ form.cuando_ocurre }}
+                <div class="form-row">
+                    <div class="form-group col-md-12">
+                        {{ form.cuando_ocurre.label_tag }}
+                        {{ form.cuando_ocurre }}
+                    </div>
                 </div>
-            </div>
-            <div class="form-row">
-                <div class="form-group col-md-12">
-                    {{ form.quien_presente.label_tag }}
-                    {{ form.quien_presente }}
+                <div class="form-row">
+                    <div class="form-group col-md-12">
+                        {{ form.quien_presente.label_tag }}
+                        {{ form.quien_presente }}
+                    </div>
                 </div>
-            </div>
 
-            <!-- Señal antes de que ocurra el problema -->
-            <h2 class="text-danger">Señal antes de que ocurra el problema</h2>
-            <div class="form-row">
-                <div class="form-group col-md-6">
-                    {{ form.senal_antes.label_tag }}
-                    {{ form.senal_antes }}
+                <!-- Señal antes de que ocurra el problema -->
+                <h2 class="text-danger">Señal antes de que ocurra el problema</h2>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        {{ form.senal_antes.label_tag }}
+                        {{ form.senal_antes }}
+                    </div>
+                    <div class="form-group col-md-6">
+                        {{ form.descripcion_senal.label_tag }}
+                        {{ form.descripcion_senal }}
+                    </div>
                 </div>
-                <div class="form-group col-md-6">
-                    {{ form.descripcion_senal.label_tag }}
-                    {{ form.descripcion_senal }}
-                </div>
-            </div>
 
-            <!-- Falla funcional -->
-            <h2 class="text-danger">Falla funcional</h2>
-            <div class="form-row">
-                <div class="form-group col-md-12">
-                    {{ form.falla_funcional.label_tag }}
-                    {{ form.falla_funcional }}
-                </div>
-                <div class="form-group col-md-6">
-                    {{ form.imagen_falla_funcional.label_tag }}
-                    {{ form.imagen_falla_funcional }}
+                <!-- Falla funcional -->
+                <h2 class="text-danger">Falla funcional</h2>
+                <div class="form-row">
+                    <div class="form-group col-md-12">
+                        {{ form.falla_funcional.label_tag }}
+                        {{ form.falla_funcional }}
+                    </div>
+                    <div class="form-group col-md-6">
+                        {{ form.imagen_falla_funcional.label_tag }}
+                        {{ form.imagen_falla_funcional }}
+                    </div>
                 </div>
             </div>
         </div>
         {% endif %}
+
 
         <div class="form-actions">
             <button type="submit" class="btn btn-primary" name="seccion1">Guardar y Continuar</button>
@@ -249,6 +255,24 @@
         var month = ("0" + (today.getMonth() + 1)).slice(-2);
         var todayFormatted = today.getFullYear() + "-" + month + "-" + day;
         $('#fecha_inicio').val(todayFormatted);
+    });
+    
+    function toggleVisibility(id) {
+        var content = document.getElementById(id);
+        var icon = content.previousElementSibling.querySelector('span');
+
+        if (content.style.display === "none") {
+            content.style.display = "block";
+            icon.innerHTML = "&#x25BC;";  // Cambia el ícono a la flecha hacia abajo
+        } else {
+            content.style.display = "none";
+            icon.innerHTML = "&#x25B6;";  // Cambia el ícono a la flecha hacia la derecha
+        }
+    }
+
+    // Por defecto, hacer que el contenido esté colapsado al cargar la página
+    document.addEventListener("DOMContentLoaded", function() {
+        toggleVisibility('contenido-paso1');
     });
 </script>   
 {% endblock %}
