@@ -539,3 +539,15 @@ h2.text-danger {
     display: block; /* Las etiquetas se comportan como bloques */
     font-size: 1.1rem; /* Ajuste del tamaño de las etiquetas */
 }
+.recuadro-paso {
+    border: 1px solid #ddd;
+    padding: 20px;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    margin-bottom: 20px;
+}
+
+.recuadro-paso h2 {
+    margin-top: 0;
+    margin-bottom: 15px;
+}
