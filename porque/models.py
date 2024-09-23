@@ -16,7 +16,7 @@ class Porque(models.Model):
     fecha_cierre = models.DateField(blank=True, null=True)
 
     # Campos adicionales
-    que_ocurre = models.TextField("Qué ocurre? ¿En qué parte de la máquina o materal se visualiza el problema?", blank=True, null=True)
+    que_ocurre = models.TextField("¿Qué ocurre? ¿En qué parte de la máquina o materal se visualiza el problema?", blank=True, null=True)
     como_ocurre = models.TextField("¿Cómo ocurre? Describir desde el punto de vista físico el mecanismo de acción visibilizado en el momento.", blank=True, null=True)
     donde_ocurre = models.TextField("¿Dónde ocurre? Producto, equipo, zona de la máquina, etc.", blank=True, null=True)
     cuando_ocurre = models.TextField("¿Cuando ocurrió? Producción, arranque, saneado, cambio de formato, mantención, etc.", blank=True, null=True)
