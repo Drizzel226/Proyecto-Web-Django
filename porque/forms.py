@@ -11,7 +11,7 @@ class PorqueForm(forms.ModelForm):
         model = Porque
         fields = [
             'categoria', 'subcategoria', 'area', 'subarea', 'maquina', 'miembros_equipo', 
-            'pilar', 'impacto', 'kpi_iceo', 'kpi_secundario', 'fecha_inicio', 'fecha_cierre',
+            'pilar', 'impacto', 'kpi_iceo', 'kpi_secundario', 'fecha_cierre',
             'que_ocurre', 'como_ocurre', 'donde_ocurre', 'cuando_ocurre', 'quien_presente', 
             'senal_antes', 'descripcion_senal', 'falla_funcional', 'imagen_falla_funcional'
         ]
@@ -25,8 +25,7 @@ class PorqueForm(forms.ModelForm):
             'impacto': forms.Textarea(attrs={'class': 'form-control'}),
             'kpi_iceo': forms.TextInput(attrs={'class': 'form-control'}),
             'kpi_secundario': forms.TextInput(attrs={'class': 'form-control'}),
-            'fecha_inicio': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
-            'fecha_cierre': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
+            'fecha_cierre' : forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
             'que_ocurre': forms.Textarea(attrs={'class': 'form-control'}),
             'como_ocurre': forms.Textarea(attrs={'class': 'form-control'}),
             'donde_ocurre': forms.Textarea(attrs={'class': 'form-control'}),

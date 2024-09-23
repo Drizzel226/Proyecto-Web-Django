@@ -108,14 +108,16 @@
             </div>
 
             <div class="form-row">
+                {% if not form.instance.pk %}
                 <div class="form-group col-md-6">
                     <label for="fecha_inicio">Fecha Inicio</label>
-                    <input type="date" id="fecha_inicio" name="fecha_inicio" class="form-control" value="{{ form.fecha_inicio.value }}">
+                    <input type="date" id="fecha_inicio" name="fecha_inicio" class="form-control" value="{{ form.fecha_inicio.value }}" readonly>
                 </div>
-                <div class="form-group col-md-6">
-                    <label for="fecha_cierre">Fecha Estimada de Cierre</label>
-                    <input type="date" id="fecha_cierre" name="fecha_cierre" class="form-control" value="{{ form.fecha_cierre.value }}">
-                </div>
+               {% endif %}
+               <div class="form-group col-md-6">
+                <label for="fecha_cierre">Fecha Estimada de Cierre</label>
+                <input type="date" id="fecha_cierre" name="fecha_cierre" class="form-control" value="{{ form.fecha_cierre.value|date:'Y-m-d' }}">
+            </div>
             </div>
         </div>
 
@@ -248,5 +250,5 @@
         var todayFormatted = today.getFullYear() + "-" + month + "-" + day;
         $('#fecha_inicio').val(todayFormatted);
     });
-</script>
+</script>   
 {% endblock %}
