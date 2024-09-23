@@ -521,77 +521,21 @@ h2.text-danger {
     font-size: 18px;
     font-weight: bold;
 }
-/* Estilos específicos para el formulario Paso 1 */
-#form2 {
-    background-color: #fff;
-    border-radius: 10px;
-    padding: 20px;
-    border: 2px solid #FF0000;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+/* Estilo para agrandar los bloques de texto (textarea) */
+.analisis-5w-form textarea {
+    width: 100%; /* Ocupa todo el ancho disponible */
+    height: 150px; /* Altura más grande para los textareas */
+    padding: 10px; /* Espacio interno */
+    font-size: 1rem; /* Tamaño de fuente */
+    border-radius: 8px; /* Bordes redondeados */
+    border: 1px solid var(--verde-claro); /* Borde con color definido */
+    box-sizing: border-box; /* Asegura que el padding no afecte el ancho total */
+    resize: vertical; /* Permite cambiar solo la altura */
 }
 
-#form2 h2.text-danger {
-    background-color: #FF0000; /* Descripcion problema */
-    color: #fff;
-    padding: 10px;
-    border-radius: 5px;
-    margin-bottom: 20px;
-    font-size: 18px;
-    font-weight: bold;
+.analisis-5w-form label {
+    font-weight: bold; /* Etiquetas con fuente en negrita */
+    margin-bottom: 10px; /* Espacio inferior */
+    display: block; /* Las etiquetas se comportan como bloques */
+    font-size: 1.1rem; /* Ajuste del tamaño de las etiquetas */
 }
-
-#form2 .form-row {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    margin-bottom: 20px;
-}
-
-#form2 .form-group {
-    width: 100%;
-}
-
-#form2 .form-control {
-    border-radius: 5px;
-    border: 1px solid #ccc;
-    padding: 10px;
-    width: 100%;
-}
-
-#form2 .btn-primary {
-    background-color: #28a745;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    color: #fff;
-    font-size: 16px;
-}
-
-#form2 .btn-secondary {
-    background-color: #dc3545;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    color: #fff;
-    font-size: 16px;
-}
-/* Estilo específico para el encabezado de form2 */
-#form2.analisis-5w-form::before {
-    content: "Paso 1: Descripción del Problema";
-    display: block;
-    background-color: #FF0000; /* Cambiar el fondo a rojo */
-    color: #FFFFFF; /* Cambiar el texto a blanco */
-    padding: 10px;
-    margin: -20px -20px 20px -20px;
-    border-top-left-radius: 8px;
-    border-top-right-radius: 8px;
-    font-weight: bold;
-}
-#form2 .form-control {
-    width: 90%; /* Ajusta el ancho a la mitad del contenedor */
-    border-radius: 5px;
-    border: 1px solid #ccc;
-    padding: 10px;
-}
-
-
