@@ -13,7 +13,8 @@ class PorqueForm(forms.ModelForm):
             'categoria', 'subcategoria', 'area', 'subarea', 'maquina', 'miembros_equipo', 
             'pilar', 'impacto', 'kpi_iceo', 'kpi_secundario', 'fecha_cierre',
             'que_ocurre', 'como_ocurre', 'donde_ocurre', 'cuando_ocurre', 'quien_presente', 
-            'senal_antes', 'descripcion_senal', 'falla_funcional', 'imagen_falla_funcional'
+            'senal_antes', 'descripcion_senal', 'falla_funcional', 'imagen_falla_funcional',
+            'principio_funcionamiento'
         ]
         widgets = {
             'categoria': forms.TextInput(attrs={'class': 'form-control'}),
@@ -35,6 +36,7 @@ class PorqueForm(forms.ModelForm):
             'descripcion_senal': forms.Textarea(attrs={'class': 'form-control'}),
             'falla_funcional': forms.Textarea(attrs={'class': 'form-control'}),
             'imagen_falla_funcional': forms.ClearableFileInput(attrs={'class': 'form-control'}),
+            'principio_funcionamiento': forms.Textarea(attrs={'class': 'form-control'}),
         }
 from django import forms
 from .models import Porque

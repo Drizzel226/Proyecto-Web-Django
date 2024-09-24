@@ -17,7 +17,7 @@ class Porque(models.Model):
     fecha_inicio = models.DateField(auto_now_add=True, blank=True, null=True)
     fecha_cierre = models.DateField(blank=True, null=True)
 
-    # Campos adicionales
+    # Paso 2
     que_ocurre = models.TextField("¿Qué ocurre? ¿En qué parte de la máquina o material se visualiza el problema?", blank=True, null=True)
     como_ocurre = models.TextField("¿Cómo ocurre? Describir desde el punto de vista físico el mecanismo de acción visibilizado en el momento.", blank=True, null=True)
     donde_ocurre = models.TextField("¿Dónde ocurre? Producto, equipo, zona de la máquina, etc.", blank=True, null=True)
@@ -40,6 +40,10 @@ class Porque(models.Model):
     descripcion_senal = models.TextField("Descripción de la señal", blank=True, null=True)
     falla_funcional = models.TextField("Falla funcional", blank=True, null=True)
     imagen_falla_funcional = models.ImageField(upload_to='imagenes_fallas/', blank=True, null=True)
+
+    # Paso 3
+    principio_funcionamiento = models.TextField("aaaaaaaaaaaaaaaaa", blank=True, null=True)
+
 
     def save(self, *args, **kwargs):
         if self.pk:  # Si es una edición

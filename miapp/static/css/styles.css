@@ -559,3 +559,19 @@ h2.text-danger {
     font-size: 18px !important;
     margin-bottom: 20px !important;
 }
+.sub-section {
+    margin-bottom: 20px;
+}
+
+.sub-header {
+    background-color: #ff0000;
+    color: white;
+    padding: 10px 15px;
+    border-radius: 5px;
+}
+
+.sub-content {
+    padding: 10px;
+    border: 1px solid #ff0000;
+    border-radius: 5px;
+}
