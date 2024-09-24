@@ -6,9 +6,9 @@ from googleapiclient.discovery import build
 from .models import MiembroEquipo, Porque
 from django.utils.timezone import now
 
-
 def porque_view(request, pk=None):
-    SERVICE_ACCOUNT_FILE = 'C:\\Users\\ccu\\Desktop\\Proyecto\\Random\\json.json'
+    # Configuración de Google Sheets API
+    SERVICE_ACCOUNT_FILE = 'C:\\Users\\Diego Gajardo\\Desktop\\Proyecto-Web-Django\\json.json'
     SCOPES = ['https://www.googleapis.com/auth/spreadsheets']
     SPREADSHEET_ID = '1EQxXtEN6arH3AW_7-3AQ0YVf6Q6HXUNth2y1Oy-oVHM'
 
@@ -17,34 +17,53 @@ def porque_view(request, pk=None):
     sheet = service.spreadsheets()
 
     def obtener_opciones(rango):
+        """Función para obtener las opciones desde Google Sheets."""
         result = sheet.values().get(spreadsheetId=SPREADSHEET_ID, range=rango).execute()
         return [opcion[0] for opcion in result.get('values', []) if opcion]
 
+    # Obtener las opciones de Google Sheets
     opciones_area = obtener_opciones('Opciones!A2:A')
     opciones_subarea = obtener_opciones('Opciones!B2:B')
     opciones_maquina = obtener_opciones('Opciones!C2:C')
 
+    # Obtener la instancia de Porque si pk es proporcionado
     porque_instance = get_object_or_404(Porque, pk=pk) if pk else None
 
     if request.method == 'POST':
         form = PorqueForm(request.POST, request.FILES, instance=porque_instance)
 
         if form.is_valid():
-            porque_instance = form.save(commit=False)  # Guardamos la instancia, pero no el ManyToMany aún
-
+            # Guardar los datos del formulario, incluyendo los "5 porqués"
+            porque_instance = form.save(commit=False)
+            
+            # Guardar la fecha de inicio si es la primera vez
             if not porque_instance.fecha_inicio:
-                # Solo establecer la fecha de inicio si no ha sido establecida previamente
                 porque_instance.fecha_inicio = now().date()
 
-            porque_instance.save()  # Guardamos la instancia para generar un ID si es nuevo
-
-            form.save_m2m()  # Guardamos las relaciones ManyToMany como miembros_equipo
+            # Guardar el campo de causas raíz
+            causas_raiz = [
+                {
+                    "porque1": request.POST.get("porque1"),
+                    "validado1": request.POST.get("validado1") == "on",
+                    "porque2": request.POST.get("porque2"),
+                    "validado2": request.POST.get("validado2") == "on",
+                    "porque3": request.POST.get("porque3"),
+                    "validado3": request.POST.get("validado3") == "on",
+                    "porque4": request.POST.get("porque4"),
+                    "validado4": request.POST.get("validado4") == "on",
+                    "porque5": request.POST.get("porque5"),
+                    "validado5": request.POST.get("validado5") == "on",
+                }
+            ]
+            porque_instance.causas_raiz = causas_raiz
+            porque_instance.save()
+            form.save_m2m()
 
             if 'guardar_primera_parte' in request.POST:
                 messages.success(request, 'Primera parte guardada con éxito. Ahora puedes completar el Paso 1.')
                 return redirect('porque', pk=porque_instance.pk)
             else:
-                enviar_a_google_sheets(porque_instance)  # Enviar datos a Google Sheets al guardar completo
+                enviar_a_google_sheets(porque_instance)
                 messages.success(request, 'Formulario completo guardado con éxito.')
                 return redirect('porque', pk=porque_instance.pk)
         else:
@@ -67,11 +86,10 @@ def porque_view(request, pk=None):
 
     return render(request, 'porque/porque.html', context)
 
-
-
 def enviar_a_google_sheets(porque_instance):
+    """Función para enviar datos a Google Sheets."""
     try:
-        SERVICE_ACCOUNT_FILE = 'C:\\Users\\ccu\\Desktop\\Proyecto\\Random\\json.json'
+        SERVICE_ACCOUNT_FILE = 'C:\\Users\\Diego Gajardo\\Desktop\\Proyecto-Web-Django\\json.json'
         SCOPES = ['https://www.googleapis.com/auth/spreadsheets']
         SPREADSHEET_ID = '1EQxXtEN6arH3AW_7-3AQ0YVf6Q6HXUNth2y1Oy-oVHM'
         RANGE_NAME = 'porque!A2'
@@ -80,8 +98,8 @@ def enviar_a_google_sheets(porque_instance):
         service = build('sheets', 'v4', credentials=creds)
         sheet = service.spreadsheets()
 
-        fecha_inicio_str = porque_instance.fecha_inicio.isoformat()
-        fecha_cierre_str = porque_instance.fecha_cierre.isoformat()
+        fecha_inicio_str = porque_instance.fecha_inicio.isoformat() if porque_instance.fecha_inicio else ''
+        fecha_cierre_str = porque_instance.fecha_cierre.isoformat() if porque_instance.fecha_cierre else ''
 
         miembros_equipo_str = ', '.join([miembro.nombre for miembro in porque_instance.miembros_equipo.all()])
 
@@ -100,6 +118,7 @@ def enviar_a_google_sheets(porque_instance):
                 porque_instance.kpi_secundario,
                 fecha_inicio_str,
                 fecha_cierre_str,
+                porque_instance.causas_raiz,
             ],
         ]
 
