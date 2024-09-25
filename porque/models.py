@@ -17,7 +17,7 @@ class Porque(models.Model):
     fecha_inicio = models.DateField(auto_now_add=True, blank=True, null=True)
     fecha_cierre = models.DateField(blank=True, null=True)
 
-    # Paso 2
+    # Paso 1
     que_ocurre = models.TextField("¿Qué ocurre? ¿En qué parte de la máquina o material se visualiza el problema?", blank=True, null=True)
     como_ocurre = models.TextField("¿Cómo ocurre? Describir desde el punto de vista físico el mecanismo de acción visibilizado en el momento.", blank=True, null=True)
     donde_ocurre = models.TextField("¿Dónde ocurre? Producto, equipo, zona de la máquina, etc.", blank=True, null=True)
@@ -41,7 +41,7 @@ class Porque(models.Model):
     falla_funcional = models.TextField("Falla funcional", blank=True, null=True)
     imagen_falla_funcional = models.ImageField(upload_to='imagenes_fallas/', blank=True, null=True)
 
-    # Paso 3
+    # Paso 2
     principio_funcionamiento = models.TextField("Comprender el principio de funcionamiento de la máquina o proceso, incluyendo estándares y parámetros de trabajo", blank=True, null=True)
     imagen_funcionamiento = models.ImageField(upload_to='imagenes_funcionamiento/', blank=True, null=True)
     condiciones_basicas = models.TextField("Verificar condiciones básicas definidas e identificar desviaciones que impacten en el problema", blank=True, null=True)
@@ -98,7 +98,7 @@ class Porque(models.Model):
     )
 
     modo_falla = models.TextField("El modo de falla corresponde al evento o situación que causa la falla funcional. Ej: presión inestable por válvula rota, inspector detecta elemento extraño pero no lo rechaza, inspector no detecta elemento extraño, sulfatación de sensor de seguridad, etc.", blank=True, null=True)
-    imagen_falla = models.ImageField(upload_to='imagenes_funcionamiento/', blank=True, null=True)
+    imagen_falla = models.ImageField(upload_to='imagenes_falla/', blank=True, null=True)
 
     # Guardar los "5 por qué" como un JSON
     causas_raiz = models.JSONField(default=list, blank=True, null=True)

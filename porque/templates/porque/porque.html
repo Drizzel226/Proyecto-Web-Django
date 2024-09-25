@@ -221,7 +221,7 @@
                     </div>
                 </div>
 
-                <!-- Bloque 3: Restablecimiento de condiciones básicas y verificación de herramientas -->
+                <!-- Bloque 2: Restablecimiento de condiciones básicas y verificación de herramientas -->
                 <div class="sub-section" style="margin-bottom: 20px;">
                     <div class="sub-header" style="background-color: #e6007e; color: white; padding: 10px 15px; border-radius: 5px;">
                         <h3 style="margin: 0;">Restablecimiento de condiciones básicas y verificación de herramientas</h3>
@@ -285,48 +285,167 @@
         </div>
 
         <!-- Sección Paso 3: Causa Raíz -->
-        <div id="paso3-section" class="recuadro-paso mt-4" style="border: 1px solid #FFC800;">
-            <div class="paso-header" style="background-color: #FFC800; color: white; padding: 10px 15px; border-radius: 5px;">
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            <div id="paso3-section" class="recuadro-paso">
+        <div class="paso-header">
+            <h2 class="collapsible" onclick="toggleVisibility('contenido-paso3')">
+                <span style="margin-right: 10px;">&#x25BC;</span> Paso 3: Causa Raíz
+            </h2>
+        </div>
+        <div id="contenido-paso3">
+            <table class="table" id="causa-raiz-table">
+                <thead>
+                    <tr>
+                        <th>Modo de Falla</th>
+                        <th>¿POR QUÉ? (1)</th>
+                        <th></th>
+                        <th>¿POR QUÉ? (2)</th>
+                        <th></th>
+                        <th>¿POR QUÉ? (3)</th>
+                        <th></th>
+                        <th>¿POR QUÉ? (4)</th>
+                        <th></th>
+                        <th>¿POR QUÉ? (5)</th>
+                        <th></th>
+                        <th>Causa Raíz</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><textarea class="form-control" name="modo_falla"></textarea></td>
+                        <td><textarea class="form-control" name="porque1"></textarea></td>
+                        <td class="validacion-celda" onclick="cambiarColor(this)"></td>
+                        <td><textarea class="form-control" name="porque2"></textarea></td>
+                        <td class="validacion-celda" onclick="cambiarColor(this)"></td>
+                        <td><textarea class="form-control" name="porque3"></textarea></td>
+                        <td class="validacion-celda" onclick="cambiarColor(this)"></td>
+                        <td><textarea class="form-control" name="porque4"></textarea></td>
+                        <td class="validacion-celda" onclick="cambiarColor(this)"></td>
+                        <td><textarea class="form-control" name="porque5"></textarea></td>
+                        <td class="validacion-celda" onclick="cambiarColor(this)"></td>
+                        <td><textarea class="form-control" name="causa_raiz"></textarea></td>
+                    </tr>
+                </tbody>
+            </table>
+            <button type="button" class="btn-success" onclick="agregarFila()">Agregar Fila</button>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/autosize.js/4.0.2/autosize.min.js"></script>
+    <script>
+        function cambiarColor(celda) {
+            if (celda.style.backgroundColor === 'white' || celda.style.backgroundColor === '') {
+                celda.style.backgroundColor = '#28a745';
+            } else if (celda.style.backgroundColor === 'rgb(40, 167, 69)') {
+                celda.style.backgroundColor = '#dc3545';
+            } else {
+                celda.style.backgroundColor = 'white';
+            }
+        }
+
+        function agregarFila() {
+            var fila = `
+            <tr>
+                <td><textarea class="form-control" name="modo_falla"></textarea></td>
+                <td><textarea class="form-control" name="porque1"></textarea></td>
+                <td class="validacion-celda" onclick="cambiarColor(this)"></td>
+                <td><textarea class="form-control" name="porque2"></textarea></td>
+                <td class="validacion-celda" onclick="cambiarColor(this)"></td>
+                <td><textarea class="form-control" name="porque3"></textarea></td>
+                <td class="validacion-celda" onclick="cambiarColor(this)"></td>
+                <td><textarea class="form-control" name="porque4"></textarea></td>
+                <td class="validacion-celda" onclick="cambiarColor(this)"></td>
+                <td><textarea class="form-control" name="porque5"></textarea></td>
+                <td class="validacion-celda" onclick="cambiarColor(this)"></td>
+                <td><textarea class="form-control" name="causa_raiz"></textarea></td>
+            </tr>`;
+            document.querySelector('#causa-raiz-table tbody').insertAdjacentHTML('beforeend', fila);
+            autosize(document.querySelectorAll('.form-control'));
+        }
+
+        function toggleVisibility(id) {
+            var element = document.getElementById(id);
+            element.style.display = element.style.display === 'none' ? 'block' : 'none';
+        }
+
+        // Inicializar autosize en todos los textareas
+        autosize(document.querySelectorAll('.form-control'));
+    </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        <!-- Sección Paso 4: Contramedidas y Seguimiento -->
+        <div id="paso3-section" class="recuadro-paso mt-4" style="border: 1px solid #00C851;">
+            <div class="paso-header" style="background-color: #00C851; color: white; padding: 10px 15px; border-radius: 5px;">
                 <h2 class="collapsible" style="cursor: pointer; margin: 0;" onclick="toggleVisibility('contenido-paso3')">
-                    <span style="margin-right: 10px;">&#x25BC;</span> Paso 3: Causa Raíz
+                    <span style="margin-right: 10px;">&#x25BC;</span> Paso 4: Contramedidas y Seguimiento
                 </h2>
             </div>
-            <div id="contenido-paso3">
-                <div class="sub-section" style="margin-bottom: 20px;">
-                    <div class="sub-content" style="padding: 10px; border: 1px solid #FFC800; border-radius: 5px;">
-                        <table class="table table-bordered" id="causa-raiz-table">
-                            <thead>
-                                <tr>
-                                    <th>Por qué 1 ?</th>
-                                    <th>Validado</th>
-                                    <th>Por qué 2?</th>
-                                    <th>Validado</th>
-                                    <th>Por qué 3?</th>
-                                    <th>Validado</th>
-                                    <th>Por qué 4 ?</th>
-                                    <th>Validado</th>
-                                    <th>Por qué 5 ?</th>
-                                    <th>Validado</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td><input type="text" class="form-control" name="porque1"></td>
-                                    <td><input type="checkbox" name="validado1"></td>
-                                    <td><input type="text" class="form-control" name="porque2"></td>
-                                    <td><input type="checkbox" name="validado2"></td>
-                                    <td><input type="text" class="form-control" name="porque3"></td>
-                                    <td><input type="checkbox" name="validado3"></td>
-                                    <td><input type="text" class="form-control" name="porque4"></td>
-                                    <td><input type="checkbox" name="validado4"></td>
-                                    <td><input type="text" class="form-control" name="porque5"></td>
-                                    <td><input type="checkbox" name="validado5"></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                        <button type="button" class="btn btn-success" onclick="agregarFila()">Agregar Fila</button>
-                    </div>
-                </div>
+        </div>
+
+
+        <!-- Sección Paso 5: Estandarización y Expansión -->
+        <div id="paso3-section" class="recuadro-paso mt-4" style="border: 1px solid #D86B20;">
+            <div class="paso-header" style="background-color: #D86B20; color: white; padding: 10px 15px; border-radius: 5px;">
+                <h2 class="collapsible" style="cursor: pointer; margin: 0;" onclick="toggleVisibility('contenido-paso3')">
+                    <span style="margin-right: 10px;">&#x25BC;</span> Paso 5: Estandarización y Expansión
+                </h2>
             </div>
         </div>
         {% endif %} <!-- Este es el cierre del "if" que se abrió al principio -->

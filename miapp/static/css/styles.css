@@ -575,3 +575,50 @@ h2.text-danger {
     border: 1px solid #ff0000;
     border-radius: 5px;
 }
+.recuadro-paso {
+    border: 1px solid #FFC800;
+    margin-top: 20px;
+}
+.paso-header {
+    background-color: #FFC800;
+    color: white;
+    padding: 10px 15px;
+    border-radius: 5px 5px 0 0;
+}
+.collapsible {
+    cursor: pointer;
+    margin: 0;
+}
+.table {
+    width: 100%;
+    border-collapse: collapse;
+}
+.table th, .table td {
+    border: 1px solid #ddd;
+    padding: 0;
+    vertical-align: middle;
+}
+.form-control {
+    width: 100%;
+    min-height: 35px;
+    border: none;
+    padding: 5px;
+    box-sizing: border-box;
+    resize: none;
+    overflow: hidden;
+}
+.validacion-celda {
+    width: 20px;
+    min-height: 35px;
+    cursor: pointer;
+    background-color: white;
+    transition: background-color 0.3s ease;
+}
+.btn-success {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    margin-top: 10px;
+    cursor: pointer;
+}
