@@ -312,93 +312,68 @@
 
 
 
-
-            <div id="paso3-section" class="recuadro-paso">
-        <div class="paso-header">
-            <h2 class="collapsible" onclick="toggleVisibility('contenido-paso3')">
-                <span style="margin-right: 10px;">&#x25BC;</span> Paso 3: Causa Raíz
-            </h2>
-        </div>
-        <div id="contenido-paso3">
-            <table class="table" id="causa-raiz-table">
-                <thead>
-                    <tr>
-                        <th>Modo de Falla</th>
-                        <th>¿POR QUÉ? (1)</th>
-                        <th></th>
-                        <th>¿POR QUÉ? (2)</th>
-                        <th></th>
-                        <th>¿POR QUÉ? (3)</th>
-                        <th></th>
-                        <th>¿POR QUÉ? (4)</th>
-                        <th></th>
-                        <th>¿POR QUÉ? (5)</th>
-                        <th></th>
-                        <th>Causa Raíz</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><textarea class="form-control" name="modo_falla"></textarea></td>
-                        <td><textarea class="form-control" name="porque1"></textarea></td>
-                        <td class="validacion-celda" onclick="cambiarColor(this)"></td>
-                        <td><textarea class="form-control" name="porque2"></textarea></td>
-                        <td class="validacion-celda" onclick="cambiarColor(this)"></td>
-                        <td><textarea class="form-control" name="porque3"></textarea></td>
-                        <td class="validacion-celda" onclick="cambiarColor(this)"></td>
-                        <td><textarea class="form-control" name="porque4"></textarea></td>
-                        <td class="validacion-celda" onclick="cambiarColor(this)"></td>
-                        <td><textarea class="form-control" name="porque5"></textarea></td>
-                        <td class="validacion-celda" onclick="cambiarColor(this)"></td>
-                        <td><textarea class="form-control" name="causa_raiz"></textarea></td>
-                    </tr>
-                </tbody>
-            </table>
-            <button type="button" class="btn-success" onclick="agregarFila()">Agregar Fila</button>
-        </div>
-    </div>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/autosize.js/4.0.2/autosize.min.js"></script>
-    <script>
-        function cambiarColor(celda) {
-            if (celda.style.backgroundColor === 'white' || celda.style.backgroundColor === '') {
-                celda.style.backgroundColor = '#28a745';
-            } else if (celda.style.backgroundColor === 'rgb(40, 167, 69)') {
-                celda.style.backgroundColor = '#dc3545';
-            } else {
-                celda.style.backgroundColor = 'white';
-            }
-        }
-
+        <div id="paso3-section" class="recuadro-paso mt-4" style="border: 1px solid #FFC800;">
+            <div class="paso-header" style="background-color: #FFC800; color: white; padding: 10px 15px; border-radius: 5px;">
+                <h2 class="collapsible" style="cursor: pointer; margin: 0;" onclick="toggleVisibility('contenido-paso3')">
+                    <span style="margin-right: 10px;">▼</span> Paso 3: Causa Raíz
+                </h2>
+            </div>
+            <div id="contenido-paso3">
+                <table class="table table-bordered" id="causa-raiz-table">
+                    <thead>
+                        <tr>
+                            <th>Modo de Falla</th>
+                            <th>¿POR QUÉ? (1)</th>
+                            <th></th>
+                            <th>¿POR QUÉ? (2)</th>
+                            <th></th>
+                            <th>¿POR QUÉ? (3)</th>
+                            <th></th>
+                            <th>¿POR QUÉ? (4)</th>
+                            <th></th>
+                            <th>¿POR QUÉ? (5)</th>
+                            <th></th>
+                            <th id="porque6-header" style="display: none;">¿POR QUÉ? (6)</th>
+                            <th id="porque6-validacion" style="display: none;"></th>
+                            <th>Causa Raíz</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><textarea class="form-control" name="modo_falla[]"></textarea></td>
+                            <td><textarea class="form-control" name="porque1[]"></textarea></td>
+                            <td class="validacion-celda" onclick="cambiarColor(this)"></td>
+                            <td><textarea class="form-control" name="porque2[]"></textarea></td>
+                            <td class="validacion-celda" onclick="cambiarColor(this)"></td>
+                            <td><textarea class="form-control" name="porque3[]"></textarea></td>
+                            <td class="validacion-celda" onclick="cambiarColor(this)"></td>
+                            <td><textarea class="form-control" name="porque4[]"></textarea></td>
+                            <td class="validacion-celda" onclick="cambiarColor(this)"></td>
+                            <td><textarea class="form-control" name="porque5[]"></textarea></td>
+                            <td class="validacion-celda" onclick="cambiarColor(this)"></td>
+                            <td id="porque6-cell" style="display: none;"><textarea class="form-control" name="porque6[]"></textarea></td>
+                            <td id="porque6-validacion-cell" class="validacion-celda" onclick="cambiarColor(this)" style="display: none;"></td>
+                            <td><textarea class="form-control" name="causa_raiz[]"></textarea></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <button type="button" class="btn btn-success" onclick="agregarFila()">Agregar Fila</button>
+                <button type="button" class="btn btn-secondary" id="togglePorque6">Agregar ¿POR QUÉ? (6)</button>
         
-        function agregarFila() {
-            var fila = `
-            <tr>
-                <td><textarea class="form-control" name="modo_falla"></textarea></td>
-                <td><textarea class="form-control" name="porque1"></textarea></td>
-                <td class="validacion-celda" onclick="cambiarColor(this)"></td>
-                <td><textarea class="form-control" name="porque2"></textarea></td>
-                <td class="validacion-celda" onclick="cambiarColor(this)"></td>
-                <td><textarea class="form-control" name="porque3"></textarea></td>
-                <td class="validacion-celda" onclick="cambiarColor(this)"></td>
-                <td><textarea class="form-control" name="porque4"></textarea></td>
-                <td class="validacion-celda" onclick="cambiarColor(this)"></td>
-                <td><textarea class="form-control" name="porque5"></textarea></td>
-                <td class="validacion-celda" onclick="cambiarColor(this)"></td>
-                <td><textarea class="form-control" name="causa_raiz"></textarea></td>
-            </tr>`;
-            document.querySelector('#causa-raiz-table tbody').insertAdjacentHTML('beforeend', fila);
-            autosize(document.querySelectorAll('.form-control'));
-        }
+                <div id="bloque-extra" style="display: none; margin-top: 20px; padding: 10px; background-color: #4B0082; color: white;">
+                    <h4>Bloque Adicional</h4>
+                    <p>Este es un bloque adicional que aparece después del quinto "por qué" y antes de la "Causa Raíz".</p>
+                </div>
+            </div>
+        </div>
+        
 
-        function toggleVisibility(id) {
-            var element = document.getElementById(id);
-            element.style.display = element.style.display === 'none' ? 'block' : 'none';
-        }
 
-        // Inicializar autosize en todos los textareas
-        autosize(document.querySelectorAll('.form-control'));
-    </script>
+
+
+
+
+
 
 
 
@@ -535,27 +510,104 @@
         }
     }
 
-    function agregarFila() {
-        var fila = `<tr>
-            <td><input type="text" class="form-control" name="porque1"></td>
-            <td><input type="checkbox" name="validado1"></td>
-            <td><input type="text" class="form-control" name="porque2"></td>
-            <td><input type="checkbox" name="validado2"></td>
-            <td><input type="text" class="form-control" name="porque3"></td>
-            <td><input type="checkbox" name="validado3"></td>
-            <td><input type="text" class="form-control" name="porque4"></td>
-            <td><input type="checkbox" name="validado4"></td>
-            <td><input type="text" class="form-control" name="porque5"></td>
-            <td><input type="checkbox" name="validado5"></td>
-        </tr>`;
-        $('#causa-raiz-table tbody').append(fila);
-    }
-
     // Por defecto, hacer que el contenido esté colapsado al cargar la página
     document.addEventListener("DOMContentLoaded", function() {
         toggleVisibility('contenido-paso1');
         toggleVisibility('contenido-paso2');
         toggleVisibility('contenido-paso3');
     });
+
+
+
+    function cambiarColor(celda) {
+        if (celda.style.backgroundColor === 'white' || celda.style.backgroundColor === '') {
+            celda.style.backgroundColor = '#28a745';
+        } else if (celda.style.backgroundColor === 'rgb(40, 167, 69)') {
+            celda.style.backgroundColor = '#dc3545';
+        } else {
+            celda.style.backgroundColor = 'white';
+        }
+    }
+
+    function agregarFila() {
+        var fila = `
+        <tr>
+            <td><textarea class="form-control" name="modo_falla[]"></textarea></td>
+            <td><textarea class="form-control" name="porque1[]"></textarea></td>
+            <td class="validacion-celda" onclick="cambiarColor(this)"></td>
+            <td><textarea class="form-control" name="porque2[]"></textarea></td>
+            <td class="validacion-celda" onclick="cambiarColor(this)"></td>
+            <td><textarea class="form-control" name="porque3[]"></textarea></td>
+            <td class="validacion-celda" onclick="cambiarColor(this)"></td>
+            <td><textarea class="form-control" name="porque4[]"></textarea></td>
+            <td class="validacion-celda" onclick="cambiarColor(this)"></td>
+            <td><textarea class="form-control" name="porque5[]"></textarea></td>
+            <td class="validacion-celda" onclick="cambiarColor(this)"></td>
+            <td><textarea class="form-control" name="causa_raiz[]"></textarea></td>
+        </tr>`;
+        document.querySelector('#causa-raiz-table tbody').insertAdjacentHTML('beforeend', fila);
+        autosize(document.querySelectorAll('.form-control'));
+    }
+
+    function toggleVisibility(id) {
+        var element = document.getElementById(id);
+        element.style.display = element.style.display === 'none' ? 'block' : 'none';
+    }
+
+    // Inicializar autosize en todos los textareas
+    autosize(document.querySelectorAll('.form-control'));
+
+
+    function toggleVisibility(id) {
+        var element = document.getElementById(id);
+        var icon = element.previousElementSibling.querySelector('span');
+        if (element.style.display === "none") {
+            element.style.display = "block";
+            icon.innerHTML = "▼";
+        } else {
+            element.style.display = "none";
+            icon.innerHTML = "▶";
+        }
+    }
+
+    function cambiarColor(celda) {
+        if (celda.style.backgroundColor === 'white' || celda.style.backgroundColor === '') {
+            celda.style.backgroundColor = '#28a745';
+        } else if (celda.style.backgroundColor === 'rgb(40, 167, 69)') {
+            celda.style.backgroundColor = '#dc3545';
+        } else {
+            celda.style.backgroundColor = 'white';
+        }
+    }
+
+
+
+    document.getElementById("togglePorque6").addEventListener("click", function() {
+        var porque6Header = document.getElementById("porque6-header");
+        var porque6Validacion = document.getElementById("porque6-validacion");
+        var porque6Cells = document.querySelectorAll(".porque6-cell, .porque6-validacion-cell");
+        var bloqueExtra = document.getElementById("bloque-extra");
+
+        if (porque6Header.style.display === "none") {
+            porque6Header.style.display = "table-cell";
+            porque6Validacion.style.display = "table-cell";
+            porque6Cells.forEach(cell => cell.style.display = "table-cell");
+            bloqueExtra.style.display = "block";
+            this.textContent = "Ocultar ¿POR QUÉ? (6)";
+        } else {
+            porque6Header.style.display = "none";
+            porque6Validacion.style.display = "none";
+            porque6Cells.forEach(cell => cell.style.display = "none");
+            bloqueExtra.style.display = "none";
+            this.textContent = "Agregar ¿POR QUÉ? (6)";
+        }
+    });
+
+
+    // Por defecto, hacer que el contenido esté colapsado al cargar la página
+    document.addEventListener("DOMContentLoaded", function() {
+        toggleVisibility('contenido-paso3');
+    });
+
 </script>   
 {% endblock %}
