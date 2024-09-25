@@ -2,7 +2,7 @@ from google.oauth2 import service_account
 from googleapiclient.discovery import build
 from .models import MiembroEquipo
 
-SERVICE_ACCOUNT_FILE = 'C:\\Users\\Diego Gajardo\\Desktop\\Proyecto-Web-Django\\json.json'
+SERVICE_ACCOUNT_FILE = r'C:\Users\ccu\Desktop\metodologiaups\json.json'
 SCOPES = ['https://www.googleapis.com/auth/spreadsheets']
 SPREADSHEET_ID = '1EQxXtEN6arH3AW_7-3AQ0YVf6Q6HXUNth2y1Oy-oVHM'
 RANGE_NAME = 'Usuarios!A2:C'

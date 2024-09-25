@@ -9,7 +9,7 @@ from django.utils.timezone import now
 
 def porque_view(request, pk=None):
     # Configuración de Google Sheets API
-    SERVICE_ACCOUNT_FILE = 'C:\\Users\\Diego Gajardo\\Desktop\\Proyecto-Web-Django\\json.json'
+    SERVICE_ACCOUNT_FILE = r'C:\Users\ccu\Desktop\metodologiaups\json.json'
     SCOPES = ['https://www.googleapis.com/auth/spreadsheets']
     SPREADSHEET_ID = '1EQxXtEN6arH3AW_7-3AQ0YVf6Q6HXUNth2y1Oy-oVHM'
 
@@ -92,7 +92,7 @@ def porque_view(request, pk=None):
 def enviar_a_google_sheets(porque_instance):
     """Función para enviar datos a Google Sheets."""
     try:
-        SERVICE_ACCOUNT_FILE = 'C:\\Users\\Diego Gajardo\\Desktop\\Proyecto-Web-Django\\json.json'
+        SERVICE_ACCOUNT_FILE = r'C:\Users\ccu\Desktop\metodologiaups\json.json'
         SCOPES = ['https://www.googleapis.com/auth/spreadsheets']
         SPREADSHEET_ID = '1EQxXtEN6arH3AW_7-3AQ0YVf6Q6HXUNth2y1Oy-oVHM'
         RANGE_NAME = 'porque!A2'
