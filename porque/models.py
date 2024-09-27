@@ -100,15 +100,17 @@ class Porque(models.Model):
     modo_falla = models.TextField("El modo de falla corresponde al evento o situación que causa la falla funcional. Ej: presión inestable por válvula rota, inspector detecta elemento extraño pero no lo rechaza, inspector no detecta elemento extraño, sulfatación de sensor de seguridad, etc.", blank=True, null=True)
     imagen_falla = models.ImageField(upload_to='imagenes_falla/', blank=True, null=True)
 
-    # Guardar los "5 por qué" como un JSON
-    causas_raiz = models.JSONField(default=list, blank=True, null=True)
-
-    def save(self, *args, **kwargs):
-        if self.pk:  # Si es una edición
-            original = Porque.objects.get(pk=self.pk)
-            if original.fecha_inicio and self.fecha_inicio != original.fecha_inicio:
-                raise ValueError("La fecha de inicio no puede ser cambiada una vez establecida.")
-        super().save(*args, **kwargs)
+    modo_falla = models.TextField("Modo de Falla", blank=True, null=True)
+    porque1 = models.TextField("¿POR QUÉ? (1)", blank=True, null=True)
+    validado1 = models.BooleanField("Validado (1)", default=False)  
+    porque2 = models.TextField("¿POR QUÉ? (2)", blank=True, null=True)
+    validado2 = models.BooleanField("Validado (2)", default=False)
+    porque3 = models.TextField("¿POR QUÉ? (3)", blank=True, null=True)
+    validado3 = models.BooleanField("Validado (3)", default=False)
+    porque4 = models.TextField("¿POR QUÉ? (4)", blank=True, null=True)
+    validado4 = models.BooleanField("Validado (4)", default=False)
+    porque5 = models.TextField("¿POR QUÉ? (5)", blank=True, null=True)
+    validado5 = models.BooleanField("Validado (5)", default=False)
 
 
 class MiembroEquipo(models.Model):

@@ -10,16 +10,17 @@ class PorqueForm(forms.ModelForm):
     class Meta:
         model = Porque
         fields = [
-            'categoria', 'subcategoria', 'area', 'subarea', 'maquina', 'miembros_equipo', 
+            'categoria', 'subcategoria', 'area', 'subarea', 'maquina', 'miembros_equipo',
             'pilar', 'impacto', 'kpi_iceo', 'kpi_secundario', 'fecha_cierre',
-            'que_ocurre', 'como_ocurre', 'donde_ocurre', 'cuando_ocurre', 'quien_presente', 
+            'que_ocurre', 'como_ocurre', 'donde_ocurre', 'cuando_ocurre', 'quien_presente',
             'senal_antes', 'descripcion_senal', 'falla_funcional', 'imagen_falla_funcional',
             'principio_funcionamiento', 'imagen_funcionamiento', 'condiciones_basicas',
             'tarjetas_atrasadas', 'lila_asociado', 'ejecuto_lila', 'mantenimiento_no_ejecutado', 'materiales_calidad',
-            'modo_falla', 'imagen_falla', 'causas_raiz'
+            'modo_falla', 'porque1', 'validado1', 'porque2', 'validado2',
+            'porque3', 'validado3', 'porque4', 'validado4', 'porque5', 'validado5',
         ]
         widgets = {
-            'categoria': forms.TextInput(attrs={'class': 'form-control'}),
+                        'categoria': forms.TextInput(attrs={'class': 'form-control'}),
             'subcategoria': forms.TextInput(attrs={'class': 'form-control'}),
             'area': forms.TextInput(attrs={'class': 'form-control'}),
             'subarea': forms.TextInput(attrs={'class': 'form-control'}),
@@ -48,6 +49,17 @@ class PorqueForm(forms.ModelForm):
             'materiales_calidad': forms.RadioSelect(),
             'modo_falla': forms.Textarea(attrs={'class': 'form-control'}),
             'imagen_falla': forms.ClearableFileInput(attrs={'class': 'form-control'}),
+            'modo_falla': forms.Textarea(attrs={'class': 'form-control'}),
+            'porque1': forms.Textarea(attrs={'class': 'form-control'}),
+            'porque2': forms.Textarea(attrs={'class': 'form-control'}),
+            'porque3': forms.Textarea(attrs={'class': 'form-control'}),
+            'porque4': forms.Textarea(attrs={'class': 'form-control'}),
+            'porque5': forms.Textarea(attrs={'class': 'form-control'}),
+            'validado1': forms.CheckboxInput(attrs={'class': 'validacion-celda'}),
+            'validado2': forms.CheckboxInput(attrs={'class': 'validacion-celda'}),
+            'validado3': forms.CheckboxInput(attrs={'class': 'validacion-celda'}),
+            'validado4': forms.CheckboxInput(attrs={'class': 'validacion-celda'}),
+            'validado5': forms.CheckboxInput(attrs={'class': 'validacion-celda'}),
         }
 
     def __init__(self, *args, **kwargs):

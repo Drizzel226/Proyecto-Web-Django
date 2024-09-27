@@ -9,7 +9,7 @@ from django.utils.timezone import now
 
 def porque_view(request, pk=None):
     # Configuración de Google Sheets API
-    SERVICE_ACCOUNT_FILE = r'C:\Users\ccu\Desktop\metodologiaups\json.json'
+    SERVICE_ACCOUNT_FILE = r'C:\Users\Diego Gajardo\Desktop\Proyecto-Web-Django\json.json'
     SCOPES = ['https://www.googleapis.com/auth/spreadsheets']
     SPREADSHEET_ID = '1EQxXtEN6arH3AW_7-3AQ0YVf6Q6HXUNth2y1Oy-oVHM'
 
@@ -40,6 +40,11 @@ def porque_view(request, pk=None):
             # Guardar la fecha de inicio si es la primera vez
             if not porque_instance.fecha_inicio:
                 porque_instance.fecha_inicio = now().date()
+                porque_instance.validado1 = form.cleaned_data.get('validado1')
+                porque_instance.validado2 = form.cleaned_data.get('validado2')
+                porque_instance.validado3 = form.cleaned_data.get('validado3')
+                porque_instance.validado4 = form.cleaned_data.get('validado4')
+                porque_instance.validado5 = form.cleaned_data.get('validado5')
 
             # Guardar el campo de causas raíz
             causas_raiz = [
@@ -88,11 +93,10 @@ def porque_view(request, pk=None):
     return render(request, 'porque/porque.html', context)
 
 
-
 def enviar_a_google_sheets(porque_instance):
     """Función para enviar datos a Google Sheets."""
     try:
-        SERVICE_ACCOUNT_FILE = r'C:\Users\ccu\Desktop\metodologiaups\json.json'
+        SERVICE_ACCOUNT_FILE = r'C:\Users\Diego Gajardo\Desktop\Proyecto-Web-Django\json.json'
         SCOPES = ['https://www.googleapis.com/auth/spreadsheets']
         SPREADSHEET_ID = '1EQxXtEN6arH3AW_7-3AQ0YVf6Q6HXUNth2y1Oy-oVHM'
         RANGE_NAME = 'porque!A2'
