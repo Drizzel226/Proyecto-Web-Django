@@ -1,11 +1,10 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from .forms import PorqueForm
+from .models import Porque, MiembroEquipo
 from django.contrib import messages
+from django.utils.timezone import now
 from google.oauth2 import service_account
 from googleapiclient.discovery import build
-from .models import MiembroEquipo, Porque
-from django.utils.timezone import now
-
 
 def porque_view(request, pk=None):
     # Configuración de Google Sheets API
@@ -34,9 +33,9 @@ def porque_view(request, pk=None):
         form = PorqueForm(request.POST, request.FILES, instance=porque_instance)
 
         if form.is_valid():
-            # Guardar los datos del formulario, incluyendo los "5 porqués"
+            # Guardar los datos del formulario
             porque_instance = form.save(commit=False)
-            
+
             # Guardar la fecha de inicio si es la primera vez
             if not porque_instance.fecha_inicio:
                 porque_instance.fecha_inicio = now().date()

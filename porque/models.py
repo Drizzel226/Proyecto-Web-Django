@@ -106,6 +106,8 @@ class Porque(models.Model):
     porque3 = models.TextField("¿POR QUÉ? (3)", blank=True, null=True)
     porque4 = models.TextField("¿POR QUÉ? (4)", blank=True, null=True)
     porque5 = models.TextField("¿POR QUÉ? (5)", blank=True, null=True)
+    porque6 = models.TextField("¿POR QUÉ? (6)", blank=True, null=True)
+    porque7 = models.TextField("¿POR QUÉ? (7)", blank=True, null=True)
     
 
     COLOR_CHOICES = [
@@ -120,6 +122,8 @@ class Porque(models.Model):
     color_validacion3 = models.CharField(max_length=10, choices=COLOR_CHOICES, default='white')
     color_validacion4 = models.CharField(max_length=10, choices=COLOR_CHOICES, default='white')
     color_validacion5 = models.CharField(max_length=10, choices=COLOR_CHOICES, default='white')
+    color_validacion6 = models.CharField(max_length=10, choices=COLOR_CHOICES, default='white')
+    color_validacion7 = models.CharField(max_length=10, choices=COLOR_CHOICES, default='white')
 
     Raiz = models.TextField("Raíz", blank=True, null=True)
 

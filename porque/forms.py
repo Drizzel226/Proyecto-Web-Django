@@ -24,6 +24,8 @@ class PorqueForm(forms.ModelForm):
             'porque3', 'color_validacion3',
             'porque4', 'color_validacion4',
             'porque5', 'color_validacion5',
+            'porque6', 'color_validacion6',
+            'porque7', 'color_validacion7',
 
             'Raiz',
         ]
@@ -67,11 +69,15 @@ class PorqueForm(forms.ModelForm):
             'porque3': forms.Textarea(attrs={'class': 'form-control'}),
             'porque4': forms.Textarea(attrs={'class': 'form-control'}),
             'porque5': forms.Textarea(attrs={'class': 'form-control'}),
+            'porque6': forms.Textarea(attrs={'class': 'form-control'}),
+            'porque7': forms.Textarea(attrs={'class': 'form-control'}),
             'color_validacion1': forms.HiddenInput(),
             'color_validacion2': forms.HiddenInput(),
             'color_validacion3': forms.HiddenInput(),
             'color_validacion4': forms.HiddenInput(),
             'color_validacion5': forms.HiddenInput(),
+            'color_validacion6': forms.HiddenInput(),
+            'color_validacion7': forms.HiddenInput(),
             'Raiz': forms.Textarea(attrs={'class': 'form-control'}),
         }
 
