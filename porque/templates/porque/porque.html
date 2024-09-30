@@ -268,8 +268,8 @@
                     <div class="sub-content" style="padding: 10px; border: 1px solid #e6007e; border-radius: 5px;">
                         <div class="form-row">
                             <div class="form-group col-md-12">
-                                {{ form.modo_falla.label_tag }}
-                                {{ form.modo_falla }}
+                                {{ form.modo_falla_paso2.label_tag }}
+                                {{ form.modo_falla_paso2 }}
                             </div>
                         </div>
                         <div class="form-row">
@@ -314,44 +314,95 @@
         <div id="paso3-section" class="recuadro-paso mt-4" style="border: 1px solid #FFC800;">
             <div class="paso-header" style="background-color: #FFC800; color: white; padding: 10px 15px; border-radius: 5px;">
                 <h2 class="collapsible" style="cursor: pointer; margin: 0;" onclick="toggleVisibility('contenido-paso3')">
-                    ▼ Paso 3: Causa Raíz
+                    <span style="margin-right: 10px;">&#x25BC;</span> Paso 3: Causa Raíz
                 </h2>
             </div>
             <div id="contenido-paso3">
-                <table class="table" id="causa-raiz-table">
-                    <thead>
-                        <tr>
-                            <th>Modo de Falla</th>
-                            <th>¿POR QUÉ? (1)</th>
-                            <th></th>
-                            <th>¿POR QUÉ? (2)</th>
-                            <th></th>
-                            <th>¿POR QUÉ? (3)</th>
-                            <th></th>
-                            <th>¿POR QUÉ? (4)</th>
-                            <th></th>
-                            <th>¿POR QUÉ? (5)</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>{{ form.modo_falla }}</td>
-                            <td>{{ form.porque1 }}</td>
-                            <td class="validacion-celda validacion-celda-1" onclick="cambiarColor(this)"></td>
-                            <td>{{ form.porque2 }}</td>
-                            <td class="validacion-celda validacion-celda-2" onclick="cambiarColor(this)"></td>
-                            <td>{{ form.porque3 }}</td>
-                            <td class="validacion-celda validacion-celda-3" onclick="cambiarColor(this)"></td>
-                            <td>{{ form.porque4 }}</td>
-                            <td class="validacion-celda validacion-celda-4" onclick="cambiarColor(this)"></td>
-                            <td>{{ form.porque5 }}</td>
-                            <td class="validacion-celda validacion-celda-5" onclick="cambiarColor(this)"></td>
-                        </tr>  
-                    </tbody>
+                <table>
+                  <tr>
+                    <th>Modo de Falla</th>
+                    <th>¿POR QUÉ? (1)</th>
+                    <th></th>
+                    <th>¿POR QUÉ? (2)</th>
+                    <th></th>
+                    <th>¿POR QUÉ? (3)</th>
+                    <th></th>
+                    <th>¿POR QUÉ? (4)</th>
+                    <th></th>
+                    <th>¿POR QUÉ? (5)</th>
+                    <th></th>
+                    <th>Raíz</th>
+                  </tr>
+                  <tr>
+                    <td>{{ form.modo_falla_paso3 }}</td>
+                    <td>{{ form.porque1 }}</td>
+                    <td class="color-cell form-control validacion-celda" data-color="{{ form.color_validacion1.value }}" onclick="changeColor(this, 'color_validacion1')">
+                        {{ form.color_validacion1 }}
+                    </td>
+                    <td>{{ form.porque2 }}</td>
+                    <td class="color-cell" data-color="{{ form.color_validacion2.value }}" onclick="changeColor(this, 'color_validacion2')">
+                      {{ form.color_validacion2 }}
+                    </td>
+                    <td>{{ form.porque3 }}</td>
+                    <td class="color-cell" data-color="{{ form.color_validacion3.value }}" onclick="changeColor(this, 'color_validacion3')">
+                      {{ form.color_validacion3 }}
+                    </td>
+                    <td>{{ form.porque4 }}</td>
+                    <td class="color-cell" data-color="{{ form.color_validacion4.value }}" onclick="changeColor(this, 'color_validacion4')">
+                      {{ form.color_validacion4 }}
+                    </td>
+                    <td>{{ form.porque5 }}</td>
+                    <td class="color-cell" data-color="{{ form.color_validacion5.value }}" onclick="changeColor(this, 'color_validacion5')">
+                      {{ form.color_validacion5 }}
+                    </td>
+                    <td>{{ form.Raiz }}</td>
+                  </tr>
                 </table>
-            </div>
-        </div>
+              </div>
+            </div> 
+              
+              
+              <script>
+              function changeColor(cell, inputId) {
+                const colors = ['white', 'green', 'red'];
+                let currentColor = cell.getAttribute('data-color');
+                let nextColorIndex = (colors.indexOf(currentColor) + 1) % colors.length;
+                let nextColor = colors[nextColorIndex];
+              
+                cell.style.backgroundColor = nextColor;
+                cell.setAttribute('data-color', nextColor);
+                document.getElementById('id_' + inputId).value = nextColor;
+                
+                // Actualizar el estado del checkbox de validación
+                let checkboxId = inputId.replace('color_validacion', 'validado');
+                let checkbox = document.getElementById('id_' + checkboxId);
+                checkbox.checked = (nextColor === 'green');
+              }
+              
+              // Aplicar colores iniciales
+              document.addEventListener('DOMContentLoaded', function() {
+                document.querySelectorAll('.color-cell').forEach(cell => {
+                  cell.style.backgroundColor = cell.getAttribute('data-color');
+                });
+              });
+              document.addEventListener("DOMContentLoaded", function() {
+        const modoFallaPaso2 = document.getElementById("id_modo_falla_paso2");
+        const modoFallaPaso3 = document.getElementById("id_modo_falla_paso3");
+
+        // Verificar que ambos campos existan
+        if (modoFallaPaso2 && modoFallaPaso3) {
+            // Copiar el valor del Paso 2 al Paso 3 al cargar la página
+            modoFallaPaso3.value = modoFallaPaso2.value;
+
+            // Escuchar cambios en el Paso 2 para actualizar automáticamente el Paso 3
+            modoFallaPaso2.addEventListener('input', function() {
+                modoFallaPaso3.value = modoFallaPaso2.value;
+            });
+        } else {
+            console.error('Campos modo_falla_paso2 o modo_falla_paso3 no encontrados');
+        }
+    });
+              </script>
 
 
 
@@ -425,6 +476,7 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
+
 <!-- Inicialización de Select2 y otros scripts -->
 <script type="text/javascript">
     $(document).ready(function() {
@@ -481,18 +533,28 @@
         $('#fecha_inicio').val(todayFormatted);
     });
 
-    function toggleVisibility(id) {
-        var content = document.getElementById(id);
-        var icon = content.previousElementSibling.querySelector('span');
 
+    function toggleVisibility(id) {
+    var content = document.getElementById(id);
+    
+    // Asegurarse de que el elemento existe antes de modificarlo
+    if (content) {
+        var icon = content.previousElementSibling.querySelector('span');
         if (content.style.display === "none") {
             content.style.display = "block";
-            icon.innerHTML = "&#x25BC;";  // Cambia el ícono a la flecha hacia abajo
+            if (icon) {
+                icon.innerHTML = "&#x25BC;";  // Cambia el ícono a la flecha hacia abajo
+            }
         } else {
             content.style.display = "none";
-            icon.innerHTML = "&#x25B6;";  // Cambia el ícono a la flecha hacia la derecha
+            if (icon) {
+                icon.innerHTML = "&#x25B6;";  // Cambia el ícono a la flecha hacia la derecha
+            }
         }
+    } else {
+        console.error("Elemento no encontrado: " + id);
     }
+}
 
     // Por defecto, hacer que el contenido esté colapsado al cargar la página
     document.addEventListener("DOMContentLoaded", function() {
@@ -518,7 +580,7 @@
         <tr>
             <td><textarea class="form-control" name="modo_falla[]"></textarea></td>
             <td><textarea class="form-control" name="porque1[]"></textarea></td>
-            <td class="validacion-celda" onclick="cambiarColor(this)"></td>
+            <td class="Validación (2)-celda" onclick="cambiarColor(this)"></td>
             <td><textarea class="form-control" name="porque2[]"></textarea></td>
             <td class="validacion-celda" onclick="cambiarColor(this)"></td>
             <td><textarea class="form-control" name="porque3[]"></textarea></td>
@@ -530,7 +592,7 @@
             <td><textarea class="form-control" name="causa_raiz[]"></textarea></td>
         </tr>`;
         document.querySelector('#causa-raiz-table tbody').insertAdjacentHTML('beforeend', fila);
-        autosize(document.querySelectorAll('.form-control'));
+ 
     }
 
     function toggleVisibility(id) {
@@ -538,8 +600,6 @@
         element.style.display = element.style.display === 'none' ? 'block' : 'none';
     }
 
-    // Inicializar autosize en todos los textareas
-    autosize(document.querySelectorAll('.form-control'));
 
 
     function toggleVisibility(id) {

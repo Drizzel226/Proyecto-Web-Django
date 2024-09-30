@@ -592,14 +592,20 @@ h2.text-danger {
     padding: 8px;
     vertical-align: top;
 }
-.form-control {
-    width: 100%;
-    padding: 5px;
+
+
+/* Estilo para las celdas de "¿POR QUÉ?" y de "Validación" */
+.form-control, .color-cell {
+    border: 1px solid var(--verde-claro);  /* Mismo borde verde para ambos */
+    border-radius: 5px;  /* Bordes redondeados */
+    padding: 10px;
+    box-sizing: border-box;  /* Asegura que el padding no aumente el tamaño */
 }
-.validacion-celda {
-    width: 20px;
-    height: 35px;
-    cursor: pointer;
-    background-color: white;
-    transition: background-color 0.3s ease;
+
+/* Específicamente para hacer las celdas de validación más angostas */
+.color-cell {
+    width: 8px;  /* Puedes ajustar el valor a lo que desees */
+    text-align: center;  /* Centrar el contenido */
 }
+
+

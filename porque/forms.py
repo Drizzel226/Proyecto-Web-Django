@@ -15,12 +15,20 @@ class PorqueForm(forms.ModelForm):
             'que_ocurre', 'como_ocurre', 'donde_ocurre', 'cuando_ocurre', 'quien_presente',
             'senal_antes', 'descripcion_senal', 'falla_funcional', 'imagen_falla_funcional',
             'principio_funcionamiento', 'imagen_funcionamiento', 'condiciones_basicas',
-            'tarjetas_atrasadas', 'lila_asociado', 'ejecuto_lila', 'mantenimiento_no_ejecutado', 'materiales_calidad',
-            'modo_falla', 'porque1', 'validado1', 'porque2', 'validado2',
-            'porque3', 'validado3', 'porque4', 'validado4', 'porque5', 'validado5',
+            'tarjetas_atrasadas', 'lila_asociado', 'ejecuto_lila', 'mantenimiento_no_ejecutado',
+            'materiales_calidad', 'modo_falla_paso2',
+
+            'modo_falla_paso3',
+            'porque1', 'color_validacion1',
+            'porque2', 'color_validacion2',
+            'porque3', 'color_validacion3',
+            'porque4', 'color_validacion4',
+            'porque5', 'color_validacion5',
+
+            'Raiz',
         ]
         widgets = {
-                        'categoria': forms.TextInput(attrs={'class': 'form-control'}),
+            'categoria': forms.TextInput(attrs={'class': 'form-control'}),
             'subcategoria': forms.TextInput(attrs={'class': 'form-control'}),
             'area': forms.TextInput(attrs={'class': 'form-control'}),
             'subarea': forms.TextInput(attrs={'class': 'form-control'}),
@@ -42,24 +50,29 @@ class PorqueForm(forms.ModelForm):
             'principio_funcionamiento': forms.Textarea(attrs={'class': 'form-control'}),
             'imagen_funcionamiento': forms.ClearableFileInput(attrs={'class': 'form-control'}),
             'condiciones_basicas': forms.Textarea(attrs={'class': 'form-control'}),
+            
             'tarjetas_atrasadas': forms.RadioSelect(),
             'lila_asociado': forms.RadioSelect(),
             'ejecuto_lila': forms.RadioSelect(),
             'mantenimiento_no_ejecutado': forms.RadioSelect(),
             'materiales_calidad': forms.RadioSelect(),
+            
             'modo_falla': forms.Textarea(attrs={'class': 'form-control'}),
             'imagen_falla': forms.ClearableFileInput(attrs={'class': 'form-control'}),
-            'modo_falla': forms.Textarea(attrs={'class': 'form-control'}),
+            'modo_falla_paso2': forms.Textarea(attrs={'class': 'form-control'}),
+
+            'modo_falla_paso3': forms.Textarea(attrs={'class': 'form-control'}),
             'porque1': forms.Textarea(attrs={'class': 'form-control'}),
             'porque2': forms.Textarea(attrs={'class': 'form-control'}),
             'porque3': forms.Textarea(attrs={'class': 'form-control'}),
             'porque4': forms.Textarea(attrs={'class': 'form-control'}),
             'porque5': forms.Textarea(attrs={'class': 'form-control'}),
-            'validado1': forms.CheckboxInput(attrs={'class': 'validacion-celda'}),
-            'validado2': forms.CheckboxInput(attrs={'class': 'validacion-celda'}),
-            'validado3': forms.CheckboxInput(attrs={'class': 'validacion-celda'}),
-            'validado4': forms.CheckboxInput(attrs={'class': 'validacion-celda'}),
-            'validado5': forms.CheckboxInput(attrs={'class': 'validacion-celda'}),
+            'color_validacion1': forms.HiddenInput(),
+            'color_validacion2': forms.HiddenInput(),
+            'color_validacion3': forms.HiddenInput(),
+            'color_validacion4': forms.HiddenInput(),
+            'color_validacion5': forms.HiddenInput(),
+            'Raiz': forms.Textarea(attrs={'class': 'form-control'}),
         }
 
     def __init__(self, *args, **kwargs):

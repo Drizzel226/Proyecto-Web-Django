@@ -57,7 +57,7 @@ class Porque(models.Model):
         max_length=10,
         choices=RESPUESTA_CHOICES,
         default='no_aplica',
-        blank=True,
+        blank=False,
         null=True
     )
 
@@ -66,7 +66,7 @@ class Porque(models.Model):
         max_length=10,
         choices=RESPUESTA_CHOICES,
         default='no_aplica',
-        blank=True,
+        blank=False,
         null=True
     )
 
@@ -75,7 +75,7 @@ class Porque(models.Model):
         max_length=10,
         choices=RESPUESTA_CHOICES,
         default='no_aplica',
-        blank=True,
+        blank=False,
         null=True
     )
 
@@ -84,7 +84,7 @@ class Porque(models.Model):
         max_length=10,
         choices=RESPUESTA_CHOICES,
         default='no_aplica',
-        blank=True,
+        blank=False,
         null=True
     )
 
@@ -93,24 +93,46 @@ class Porque(models.Model):
         max_length=10,
         choices=RESPUESTA_CHOICES,
         default='no_aplica',
-        blank=True,
+        blank=False,
         null=True
     )
 
-    modo_falla = models.TextField("El modo de falla corresponde al evento o situación que causa la falla funcional. Ej: presión inestable por válvula rota, inspector detecta elemento extraño pero no lo rechaza, inspector no detecta elemento extraño, sulfatación de sensor de seguridad, etc.", blank=True, null=True)
+    modo_falla_paso2 = models.TextField("El modo de falla corresponde al evento o situación que causa la falla funcional. Ej: presión inestable por válvula rota, inspector detecta elemento extraño pero no lo rechaza, inspector no detecta elemento extraño, sulfatación de sensor de seguridad, etc.", blank=True, null=True)
     imagen_falla = models.ImageField(upload_to='imagenes_falla/', blank=True, null=True)
 
-    modo_falla = models.TextField("Modo de Falla", blank=True, null=True)
+    modo_falla_paso3 = models.TextField("Modo de Falla", blank=True, null=True)
     porque1 = models.TextField("¿POR QUÉ? (1)", blank=True, null=True)
-    validado1 = models.BooleanField("Validado (1)", default=False)  
     porque2 = models.TextField("¿POR QUÉ? (2)", blank=True, null=True)
-    validado2 = models.BooleanField("Validado (2)", default=False)
     porque3 = models.TextField("¿POR QUÉ? (3)", blank=True, null=True)
-    validado3 = models.BooleanField("Validado (3)", default=False)
     porque4 = models.TextField("¿POR QUÉ? (4)", blank=True, null=True)
-    validado4 = models.BooleanField("Validado (4)", default=False)
     porque5 = models.TextField("¿POR QUÉ? (5)", blank=True, null=True)
-    validado5 = models.BooleanField("Validado (5)", default=False)
+    
+
+    COLOR_CHOICES = [
+        ('white', 'Blanco'),
+        ('green', 'Verde'),
+        ('red', 'Rojo'),
+    ]
+
+    
+    color_validacion1 = models.CharField(max_length=10, choices=COLOR_CHOICES, default='white')
+    color_validacion2 = models.CharField(max_length=10, choices=COLOR_CHOICES, default='white')
+    color_validacion3 = models.CharField(max_length=10, choices=COLOR_CHOICES, default='white')
+    color_validacion4 = models.CharField(max_length=10, choices=COLOR_CHOICES, default='white')
+    color_validacion5 = models.CharField(max_length=10, choices=COLOR_CHOICES, default='white')
+
+    Raiz = models.TextField("Raíz", blank=True, null=True)
+
+
+
+
+
+
+
+
+
+
+
 
 
 class MiembroEquipo(models.Model):
