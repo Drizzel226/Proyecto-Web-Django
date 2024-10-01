@@ -33,25 +33,32 @@ def porque_view(request, pk=None):
         form = PorqueForm(request.POST, request.FILES, instance=porque_instance)
 
         if form.is_valid():
-            # Guardar los datos del formulario
+            # Guardar la instancia del formulario pero sin guardarla aún en la BD
             porque_instance = form.save(commit=False)
 
-            # Guardar la fecha de inicio si es la primera vez
+            # Asignar la fecha de inicio si es la primera vez que se guarda
             if not porque_instance.fecha_inicio:
                 porque_instance.fecha_inicio = now().date()
 
-            porque_instance.save()
+            # Ahora sí guardar la instancia en la base de datos
+            porque_instance.save()  # Guardar para obtener el ID
+
+            # Guardar relaciones ManyToMany
             form.save_m2m()
 
-            if 'guardar_primera_parte' in request.POST:
-                messages.success(request, 'Primera parte guardada con éxito. Ahora puedes completar el Paso 1.')
-                return redirect('porque', pk=porque_instance.pk)
+            # Mensaje de éxito y redirigir con el ID
+            messages.success(request, 'Se a guardo con éxito. Puedes continuar.')
+            return redirect('porque', pk=porque_instance.pk)  # Redirigir a la misma página con el ID
+
         else:
+            # Si el formulario no es válido, mostrar errores
             messages.error(request, 'Por favor corrige los errores.')
+
     else:
+        # Si el método es GET (cargar la página por primera vez)
         form = PorqueForm(instance=porque_instance)
 
-    mostrar_paso1 = porque_instance is not None
+    mostrar_paso1 = porque_instance is not None  # Mostrar el paso 1 solo si ya existe la instancia
 
     opciones_miembros = MiembroEquipo.objects.all()
 

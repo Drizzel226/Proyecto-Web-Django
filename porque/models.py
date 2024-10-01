@@ -100,6 +100,9 @@ class Porque(models.Model):
     modo_falla_paso2 = models.TextField("El modo de falla corresponde al evento o situación que causa la falla funcional. Ej: presión inestable por válvula rota, inspector detecta elemento extraño pero no lo rechaza, inspector no detecta elemento extraño, sulfatación de sensor de seguridad, etc.", blank=True, null=True)
     imagen_falla = models.ImageField(upload_to='imagenes_falla/', blank=True, null=True)
 
+
+    # PASO 3
+
     modo_falla_paso3 = models.TextField("Modo de Falla", blank=True, null=True)
     porque1 = models.TextField("¿POR QUÉ? (1)", blank=True, null=True)
     porque2 = models.TextField("¿POR QUÉ? (2)", blank=True, null=True)
@@ -109,6 +112,32 @@ class Porque(models.Model):
     porque6 = models.TextField("¿POR QUÉ? (6)", blank=True, null=True)
     porque7 = models.TextField("¿POR QUÉ? (7)", blank=True, null=True)
     
+    modo_falla_paso3_2 = models.TextField("Modo de Falla", blank=True, null=True)
+    porque1_2 = models.TextField("¿POR QUÉ? (1)", blank=True, null=True)
+    porque2_2 = models.TextField("¿POR QUÉ? (2)", blank=True, null=True)
+    porque3_2 = models.TextField("¿POR QUÉ? (3)", blank=True, null=True)
+    porque4_2 = models.TextField("¿POR QUÉ? (4)", blank=True, null=True)
+    porque5_2 = models.TextField("¿POR QUÉ? (5)", blank=True, null=True)
+    porque6_2 = models.TextField("¿POR QUÉ? (6)", blank=True, null=True)
+    porque7_2 = models.TextField("¿POR QUÉ? (7)", blank=True, null=True)
+    
+    modo_falla_paso3_3 = models.TextField("Modo de Falla", blank=True, null=True)
+    porque1_3 = models.TextField("¿POR QUÉ? (1)", blank=True, null=True)
+    porque2_3 = models.TextField("¿POR QUÉ? (2)", blank=True, null=True)
+    porque3_3 = models.TextField("¿POR QUÉ? (3)", blank=True, null=True)
+    porque4_3 = models.TextField("¿POR QUÉ? (4)", blank=True, null=True)
+    porque5_3 = models.TextField("¿POR QUÉ? (5)", blank=True, null=True)
+    porque6_3 = models.TextField("¿POR QUÉ? (6)", blank=True, null=True)
+    porque7_3 = models.TextField("¿POR QUÉ? (7)", blank=True, null=True)
+
+    modo_falla_paso3_4 = models.TextField("Modo de Falla", blank=True, null=True)
+    porque1_4 = models.TextField("¿POR QUÉ? (1)", blank=True, null=True)
+    porque2_4 = models.TextField("¿POR QUÉ? (2)", blank=True, null=True)
+    porque3_4 = models.TextField("¿POR QUÉ? (3)", blank=True, null=True)
+    porque4_4 = models.TextField("¿POR QUÉ? (4)", blank=True, null=True)
+    porque5_4 = models.TextField("¿POR QUÉ? (5)", blank=True, null=True)
+    porque6_4 = models.TextField("¿POR QUÉ? (6)", blank=True, null=True)
+    porque7_4 = models.TextField("¿POR QUÉ? (7)", blank=True, null=True)
 
     COLOR_CHOICES = [
         ('white', 'Blanco'),
@@ -125,9 +154,36 @@ class Porque(models.Model):
     color_validacion6 = models.CharField(max_length=10, choices=COLOR_CHOICES, default='white')
     color_validacion7 = models.CharField(max_length=10, choices=COLOR_CHOICES, default='white')
 
+    color_validacion1_2 = models.CharField(max_length=10, choices=COLOR_CHOICES, default='white')
+    color_validacion2_2 = models.CharField(max_length=10, choices=COLOR_CHOICES, default='white')
+    color_validacion3_2 = models.CharField(max_length=10, choices=COLOR_CHOICES, default='white')
+    color_validacion4_2 = models.CharField(max_length=10, choices=COLOR_CHOICES, default='white')
+    color_validacion5_2 = models.CharField(max_length=10, choices=COLOR_CHOICES, default='white')
+    color_validacion6_2 = models.CharField(max_length=10, choices=COLOR_CHOICES, default='white')
+    color_validacion7_2 = models.CharField(max_length=10, choices=COLOR_CHOICES, default='white')
+
+    color_validacion1_3 = models.CharField(max_length=10, choices=COLOR_CHOICES, default='white')
+    color_validacion2_3 = models.CharField(max_length=10, choices=COLOR_CHOICES, default='white')
+    color_validacion3_3 = models.CharField(max_length=10, choices=COLOR_CHOICES, default='white')
+    color_validacion4_3 = models.CharField(max_length=10, choices=COLOR_CHOICES, default='white')
+    color_validacion5_3 = models.CharField(max_length=10, choices=COLOR_CHOICES, default='white')
+    color_validacion6_3 = models.CharField(max_length=10, choices=COLOR_CHOICES, default='white')
+    color_validacion7_3 = models.CharField(max_length=10, choices=COLOR_CHOICES, default='white')
+
+    color_validacion1_4 = models.CharField(max_length=10, choices=COLOR_CHOICES, default='white')
+    color_validacion2_4 = models.CharField(max_length=10, choices=COLOR_CHOICES, default='white')
+    color_validacion3_4 = models.CharField(max_length=10, choices=COLOR_CHOICES, default='white')
+    color_validacion4_4 = models.CharField(max_length=10, choices=COLOR_CHOICES, default='white')
+    color_validacion5_4 = models.CharField(max_length=10, choices=COLOR_CHOICES, default='white')
+    color_validacion6_4 = models.CharField(max_length=10, choices=COLOR_CHOICES, default='white')
+    color_validacion7_4 = models.CharField(max_length=10, choices=COLOR_CHOICES, default='white')
+
     Raiz = models.TextField("Raíz", blank=True, null=True)
+    Raiz_2 = models.TextField("Raíz", blank=True, null=True)
+    Raiz_3 = models.TextField("Raíz", blank=True, null=True)
+    Raiz_4 = models.TextField("Raíz", blank=True, null=True)
 
-
+    
 
 
 

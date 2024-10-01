@@ -319,7 +319,8 @@
             </div>
             
             <div id="contenido-paso3">
-                <div><h1></h1></div>
+                <div>
+                    <h1></h1></div>
                 <button id="addPorqueBtn" type="button" class="btn btn-primary mb-3">
                     {% if form.porque6.value %}Agregar POR QUÉ? (7){% else %}Agregar POR QUÉ? (6){% endif %}
                 </button>
@@ -373,6 +374,105 @@
                             {{ form.color_validacion7 }}
                         </td>
                         <td>{{ form.Raiz }}</td>
+                    </tr>
+
+                    <tr id="porque-row-2">
+                        <td>{{ form.modo_falla_paso3_2 }}</td>
+                        <td>{{ form.porque1_2 }}</td>
+                        <td class="color-cell" data-color="{{ form.color_validacion1_2.value }}" onclick="changeColor(this, 'color_validacion1_2')">
+                            {{ form.color_validacion1_2 }}
+                        </td>
+                        <td>{{ form.porque2_2 }}</td>
+                        <td class="color-cell" data-color="{{ form.color_validacion2_2.value }}" onclick="changeColor(this, 'color_validacion2_2')">
+                            {{ form.color_validacion2_2 }}
+                        </td>
+                        <td>{{ form.porque3_2 }}</td>
+                        <td class="color-cell" data-color="{{ form.color_validacion3_2.value }}" onclick="changeColor(this, 'color_validacion3_2')">
+                            {{ form.color_validacion3_2 }}
+                        </td>
+                        <td>{{ form.porque4_2 }}</td>
+                        <td class="color-cell" data-color="{{ form.color_validacion4_2.value }}" onclick="changeColor(this, 'color_validacion4_2')">
+                            {{ form.color_validacion4_2 }}
+                        </td>
+                        <td>{{ form.porque5_2 }}</td>
+                        <td class="color-cell" data-color="{{ form.color_validacion5_2.value }}" onclick="changeColor(this, 'color_validacion5_2')">
+                            {{ form.color_validacion5_2 }}
+                        </td>
+                        <td class="porque6-col" {% if not form.porque6_2.value %}style="display: none;"{% endif %}>{{ form.porque6_2 }}</td>
+                        <td class="color-cell validacion6-col" {% if not form.porque6_2.value %}style="display: none;"{% endif %} data-color="{{ form.color_validacion6_2.value }}" onclick="changeColor(this, 'color_validacion6_2')">
+                            {{ form.color_validacion6_2 }}
+                        </td>
+                        <td class="porque7-col" {% if not form.porque7_2.value %}style="display: none;"{% endif %}>{{ form.porque7_2 }}</td>
+                        <td class="color-cell validacion7-col" {% if not form.porque7_2.value %}style="display: none;"{% endif %} data-color="{{ form.color_validacion7_2.value }}" onclick="changeColor(this, 'color_validacion7_2')">
+                            {{ form.color_validacion7_2 }}
+                        </td>
+                        <td>{{ form.Raiz_2 }}</td>
+                    </tr>
+
+                    <tr id="porque-row-3">
+                        <td>{{ form.modo_falla_paso3_3 }}</td>
+                        <td>{{ form.porque1_3 }}</td>
+                        <td class="color-cell" data-color="{{ form.color_validacion1_3.value }}" onclick="changeColor(this, 'color_validacion1_3')">
+                            {{ form.color_validacion1_3 }}
+                        </td>
+                        <td>{{ form.porque2_3 }}</td>
+                        <td class="color-cell" data-color="{{ form.color_validacion2_3.value }}" onclick="changeColor(this, 'color_validacion2_3')">
+                            {{ form.color_validacion2_3 }}
+                        </td>
+                        <td>{{ form.porque3_3 }}</td>
+                        <td class="color-cell" data-color="{{ form.color_validacion3_3.value }}" onclick="changeColor(this, 'color_validacion3_3')">
+                            {{ form.color_validacion3_3 }}
+                        </td>
+                        <td>{{ form.porque4_3 }}</td>
+                        <td class="color-cell" data-color="{{ form.color_validacion4_3.value }}" onclick="changeColor(this, 'color_validacion4_3')">
+                            {{ form.color_validacion4_3 }}
+                        </td>
+                        <td>{{ form.porque5_3 }}</td>
+                        <td class="color-cell" data-color="{{ form.color_validacion5_3.value }}" onclick="changeColor(this, 'color_validacion5_3')">
+                            {{ form.color_validacion5_3 }}
+                        </td>
+                        <td class="porque6-col" {% if not form.porque6_3.value %}style="display: none;"{% endif %}>{{ form.porque6_3 }}</td>
+                        <td class="color-cell validacion6-col" {% if not form.porque6_3.value %}style="display: none;"{% endif %} data-color="{{ form.color_validacion6_3.value }}" onclick="changeColor(this, 'color_validacion6_3')">
+                            {{ form.color_validacion6_3 }}
+                        </td>
+                        <td class="porque7-col" {% if not form.porque7_3.value %}style="display: none;"{% endif %}>{{ form.porque7_3 }}</td>
+                        <td class="color-cell validacion7-col" {% if not form.porque7_3.value %}style="display: none;"{% endif %} data-color="{{ form.color_validacion7_3.value }}" onclick="changeColor(this, 'color_validacion7_3')">
+                            {{ form.color_validacion7_3 }}
+                        </td>
+                        <td>{{ form.Raiz_3 }}</td>
+                    </tr>
+
+                    <tr id="porque-row-4">
+                        <td>{{ form.modo_falla_paso3_4 }}</td>
+                        <td>{{ form.porque1_4 }}</td>
+                        <td class="color-cell" data-color="{{ form.color_validacion1_4.value }}" onclick="changeColor(this, 'color_validacion1_4')">
+                            {{ form.color_validacion1_4 }}
+                        </td>
+                        <td>{{ form.porque2_4 }}</td>
+                        <td class="color-cell" data-color="{{ form.color_validacion2_4.value }}" onclick="changeColor(this, 'color_validacion2_4')">
+                            {{ form.color_validacion2_4 }}
+                        </td>
+                        <td>{{ form.porque3_4 }}</td>
+                        <td class="color-cell" data-color="{{ form.color_validacion3_4.value }}" onclick="changeColor(this, 'color_validacion3_4')">
+                            {{ form.color_validacion3_4 }}
+                        </td>
+                        <td>{{ form.porque4_4 }}</td>
+                        <td class="color-cell" data-color="{{ form.color_validacion4_4.value }}" onclick="changeColor(this, 'color_validacion4_4')">
+                            {{ form.color_validacion4_4 }}
+                        </td>
+                        <td>{{ form.porque5_4 }}</td>
+                        <td class="color-cell" data-color="{{ form.color_validacion5_4.value }}" onclick="changeColor(this, 'color_validacion5_4')">
+                            {{ form.color_validacion5_4 }}
+                        </td>
+                        <td class="porque6-col" {% if not form.porque6_4.value %}style="display: none;"{% endif %}>{{ form.porque6_4 }}</td>
+                        <td class="color-cell validacion6-col" {% if not form.porque6_4.value %}style="display: none;"{% endif %} data-color="{{ form.color_validacion6_4.value }}" onclick="changeColor(this, 'color_validacion6_4')">
+                            {{ form.color_validacion6_4 }}
+                        </td>
+                        <td class="porque7-col" {% if not form.porque7_4.value %}style="display: none;"{% endif %}>{{ form.porque7_4 }}</td>
+                        <td class="color-cell validacion7-col" {% if not form.porque7_4.value %}style="display: none;"{% endif %} data-color="{{ form.color_validacion7_4.value }}" onclick="changeColor(this, 'color_validacion7_4')">
+                            {{ form.color_validacion7_4 }}
+                        </td>
+                        <td>{{ form.Raiz_4 }}</td>
                     </tr>
                 </table>
             </div>
@@ -449,18 +549,6 @@
         }
     });
 });
-
-function changeColor(cell, inputId) {
-    const colors = ['white', 'green', 'red'];
-    let currentColor = cell.getAttribute('data-color');
-    let nextColorIndex = (colors.indexOf(currentColor) + 1) % colors.length;
-    let nextColor = colors[nextColorIndex];
-    
-    cell.style.backgroundColor = nextColor;
-    cell.setAttribute('data-color', nextColor);
-    
-    document.getElementById(inputId).value = nextColor;
-}
 
 </script>
 
