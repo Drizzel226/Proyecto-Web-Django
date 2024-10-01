@@ -139,6 +139,42 @@ class Porque(models.Model):
     porque6_4 = models.TextField("¿POR QUÉ? (6)", blank=True, null=True)
     porque7_4 = models.TextField("¿POR QUÉ? (7)", blank=True, null=True)
 
+    modo_falla_paso3_5 = models.TextField("Modo de Falla", blank=True, null=True)
+    porque1_5 = models.TextField("¿POR QUÉ? (1)", blank=True, null=True)
+    porque2_5 = models.TextField("¿POR QUÉ? (2)", blank=True, null=True)
+    porque3_5 = models.TextField("¿POR QUÉ? (3)", blank=True, null=True)
+    porque4_5 = models.TextField("¿POR QUÉ? (4)", blank=True, null=True)
+    porque5_5 = models.TextField("¿POR QUÉ? (5)", blank=True, null=True)
+    porque6_5 = models.TextField("¿POR QUÉ? (6)", blank=True, null=True)
+    porque7_5 = models.TextField("¿POR QUÉ? (7)", blank=True, null=True)
+
+    modo_falla_paso3_6 = models.TextField("Modo de Falla", blank=True, null=True)
+    porque1_6 = models.TextField("¿POR QUÉ? (1)", blank=True, null=True)
+    porque2_6 = models.TextField("¿POR QUÉ? (2)", blank=True, null=True)
+    porque3_6 = models.TextField("¿POR QUÉ? (3)", blank=True, null=True)
+    porque4_6 = models.TextField("¿POR QUÉ? (4)", blank=True, null=True)
+    porque5_6 = models.TextField("¿POR QUÉ? (5)", blank=True, null=True)
+    porque6_6 = models.TextField("¿POR QUÉ? (6)", blank=True, null=True)
+    porque7_6 = models.TextField("¿POR QUÉ? (7)", blank=True, null=True)
+
+    modo_falla_paso3_7 = models.TextField("Modo de Falla", blank=True, null=True)
+    porque1_7 = models.TextField("¿POR QUÉ? (1)", blank=True, null=True)
+    porque2_7 = models.TextField("¿POR QUÉ? (2)", blank=True, null=True)
+    porque3_7 = models.TextField("¿POR QUÉ? (3)", blank=True, null=True)
+    porque4_7 = models.TextField("¿POR QUÉ? (4)", blank=True, null=True)
+    porque5_7 = models.TextField("¿POR QUÉ? (5)", blank=True, null=True)
+    porque6_7 = models.TextField("¿POR QUÉ? (6)", blank=True, null=True)
+    porque7_7 = models.TextField("¿POR QUÉ? (7)", blank=True, null=True)
+
+    modo_falla_paso3_8 = models.TextField("Modo de Falla", blank=True, null=True)
+    porque1_8 = models.TextField("¿POR QUÉ? (1)", blank=True, null=True)
+    porque2_8 = models.TextField("¿POR QUÉ? (2)", blank=True, null=True)
+    porque3_8 = models.TextField("¿POR QUÉ? (3)", blank=True, null=True)
+    porque4_8 = models.TextField("¿POR QUÉ? (4)", blank=True, null=True)
+    porque5_8 = models.TextField("¿POR QUÉ? (5)", blank=True, null=True)
+    porque6_8 = models.TextField("¿POR QUÉ? (6)", blank=True, null=True)
+    porque7_8 = models.TextField("¿POR QUÉ? (7)", blank=True, null=True)
+
     COLOR_CHOICES = [
         ('white', 'Blanco'),
         ('green', 'Verde'),
@@ -177,11 +213,47 @@ class Porque(models.Model):
     color_validacion5_4 = models.CharField(max_length=10, choices=COLOR_CHOICES, default='white')
     color_validacion6_4 = models.CharField(max_length=10, choices=COLOR_CHOICES, default='white')
     color_validacion7_4 = models.CharField(max_length=10, choices=COLOR_CHOICES, default='white')
+    
+    color_validacion1_5 = models.CharField(max_length=10, choices=COLOR_CHOICES, default='white')
+    color_validacion2_5 = models.CharField(max_length=10, choices=COLOR_CHOICES, default='white')
+    color_validacion3_5 = models.CharField(max_length=10, choices=COLOR_CHOICES, default='white')
+    color_validacion4_5 = models.CharField(max_length=10, choices=COLOR_CHOICES, default='white')
+    color_validacion5_5 = models.CharField(max_length=10, choices=COLOR_CHOICES, default='white')
+    color_validacion6_5 = models.CharField(max_length=10, choices=COLOR_CHOICES, default='white')
+    color_validacion7_5 = models.CharField(max_length=10, choices=COLOR_CHOICES, default='white')
+
+    color_validacion1_6 = models.CharField(max_length=10, choices=COLOR_CHOICES, default='white')
+    color_validacion2_6 = models.CharField(max_length=10, choices=COLOR_CHOICES, default='white')
+    color_validacion3_6 = models.CharField(max_length=10, choices=COLOR_CHOICES, default='white')
+    color_validacion4_6 = models.CharField(max_length=10, choices=COLOR_CHOICES, default='white')
+    color_validacion5_6 = models.CharField(max_length=10, choices=COLOR_CHOICES, default='white')
+    color_validacion6_6 = models.CharField(max_length=10, choices=COLOR_CHOICES, default='white')
+    color_validacion7_6 = models.CharField(max_length=10, choices=COLOR_CHOICES, default='white')
+
+    color_validacion1_7 = models.CharField(max_length=10, choices=COLOR_CHOICES, default='white')
+    color_validacion2_7 = models.CharField(max_length=10, choices=COLOR_CHOICES, default='white')
+    color_validacion3_7 = models.CharField(max_length=10, choices=COLOR_CHOICES, default='white')
+    color_validacion4_7 = models.CharField(max_length=10, choices=COLOR_CHOICES, default='white')
+    color_validacion5_7 = models.CharField(max_length=10, choices=COLOR_CHOICES, default='white')
+    color_validacion6_7 = models.CharField(max_length=10, choices=COLOR_CHOICES, default='white')
+    color_validacion7_7 = models.CharField(max_length=10, choices=COLOR_CHOICES, default='white')
+
+    color_validacion1_8 = models.CharField(max_length=10, choices=COLOR_CHOICES, default='white')
+    color_validacion2_8 = models.CharField(max_length=10, choices=COLOR_CHOICES, default='white')
+    color_validacion3_8 = models.CharField(max_length=10, choices=COLOR_CHOICES, default='white')
+    color_validacion4_8 = models.CharField(max_length=10, choices=COLOR_CHOICES, default='white')
+    color_validacion5_8 = models.CharField(max_length=10, choices=COLOR_CHOICES, default='white')
+    color_validacion6_8 = models.CharField(max_length=10, choices=COLOR_CHOICES, default='white')
+    color_validacion7_8 = models.CharField(max_length=10, choices=COLOR_CHOICES, default='white')
 
     Raiz = models.TextField("Raíz", blank=True, null=True)
     Raiz_2 = models.TextField("Raíz", blank=True, null=True)
     Raiz_3 = models.TextField("Raíz", blank=True, null=True)
     Raiz_4 = models.TextField("Raíz", blank=True, null=True)
+    Raiz_5 = models.TextField("Raíz", blank=True, null=True)
+    Raiz_6 = models.TextField("Raíz", blank=True, null=True)
+    Raiz_7 = models.TextField("Raíz", blank=True, null=True)
+    Raiz_8 = models.TextField("Raíz", blank=True, null=True)
 
     
 
