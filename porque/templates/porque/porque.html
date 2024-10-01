@@ -311,379 +311,457 @@
 
 
 
-        <div id="paso3-section" class="recuadro-paso mt-4" style="border: 1px solid #FFC800;">
-            <div class="paso-header" style="background-color: #FFC800; color: white; padding: 10px 15px; border-radius: 5px;">
-                <h2 class="collapsible" style="cursor: pointer; margin: 0;" onclick="toggleVisibility('contenido-paso3')">
-                    <span style="margin-right: 10px;">▼</span> Paso 3: Causa Raíz
-                </h2>
-            </div>
-            
-            <div id="contenido-paso3">
-                <div>
-                    <h1></h1></div>
-                <button id="addPorqueBtn" type="button" class="btn btn-primary mb-3">
-                    {% if form.porque6.value %}Agregar POR QUÉ? (7){% else %}Agregar POR QUÉ? (6){% endif %}
-                </button>
-                <table id="porqueTable">
-                    <tr>
-                        <th>Modo de Falla</th>
-                        <th>¿POR QUÉ? (1)</th>
-                        <th></th>
-                        <th>¿POR QUÉ? (2)</th>
-                        <th></th>
-                        <th>¿POR QUÉ? (3)</th>
-                        <th></th>
-                        <th>¿POR QUÉ? (4)</th>
-                        <th></th>
-                        <th>¿POR QUÉ? (5)</th>
-                        <th></th>
-                        <th class="porque6-col" {% if not form.porque6.value %}style="display: none;"{% endif %}>¿POR QUÉ? (6)</th>
-                        <th class="validacion6-col" {% if not form.porque6.value %}style="display: none;"{% endif %}></th>
-                        <th class="porque7-col" {% if not form.porque7.value %}style="display: none;"{% endif %}>¿POR QUÉ? (7)</th>
-                        <th class="validacion7-col" {% if not form.porque7.value %}style="display: none;"{% endif %}></th>
-                        <th>Raíz</th>
-                    </tr>
+<div id="paso3-section" class="recuadro-paso mt-4" style="border: 1px solid #FFC800;">
+    <div class="paso-header" style="background-color: #FFC800; color: white; padding: 10px 15px; border-radius: 5px;">
+        <h2 class="collapsible" style="cursor: pointer; margin: 0;" onclick="toggleVisibility('contenido-paso3')">
+            <span style="margin-right: 10px;">▼</span> Paso 3: Causa Raíz
+        </h2>
+    </div>
 
-                    <tr id="porque-row">
-                        <td>{{ form.modo_falla_paso3 }}</td>
-                        <td>{{ form.porque1 }}</td>
-                        <td class="color-cell form-control validacion-celda" data-color="{{ form.color_validacion1.value }}" onclick="changeColor(this, 'color_validacion1')">
-                            {{ form.color_validacion1 }}
-                        </td>
-                        <td>{{ form.porque2 }}</td>
-                        <td class="color-cell" data-color="{{ form.color_validacion2.value }}" onclick="changeColor(this, 'color_validacion2')">
-                            {{ form.color_validacion2 }}
-                        </td>
-                        <td>{{ form.porque3 }}</td>
-                        <td class="color-cell" data-color="{{ form.color_validacion3.value }}" onclick="changeColor(this, 'color_validacion3')">
-                            {{ form.color_validacion3 }}
-                        </td>
-                        <td>{{ form.porque4 }}</td>
-                        <td class="color-cell" data-color="{{ form.color_validacion4.value }}" onclick="changeColor(this, 'color_validacion4')">
-                            {{ form.color_validacion4 }}
-                        </td>
-                        <td>{{ form.porque5 }}</td>
-                        <td class="color-cell" data-color="{{ form.color_validacion5.value }}" onclick="changeColor(this, 'color_validacion5')">
-                            {{ form.color_validacion5 }}
-                        </td>
-                        <td class="porque6-col" {% if not form.porque6.value %}style="display: none;"{% endif %}>{{ form.porque6 }}</td>
-                        <td class="color-cell validacion6-col" {% if not form.porque6.value %}style="display: none;"{% endif %} data-color="{{ form.color_validacion6.value }}" onclick="changeColor(this, 'color_validacion6')">
-                            {{ form.color_validacion6 }}
-                        </td>
-                        <td class="porque7-col" {% if not form.porque7.value %}style="display: none;"{% endif %}>{{ form.porque7 }}</td>
-                        <td class="color-cell validacion7-col" {% if not form.porque7.value %}style="display: none;"{% endif %} data-color="{{ form.color_validacion7.value }}" onclick="changeColor(this, 'color_validacion7')">
-                            {{ form.color_validacion7 }}
-                        </td>
-                        <td>{{ form.Raiz }}</td>
-                    </tr>
+    <div id="contenido-paso3">
+        <div><h1></h1></div>
+        <button id="addPorqueBtn" type="button" class="btn btn-primary mb-3">
+            {% if form.porque6.value %}Agregar POR QUÉ? (7){% else %}Agregar POR QUÉ? (6){% endif %}
+        </button>
+        <button id="showMoreRows" type="button" class="btn btn-secondary mb-3">Mostrar más filas</button>
 
-                    <tr id="porque-row-2">
-                        <td>{{ form.modo_falla_paso3_2 }}</td>
-                        <td>{{ form.porque1_2 }}</td>
-                        <td class="color-cell" data-color="{{ form.color_validacion1_2.value }}" onclick="changeColor(this, 'color_validacion1_2')">
-                            {{ form.color_validacion1_2 }}
-                        </td>
-                        <td>{{ form.porque2_2 }}</td>
-                        <td class="color-cell" data-color="{{ form.color_validacion2_2.value }}" onclick="changeColor(this, 'color_validacion2_2')">
-                            {{ form.color_validacion2_2 }}
-                        </td>
-                        <td>{{ form.porque3_2 }}</td>
-                        <td class="color-cell" data-color="{{ form.color_validacion3_2.value }}" onclick="changeColor(this, 'color_validacion3_2')">
-                            {{ form.color_validacion3_2 }}
-                        </td>
-                        <td>{{ form.porque4_2 }}</td>
-                        <td class="color-cell" data-color="{{ form.color_validacion4_2.value }}" onclick="changeColor(this, 'color_validacion4_2')">
-                            {{ form.color_validacion4_2 }}
-                        </td>
-                        <td>{{ form.porque5_2 }}</td>
-                        <td class="color-cell" data-color="{{ form.color_validacion5_2.value }}" onclick="changeColor(this, 'color_validacion5_2')">
-                            {{ form.color_validacion5_2 }}
-                        </td>
-                        <td class="porque6-col" {% if not form.porque6_2.value %}style="display: none;"{% endif %}>{{ form.porque6_2 }}</td>
-                        <td class="color-cell validacion6-col" {% if not form.porque6_2.value %}style="display: none;"{% endif %} data-color="{{ form.color_validacion6_2.value }}" onclick="changeColor(this, 'color_validacion6_2')">
-                            {{ form.color_validacion6_2 }}
-                        </td>
-                        <td class="porque7-col" {% if not form.porque7_2.value %}style="display: none;"{% endif %}>{{ form.porque7_2 }}</td>
-                        <td class="color-cell validacion7-col" {% if not form.porque7_2.value %}style="display: none;"{% endif %} data-color="{{ form.color_validacion7_2.value }}" onclick="changeColor(this, 'color_validacion7_2')">
-                            {{ form.color_validacion7_2 }}
-                        </td>
-                        <td>{{ form.Raiz_2 }}</td>
-                    </tr>
+        <table id="porqueTable">
+            <tr>
+                <th>Modo de Falla</th>
+                <th>¿POR QUÉ? (1)</th>
+                <th></th>
+                <th>¿POR QUÉ? (2)</th>
+                <th></th>
+                <th>¿POR QUÉ? (3)</th>
+                <th></th>
+                <th>¿POR QUÉ? (4)</th>
+                <th></th>
+                <th>¿POR QUÉ? (5)</th>
+                <th></th>
+                <th class="porque6-col" {% if not form.porque6.value %}style="display: none;"{% endif %}>¿POR QUÉ? (6)</th>
+                <th class="validacion6-col" {% if not form.porque6.value %}style="display: none;"{% endif %}></th>
+                <th class="porque7-col" {% if not form.porque7.value %}style="display: none;"{% endif %}>¿POR QUÉ? (7)</th>
+                <th class="validacion7-col" {% if not form.porque7.value %}style="display: none;"{% endif %}></th>
+                <th>Raíz</th>
+            </tr>
 
-                    <tr id="porque-row-3">
-                        <td>{{ form.modo_falla_paso3_3 }}</td>
-                        <td>{{ form.porque1_3 }}</td>
-                        <td class="color-cell" data-color="{{ form.color_validacion1_3.value }}" onclick="changeColor(this, 'color_validacion1_3')">
-                            {{ form.color_validacion1_3 }}
-                        </td>
-                        <td>{{ form.porque2_3 }}</td>
-                        <td class="color-cell" data-color="{{ form.color_validacion2_3.value }}" onclick="changeColor(this, 'color_validacion2_3')">
-                            {{ form.color_validacion2_3 }}
-                        </td>
-                        <td>{{ form.porque3_3 }}</td>
-                        <td class="color-cell" data-color="{{ form.color_validacion3_3.value }}" onclick="changeColor(this, 'color_validacion3_3')">
-                            {{ form.color_validacion3_3 }}
-                        </td>
-                        <td>{{ form.porque4_3 }}</td>
-                        <td class="color-cell" data-color="{{ form.color_validacion4_3.value }}" onclick="changeColor(this, 'color_validacion4_3')">
-                            {{ form.color_validacion4_3 }}
-                        </td>
-                        <td>{{ form.porque5_3 }}</td>
-                        <td class="color-cell" data-color="{{ form.color_validacion5_3.value }}" onclick="changeColor(this, 'color_validacion5_3')">
-                            {{ form.color_validacion5_3 }}
-                        </td>
-                        <td class="porque6-col" {% if not form.porque6_3.value %}style="display: none;"{% endif %}>{{ form.porque6_3 }}</td>
-                        <td class="color-cell validacion6-col" {% if not form.porque6_3.value %}style="display: none;"{% endif %} data-color="{{ form.color_validacion6_3.value }}" onclick="changeColor(this, 'color_validacion6_3')">
-                            {{ form.color_validacion6_3 }}
-                        </td>
-                        <td class="porque7-col" {% if not form.porque7_3.value %}style="display: none;"{% endif %}>{{ form.porque7_3 }}</td>
-                        <td class="color-cell validacion7-col" {% if not form.porque7_3.value %}style="display: none;"{% endif %} data-color="{{ form.color_validacion7_3.value }}" onclick="changeColor(this, 'color_validacion7_3')">
-                            {{ form.color_validacion7_3 }}
-                        </td>
-                        <td>{{ form.Raiz_3 }}</td>
-                    </tr>
+            <!-- Primeras 4 filas visibles -->
+            <tr id="porque-row">
+                <td>{{ form.modo_falla_paso3 }}</td>
+                <td>{{ form.porque1 }}</td>
+                <td class="color-cell form-control validacion-celda" data-color="{{ form.color_validacion1.value }}" onclick="changeColor(this, 'color_validacion1')">
+                    {{ form.color_validacion1 }}
+                </td>
+                <td>{{ form.porque2 }}</td>
+                <td class="color-cell" data-color="{{ form.color_validacion2.value }}" onclick="changeColor(this, 'color_validacion2')">
+                    {{ form.color_validacion2 }}
+                </td>
+                <td>{{ form.porque3 }}</td>
+                <td class="color-cell" data-color="{{ form.color_validacion3.value }}" onclick="changeColor(this, 'color_validacion3')">
+                    {{ form.color_validacion3 }}
+                </td>
+                <td>{{ form.porque4 }}</td>
+                <td class="color-cell" data-color="{{ form.color_validacion4.value }}" onclick="changeColor(this, 'color_validacion4')">
+                    {{ form.color_validacion4 }}
+                </td>
+                <td>{{ form.porque5 }}</td>
+                <td class="color-cell" data-color="{{ form.color_validacion5.value }}" onclick="changeColor(this, 'color_validacion5')">
+                    {{ form.color_validacion5 }}
+                </td>
+                <td class="porque6-col" {% if not form.porque6.value %}style="display: none;"{% endif %}>{{ form.porque6 }}</td>
+                <td class="color-cell validacion6-col" {% if not form.porque6.value %}style="display: none;"{% endif %} data-color="{{ form.color_validacion6.value }}" onclick="changeColor(this, 'color_validacion6')">
+                    {{ form.color_validacion6 }}
+                </td>
+                <td class="porque7-col" {% if not form.porque7.value %}style="display: none;"{% endif %}>{{ form.porque7 }}</td>
+                <td class="color-cell validacion7-col" {% if not form.porque7.value %}style="display: none;"{% endif %} data-color="{{ form.color_validacion7.value }}" onclick="changeColor(this, 'color_validacion7')">
+                    {{ form.color_validacion7 }}
+                </td>
+                <td>{{ form.Raiz }}</td>
+            </tr>
 
-                    <tr id="porque-row-4">
-                        <td>{{ form.modo_falla_paso3_4 }}</td>
-                        <td>{{ form.porque1_4 }}</td>
-                        <td class="color-cell" data-color="{{ form.color_validacion1_4.value }}" onclick="changeColor(this, 'color_validacion1_4')">
-                            {{ form.color_validacion1_4 }}
-                        </td>
-                        <td>{{ form.porque2_4 }}</td>
-                        <td class="color-cell" data-color="{{ form.color_validacion2_4.value }}" onclick="changeColor(this, 'color_validacion2_4')">
-                            {{ form.color_validacion2_4 }}
-                        </td>
-                        <td>{{ form.porque3_4 }}</td>
-                        <td class="color-cell" data-color="{{ form.color_validacion3_4.value }}" onclick="changeColor(this, 'color_validacion3_4')">
-                            {{ form.color_validacion3_4 }}
-                        </td>
-                        <td>{{ form.porque4_4 }}</td>
-                        <td class="color-cell" data-color="{{ form.color_validacion4_4.value }}" onclick="changeColor(this, 'color_validacion4_4')">
-                            {{ form.color_validacion4_4 }}
-                        </td>
-                        <td>{{ form.porque5_4 }}</td>
-                        <td class="color-cell" data-color="{{ form.color_validacion5_4.value }}" onclick="changeColor(this, 'color_validacion5_4')">
-                            {{ form.color_validacion5_4 }}
-                        </td>
-                        <td class="porque6-col" {% if not form.porque6_4.value %}style="display: none;"{% endif %}>{{ form.porque6_4 }}</td>
-                        <td class="color-cell validacion6-col" {% if not form.porque6_4.value %}style="display: none;"{% endif %} data-color="{{ form.color_validacion6_4.value }}" onclick="changeColor(this, 'color_validacion6_4')">
-                            {{ form.color_validacion6_4 }}
-                        </td>
-                        <td class="porque7-col" {% if not form.porque7_4.value %}style="display: none;"{% endif %}>{{ form.porque7_4 }}</td>
-                        <td class="color-cell validacion7-col" {% if not form.porque7_4.value %}style="display: none;"{% endif %} data-color="{{ form.color_validacion7_4.value }}" onclick="changeColor(this, 'color_validacion7_4')">
-                            {{ form.color_validacion7_4 }}
-                        </td>
-                        <td>{{ form.Raiz_4 }}</td>
-                    </tr>
+            <tr id="porque-row-2">
+                <td>{{ form.modo_falla_paso3_2 }}</td>
+                <td>{{ form.porque1_2 }}</td>
+                <td class="color-cell" data-color="{{ form.color_validacion1_2.value }}" onclick="changeColor(this, 'color_validacion1_2')">
+                    {{ form.color_validacion1_2 }}
+                </td>
+                <td>{{ form.porque2_2 }}</td>
+                <td class="color-cell" data-color="{{ form.color_validacion2_2.value }}" onclick="changeColor(this, 'color_validacion2_2')">
+                    {{ form.color_validacion2_2 }}
+                </td>
+                <td>{{ form.porque3_2 }}</td>
+                <td class="color-cell" data-color="{{ form.color_validacion3_2.value }}" onclick="changeColor(this, 'color_validacion3_2')">
+                    {{ form.color_validacion3_2 }}
+                </td>
+                <td>{{ form.porque4_2 }}</td>
+                <td class="color-cell" data-color="{{ form.color_validacion4_2.value }}" onclick="changeColor(this, 'color_validacion4_2')">
+                    {{ form.color_validacion4_2 }}
+                </td>
+                <td>{{ form.porque5_2 }}</td>
+                <td class="color-cell" data-color="{{ form.color_validacion5_2.value }}" onclick="changeColor(this, 'color_validacion5_2')">
+                    {{ form.color_validacion5_2 }}
+                </td>
+                <td class="porque6-col" {% if not form.porque6_2.value %}style="display: none;"{% endif %}>{{ form.porque6_2 }}</td>
+                <td class="color-cell validacion6-col" {% if not form.porque6_2.value %}style="display: none;"{% endif %} data-color="{{ form.color_validacion6_2.value }}" onclick="changeColor(this, 'color_validacion6_2')">
+                    {{ form.color_validacion6_2 }}
+                </td>
+                <td class="porque7-col" {% if not form.porque7_2.value %}style="display: none;"{% endif %}>{{ form.porque7_2 }}</td>
+                <td class="color-cell validacion7-col" {% if not form.porque7_2.value %}style="display: none;"{% endif %} data-color="{{ form.color_validacion7_2.value }}" onclick="changeColor(this, 'color_validacion7_2')">
+                    {{ form.color_validacion7_2 }}
+                </td>
+                <td>{{ form.Raiz_2 }}</td>
+            </tr>
 
-                    <tr id="porque-row-5">
-                        <td>{{ form.modo_falla_paso3_5 }}</td>
-                        <td>{{ form.porque1_5 }}</td>
-                        <td class="color-cell" data-color="{{ form.color_validacion1_5.value }}" onclick="changeColor(this, 'color_validacion1_5')">
-                            {{ form.color_validacion1_5 }}
-                        </td>
-                        <td>{{ form.porque2_5 }}</td>
-                        <td class="color-cell" data-color="{{ form.color_validacion2_5.value }}" onclick="changeColor(this, 'color_validacion2_5')">
-                            {{ form.color_validacion2_5 }}
-                        </td>
-                        <td>{{ form.porque3_5 }}</td>
-                        <td class="color-cell" data-color="{{ form.color_validacion3_5.value }}" onclick="changeColor(this, 'color_validacion3_5')">
-                            {{ form.color_validacion3_5 }}
-                        </td>
-                        <td>{{ form.porque4_5 }}</td>
-                        <td class="color-cell" data-color="{{ form.color_validacion4_5.value }}" onclick="changeColor(this, 'color_validacion4_5')">
-                            {{ form.color_validacion4_5 }}
-                        </td>
-                        <td>{{ form.porque5_5 }}</td>
-                        <td class="color-cell" data-color="{{ form.color_validacion5_5.value }}" onclick="changeColor(this, 'color_validacion5_5')">
-                            {{ form.color_validacion5_5 }}
-                        </td>
-                        <td class="porque6-col" {% if not form.porque6_5.value %}style="display: none;"{% endif %}>{{ form.porque6_5 }}</td>
-                        <td class="color-cell validacion6-col" {% if not form.porque6_5.value %}style="display: none;"{% endif %} data-color="{{ form.color_validacion6_5.value }}" onclick="changeColor(this, 'color_validacion6_5')">
-                            {{ form.color_validacion6_5 }}
-                        </td>
-                        <td class="porque7-col" {% if not form.porque7_5.value %}style="display: none;"{% endif %}>{{ form.porque7_5 }}</td>
-                        <td class="color-cell validacion7-col" {% if not form.porque7_5.value %}style="display: none;"{% endif %} data-color="{{ form.color_validacion7_5.value }}" onclick="changeColor(this, 'color_validacion7_5')">
-                            {{ form.color_validacion7_5 }}
-                        </td>
-                        <td>{{ form.Raiz_5 }}</td>
-                    </tr>
+            <tr id="porque-row-3">
+                <td>{{ form.modo_falla_paso3_3 }}</td>
+                <td>{{ form.porque1_3 }}</td>
+                <td class="color-cell" data-color="{{ form.color_validacion1_3.value }}" onclick="changeColor(this, 'color_validacion1_3')">
+                    {{ form.color_validacion1_3 }}
+                </td>
+                <td>{{ form.porque2_3 }}</td>
+                <td class="color-cell" data-color="{{ form.color_validacion2_3.value }}" onclick="changeColor(this, 'color_validacion2_3')">
+                    {{ form.color_validacion2_3 }}
+                </td>
+                <td>{{ form.porque3_3 }}</td>
+                <td class="color-cell" data-color="{{ form.color_validacion3_3.value }}" onclick="changeColor(this, 'color_validacion3_3')">
+                    {{ form.color_validacion3_3 }}
+                </td>
+                <td>{{ form.porque4_3 }}</td>
+                <td class="color-cell" data-color="{{ form.color_validacion4_3.value }}" onclick="changeColor(this, 'color_validacion4_3')">
+                    {{ form.color_validacion4_3 }}
+                </td>
+                <td>{{ form.porque5_3 }}</td>
+                <td class="color-cell" data-color="{{ form.color_validacion5_3.value }}" onclick="changeColor(this, 'color_validacion5_3')">
+                    {{ form.color_validacion5_3 }}
+                </td>
+                <td class="porque6-col" {% if not form.porque6_3.value %}style="display: none;"{% endif %}>{{ form.porque6_3 }}</td>
+                <td class="color-cell validacion6-col" {% if not form.porque6_3.value %}style="display: none;"{% endif %} data-color="{{ form.color_validacion6_3.value }}" onclick="changeColor(this, 'color_validacion6_3')">
+                    {{ form.color_validacion6_3 }}
+                </td>
+                <td class="porque7-col" {% if not form.porque7_3.value %}style="display: none;"{% endif %}>{{ form.porque7_3 }}</td>
+                <td class="color-cell validacion7-col" {% if not form.porque7_3.value %}style="display: none;"{% endif %} data-color="{{ form.color_validacion7_3.value }}" onclick="changeColor(this, 'color_validacion7_3')">
+                    {{ form.color_validacion7_3 }}
+                </td>
+                <td>{{ form.Raiz_3 }}</td>
+            </tr>
 
-                    <tr id="porque-row-6">
-                        <td>{{ form.modo_falla_paso3_6 }}</td>
-                        <td>{{ form.porque1_6 }}</td>
-                        <td class="color-cell" data-color="{{ form.color_validacion1_6.value }}" onclick="changeColor(this, 'color_validacion1_6')">
-                            {{ form.color_validacion1_6 }}
-                        </td>
-                        <td>{{ form.porque2_6 }}</td>
-                        <td class="color-cell" data-color="{{ form.color_validacion2_6.value }}" onclick="changeColor(this, 'color_validacion2_6')">
-                            {{ form.color_validacion2_6 }}
-                        </td>
-                        <td>{{ form.porque3_6 }}</td>
-                        <td class="color-cell" data-color="{{ form.color_validacion3_6.value }}" onclick="changeColor(this, 'color_validacion3_6')">
-                            {{ form.color_validacion3_6 }}
-                        </td>
-                        <td>{{ form.porque4_6 }}</td>
-                        <td class="color-cell" data-color="{{ form.color_validacion4_6.value }}" onclick="changeColor(this, 'color_validacion4_6')">
-                            {{ form.color_validacion4_6 }}
-                        </td>
-                        <td>{{ form.porque5_6 }}</td>
-                        <td class="color-cell" data-color="{{ form.color_validacion5_6.value }}" onclick="changeColor(this, 'color_validacion5_6')">
-                            {{ form.color_validacion5_6 }}
-                        </td>
-                        <td class="porque6-col" {% if not form.porque6_6.value %}style="display: none;"{% endif %}>{{ form.porque6_6 }}</td>
-                        <td class="color-cell validacion6-col" {% if not form.porque6_6.value %}style="display: none;"{% endif %} data-color="{{ form.color_validacion6_6.value }}" onclick="changeColor(this, 'color_validacion6_6')">
-                            {{ form.color_validacion6_6 }}
-                        </td>
-                        <td class="porque7-col" {% if not form.porque7_6.value %}style="display: none;"{% endif %}>{{ form.porque7_6 }}</td>
-                        <td class="color-cell validacion7-col" {% if not form.porque7_6.value %}style="display: none;"{% endif %} data-color="{{ form.color_validacion7_6.value }}" onclick="changeColor(this, 'color_validacion7_6')">
-                            {{ form.color_validacion7_6 }}
-                        </td>
-                        <td>{{ form.Raiz_6 }}</td>
-                    </tr>
+            <tr id="porque-row-4">
+                <td>{{ form.modo_falla_paso3_4 }}</td>
+                <td>{{ form.porque1_4 }}</td>
+                <td class="color-cell" data-color="{{ form.color_validacion1_4.value }}" onclick="changeColor(this, 'color_validacion1_4')">
+                    {{ form.color_validacion1_4 }}
+                </td>
+                <td>{{ form.porque2_4 }}</td>
+                <td class="color-cell" data-color="{{ form.color_validacion2_4.value }}" onclick="changeColor(this, 'color_validacion2_4')">
+                    {{ form.color_validacion2_4 }}
+                </td>
+                <td>{{ form.porque3_4 }}</td>
+                <td class="color-cell" data-color="{{ form.color_validacion3_4.value }}" onclick="changeColor(this, 'color_validacion3_4')">
+                    {{ form.color_validacion3_4 }}
+                </td>
+                <td>{{ form.porque4_4 }}</td>
+                <td class="color-cell" data-color="{{ form.color_validacion4_4.value }}" onclick="changeColor(this, 'color_validacion4_4')">
+                    {{ form.color_validacion4_4 }}
+                </td>
+                <td>{{ form.porque5_4 }}</td>
+                <td class="color-cell" data-color="{{ form.color_validacion5_4.value }}" onclick="changeColor(this, 'color_validacion5_4')">
+                    {{ form.color_validacion5_4 }}
+                </td>
+                <td class="porque6-col" {% if not form.porque6_4.value %}style="display: none;"{% endif %}>{{ form.porque6_4 }}</td>
+                <td class="color-cell validacion6-col" {% if not form.porque6_4.value %}style="display: none;"{% endif %} data-color="{{ form.color_validacion6_4.value }}" onclick="changeColor(this, 'color_validacion6_4')">
+                    {{ form.color_validacion6_4 }}
+                </td>
+                <td class="porque7-col" {% if not form.porque7_4.value %}style="display: none;"{% endif %}>{{ form.porque7_4 }}</td>
+                <td class="color-cell validacion7-col" {% if not form.porque7_4.value %}style="display: none;"{% endif %} data-color="{{ form.color_validacion7_4.value }}" onclick="changeColor(this, 'color_validacion7_4')">
+                    {{ form.color_validacion7_4 }}
+                </td>
+                <td>{{ form.Raiz_4 }}</td>
+            </tr>
 
-                    <tr id="porque-row-7">
-                        <td>{{ form.modo_falla_paso3_7 }}</td>
-                        <td>{{ form.porque1_7 }}</td>
-                        <td class="color-cell" data-color="{{ form.color_validacion1_7.value }}" onclick="changeColor(this, 'color_validacion1_7')">
-                            {{ form.color_validacion1_7 }}
-                        </td>
-                        <td>{{ form.porque2_7 }}</td>
-                        <td class="color-cell" data-color="{{ form.color_validacion2_7.value }}" onclick="changeColor(this, 'color_validacion2_7')">
-                            {{ form.color_validacion2_7 }}
-                        </td>
-                        <td>{{ form.porque3_7 }}</td>
-                        <td class="color-cell" data-color="{{ form.color_validacion3_7.value }}" onclick="changeColor(this, 'color_validacion3_7')">
-                            {{ form.color_validacion3_7 }}
-                        </td>
-                        <td>{{ form.porque4_7 }}</td>
-                        <td class="color-cell" data-color="{{ form.color_validacion4_7.value }}" onclick="changeColor(this, 'color_validacion4_7')">
-                            {{ form.color_validacion4_7 }}
-                        </td>
-                        <td>{{ form.porque5_7 }}</td>
-                        <td class="color-cell" data-color="{{ form.color_validacion5_7.value }}" onclick="changeColor(this, 'color_validacion5_7')">
-                            {{ form.color_validacion5_7 }}
-                        </td>
-                        <td class="porque6-col" {% if not form.porque6_7.value %}style="display: none;"{% endif %}>{{ form.porque6_7 }}</td>
-                        <td class="color-cell validacion6-col" {% if not form.porque6_7.value %}style="display: none;"{% endif %} data-color="{{ form.color_validacion6_7.value }}" onclick="changeColor(this, 'color_validacion6_7')">
-                            {{ form.color_validacion6_7 }}
-                        </td>
-                        <td class="porque7-col" {% if not form.porque7_7.value %}style="display: none;"{% endif %}>{{ form.porque7_7 }}</td>
-                        <td class="color-cell validacion7-col" {% if not form.porque7_7.value %}style="display: none;"{% endif %} data-color="{{ form.color_validacion7_7.value }}" onclick="changeColor(this, 'color_validacion7_7')">
-                            {{ form.color_validacion7_7 }}
-                        </td>
-                        <td>{{ form.Raiz_7 }}</td>
-                    </tr>
+            <!-- Filas 5 a 8 ocultas inicialmente -->
+            <tr id="porque-row-5" style="display: none;">
+                <td>{{ form.modo_falla_paso3_5 }}</td>
+                <td>{{ form.porque1_5 }}</td>
+                <td class="color-cell" data-color="{{ form.color_validacion1_5.value }}" onclick="changeColor(this, 'color_validacion1_5')">
+                    {{ form.color_validacion1_5 }}
+                </td>
+                <td>{{ form.porque2_5 }}</td>
+                <td class="color-cell" data-color="{{ form.color_validacion2_5.value }}" onclick="changeColor(this, 'color_validacion2_5')">
+                    {{ form.color_validacion2_5 }}
+                </td>
+                <td>{{ form.porque3_5 }}</td>
+                <td class="color-cell" data-color="{{ form.color_validacion3_5.value }}" onclick="changeColor(this, 'color_validacion3_5')">
+                    {{ form.color_validacion3_5 }}
+                </td>
+                <td>{{ form.porque4_5 }}</td>
+                <td class="color-cell" data-color="{{ form.color_validacion4_5.value }}" onclick="changeColor(this, 'color_validacion4_5')">
+                    {{ form.color_validacion4_5 }}
+                </td>
+                <td>{{ form.porque5_5 }}</td>
+                <td class="color-cell" data-color="{{ form.color_validacion5_5.value }}" onclick="changeColor(this, 'color_validacion5_5')">
+                    {{ form.color_validacion5_5 }}
+                </td>
+                <td class="porque6-col" {% if not form.porque6_5.value %}style="display: none;"{% endif %}>{{ form.porque6_5 }}</td>
+                <td class="color-cell validacion6-col" {% if not form.porque6_5.value %}style="display: none;"{% endif %} data-color="{{ form.color_validacion6_5.value }}" onclick="changeColor(this, 'color_validacion6_5')">
+                    {{ form.color_validacion6_5 }}
+                </td>
+                <td class="porque7-col" {% if not form.porque7_5.value %}style="display: none;"{% endif %}>{{ form.porque7_5 }}</td>
+                <td class="color-cell validacion7-col" {% if not form.porque7_5.value %}style="display: none;"{% endif %} data-color="{{ form.color_validacion7_5.value }}" onclick="changeColor(this, 'color_validacion7_5')">
+                    {{ form.color_validacion7_5 }}
+                </td>
+                <td>{{ form.Raiz_5 }}</td>
+            </tr>
 
-                    <tr id="porque-row-8">
-                        <td>{{ form.modo_falla_paso3_8 }}</td>
-                        <td>{{ form.porque1_8 }}</td>
-                        <td class="color-cell" data-color="{{ form.color_validacion1_8.value }}" onclick="changeColor(this, 'color_validacion1_8')">
-                            {{ form.color_validacion1_8 }}
-                        </td>
-                        <td>{{ form.porque2_8 }}</td>
-                        <td class="color-cell" data-color="{{ form.color_validacion2_8.value }}" onclick="changeColor(this, 'color_validacion2_8')">
-                            {{ form.color_validacion2_8 }}
-                        </td>
-                        <td>{{ form.porque3_8 }}</td>
-                        <td class="color-cell" data-color="{{ form.color_validacion3_8.value }}" onclick="changeColor(this, 'color_validacion3_8')">
-                            {{ form.color_validacion3_8 }}
-                        </td>
-                        <td>{{ form.porque4_8 }}</td>
-                        <td class="color-cell" data-color="{{ form.color_validacion4_8.value }}" onclick="changeColor(this, 'color_validacion4_8')">
-                            {{ form.color_validacion4_8 }}
-                        </td>
-                        <td>{{ form.porque5_8 }}</td>
-                        <td class="color-cell" data-color="{{ form.color_validacion5_8.value }}" onclick="changeColor(this, 'color_validacion5_8')">
-                            {{ form.color_validacion5_8 }}
-                        </td>
-                        <td class="porque6-col" {% if not form.porque6_8.value %}style="display: none;"{% endif %}>{{ form.porque6_8 }}</td>
-                        <td class="color-cell validacion6-col" {% if not form.porque6_8.value %}style="display: none;"{% endif %} data-color="{{ form.color_validacion6_8.value }}" onclick="changeColor(this, 'color_validacion6_8')">
-                            {{ form.color_validacion6_8 }}
-                        </td>
-                        <td class="porque7-col" {% if not form.porque7_8.value %}style="display: none;"{% endif %}>{{ form.porque7_8 }}</td>
-                        <td class="color-cell validacion7-col" {% if not form.porque7_8.value %}style="display: none;"{% endif %} data-color="{{ form.color_validacion7_8.value }}" onclick="changeColor(this, 'color_validacion7_8')">
-                            {{ form.color_validacion7_8 }}
-                        </td>
-                        <td>{{ form.Raiz_8 }}</td>
-                    </tr>
-                </table>
-            </div>
-        </div>
+            <tr id="porque-row-6" style="display: none;">
+                <td>{{ form.modo_falla_paso3_6 }}</td>
+                <td>{{ form.porque1_6 }}</td>
+                <td class="color-cell" data-color="{{ form.color_validacion1_6.value }}" onclick="changeColor(this, 'color_validacion1_6')">
+                    {{ form.color_validacion1_6 }}
+                </td>
+                <td>{{ form.porque2_6 }}</td>
+                <td class="color-cell" data-color="{{ form.color_validacion2_6.value }}" onclick="changeColor(this, 'color_validacion2_6')">
+                    {{ form.color_validacion2_6 }}
+                </td>
+                <td>{{ form.porque3_6 }}</td>
+                <td class="color-cell" data-color="{{ form.color_validacion3_6.value }}" onclick="changeColor(this, 'color_validacion3_6')">
+                    {{ form.color_validacion3_6 }}
+                </td>
+                <td>{{ form.porque4_6 }}</td>
+                <td class="color-cell" data-color="{{ form.color_validacion4_6.value }}" onclick="changeColor(this, 'color_validacion4_6')">
+                    {{ form.color_validacion4_6 }}
+                </td>
+                <td>{{ form.porque5_6 }}</td>
+                <td class="color-cell" data-color="{{ form.color_validacion5_6.value }}" onclick="changeColor(this, 'color_validacion5_6')">
+                    {{ form.color_validacion5_6 }}
+                </td>
+                <td class="porque6-col" {% if not form.porque6_6.value %}style="display: none;"{% endif %}>{{ form.porque6_6 }}</td>
+                <td class="color-cell validacion6-col" {% if not form.porque6_6.value %}style="display: none;"{% endif %} data-color="{{ form.color_validacion6_6.value }}" onclick="changeColor(this, 'color_validacion6_6')">
+                    {{ form.color_validacion6_6 }}
+                </td>
+                <td class="porque7-col" {% if not form.porque7_6.value %}style="display: none;"{% endif %}>{{ form.porque7_6 }}</td>
+                <td class="color-cell validacion7-col" {% if not form.porque7_6.value %}style="display: none;"{% endif %} data-color="{{ form.color_validacion7_6.value }}" onclick="changeColor(this, 'color_validacion7_6')">
+                    {{ form.color_validacion7_6 }}
+                </td>
+                <td>{{ form.Raiz_6 }}</td>
+            </tr>
 
-              
+            <tr id="porque-row-7" style="display: none;">
+                <td>{{ form.modo_falla_paso3_7 }}</td>
+                <td>{{ form.porque1_7 }}</td>
+                <td class="color-cell" data-color="{{ form.color_validacion1_7.value }}" onclick="changeColor(this, 'color_validacion1_7')">
+                    {{ form.color_validacion1_7 }}
+                </td>
+                <td>{{ form.porque2_7 }}</td>
+                <td class="color-cell" data-color="{{ form.color_validacion2_7.value }}" onclick="changeColor(this, 'color_validacion2_7')">
+                    {{ form.color_validacion2_7 }}
+                </td>
+                <td>{{ form.porque3_7 }}</td>
+                <td class="color-cell" data-color="{{ form.color_validacion3_7.value }}" onclick="changeColor(this, 'color_validacion3_7')">
+                    {{ form.color_validacion3_7 }}
+                </td>
+                <td>{{ form.porque4_7 }}</td>
+                <td class="color-cell" data-color="{{ form.color_validacion4_7.value }}" onclick="changeColor(this, 'color_validacion4_7')">
+                    {{ form.color_validacion4_7 }}
+                </td>
+                <td>{{ form.porque5_7 }}</td>
+                <td class="color-cell" data-color="{{ form.color_validacion5_7.value }}" onclick="changeColor(this, 'color_validacion5_7')">
+                    {{ form.color_validacion5_7 }}
+                </td>
+                <td class="porque6-col" {% if not form.porque6_7.value %}style="display: none;"{% endif %}>{{ form.porque6_7 }}</td>
+                <td class="color-cell validacion6-col" {% if not form.porque6_7.value %}style="display: none;"{% endif %} data-color="{{ form.color_validacion6_7.value }}" onclick="changeColor(this, 'color_validacion6_7')">
+                    {{ form.color_validacion6_7 }}
+                </td>
+                <td class="porque7-col" {% if not form.porque7_7.value %}style="display: none;"{% endif %}>{{ form.porque7_7 }}</td>
+                <td class="color-cell validacion7-col" {% if not form.porque7_7.value %}style="display: none;"{% endif %} data-color="{{ form.color_validacion7_7.value }}" onclick="changeColor(this, 'color_validacion7_7')">
+                    {{ form.color_validacion7_7 }}
+                </td>
+                <td>{{ form.Raiz_7 }}</td>
+            </tr>
+
+            <tr id="porque-row-8" style="display: none;">
+                <td>{{ form.modo_falla_paso3_8 }}</td>
+                <td>{{ form.porque1_8 }}</td>
+                <td class="color-cell" data-color="{{ form.color_validacion1_8.value }}" onclick="changeColor(this, 'color_validacion1_8')">
+                    {{ form.color_validacion1_8 }}
+                </td>
+                <td>{{ form.porque2_8 }}</td>
+                <td class="color-cell" data-color="{{ form.color_validacion2_8.value }}" onclick="changeColor(this, 'color_validacion2_8')">
+                    {{ form.color_validacion2_8 }}
+                </td>
+                <td>{{ form.porque3_8 }}</td>
+                <td class="color-cell" data-color="{{ form.color_validacion3_8.value }}" onclick="changeColor(this, 'color_validacion3_8')">
+                    {{ form.color_validacion3_8 }}
+                </td>
+                <td>{{ form.porque4_8 }}</td>
+                <td class="color-cell" data-color="{{ form.color_validacion4_8.value }}" onclick="changeColor(this, 'color_validacion4_8')">
+                    {{ form.color_validacion4_8 }}
+                </td>
+                <td>{{ form.porque5_8 }}</td>
+                <td class="color-cell" data-color="{{ form.color_validacion5_8.value }}" onclick="changeColor(this, 'color_validacion5_8')">
+                    {{ form.color_validacion5_8 }}
+                </td>
+                <td class="porque6-col" {% if not form.porque6_8.value %}style="display: none;"{% endif %}>{{ form.porque6_8 }}</td>
+                <td class="color-cell validacion6-col" {% if not form.porque6_8.value %}style="display: none;"{% endif %} data-color="{{ form.color_validacion6_8.value }}" onclick="changeColor(this, 'color_validacion6_8')">
+                    {{ form.color_validacion6_8 }}
+                </td>
+                <td class="porque7-col" {% if not form.porque7_8.value %}style="display: none;"{% endif %}>{{ form.porque7_8 }}</td>
+                <td class="color-cell validacion7-col" {% if not form.porque7_8.value %}style="display: none;"{% endif %} data-color="{{ form.color_validacion7_8.value }}" onclick="changeColor(this, 'color_validacion7_8')">
+                    {{ form.color_validacion7_8 }}
+                </td>
+                <td>{{ form.Raiz_8 }}</td>
+            </tr>
+
+        </table>
+    </div>
+</div>
+
 <script>
-        function changeColor(cell, inputId) {
+    // Función para cambiar el color de las celdas
+    function changeColor(cell, inputId) {
         const colors = ['white', 'green', 'red'];
         let currentColor = cell.getAttribute('data-color');
         let nextColorIndex = (colors.indexOf(currentColor) + 1) % colors.length;
         let nextColor = colors[nextColorIndex];
-        
+
+        // Cambiar el color de fondo de la celda
         cell.style.backgroundColor = nextColor;
         cell.setAttribute('data-color', nextColor);
+
+        // Actualizar el valor en el campo de formulario oculto
         document.getElementById('id_' + inputId).value = nextColor;
-        
-        // Actualizar el estado del checkbox de validación
+
+        // Actualizar el estado del checkbox de validación si existe
         let checkboxId = inputId.replace('color_validacion', 'validado');
         let checkbox = document.getElementById('id_' + checkboxId);
-        checkbox.checked = (nextColor === 'green');
+        if (checkbox) {
+            checkbox.checked = (nextColor === 'green');
         }
-        
-        // Aplicar colores iniciales
-        document.addEventListener('DOMContentLoaded', function() {
-        document.querySelectorAll('.color-cell').forEach(cell => {
-            cell.style.backgroundColor = cell.getAttribute('data-color');
-        });
-        });
-        document.addEventListener("DOMContentLoaded", function() {
-            const modoFallaPaso2 = document.getElementById("id_modo_falla_paso2");
-            const modoFallaPaso3 = document.getElementById("id_modo_falla_paso3");
-
-            // Verificar que ambos campos existan
-            if (modoFallaPaso2 && modoFallaPaso3) {
-                // Copiar el valor del Paso 2 al Paso 3 al cargar la página
-                modoFallaPaso3.value = modoFallaPaso2.value;
-
-                // Escuchar cambios en el Paso 2 para actualizar automáticamente el Paso 3
-                modoFallaPaso2.addEventListener('input', function() {
-                    modoFallaPaso3.value = modoFallaPaso2.value;
-                });
-            } else {
-                console.error('Campos modo_falla_paso2 o modo_falla_paso3 no encontrados');
-            }
-        });
-        document.addEventListener('DOMContentLoaded', function() {
-    const addPorqueBtn = document.getElementById('addPorqueBtn');
-    let porqueCount = 5;
-
-    // Determinar el número inicial de "Por qué" visibles
-    if (document.querySelector('.porque7-col').style.display !== 'none') {
-        porqueCount = 7;
-        addPorqueBtn.style.display = 'none';
-    } else if (document.querySelector('.porque6-col').style.display !== 'none') {
-        porqueCount = 6;
-        addPorqueBtn.textContent = 'Agregar POR QUÉ? (7)';
     }
 
-    addPorqueBtn.addEventListener('click', function() {
-        if (porqueCount < 7) {
-            porqueCount++;
-            const porqueCol = document.querySelectorAll(`.porque${porqueCount}-col`);
-            const validacionCol = document.querySelectorAll(`.validacion${porqueCount}-col`);
-            
-            porqueCol.forEach(col => col.style.display = '');
-            validacionCol.forEach(col => col.style.display = '');
+    // Restaurar los colores iniciales basados en los valores almacenados
+    document.addEventListener('DOMContentLoaded', function() {
+        document.querySelectorAll('.color-cell').forEach(cell => {
+            let savedColor = cell.getAttribute('data-color');
+            if (savedColor) {
+                cell.style.backgroundColor = savedColor;  // Restaurar el color de la celda
+            }
+        });
 
-            if (porqueCount === 6) {
-                addPorqueBtn.textContent = 'Agregar POR QUÉ?';
-            } else if (porqueCount === 7) {
-                addPorqueBtn.style.display = 'none';
+        let totalRows = 8;  // Número total de filas
+        let currentRow = 4;  // Filas visibles inicialmente
+        let porqueCount = 5; // Comenzamos con 5 columnas de "¿POR QUÉ?"
+
+        // Función para ocultar filas sin datos en las columnas "¿POR QUÉ?"
+        function manageRows() {
+            for (let i = 5; i <= totalRows; i++) {
+                let row = document.getElementById(`porque-row-${i}`);
+                
+                // Solo verificar las columnas "¿POR QUÉ?" (No validación)
+                let porqueInputs = row.querySelectorAll('[id^="id_porque"]'); // Busca campos de las columnas "¿POR QUÉ?"
+                let hasPorqueData = Array.from(porqueInputs).some(input => input.value.trim() !== ""); // Verifica si algún campo "¿POR QUÉ?" tiene valor
+
+                // Mostrar la fila si tiene datos en alguna columna "¿POR QUÉ?"
+                if (hasPorqueData) {
+                    row.style.display = '';  // Mostrar la fila con datos
+                    currentRow = i;  // Actualizar el número de la última fila visible
+                } else {
+                    row.style.display = 'none';  // Ocultar la fila sin datos
+                }
             }
         }
-    });
-});
 
+        // Mostrar las filas que tienen datos al cargar la página
+        manageRows();
+
+        // Función para verificar y mostrar columnas 6 y 7 si tienen información
+        function checkAndShowColumns() {
+            let showPorque6 = false;
+            let showPorque7 = false;
+
+            for (let i = 1; i <= totalRows; i++) {
+                const porque6 = document.querySelector(`#porque-row-${i} .porque6-col`);
+                const porque7 = document.querySelector(`#porque-row-${i} .porque7-col`);
+                
+                const porque6Input = porque6 ? porque6.querySelector('[id^="id_porque"]') : null; // Solo verificar campos "¿POR QUÉ?"
+                const porque7Input = porque7 ? porque7.querySelector('[id^="id_porque"]') : null; // Solo verificar campos "¿POR QUÉ?"
+
+                // Verificar si hay datos en la columna 6
+                if (porque6Input && porque6Input.value.trim() !== '') {
+                    showPorque6 = true;
+                    porque6.style.display = '';  // Mostrar la columna 6 en todas las filas
+                }
+
+                // Verificar si hay datos en la columna 7
+                if (porque7Input && porque7Input.value.trim() !== '') {
+                    showPorque7 = true;
+                    porque7.style.display = '';  // Mostrar la columna 7 en todas las filas
+                }
+            }
+
+            // Mostrar la columna 6 si hay datos en alguna fila
+            if (showPorque6) {
+                document.querySelectorAll('.porque6-col').forEach(col => col.style.display = '');
+                document.querySelectorAll('.validacion6-col').forEach(col => col.style.display = '');
+                porqueCount = 6;
+            }
+
+            // Mostrar la columna 7 si hay datos en alguna fila
+            if (showPorque7) {
+                document.querySelectorAll('.porque7-col').forEach(col => col.style.display = '');
+                document.querySelectorAll('.validacion7-col').forEach(col => col.style.display = '');
+                porqueCount = 7;
+            }
+
+            // Ajustar el botón de agregar columnas
+            const addPorqueBtn = document.getElementById('addPorqueBtn');
+            if (porqueCount >= 7) {
+                addPorqueBtn.style.display = 'none';
+            } else if (porqueCount === 6) {
+                addPorqueBtn.textContent = 'Agregar POR QUÉ? (7)';
+            }
+        }
+
+        // Verificar y mostrar las columnas 6 y 7 al cargar la página
+        checkAndShowColumns();
+
+        // Botón para mostrar más filas
+        const showMoreRowsBtn = document.getElementById('showMoreRows');
+
+        showMoreRowsBtn.addEventListener('click', function() {
+            currentRow++;
+            const nextRow = document.getElementById(`porque-row-${currentRow}`);
+            if (nextRow) {
+                nextRow.style.display = ''; // Mostrar la siguiente fila oculta
+            }
+
+            // Si ya llegamos al total de filas, ocultar el botón
+            if (currentRow >= totalRows) {
+                showMoreRowsBtn.style.display = 'none';
+            }
+        });
+
+        // Evento para agregar más "¿POR QUÉ?" columnas
+        const addPorqueBtn = document.getElementById('addPorqueBtn');
+        addPorqueBtn.addEventListener('click', function() {
+            if (porqueCount < 7) {
+                porqueCount++;
+                const porqueCol = document.querySelectorAll(`.porque${porqueCount}-col`);
+                const validacionCol = document.querySelectorAll(`.validacion${porqueCount}-col`);
+
+                porqueCol.forEach(col => col.style.display = '');
+                validacionCol.forEach(col => col.style.display = '');
+
+                if (porqueCount === 6) {
+                    addPorqueBtn.textContent = 'Agregar POR QUÉ? (7)';
+                } else if (porqueCount === 7) {
+                    addPorqueBtn.style.display = 'none';
+                }
+            }
+        });
+
+    });
 </script>
+
 
 
 
