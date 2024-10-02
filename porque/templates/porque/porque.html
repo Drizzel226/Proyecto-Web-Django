@@ -284,33 +284,10 @@
             </div>
         </div>
 
+
+
+
         <!-- Sección Paso 3: Causa Raíz -->
-
-        
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 <div id="paso3-section" class="recuadro-paso mt-4" style="border: 1px solid #FFC800;">
     <div class="paso-header" style="background-color: #FFC800; color: white; padding: 10px 15px; border-radius: 5px;">
         <h2 class="collapsible" style="cursor: pointer; margin: 0;" onclick="toggleVisibility('contenido-paso3')">
@@ -324,7 +301,7 @@
             {% if form.porque6.value %}Agregar POR QUÉ?{% else %}Agregar POR QUÉ?{% endif %}
         </button>
         <button id="showMoreRows" type="button" class="btn btn-secondary mb-3">Mostrar más filas</button>
-
+        <div><h1></h1></div>
         <table id="porqueTable">
             <tr>
                 <th>Modo de Falla</th>
@@ -717,7 +694,7 @@
             if (porqueCount >= 7) {
                 addPorqueBtn.style.display = 'none';
             } else if (porqueCount === 6) {
-                addPorqueBtn.textContent = 'Agregar POR QUÉ? (7)';
+                addPorqueBtn.textContent = 'Agregar POR QUÉ?';
             }
         }
 
@@ -752,7 +729,7 @@
                 validacionCol.forEach(col => col.style.display = '');
 
                 if (porqueCount === 6) {
-                    addPorqueBtn.textContent = 'Agregar POR QUÉ? (7)';
+                    addPorqueBtn.textContent = 'Agregar POR QUÉ?';
                 } else if (porqueCount === 7) {
                     addPorqueBtn.style.display = 'none';
                 }
@@ -761,7 +738,7 @@
 
     });
 
-    document.addEventListener("DOMContentLoaded", function() {
+     document.addEventListener("DOMContentLoaded", function() {
         const modoFallaPaso2 = document.getElementById("id_modo_falla_paso2");
         const modoFallaPaso3 = document.getElementById("id_modo_falla_paso3");
 
@@ -783,59 +760,89 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         <!-- Sección Paso 4: Contramedidas y Seguimiento -->
-        <div id="paso3-section" class="recuadro-paso mt-4" style="border: 1px solid #00C851;">
-            <div class="paso-header" style="background-color: #00C851; color: white; padding: 10px 15px; border-radius: 5px;">
-                <h2 class="collapsible" style="cursor: pointer; margin: 0;" onclick="toggleVisibility('contenido-paso4')">
-                    <span style="margin-right: 10px;">&#x25BC;</span> Paso 4: Contramedidas y Seguimiento
-                </h2>
+<div id="paso4-section" class="recuadro-paso mt-4" style="border: 1px solid #00C851;">
+    <div class="paso-header" style="background-color: #00C851; color: white; padding: 10px 15px; border-radius: 5px;">
+        <h2 class="collapsible" style="cursor: pointer; margin: 0;" onclick="toggleVisibility('contenido-paso4')">
+            <span style="margin-right: 10px;">&#x25BC;</span> Paso 4: Contramedidas y Seguimiento
+        </h2>
+    </div>
+    <div id="contenido-paso4">
+                
+        <!-- Bloque 1: Principio de funcionamiento -->
+        <div class="sub-section" style="margin-bottom: 20px;">
+            <div><h1></h1></div>
+            <div class="sub-header" style="background-color: #00C851; color: white; padding: 10px 15px; border-radius: 5px;">
+                <h3 style="margin: 0;">oooooooooooooooo</h3>
+            </div>
+            <div class="sub-content" style="padding: 10px; border: 1px solid #00C851; border-radius: 5px;">
+                <div class="form-row">
+ 
+                    
+                </div>
             </div>
         </div>
+    </div>
+</div>
 
 
         <!-- Sección Paso 5: Estandarización y Expansión -->
-        <div id="paso3-section" class="recuadro-paso mt-4" style="border: 1px solid #D86B20;">
-            <div class="paso-header" style="background-color: #D86B20; color: white; padding: 10px 15px; border-radius: 5px;">
-                <h2 class="collapsible" style="cursor: pointer; margin: 0;" onclick="toggleVisibility('contenido-paso5')">
-                    <span style="margin-right: 10px;">&#x25BC;</span> Paso 5: Estandarización y Expansión
-                </h2>
+<div id="paso5-section" class="recuadro-paso mt-4" style="border: 1px solid #D86B20;">
+    <div class="paso-header" style="background-color: #D86B20; color: white; padding: 10px 15px; border-radius: 5px;">
+        <h2 class="collapsible" style="cursor: pointer; margin: 0;" onclick="toggleVisibility('contenido-paso5')">
+            <span style="margin-right: 10px;">&#x25BC;</span> Paso 5: Estandarización y Expansión
+        </h2>
+    </div>
+    <div id="contenido-paso5">
+                <div><h1></h1></div>
+                <div><button type="submit" class="btn btn-primary" >Levantar Acción Estandarización</button></div>
+
+        <!-- Bloque 1 -->
+        <div class="sub-section" style="margin-bottom: 20px;">
+            <div><h1></h1></div>
+            <div class="sub-header" style="background-color: #D86B20; color: white; padding: 10px 15px; border-radius: 5px;">
+                <h3 style="margin: 0;">Estandarización</h3>
+            </div>
+            <div class="sub-content" style="padding: 10px; border: 1px solid #D86B20; border-radius: 5px;">
+                <div class="form-row">
+
+                <div><h1></h1></div>
+                &nbsp;&nbsp;&nbsp;&nbsp;<div><button type="submit" class="btn btn-primary" >Levantar Acción Expansión</button></div>
+                    
+                </div>
             </div>
         </div>
+
+        <!-- Bloque 2 -->
+        <div class="sub-section" style="margin-bottom: 20px;">
+            <div><h1></h1></div>
+            <div class="sub-header" style="background-color: #D86B20; color: white; padding: 10px 15px; border-radius: 5px;">
+                <h3 style="margin: 0;">Expansión</h3>
+            </div>
+            <div class="sub-content" style="padding: 10px; border: 1px solid #D86B20; border-radius: 5px;">
+                <div class="form-row">
+    
+                    
+                </div>
+            </div>
+        </div>
+
+        <!-- Bloque 3 -->
+        <div class="sub-section" style="margin-bottom: 20px;">
+            <div><h1></h1></div>
+            <div class="sub-header" style="background-color: #D86B20; color: white; padding: 10px 15px; border-radius: 5px;">
+                <h3 style="margin: 0;">A qué áreas podría aplicar la mejora realizada?</h3>
+            </div>
+            <div class="sub-content" style="padding: 10px; border: 1px solid #D86B20; border-radius: 5px;">
+                <div class="form-row">
+ 
+                    
+                </div>
+            </div>
+        </div>
+        
+    </div>
+</div>
         {% endif %} <!-- Este es el cierre del "if" que se abrió al principio -->
 
         <div class="form-actions">
