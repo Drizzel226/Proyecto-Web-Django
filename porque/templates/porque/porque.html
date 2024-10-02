@@ -321,7 +321,7 @@
     <div id="contenido-paso3">
         <div><h1></h1></div>
         <button id="addPorqueBtn" type="button" class="btn btn-primary mb-3">
-            {% if form.porque6.value %}Agregar POR QUÉ? (7){% else %}Agregar POR QUÉ? (6){% endif %}
+            {% if form.porque6.value %}Agregar POR QUÉ?{% else %}Agregar POR QUÉ?{% endif %}
         </button>
         <button id="showMoreRows" type="button" class="btn btn-secondary mb-3">Mostrar más filas</button>
 
@@ -379,7 +379,7 @@
                 <td>{{ form.Raiz }}</td>
             </tr>
 
-            <tr id="porque-row-2">
+            <tr id="porque-row-2" style="display: none;">
                 <td>{{ form.modo_falla_paso3_2 }}</td>
                 <td>{{ form.porque1_2 }}</td>
                 <td class="color-cell" data-color="{{ form.color_validacion1_2.value }}" onclick="changeColor(this, 'color_validacion1_2')">
@@ -412,7 +412,7 @@
                 <td>{{ form.Raiz_2 }}</td>
             </tr>
 
-            <tr id="porque-row-3">
+            <tr id="porque-row-3" style="display: none;">
                 <td>{{ form.modo_falla_paso3_3 }}</td>
                 <td>{{ form.porque1_3 }}</td>
                 <td class="color-cell" data-color="{{ form.color_validacion1_3.value }}" onclick="changeColor(this, 'color_validacion1_3')">
@@ -445,7 +445,7 @@
                 <td>{{ form.Raiz_3 }}</td>
             </tr>
 
-            <tr id="porque-row-4">
+            <tr id="porque-row-4" style="display: none;">
                 <td>{{ form.modo_falla_paso3_4 }}</td>
                 <td>{{ form.porque1_4 }}</td>
                 <td class="color-cell" data-color="{{ form.color_validacion1_4.value }}" onclick="changeColor(this, 'color_validacion1_4')">
@@ -648,12 +648,12 @@
         });
 
         let totalRows = 8;  // Número total de filas
-        let currentRow = 4;  // Filas visibles inicialmente
+        let currentRow = 1;  // Filas visibles inicialmente
         let porqueCount = 5; // Comenzamos con 5 columnas de "¿POR QUÉ?"
 
         // Función para ocultar filas sin datos en las columnas "¿POR QUÉ?"
         function manageRows() {
-            for (let i = 5; i <= totalRows; i++) {
+            for (let i = 2; i <= totalRows; i++) {
                 let row = document.getElementById(`porque-row-${i}`);
                 
                 // Solo verificar las columnas "¿POR QUÉ?" (No validación)
@@ -760,6 +760,24 @@
         });
 
     });
+
+    document.addEventListener("DOMContentLoaded", function() {
+        const modoFallaPaso2 = document.getElementById("id_modo_falla_paso2");
+        const modoFallaPaso3 = document.getElementById("id_modo_falla_paso3");
+
+        // Verificar que ambos campos existan
+        if (modoFallaPaso2 && modoFallaPaso3) {
+            // Copiar el valor del Paso 2 al Paso 3 al cargar la página
+            modoFallaPaso3.value = modoFallaPaso2.value;
+
+            // Escuchar cambios en el Paso 2 para actualizar automáticamente el Paso 3
+            modoFallaPaso2.addEventListener('input', function() {
+                modoFallaPaso3.value = modoFallaPaso2.value;
+            });
+        } else {
+            console.error('Campos modo_falla_paso2 o modo_falla_paso3 no encontrados');
+        }
+    });
 </script>
 
 
@@ -803,7 +821,7 @@
         <!-- Sección Paso 4: Contramedidas y Seguimiento -->
         <div id="paso3-section" class="recuadro-paso mt-4" style="border: 1px solid #00C851;">
             <div class="paso-header" style="background-color: #00C851; color: white; padding: 10px 15px; border-radius: 5px;">
-                <h2 class="collapsible" style="cursor: pointer; margin: 0;" onclick="toggleVisibility('contenido-paso3')">
+                <h2 class="collapsible" style="cursor: pointer; margin: 0;" onclick="toggleVisibility('contenido-paso4')">
                     <span style="margin-right: 10px;">&#x25BC;</span> Paso 4: Contramedidas y Seguimiento
                 </h2>
             </div>
@@ -813,7 +831,7 @@
         <!-- Sección Paso 5: Estandarización y Expansión -->
         <div id="paso3-section" class="recuadro-paso mt-4" style="border: 1px solid #D86B20;">
             <div class="paso-header" style="background-color: #D86B20; color: white; padding: 10px 15px; border-radius: 5px;">
-                <h2 class="collapsible" style="cursor: pointer; margin: 0;" onclick="toggleVisibility('contenido-paso3')">
+                <h2 class="collapsible" style="cursor: pointer; margin: 0;" onclick="toggleVisibility('contenido-paso5')">
                     <span style="margin-right: 10px;">&#x25BC;</span> Paso 5: Estandarización y Expansión
                 </h2>
             </div>
@@ -920,6 +938,8 @@
         toggleVisibility('contenido-paso1');
         toggleVisibility('contenido-paso2');
         toggleVisibility('contenido-paso3');
+        toggleVisibility('contenido-paso4');
+        toggleVisibility('contenido-paso5');
     });
 
 
