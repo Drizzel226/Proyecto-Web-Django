@@ -256,8 +256,23 @@ class Porque(models.Model):
     Raiz_8 = models.TextField("Raíz", blank=True, null=True)
 
     
+    #PASO 4
+    Accion_correctiva = models.TextField(blank=True, null=True)
+    Responsable1 = models.TextField(blank=True, null=True)
+    Fecha_compromiso1 = models.DateField(blank=True, null=True)
+    Accion_Preventiva = models.TextField(blank=True, null=True)
+    Responsable2 = models.TextField(blank=True, null=True)
+    Fecha_compromiso2 = models.DateField(blank=True, null=True)
 
 
+
+
+
+
+
+
+    # PASO 5
+    areas_aplicacion = models.CharField(max_length=500, blank=True, null=True)
 
 
 

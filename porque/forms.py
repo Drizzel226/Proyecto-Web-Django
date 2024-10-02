@@ -98,6 +98,10 @@ class PorqueForm(forms.ModelForm):
             'Raiz_6',
             'Raiz_7',
             'Raiz_8',
+
+            # PASO 4
+
+            'Accion_correctiva', 'Responsable1', 'Fecha_compromiso1', 'Accion_Preventiva', 'Responsable2', 'Fecha_compromiso2', 
         ]
         widgets = {
             'categoria': forms.TextInput(attrs={'class': 'form-control'}),
@@ -278,7 +282,52 @@ class PorqueForm(forms.ModelForm):
             'Raiz_6': forms.Textarea(attrs={'class': 'form-control'}),
             'Raiz_7': forms.Textarea(attrs={'class': 'form-control'}),
             'Raiz_8': forms.Textarea(attrs={'class': 'form-control'}),
+
+            #paso 4
+            'Accion_correctiva': forms.Textarea(attrs={'class': 'form-control'}),
+            'Responsable1': forms.Textarea(attrs={'class': 'form-control'}),
+            'Fecha_compromiso1': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
+            'Accion_Preventiva': forms.Textarea(attrs={'class': 'form-control'}),
+            'Responsable2': forms.Textarea(attrs={'class': 'form-control'}),
+            'Fecha_compromiso2': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
+            
+
+
+
         }
+
+
+
+    areas_aplicacion = forms.MultipleChoiceField(
+        choices=[
+            ('Linea 2', 'Línea 2'),
+            ('Linea 3', 'Línea 3'),
+            ('Linea 4', 'Línea 4'),
+            ('Linea 9', 'Línea 9'),
+            ('Linea 11', 'Línea 11'),
+            ('Linea 12', 'Línea 12'),
+            ('Linea 14', 'Línea 14'),
+            ('Linea 15', 'Línea 15'),
+            ('Taller de Mantenimiento', 'Taller de Mantenimiento'),
+            ('Almacén de Repuestos', 'Almacén de Repuestos'),
+            ('Elaboración', 'Elaboración'),
+            ('Suministros', 'Suministros'),
+            ('Almacén', 'Almacén'),
+            ('Linea 7', 'Línea 7'),
+        ],
+        widget=forms.CheckboxSelectMultiple,
+        required=False,  # Si es opcional
+    )
+
+
+
+
+
+
+
+
+
+
 
     def __init__(self, *args, **kwargs):
         super(PorqueForm, self).__init__(*args, **kwargs)

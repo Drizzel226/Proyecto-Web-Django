@@ -36,6 +36,11 @@ def porque_view(request, pk=None):
             # Guardar la instancia del formulario pero sin guardarla aún en la BD
             porque_instance = form.save(commit=False)
 
+            # Obtener las áreas seleccionadas y almacenarlas como cadena separada por comas
+            areas_seleccionadas = form.cleaned_data.get('areas_aplicacion')
+            if areas_seleccionadas:
+                porque_instance.areas_aplicacion = ','.join(areas_seleccionadas)  
+            
             # Asignar la fecha de inicio si es la primera vez que se guarda
             if not porque_instance.fecha_inicio:
                 porque_instance.fecha_inicio = now().date()
@@ -43,11 +48,11 @@ def porque_view(request, pk=None):
             # Ahora sí guardar la instancia en la base de datos
             porque_instance.save()  # Guardar para obtener el ID
 
-            # Guardar relaciones ManyToMany
+            # Guardar relaciones ManyToMany (si aplica)
             form.save_m2m()
 
             # Mensaje de éxito y redirigir con el ID
-            messages.success(request, 'Se a guardo con éxito. Puedes continuar.')
+            messages.success(request, 'Se ha guardado con éxito. Puedes continuar.')
             return redirect('porque', pk=porque_instance.pk)  # Redirigir a la misma página con el ID
 
         else:
@@ -56,7 +61,12 @@ def porque_view(request, pk=None):
 
     else:
         # Si el método es GET (cargar la página por primera vez)
-        form = PorqueForm(instance=porque_instance)
+        if porque_instance and porque_instance.areas_aplicacion:
+            # Convertir la cadena separada por comas en una lista para que el formulario pueda manejarlo
+            areas_seleccionadas = porque_instance.areas_aplicacion.split(',')
+            form = PorqueForm(instance=porque_instance, initial={'areas_aplicacion': areas_seleccionadas})
+        else:
+            form = PorqueForm(instance=porque_instance)
 
     mostrar_paso1 = porque_instance is not None  # Mostrar el paso 1 solo si ya existe la instancia
 

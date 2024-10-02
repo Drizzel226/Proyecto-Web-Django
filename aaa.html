@@ -1,30 +1,20 @@
-<div><h1></h1></div>
-<div<button type="submit" class="btn btn-primary" >Levantar Acción Estandarización</button></div>
+                        <!-- Tabla de Acciones del Paso 4 con clases personalizadas -->
+                        <table id="AccionesTable">
+                            <tr>
+                                <th>Acción Correctiva</th>
+                                <th>Responsable</th>
+                                <th>Fecha Compromiso</th>
+                                <th>Acción Preventiva</th>
+                                <th>Responsable</th>
+                                <th>Fecha Compromiso</th>
+                            </tr>
 
-        <!-- Bloque 1 -->
-        <div class="sub-section" style="margin-bottom: 20px;">
-            <div><h1></h1></div>
-            <div class="sub-header" style="background-color: #D86B20; color: white; padding: 10px 15px; border-radius: 5px;">
-                <h3 style="margin: 0;">Estandarización</h3>
-            </div>
-            <div class="sub-content" style="padding: 10px; border: 1px solid #D86B20; border-radius: 5px;">
-                <div class="form-row">
-
-                    
-                </div>
-            </div>
-        </div>
-
-        <!-- Bloque 2 -->
-        <div class="sub-section" style="margin-bottom: 20px;">
-            <div><h1></h1></div>
-            <div class="sub-header" style="background-color: #D86B20; color: white; padding: 10px 15px; border-radius: 5px;">
-                <h3 style="margin: 0;">A qué área podría aplicar la mejora realizada?</h3>
-            </div>
-            <div class="sub-content" style="padding: 10px; border: 1px solid #D86B20; border-radius: 5px;">
-                <div class="form-row">
-    
-                    
-                </div>
-            </div>
-        </div>
+                            <tr id="Acciones-row">
+                                <td>{{ form.Accion_correctiva }}</td>
+                                <td>{{ form.Responsable1 }}</td>
+                                <td>{{ form.Fecha_compromiso1 }}</td>
+                                <td>{{ form.Accion_Preventiva }}</td>
+                                <td>{{ form.Responsable2 }}</td>
+                                <td>{{ form.Fecha_compromiso2 }}</td>
+                            </tr>
+                        </table>

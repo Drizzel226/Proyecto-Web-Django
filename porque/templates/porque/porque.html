@@ -769,21 +769,122 @@
     </div>
     <div id="contenido-paso4">
                 
-        <!-- Bloque 1: Principio de funcionamiento -->
         <div class="sub-section" style="margin-bottom: 20px;">
             <div><h1></h1></div>
+            
+            <!-- Subcategoría -->
             <div class="sub-header" style="background-color: #00C851; color: white; padding: 10px 15px; border-radius: 5px;">
-                <h3 style="margin: 0;">oooooooooooooooo</h3>
+                <h3 style="margin: 0;">Acciones (Contramedidas y Seguimiento)</h3>
             </div>
+            
             <div class="sub-content" style="padding: 10px; border: 1px solid #00C851; border-radius: 5px;">
-                <div class="form-row">
- 
-                    
+                
+                <!-- Sub-subcategoría 1 -->
+                <div class="sub-section" style="margin-bottom: 10px; margin-left: 20px;">
+                    <div class="sub-header" style="background-color: #00C851; color: white; padding: 10px 10px; border-radius: 5px;">
+                        <h4 style="margin: 0;">Acciónes Correctivas</h4>
+                    </div>
+                    <div class="sub-content" style="padding: 8px; border: 1px solid #00C851; border-radius: 5px;">
+                        <div class="form-row">
+
+                            <table id="AccionesTable">
+                                <tr>
+                                    &nbsp;<th>Acción Correctiva</th>
+                                    &nbsp;<th>Responsable</th>
+                                    &nbsp;<th>Fecha Compromiso</th>
+
+                                </tr>
+    
+                                <tr id="Acciones-row">
+                                    &nbsp;<td>{{ form.Accion_correctiva }}</td>
+                                    &nbsp;<td>{{ form.Responsable1 }}</td>
+                                    &nbsp;<td>{{ form.Fecha_compromiso1 }}</td>
+
+                                </tr>
+                            </table>
+
+                            
+                        </div>
+                    </div>
                 </div>
+        
+                <!-- Sub-subcategoría 2 -->
+                <div class="sub-section" style="margin-bottom: 10px; margin-left: 20px;">
+                    <div class="sub-header" style="background-color: #00C851; color: white; padding: 10px 10px; border-radius: 5px;">
+                        <h4 style="margin: 0;">Acciónes Preventivas</h4>
+                    </div>
+                    <div class="sub-content" style="padding: 8px; border: 1px solid #00C851; border-radius: 5px;">
+                        <div class="form-row">
+
+                            <table id="AccionesTable">
+                                <tr>
+                                    &nbsp;<th>Acción Preventiva</th>
+                                    <th>Responsable</th>
+                                    <th>Fecha Compromiso</th>
+                                </tr>
+    
+                                <tr id="Acciones-row">
+                                    &nbsp;<td>{{ form.Accion_Preventiva }}</td>
+                                    &nbsp;<td>{{ form.Responsable2 }}</td>
+                                    &nbsp;<td>{{ form.Fecha_compromiso2 }}</td>
+                                </tr>
+                            </table>
+
+
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sub-subcategoría 3 -->
+                <div class="sub-section" style="margin-bottom: 10px; margin-left: 20px;">
+                    <div class="sub-header" style="background-color: #00C851; color: white; padding: 10px 10px; border-radius: 5px;">
+                        <h4 style="margin: 0;">validacion de la Acción</h4>
+                    </div>
+                    <div class="sub-content" style="padding: 8px; border: 1px solid #00C851; border-radius: 5px;">
+                        <div class="form-row">
+
+                            <table id="AccionesTable">
+                                <tr>
+                                    &nbsp;<th>Acción Preventiva</th>
+                                    <th>Responsable</th>
+                                    <th>Fecha Compromiso</th>
+                                </tr>
+    
+                                <tr id="Acciones-row">
+                                    &nbsp;<td>{{ form.Accion_Preventiva }}</td>
+                                    &nbsp;<td>{{ form.Responsable2 }}</td>
+                                    &nbsp;<td>{{ form.Fecha_compromiso2 }}</td>
+                                </tr>
+                            </table>
+
+
+                        </div>
+                    </div>
+                </div>
+        
             </div>
         </div>
+
+        
     </div>
 </div>
+
+<script>
+
+
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
 
 
         <!-- Sección Paso 5: Estandarización y Expansión -->
@@ -835,6 +936,12 @@
             </div>
             <div class="sub-content" style="padding: 10px; border: 1px solid #D86B20; border-radius: 5px;">
                 <div class="form-row">
+
+
+                    <div class="form-group">
+                        <label for="areas_aplicacion">¿A qué áreas podría aplicar la mejora realizada?</label>
+                        {{ form.areas_aplicacion }}
+                    </div>
  
                     
                 </div>
