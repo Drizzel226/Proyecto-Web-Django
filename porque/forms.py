@@ -6,6 +6,24 @@ class PorqueForm(forms.ModelForm):
         queryset=MiembroEquipo.objects.all(),
         widget=forms.SelectMultiple(attrs={'class': 'form-control select2'})
     )
+    class PorqueForm(forms.ModelForm):
+        Responsable1 = forms.ModelChoiceField(
+            queryset=MiembroEquipo.objects.all(),
+            widget=forms.Select(attrs={'class': 'form-control select2'}),
+            required=False
+    )
+    Responsable1_2 = forms.ModelMultipleChoiceField(
+        queryset=MiembroEquipo.objects.all(),
+        widget=forms.SelectMultiple(attrs={'class': 'form-control select2'})
+    )
+    Responsable1_3 = forms.ModelMultipleChoiceField(
+        queryset=MiembroEquipo.objects.all(),
+        widget=forms.SelectMultiple(attrs={'class': 'form-control select2'})
+    )
+    Responsable1_4 = forms.ModelMultipleChoiceField(
+        queryset=MiembroEquipo.objects.all(),
+        widget=forms.SelectMultiple(attrs={'class': 'form-control select2'})
+    )
 
     class Meta:
         model = Porque
@@ -101,7 +119,20 @@ class PorqueForm(forms.ModelForm):
 
             # PASO 4
 
-            'Accion_correctiva', 'Responsable1', 'Fecha_compromiso1', 'Accion_Preventiva', 'Responsable2', 'Fecha_compromiso2', 
+            'Accion_correctiva', 'Responsable1', 'Fecha_compromiso1',
+            'Accion_correctiva_2', 'Responsable1_2', 'Fecha_compromiso1_2',
+            'Accion_correctiva_3', 'Responsable1_3', 'Fecha_compromiso1_3',
+            'Accion_correctiva_4', 'Responsable1_4', 'Fecha_compromiso1_4',
+
+            'Accion_Preventiva', 'Responsable2', 'Fecha_compromiso2', 'tipo',
+            'Fecha_cierre_paso4', 'MOC',
+
+
+
+
+
+
+
         ]
         widgets = {
             'categoria': forms.TextInput(attrs={'class': 'form-control'}),
@@ -283,20 +314,36 @@ class PorqueForm(forms.ModelForm):
             'Raiz_7': forms.Textarea(attrs={'class': 'form-control'}),
             'Raiz_8': forms.Textarea(attrs={'class': 'form-control'}),
 
+
+
             #paso 4
-            'Accion_correctiva': forms.Textarea(attrs={'class': 'form-control'}),
-            'Responsable1': forms.Textarea(attrs={'class': 'form-control'}),
+            'Accion_correctiva': forms.Textarea(attrs={'class': 'accion-correctiva'}), 
             'Fecha_compromiso1': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
+            
+            'Accion_correctiva_2': forms.Textarea(attrs={'class': 'accion-correctiva'}),
+            'Fecha_compromiso1_2': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
+
+            'Accion_correctiva_3': forms.Textarea(attrs={'class': 'accion-correctiva'}),
+            'Fecha_compromiso1_3': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
+
+            'Accion_correctiva_4': forms.Textarea(attrs={'class': 'accion-correctiva'}),
+            'Fecha_compromiso1_4': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
+
+
+
             'Accion_Preventiva': forms.Textarea(attrs={'class': 'form-control'}),
             'Responsable2': forms.Textarea(attrs={'class': 'form-control'}),
             'Fecha_compromiso2': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
-            
-
+            'tipo': forms.Select(attrs={'class': 'form-control'}),
+            'Fecha_cierre_paso4': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
+            'MOC': forms.Select(attrs={'class': 'form-control'}),
 
 
         }
 
 
+
+    # Paso 5
 
     areas_aplicacion = forms.MultipleChoiceField(
         choices=[
@@ -331,5 +378,9 @@ class PorqueForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(PorqueForm, self).__init__(*args, **kwargs)
+        self.fields['Fecha_compromiso1'].input_formats = ['%d-%m-%Y']
+        self.fields['Fecha_compromiso1_2'].input_formats = ['%d-%m-%Y']
+        self.fields['Fecha_compromiso1_3'].input_formats = ['%d-%m-%Y']
+        self.fields['Fecha_compromiso1_4'].input_formats = ['%d-%m-%Y']
         for field in self.fields.values():
             field.required = False

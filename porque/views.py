@@ -39,16 +39,16 @@ def porque_view(request, pk=None):
             # Obtener las áreas seleccionadas y almacenarlas como cadena separada por comas
             areas_seleccionadas = form.cleaned_data.get('areas_aplicacion')
             if areas_seleccionadas:
-                porque_instance.areas_aplicacion = ','.join(areas_seleccionadas)  
+                porque_instance.areas_aplicacion = ','.join(areas_seleccionadas)
             
             # Asignar la fecha de inicio si es la primera vez que se guarda
             if not porque_instance.fecha_inicio:
                 porque_instance.fecha_inicio = now().date()
 
-            # Ahora sí guardar la instancia en la base de datos
-            porque_instance.save()  # Guardar para obtener el ID
+            # Guardar la instancia en la base de datos
+            porque_instance.save()
 
-            # Guardar relaciones ManyToMany (si aplica)
+            # Guardar relaciones ManyToMany (miembros del equipo y responsables)
             form.save_m2m()
 
             # Mensaje de éxito y redirigir con el ID
@@ -61,15 +61,22 @@ def porque_view(request, pk=None):
 
     else:
         # Si el método es GET (cargar la página por primera vez)
-        if porque_instance and porque_instance.areas_aplicacion:
-            # Convertir la cadena separada por comas en una lista para que el formulario pueda manejarlo
-            areas_seleccionadas = porque_instance.areas_aplicacion.split(',')
-            form = PorqueForm(instance=porque_instance, initial={'areas_aplicacion': areas_seleccionadas})
+        if porque_instance:
+            areas_seleccionadas = porque_instance.areas_aplicacion.split(',') if porque_instance.areas_aplicacion else []
+            form = PorqueForm(instance=porque_instance, initial={
+                'areas_aplicacion': areas_seleccionadas,
+                'Fecha_compromiso1': porque_instance.Fecha_compromiso1,  # Agregar fechas en caso de que existan
+                'Fecha_compromiso1_2': porque_instance.Fecha_compromiso1_2,
+                'Fecha_compromiso1_3': porque_instance.Fecha_compromiso1_3,
+                'Fecha_compromiso1_4': porque_instance.Fecha_compromiso1_4,
+            })
         else:
-            form = PorqueForm(instance=porque_instance)
+            form = PorqueForm()
 
-    mostrar_paso1 = porque_instance is not None  # Mostrar el paso 1 solo si ya existe la instancia
+    # Mostrar el paso 1 solo si ya existe la instancia
+    mostrar_paso1 = porque_instance is not None
 
+    # Obtener todos los miembros del equipo desde la base de datos
     opciones_miembros = MiembroEquipo.objects.all()
 
     context = {

@@ -284,9 +284,7 @@
             </div>
         </div>
 
-
-
-
+        
         <!-- Sección Paso 3: Causa Raíz -->
 <div id="paso3-section" class="recuadro-paso mt-4" style="border: 1px solid #FFC800;">
     <div class="paso-header" style="background-color: #FFC800; color: white; padding: 10px 15px; border-radius: 5px;">
@@ -786,20 +784,74 @@
                     </div>
                     <div class="sub-content" style="padding: 8px; border: 1px solid #00C851; border-radius: 5px;">
                         <div class="form-row">
-
                             <table id="AccionesTable">
                                 <tr>
                                     &nbsp;<th>Acción Correctiva</th>
                                     &nbsp;<th>Responsable</th>
                                     &nbsp;<th>Fecha Compromiso</th>
-
                                 </tr>
     
                                 <tr id="Acciones-row">
-                                    &nbsp;<td>{{ form.Accion_correctiva }}</td>
-                                    &nbsp;<td>{{ form.Responsable1 }}</td>
-                                    &nbsp;<td>{{ form.Fecha_compromiso1 }}</td>
+                                    <td>{{ form.Accion_correctiva }}</td>
+                                    <td>
+                                        <select id="responsable1" name="responsable1" class="form-control select2">
+                                            {% for miembro in opciones_miembros %}
+                                                <option value="{{ miembro.id }}" {% if miembro.id == form.Responsable1.value %}selected{% endif %}>
+                                                    {{ miembro.nombre }}
+                                                </option>
+                                            {% endfor %}
+                                        </select>
+                                    </td>
+                                    <td>{{ form.Fecha_compromiso1 }}</td>
 
+                                </tr>
+
+                                <tr id="Acciones-row2">
+                                    <td>{{ form.Accion_correctiva_2 }}</td>
+                                    <td>
+                                        <div class="form-group col-md-6">
+                                            <select id="responsable1_2" name="responsable1_2" class="form-control select2">
+                                                {% for miembro in opciones_miembros %}
+                                                    <option value="{{ miembro.id }}" data-email="{{ miembro.email }}" {% if miembro.id == form.responsable1_2.value %}selected{% endif %}>
+                                                        {{ miembro.nombre }}
+                                                    </option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>                                       
+                                    </td>
+                                    <td>{{ form.Fecha_compromiso1_2 }}</td>
+                                </tr>
+
+                                <tr id="Acciones-row3"></tr>
+                                    <td>{{ form.Accion_correctiva_3 }}</td>
+                                    <td>
+                                        <div class="form-group col-md-6">
+                                            <select id="responsable1_3" name="responsable1_3" class="form-control select2">
+                                                {% for miembro in opciones_miembros %}
+                                                    <option value="{{ miembro.id }}" data-email="{{ miembro.email }}" {% if miembro.id == form.responsable1_3.value %}selected{% endif %}>
+                                                        {{ miembro.nombre }}
+                                                    </option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>                                       
+                                    </td>
+                                    <td>{{ form.Fecha_compromiso1_3 }}</td>
+                                </tr>
+
+                                <tr id="Acciones-row4"></tr>
+                                    <td>{{ form.Accion_correctiva_4 }}</td>
+                                    <td>
+                                        <div class="form-group col-md-6">
+                                            <select id="responsable1_2" name="responsable1_4" class="form-control select2">
+                                                {% for miembro in opciones_miembros %}
+                                                    <option value="{{ miembro.id }}" data-email="{{ miembro.email }}" {% if miembro.id == form.responsable1_4.value %}selected{% endif %}>
+                                                        {{ miembro.nombre }}
+                                                    </option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>                                       
+                                    </td>
+                                    <td>{{ form.Fecha_compromiso1_ }}</td>
                                 </tr>
                             </table>
 
@@ -817,59 +869,95 @@
                         <div class="form-row">
 
                             <table id="AccionesTable">
-                                <tr>
-                                    &nbsp;<th>Acción Preventiva</th>
-                                    <th>Responsable</th>
-                                    <th>Fecha Compromiso</th>
-                                </tr>
-    
-                                <tr id="Acciones-row">
-                                    &nbsp;<td>{{ form.Accion_Preventiva }}</td>
-                                    &nbsp;<td>{{ form.Responsable2 }}</td>
-                                    &nbsp;<td>{{ form.Fecha_compromiso2 }}</td>
-                                </tr>
+                                <thead>
+                                    <tr>
+                                        <!-- Títulos principales con colspan -->
+                                        <th colspan="4">ACCIONES (CONTRAMEDIDAS Y SEGUIMIENTO)</th>
+                                        <th colspan="2">VALIDACIÓN DE LA ACCIÓN</th>
+                                    </tr>
+                                    <tr>
+                                        <th>ACCIÓN PREVENTIVA</th>
+                                        <th>RESPONSABLE</th>
+                                        <th>FECHA COMPROMISO</th>
+                                        <th>TIPO</th>
+                                        <th>FECHA CIERRE</th>
+                                        <th>MOC</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        &nbsp;<td>{{ form.Accion_Preventiva }}</td>
+                                        &nbsp;<td>{{ form.Responsable2 }}</td>
+                                        &nbsp;<td>{{ form.Fecha_compromiso2 }}</td>
+                                        <td>{{ form.tipo }}</td>
+                                        <td>{{ form.Fecha_cierre_paso4 }}</td>
+                                        <td>{{ form.MOC }}</td>
+
+                                    </tr>
+                                </tbody>
+
+
+
                             </table>
+                            <style>
+                               #AccionesTable {
+                                    width: 90%;
+                                    border-collapse: collapse;
+                                    font-family: Arial, sans-serif;
+                                    margin: 0 auto; /* Centramos la tabla */
+                                }
+                                th, td {
+                                    border: 1px solid #ccc; /* Borde gris claro */
+                                    padding: 10px;
+                                    text-align: left; /* Alinear texto a la izquierda */
+                                }
 
+                                th {
+                                    background-color: #f2f2f2; /* Fondo gris suave para los encabezados */
+                                    font-weight: bold; /* Texto en negrita para los encabezados */
+                                }
 
+                                tbody tr:nth-child(even) {
+                                    background-color: #fafafa; /* Color de fondo para filas alternas */
+                                }
+
+                                /* Opcional: Estilo para hover */
+                                tbody tr:hover {
+                                    background-color: #f5f5f5; /* Cambio de color al pasar el ratón sobre una fila */
+                                }
+                            </style>
                         </div>
                     </div>
                 </div>
-
-                <!-- Sub-subcategoría 3 -->
-                <div class="sub-section" style="margin-bottom: 10px; margin-left: 20px;">
-                    <div class="sub-header" style="background-color: #00C851; color: white; padding: 10px 10px; border-radius: 5px;">
-                        <h4 style="margin: 0;">validacion de la Acción</h4>
-                    </div>
-                    <div class="sub-content" style="padding: 8px; border: 1px solid #00C851; border-radius: 5px;">
-                        <div class="form-row">
-
-                            <table id="AccionesTable">
-                                <tr>
-                                    &nbsp;<th>Acción Preventiva</th>
-                                    <th>Responsable</th>
-                                    <th>Fecha Compromiso</th>
-                                </tr>
-    
-                                <tr id="Acciones-row">
-                                    &nbsp;<td>{{ form.Accion_Preventiva }}</td>
-                                    &nbsp;<td>{{ form.Responsable2 }}</td>
-                                    &nbsp;<td>{{ form.Fecha_compromiso2 }}</td>
-                                </tr>
-                            </table>
-
-
-                        </div>
-                    </div>
-                </div>
-        
             </div>
-        </div>
-
-        
+        </div>        
     </div>
 </div>
 
 <script>
+$(document).ready(function() {
+    // Inicialización para miembros del equipo
+    $('#miembros_equipo').select2({
+        placeholder: "Selecciona miembros del equipo",
+        templateResult: formatState,
+        templateSelection: formatState,
+        allowClear: true
+    });
+
+    // Inicialización para Responsable1
+    $('#responsable1').select2({
+        placeholder: "Selecciona responsable",
+        templateResult: formatState,  // Mostrar email también
+        templateSelection: formatState,
+        allowClear: true
+    });
+});
+$(document).ready(function() {
+    $('#responsable1').select2({
+        placeholder: "Selecciona un responsable",
+        allowClear: true
+    });
+});
 
 
 </script>

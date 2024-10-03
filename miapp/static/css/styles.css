@@ -608,4 +608,8 @@ h2.text-danger {
     text-align: center;  /* Centrar el contenido */
 }
 
-
+.accion-correctiva {
+    height: 45;  /* Ajusta la altura si es necesario */
+    max-height: 100px;  /* Define una altura máxima */
+    resize: none;  /* Evita que el usuario cambie el tamaño del campo */
+}
