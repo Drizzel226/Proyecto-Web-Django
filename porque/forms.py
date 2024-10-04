@@ -318,8 +318,9 @@ class PorqueForm(forms.ModelForm):
 
             #paso 4
             'Accion_correctiva': forms.Textarea(attrs={'class': 'accion-correctiva'}), 
-            'Fecha_compromiso1': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
-            
+            'Fecha_compromiso1': forms.DateInput(format='%d-%m-%Y', attrs={'class': 'form-control', 'type': 'date'}),
+
+
             'Accion_correctiva_2': forms.Textarea(attrs={'class': 'accion-correctiva'}),
             'Fecha_compromiso1_2': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
 
@@ -378,9 +379,9 @@ class PorqueForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(PorqueForm, self).__init__(*args, **kwargs)
-        self.fields['Fecha_compromiso1'].input_formats = ['%d-%m-%Y']
-        self.fields['Fecha_compromiso1_2'].input_formats = ['%d-%m-%Y']
-        self.fields['Fecha_compromiso1_3'].input_formats = ['%d-%m-%Y']
-        self.fields['Fecha_compromiso1_4'].input_formats = ['%d-%m-%Y']
+        #self.fields['Fecha_compromiso1'].input_formats = ['%d-%m-%Y']
+        #self.fields['Fecha_compromiso1_2'].input_formats = ['%d-%m-%Y']
+        #self.fields['Fecha_compromiso1_3'].input_formats = ['%d-%m-%Y']
+        #self.fields['Fecha_compromiso1_4'].input_formats = ['%d-%m-%Y']
         for field in self.fields.values():
             field.required = False

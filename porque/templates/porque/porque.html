@@ -16,7 +16,7 @@
     </div>
     {% endif %}
 
-    <!-- Formulario Unificado -->
+    
     <form method="post" class="analisis-5w-form" id="form" enctype="multipart/form-data">
         {% csrf_token %}
 
@@ -122,6 +122,9 @@
             </div>
         </div>
 
+
+
+
         <!-- Sección Paso 1: Descripción del Problema (visible después del Paso 0) -->
         {% if mostrar_paso1 %}
         <div id="paso1-section" class="recuadro-paso mt-4" style="border: 1px solid #ff0000;">
@@ -190,6 +193,10 @@
             </div>
         </div>
         
+
+
+
+
 
         <!-- Sección Paso 2: Comprender y Restaurar Condiciones Básicas -->
         <div id="paso2-section" class="recuadro-paso mt-4" style="border: 1px solid #e6007e;">
@@ -283,6 +290,9 @@
 
             </div>
         </div>
+
+
+
 
         
         <!-- Sección Paso 3: Causa Raíz -->
@@ -758,6 +768,8 @@
 
 
 
+
+
         <!-- Sección Paso 4: Contramedidas y Seguimiento -->
 <div id="paso4-section" class="recuadro-paso mt-4" style="border: 1px solid #00C851;">
     <div class="paso-header" style="background-color: #00C851; color: white; padding: 10px 15px; border-radius: 5px;">
@@ -794,7 +806,7 @@
                                 <tr id="Acciones-row">
                                     <td>{{ form.Accion_correctiva }}</td>
                                     <td>
-                                        <select id="responsable1" name="responsable1" class="form-control select2">
+                                        <select id="responsable1" name="responsable1" class="select2">
                                             {% for miembro in opciones_miembros %}
                                                 <option value="{{ miembro.id }}" {% if miembro.id == form.Responsable1.value %}selected{% endif %}>
                                                     {{ miembro.nombre }}
@@ -802,27 +814,29 @@
                                             {% endfor %}
                                         </select>
                                     </td>
-                                    <td>{{ form.Fecha_compromiso1 }}</td>
+                                    <td>
+                                        <input type="date" id="Fecha_compromiso1" name="Fecha_compromiso1" class="form-control" value="{{ form.Fecha_compromiso1.value|date:'Y-m-d' }}">
+                                    </td>
 
                                 </tr>
 
                                 <tr id="Acciones-row2">
                                     <td>{{ form.Accion_correctiva_2 }}</td>
                                     <td>
-                                        <div class="form-group col-md-6">
-                                            <select id="responsable1_2" name="responsable1_2" class="form-control select2">
-                                                {% for miembro in opciones_miembros %}
-                                                    <option value="{{ miembro.id }}" data-email="{{ miembro.email }}" {% if miembro.id == form.responsable1_2.value %}selected{% endif %}>
-                                                        {{ miembro.nombre }}
-                                                    </option>
-                                                {% endfor %}
-                                            </select>
-                                        </div>                                       
+                                        <select id="responsable1" name="responsable1" class="form-control select2">
+                                            {% for miembro in opciones_miembros %}
+                                                <option value="{{ miembro.id }}" {% if miembro.id == form.Responsable1.value %}selected{% endif %}>
+                                                    {{ miembro.nombre }}
+                                                </option>
+                                            {% endfor %}
+                                        </select>                                                         
                                     </td>
-                                    <td>{{ form.Fecha_compromiso1_2 }}</td>
+                                    <td>
+                                        <input type="date" id="Fecha_compromiso1_2" name="Fecha_compromiso1_2" class="form-control" value="{{ form.Fecha_compromiso1_2.value|date:'Y-m-d' }}">
+                                    </td>
                                 </tr>
 
-                                <tr id="Acciones-row3"></tr>
+                                <tr id="Acciones-row3">
                                     <td>{{ form.Accion_correctiva_3 }}</td>
                                     <td>
                                         <div class="form-group col-md-6">
@@ -835,10 +849,12 @@
                                             </select>
                                         </div>                                       
                                     </td>
-                                    <td>{{ form.Fecha_compromiso1_3 }}</td>
+                                    <td>
+                                        <input type="date" id="Fecha_compromiso1_3" name="Fecha_compromiso1_3" class="form-control" value="{{ form.Fecha_compromiso1_3.value|date:'Y-m-d' }}">
+                                    </td>
                                 </tr>
 
-                                <tr id="Acciones-row4"></tr>
+                                <tr id="Acciones-row4">
                                     <td>{{ form.Accion_correctiva_4 }}</td>
                                     <td>
                                         <div class="form-group col-md-6">
@@ -851,7 +867,9 @@
                                             </select>
                                         </div>                                       
                                     </td>
-                                    <td>{{ form.Fecha_compromiso1_ }}</td>
+                                    <td>
+                                        <input type="date" id="Fecha_compromiso1_4" name="Fecha_compromiso1_4" class="form-control" value="{{ form.Fecha_compromiso1_4.value|date:'Y-m-d' }}">
+                                    </td>
                                 </tr>
                             </table>
 
@@ -925,6 +943,7 @@
                                 tbody tr:hover {
                                     background-color: #f5f5f5; /* Cambio de color al pasar el ratón sobre una fila */
                                 }
+
                             </style>
                         </div>
                     </div>

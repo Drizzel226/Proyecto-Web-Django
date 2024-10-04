@@ -40,10 +40,16 @@ def porque_view(request, pk=None):
             areas_seleccionadas = form.cleaned_data.get('areas_aplicacion')
             if areas_seleccionadas:
                 porque_instance.areas_aplicacion = ','.join(areas_seleccionadas)
-            
+
             # Asignar la fecha de inicio si es la primera vez que se guarda
             if not porque_instance.fecha_inicio:
                 porque_instance.fecha_inicio = now().date()
+
+            # Manejo explícito de las fechas desde el formulario
+            porque_instance.Fecha_compromiso1 = form.cleaned_data.get('Fecha_compromiso1')
+            porque_instance.Fecha_compromiso1_2 = form.cleaned_data.get('Fecha_compromiso1_2')
+            porque_instance.Fecha_compromiso1_3 = form.cleaned_data.get('Fecha_compromiso1_3')
+            porque_instance.Fecha_compromiso1_4 = form.cleaned_data.get('Fecha_compromiso1_4')
 
             # Guardar la instancia en la base de datos
             porque_instance.save()
@@ -65,7 +71,7 @@ def porque_view(request, pk=None):
             areas_seleccionadas = porque_instance.areas_aplicacion.split(',') if porque_instance.areas_aplicacion else []
             form = PorqueForm(instance=porque_instance, initial={
                 'areas_aplicacion': areas_seleccionadas,
-                'Fecha_compromiso1': porque_instance.Fecha_compromiso1,  # Agregar fechas en caso de que existan
+                'Fecha_compromiso1': porque_instance.Fecha_compromiso1,  # Cargar fechas existentes
                 'Fecha_compromiso1_2': porque_instance.Fecha_compromiso1_2,
                 'Fecha_compromiso1_3': porque_instance.Fecha_compromiso1_3,
                 'Fecha_compromiso1_4': porque_instance.Fecha_compromiso1_4,
