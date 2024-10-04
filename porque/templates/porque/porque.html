@@ -16,6 +16,20 @@
     </div>
     {% endif %}
 
+    <form method="post" class="analisis-5w-form" id="form" enctype="multipart/form-data">
+        {% csrf_token %}
+        
+        <!-- Muestra los errores de validación si existen -->
+        {% if form.errors %}
+            <div class="alert alert-danger">
+                <ul>
+                    {% for field, errors in form.errors.items %}
+                        <li>{{ field }}: {{ errors|join:", " }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endif %}
+
     
     <form method="post" class="analisis-5w-form" id="form" enctype="multipart/form-data">
         {% csrf_token %}
@@ -806,9 +820,9 @@
                                 <tr id="Acciones-row">
                                     <td>{{ form.Accion_correctiva }}</td>
                                     <td>
-                                        <select id="responsable1" name="responsable1" class="select2">
+                                        <select id="Responsable1" name="Responsable1" class="select2">
                                             {% for miembro in opciones_miembros %}
-                                                <option value="{{ miembro.id }}" {% if miembro.id == form.Responsable1.value %}selected{% endif %}>
+                                                <option value="{{ miembro.id }}" data-email="{{ miembro.email }}" {% if miembro.id in form.Responsable1.value %}selected{% endif %}>
                                                     {{ miembro.nombre }}
                                                 </option>
                                             {% endfor %}
@@ -823,13 +837,13 @@
                                 <tr id="Acciones-row2">
                                     <td>{{ form.Accion_correctiva_2 }}</td>
                                     <td>
-                                        <select id="responsable1" name="responsable1" class="form-control select2">
+                                        <select id="Responsable1_2" name="Responsable1_2" class="select2">
                                             {% for miembro in opciones_miembros %}
-                                                <option value="{{ miembro.id }}" {% if miembro.id == form.Responsable1.value %}selected{% endif %}>
+                                                <option value="{{ miembro.id }}" data-email="{{ miembro.email }}" {% if miembro.id in form.Responsable1_2.value %}selected{% endif %}>
                                                     {{ miembro.nombre }}
                                                 </option>
                                             {% endfor %}
-                                        </select>                                                         
+                                        </select>                                                       
                                     </td>
                                     <td>
                                         <input type="date" id="Fecha_compromiso1_2" name="Fecha_compromiso1_2" class="form-control" value="{{ form.Fecha_compromiso1_2.value|date:'Y-m-d' }}">
@@ -839,15 +853,13 @@
                                 <tr id="Acciones-row3">
                                     <td>{{ form.Accion_correctiva_3 }}</td>
                                     <td>
-                                        <div class="form-group col-md-6">
-                                            <select id="responsable1_3" name="responsable1_3" class="form-control select2">
+                                            <select id="Responsable1_3" name="Responsable1_3" class="select2">
                                                 {% for miembro in opciones_miembros %}
-                                                    <option value="{{ miembro.id }}" data-email="{{ miembro.email }}" {% if miembro.id == form.responsable1_3.value %}selected{% endif %}>
+                                                    <option value="{{ miembro.id }}" data-email="{{ miembro.email }}" {% if miembro.id in form.Responsable1_3.value %}selected{% endif %}>
                                                         {{ miembro.nombre }}
                                                     </option>
                                                 {% endfor %}
-                                            </select>
-                                        </div>                                       
+                                            </select>                                   
                                     </td>
                                     <td>
                                         <input type="date" id="Fecha_compromiso1_3" name="Fecha_compromiso1_3" class="form-control" value="{{ form.Fecha_compromiso1_3.value|date:'Y-m-d' }}">
@@ -857,15 +869,13 @@
                                 <tr id="Acciones-row4">
                                     <td>{{ form.Accion_correctiva_4 }}</td>
                                     <td>
-                                        <div class="form-group col-md-6">
-                                            <select id="responsable1_2" name="responsable1_4" class="form-control select2">
-                                                {% for miembro in opciones_miembros %}
-                                                    <option value="{{ miembro.id }}" data-email="{{ miembro.email }}" {% if miembro.id == form.responsable1_4.value %}selected{% endif %}>
-                                                        {{ miembro.nombre }}
-                                                    </option>
-                                                {% endfor %}
-                                            </select>
-                                        </div>                                       
+                                        <select id="Responsable1_4" name="Responsable1_4" class="select2">
+                                            {% for miembro in opciones_miembros %}
+                                                <option value="{{ miembro.id }}" data-email="{{ miembro.email }}" {% if miembro.id in form.Responsable1_4.value %}selected{% endif %}>
+                                                    {{ miembro.nombre }}
+                                                </option>
+                                            {% endfor %}
+                                        </select>                                     
                                     </td>
                                     <td>
                                         <input type="date" id="Fecha_compromiso1_4" name="Fecha_compromiso1_4" class="form-control" value="{{ form.Fecha_compromiso1_4.value|date:'Y-m-d' }}">
@@ -903,15 +913,95 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        &nbsp;<td>{{ form.Accion_Preventiva }}</td>
-                                        &nbsp;<td>{{ form.Responsable2 }}</td>
-                                        &nbsp;<td>{{ form.Fecha_compromiso2 }}</td>
+                                    <!-- FILA 1 -->
+                                    <tr id = "accionesPRE-row">
+                                        <td>{{ form.Accion_Preventiva }}</td>
+                                        <td>
+                                            <select id="Responsable2" name="Responsable2" class="select2">
+                                                {% for miembro in opciones_miembros %}
+                                                    <option value="{{ miembro.id }}" data-email="{{ miembro.email }}" {% if miembro.id in form.Responsable2.value %}selected{% endif %}>
+                                                        {{ miembro.nombre }}
+                                                    </option>
+                                                {% endfor %}
+                                            </select>
+                                        </td>
+                                        <td>
+                                            <input type="date" id="Fecha_compromiso2" name="Fecha_compromiso2" class="form-control" value="{{ form.Fecha_compromiso2.value|date:'Y-m-d' }}">
+                                        </td>
                                         <td>{{ form.tipo }}</td>
-                                        <td>{{ form.Fecha_cierre_paso4 }}</td>
+                                        <td>
+                                            <input type="date" id="Fecha_cierre_paso4" name="Fecha_cierre_paso4" class="form-control" value="{{ form.Fecha_cierre_paso4.value|date:'Y-m-d' }}">
+                                        </td>
                                         <td>{{ form.MOC }}</td>
-
                                     </tr>
+
+                                    <!-- FILA 2 -->
+                                    <tr id = "accionesPRE-row2">
+                                        <td>{{ form.Accion_Preventiva_2 }}</td>
+                                        <td>
+                                            <select id="Responsable2_2" name="Responsable2_2" class="select2">
+                                                {% for miembro in opciones_miembros %}
+                                                    <option value="{{ miembro.id }}" data-email="{{ miembro.email }}" {% if miembro.id in form.Responsable2_2.value %}selected{% endif %}>
+                                                        {{ miembro.nombre }}
+                                                    </option>
+                                                {% endfor %}
+                                            </select>
+                                        </td>
+                                        <td>
+                                            <input type="date" id="Fecha_compromiso2_2" name="Fecha_compromiso2_2" class="form-control" value="{{ form.Fecha_compromiso2_2.value|date:'Y-m-d' }}">
+                                        </td>
+                                        <td>{{ form.tipo_2 }}</td>
+                                        <td>
+                                            <input type="date" id="Fecha_cierre_paso4_2" name="Fecha_cierre_paso4_2" class="form-control" value="{{ form.Fecha_cierre_paso4_2.value|date:'Y-m-d' }}">
+                                        </td>
+                                        <td>{{ form.MOC_2 }}</td>
+                                    </tr>
+
+                                    <!-- FILA 3 -->
+                                    <tr id = "accionesPRE-row3">
+                                        <td>{{ form.Accion_Preventiva_3 }}</td>
+                                        <td>
+                                            <select id="Responsable2_3" name="Responsable2_3" class="select2">
+                                                {% for miembro in opciones_miembros %}
+                                                    <option value="{{ miembro.id }}" data-email="{{ miembro.email }}" {% if miembro.id in form.Responsable2_3.value %}selected{% endif %}>
+                                                        {{ miembro.nombre }}
+                                                    </option>
+                                                {% endfor %}
+                                            </select>
+                                        </td>
+                                        <td>
+                                            <input type="date" id="Fecha_compromiso2_3" name="Fecha_compromiso2_3" class="form-control" value="{{ form.Fecha_compromiso2_3.value|date:'Y-m-d' }}">
+                                        </td>
+                                        <td>{{ form.tipo_3 }}</td>
+                                        <td>
+                                            <input type="date" id="Fecha_cierre_paso4_3" name="Fecha_cierre_paso4_3" class="form-control" value="{{ form.Fecha_cierre_paso4_3.value|date:'Y-m-d' }}">
+                                        </td>
+                                        <td>{{ form.MOC_3 }}</td>
+                                    </tr>
+
+                                    <!-- FILA 4 -->
+                                    <tr id = "accionesPRE-row4">
+                                        <td>{{ form.Accion_Preventiva_4 }}</td>
+                                        <td>
+                                            <select id="Responsable2_4" name="Responsable2_4" class="select2">
+                                                {% for miembro in opciones_miembros %}
+                                                    <option value="{{ miembro.id }}" data-email="{{ miembro.email }}" {% if miembro.id in form.Responsable2_4.value %}selected{% endif %}>
+                                                        {{ miembro.nombre }}
+                                                    </option>
+                                                {% endfor %}
+                                            </select>
+                                        </td>
+                                        <td>
+                                            <input type="date" id="Fecha_compromiso2_4" name="Fecha_compromiso2_4" class="form-control" value="{{ form.Fecha_compromiso2_4.value|date:'Y-m-d' }}">
+                                        </td>
+                                        <td>{{ form.tipo_4 }}</td>
+                                        <td>
+                                            <input type="date" id="Fecha_cierre_paso4_4" name="Fecha_cierre_paso4_4" class="form-control" value="{{ form.Fecha_cierre_paso4_4.value|date:'Y-m-d' }}">
+                                        </td>
+                                        <td>{{ form.MOC_4 }}</td>
+                                    </tr>
+
+                                    
                                 </tbody>
 
 
@@ -963,19 +1053,7 @@ $(document).ready(function() {
         allowClear: true
     });
 
-    // Inicialización para Responsable1
-    $('#responsable1').select2({
-        placeholder: "Selecciona responsable",
-        templateResult: formatState,  // Mostrar email también
-        templateSelection: formatState,
-        allowClear: true
-    });
-});
-$(document).ready(function() {
-    $('#responsable1').select2({
-        placeholder: "Selecciona un responsable",
-        allowClear: true
-    });
+
 });
 
 

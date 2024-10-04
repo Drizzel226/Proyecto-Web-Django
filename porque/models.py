@@ -278,8 +278,19 @@ class Porque(models.Model):
 
 
     Accion_Preventiva = models.TextField(blank=True, null=True)
-    Responsable2 = models.TextField(blank=True, null=True)
+    Accion_Preventiva_2 = models.TextField(blank=True, null=True)
+    Accion_Preventiva_3 = models.TextField(blank=True, null=True)
+    Accion_Preventiva_4 = models.TextField(blank=True, null=True)
+
+    Responsable2 = models.ManyToManyField('MiembroEquipo', related_name="responsable2", blank=True)
+    Responsable2_2 = models.ManyToManyField('MiembroEquipo', related_name="responsable2_2", blank=True)
+    Responsable2_3 = models.ManyToManyField('MiembroEquipo', related_name="responsable2_3", blank=True)
+    Responsable2_4 = models.ManyToManyField('MiembroEquipo', related_name="responsable2_4", blank=True)
+
     Fecha_compromiso2 = models.DateField(blank=True, null=True)
+    Fecha_compromiso2_2 = models.DateField(blank=True, null=True)
+    Fecha_compromiso2_3 = models.DateField(blank=True, null=True)
+    Fecha_compromiso2_4 = models.DateField(blank=True, null=True)
 
     tipo = models.CharField(
         max_length=100,
@@ -292,9 +303,76 @@ class Porque(models.Model):
         ],
         blank=True, null=True
     )
+    tipo_2 = models.CharField(
+        max_length=100,
+        choices=[
+            ('p', 'P'),
+            ('gv', 'GV'),
+            ('py', 'PY'),
+            ('m', 'M'),
+  
+        ],
+        blank=True, null=True
+    )
+    tipo_3 = models.CharField(
+        max_length=100,
+        choices=[
+            ('p', 'P'),
+            ('gv', 'GV'),
+            ('py', 'PY'),
+            ('m', 'M'),
+  
+        ],
+        blank=True, null=True
+    )
+    tipo_4 = models.CharField(
+        max_length=100,
+        choices=[
+            ('p', 'P'),
+            ('gv', 'GV'),
+            ('py', 'PY'),
+            ('m', 'M'),
+  
+        ],
+        blank=True, null=True
+    )
+
     Fecha_cierre_paso4 = models.DateField(blank=True, null=True)
+    Fecha_cierre_paso4_2 = models.DateField(blank=True, null=True)
+    Fecha_cierre_paso4_3 = models.DateField(blank=True, null=True)
+    Fecha_cierre_paso4_4 = models.DateField(blank=True, null=True)
     
     MOC = models.CharField(
+        max_length=100,
+        choices=[
+            ('aplica', 'Aplica'),
+            ('no aplica', 'No aplica'),
+
+  
+        ],
+        blank=True, null=True
+    )
+    MOC_2 = models.CharField(
+        max_length=100,
+        choices=[
+            ('aplica', 'Aplica'),
+            ('no aplica', 'No aplica'),
+
+  
+        ],
+        blank=True, null=True
+    )
+    MOC_3 = models.CharField(
+        max_length=100,
+        choices=[
+            ('aplica', 'Aplica'),
+            ('no aplica', 'No aplica'),
+
+  
+        ],
+        blank=True, null=True
+    )
+    MOC_4 = models.CharField(
         max_length=100,
         choices=[
             ('aplica', 'Aplica'),

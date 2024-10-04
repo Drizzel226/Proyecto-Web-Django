@@ -28,7 +28,7 @@ def exportar_miembros():
     values = [[miembro.id, miembro.nombre, miembro.email] for miembro in miembros]
     body = {'values': values}
 
-    for i in range(0, len(values), 50):  # Envía los datos en bloques de 10
+    for i in range(0, len(values), 10):  # Envía los datos en bloques de 10
         batch = values[i:i+50]
         range_name = f'Usuarios!A{i+2}:C{i+len(batch)+1}'  # Formato correcto de rango
         body = {'values': batch}
