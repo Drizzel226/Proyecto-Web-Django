@@ -4,6 +4,15 @@ importar_miembros()
 
 
 
+                            <!-- Ícono con popover que mostrará la imagen -->
+                            <div class="popover-container">
+                                <i class="fas fa-question-circle"></i>
+                                <div class="popover-content">
+                                    <img src="{% static 'images/logo.png' %}" alt="Descripción de la imagen" style="width: 300px;">
+                                </div>
+                            </div>
+
+
 views.py
 
 def enviar_a_google_sheets(porque_instance):

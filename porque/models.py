@@ -1,6 +1,5 @@
 from django.db import models
 
-from django.db import models
 
 class Porque(models.Model):
     # Campos existentes
@@ -255,6 +254,111 @@ class Porque(models.Model):
     Raiz_7 = models.TextField("Raíz", blank=True, null=True)
     Raiz_8 = models.TextField("Raíz", blank=True, null=True)
 
+    ISHIKAWA = models.CharField(
+        max_length=100,
+        choices=[
+            ('Máquina', 'Máquina'),
+            ('Método', 'Método'),
+            ('Medio Ambiente', 'Medio Ambiente'),
+            ('Material', 'Material'),
+            ('Medición', 'Medición'),
+            ('Mano de Obra', 'Mano de Obra'),
+  
+        ],
+        blank=True, null=True
+    )
+
+    ISHIKAWA_2 = models.CharField(
+        max_length=100,
+        choices=[
+            ('Máquina', 'Máquina'),
+            ('Método', 'Método'),
+            ('Medio Ambiente', 'Medio Ambiente'),
+            ('Material', 'Material'),
+            ('Medición', 'Medición'),
+            ('Mano de Obra', 'Mano de Obra'),
+  
+        ],
+        blank=True, null=True
+    )
+    ISHIKAWA_3 = models.CharField(
+        max_length=100,
+        choices=[
+            ('Máquina', 'Máquina'),
+            ('Método', 'Método'),
+            ('Medio Ambiente', 'Medio Ambiente'),
+            ('Material', 'Material'),
+            ('Medición', 'Medición'),
+            ('Mano de Obra', 'Mano de Obra'),
+  
+        ],
+        blank=True, null=True
+    )
+    ISHIKAWA_4 = models.CharField(
+        max_length=100,
+        choices=[
+            ('Máquina', 'Máquina'),
+            ('Método', 'Método'),
+            ('Medio Ambiente', 'Medio Ambiente'),
+            ('Material', 'Material'),
+            ('Medición', 'Medición'),
+            ('Mano de Obra', 'Mano de Obra'),
+  
+        ],
+        blank=True, null=True
+    )
+    ISHIKAWA_5 = models.CharField(
+        max_length=100,
+        choices=[
+            ('Máquina', 'Máquina'),
+            ('Método', 'Método'),
+            ('Medio Ambiente', 'Medio Ambiente'),
+            ('Material', 'Material'),
+            ('Medición', 'Medición'),
+            ('Mano de Obra', 'Mano de Obra'),
+  
+        ],
+        blank=True, null=True
+    )
+    ISHIKAWA_6 = models.CharField(
+        max_length=100,
+        choices=[
+            ('Máquina', 'Máquina'),
+            ('Método', 'Método'),
+            ('Medio Ambiente', 'Medio Ambiente'),
+            ('Material', 'Material'),
+            ('Medición', 'Medición'),
+            ('Mano de Obra', 'Mano de Obra'),
+  
+        ],
+        blank=True, null=True
+    )
+    ISHIKAWA_7 = models.CharField(
+        max_length=100,
+        choices=[
+            ('Máquina', 'Máquina'),
+            ('Método', 'Método'),
+            ('Medio Ambiente', 'Medio Ambiente'),
+            ('Material', 'Material'),
+            ('Medición', 'Medición'),
+            ('Mano de Obra', 'Mano de Obra'),
+  
+        ],
+        blank=True, null=True
+    )
+    ISHIKAWA_8 = models.CharField(
+        max_length=100,
+        choices=[
+            ('Máquina', 'Máquina'),
+            ('Método', 'Método'),
+            ('Medio Ambiente', 'Medio Ambiente'),
+            ('Material', 'Material'),
+            ('Medición', 'Medición'),
+            ('Mano de Obra', 'Mano de Obra'),
+  
+        ],
+        blank=True, null=True
+    )
     
     #PASO 4
 
@@ -390,10 +494,38 @@ class Porque(models.Model):
     # PASO 5
     areas_aplicacion = models.CharField(max_length=500, blank=True, null=True)
 
+    Estandarizacion = models.TextField(blank=True, null=True)
+    Responsable3 = models.ManyToManyField('MiembroEquipo', related_name="responsable3", blank=True)
+    Fecha_compromiso3 = models.DateField(blank=True, null=True)
+
+    Estandarizacion_2 = models.TextField(blank=True, null=True)
+    Responsable3_2 = models.ManyToManyField('MiembroEquipo', related_name="responsable3_2", blank=True)
+    Fecha_compromiso3_2 = models.DateField(blank=True, null=True)
+
+    Estandarizacion_3 = models.TextField(blank=True, null=True)
+    Responsable3_3 = models.ManyToManyField('MiembroEquipo', related_name="responsable3_3", blank=True)
+    Fecha_compromiso3_3 = models.DateField(blank=True, null=True)
+    
+    Estandarizacion_4 = models.TextField(blank=True, null=True)
+    Responsable3_4 = models.ManyToManyField('MiembroEquipo', related_name="responsable3_4", blank=True)
+    Fecha_compromiso3_4 = models.DateField(blank=True, null=True)
 
 
+    Expansion = models.TextField(blank=True, null=True)
+    Responsable4 = models.ManyToManyField('MiembroEquipo', related_name="responsable4", blank=True)
+    Fecha_compromiso4 = models.DateField(blank=True, null=True)
 
+    Expansion_2 = models.TextField(blank=True, null=True)
+    Responsable4_2 = models.ManyToManyField('MiembroEquipo', related_name="responsable4_2", blank=True)
+    Fecha_compromiso4_2 = models.DateField(blank=True, null=True)
 
+    Expansion_3 = models.TextField(blank=True, null=True)
+    Responsable4_3 = models.ManyToManyField('MiembroEquipo', related_name="responsable4_3", blank=True)
+    Fecha_compromiso4_3 = models.DateField(blank=True, null=True)
+
+    Expansion_4 = models.TextField(blank=True, null=True)
+    Responsable4_4 = models.ManyToManyField('MiembroEquipo', related_name="responsable4_4", blank=True)
+    Fecha_compromiso4_4 = models.DateField(blank=True, null=True)
 
 
 

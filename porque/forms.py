@@ -6,24 +6,7 @@ class PorqueForm(forms.ModelForm):
         queryset=MiembroEquipo.objects.all(),
         widget=forms.SelectMultiple(attrs={'class': 'form-control select2'})
     )
-    class PorqueForm(forms.ModelForm):
-        Responsable1 = forms.ModelChoiceField(
-            queryset=MiembroEquipo.objects.all(),
-            widget=forms.Select(attrs={'class': 'form-control select2'}),
-            required=False
-    )
-    Responsable1_2 = forms.ModelMultipleChoiceField(
-        queryset=MiembroEquipo.objects.all(),
-        widget=forms.SelectMultiple(attrs={'class': 'form-control select2'})
-    )
-    Responsable1_3 = forms.ModelMultipleChoiceField(
-        queryset=MiembroEquipo.objects.all(),
-        widget=forms.SelectMultiple(attrs={'class': 'form-control select2'})
-    )
-    Responsable1_4 = forms.ModelMultipleChoiceField(
-        queryset=MiembroEquipo.objects.all(),
-        widget=forms.SelectMultiple(attrs={'class': 'form-control select2'})
-    )
+
 
     class Meta:
         model = Porque
@@ -117,6 +100,17 @@ class PorqueForm(forms.ModelForm):
             'Raiz_7',
             'Raiz_8',
 
+            'ISHIKAWA',
+            'ISHIKAWA_2',
+            'ISHIKAWA_3',
+            'ISHIKAWA_4',
+            'ISHIKAWA_5',
+            'ISHIKAWA_6',
+            'ISHIKAWA_7',
+            'ISHIKAWA_8',
+
+
+
             # PASO 4
 
             'Accion_correctiva', 'Responsable1', 'Fecha_compromiso1',
@@ -135,7 +129,18 @@ class PorqueForm(forms.ModelForm):
 
             'Accion_Preventiva_4', 'Responsable2_4', 'Fecha_compromiso2_4', 'tipo_4',
             'Fecha_cierre_paso4_4', 'MOC_4',
+            
+            #PASO 5
 
+            'Estandarizacion', 'Responsable3', 'Fecha_compromiso3',
+            'Estandarizacion_2', 'Responsable3_2', 'Fecha_compromiso3_2',
+            'Estandarizacion_3', 'Responsable3_3', 'Fecha_compromiso3_3',
+            'Estandarizacion_4', 'Responsable3_4', 'Fecha_compromiso3_4',
+
+            'Expansion', 'Responsable4', 'Fecha_compromiso4',
+            'Expansion_2', 'Responsable4_2', 'Fecha_compromiso4_2',
+            'Expansion_3', 'Responsable4_3', 'Fecha_compromiso4_3',
+            'Expansion_4', 'Responsable4_4', 'Fecha_compromiso4_4',
 
 
 
@@ -320,7 +325,15 @@ class PorqueForm(forms.ModelForm):
             'Raiz_7': forms.Textarea(attrs={'class': 'form-control'}),
             'Raiz_8': forms.Textarea(attrs={'class': 'form-control'}),
 
-
+            'ISHIKAWA': forms.Select(attrs={'class': 'form-control'}),
+            'ISHIKAWA_2': forms.Select(attrs={'class': 'form-control'}),
+            'ISHIKAWA_3': forms.Select(attrs={'class': 'form-control'}),
+            'ISHIKAWA_4': forms.Select(attrs={'class': 'form-control'}),
+            'ISHIKAWA_5': forms.Select(attrs={'class': 'form-control'}),
+            'ISHIKAWA_6': forms.Select(attrs={'class': 'form-control'}),
+            'ISHIKAWA_7': forms.Select(attrs={'class': 'form-control'}),
+            'ISHIKAWA_8': forms.Select(attrs={'class': 'form-control'}),
+            
 
             #paso 4
             'Accion_correctiva': forms.Textarea(attrs={'class': 'accion-correctiva'}), 
@@ -362,12 +375,25 @@ class PorqueForm(forms.ModelForm):
             'MOC_3': forms.Select(attrs={'class': 'form-control'}),
             'MOC_4': forms.Select(attrs={'class': 'form-control'}),
 
+    # Paso 5
+
+            'Estandarizacion': forms.Textarea(attrs={'class': 'accion-correctiva'}), 
+            'Fecha_compromiso3': forms.DateInput(format='%d-%m-%Y', attrs={'class': 'form-control', 'type': 'date'}),
+
+            'Estandarizacion_2': forms.Textarea(attrs={'class': 'accion-correctiva'}), 
+            'Fecha_compromiso3_2': forms.DateInput(format='%d-%m-%Y', attrs={'class': 'form-control', 'type': 'date'}),
+
+            'Estandarizacion_3': forms.Textarea(attrs={'class': 'accion-correctiva'}), 
+            'Fecha_compromiso3_3': forms.DateInput(format='%d-%m-%Y', attrs={'class': 'form-control', 'type': 'date'}),
+
+            'Estandarizacion_4': forms.Textarea(attrs={'class': 'accion-correctiva'}), 
+            'Fecha_compromiso3_4': forms.DateInput(format='%d-%m-%Y', attrs={'class': 'form-control', 'type': 'date'}),
+
 
         }
 
 
 
-    # Paso 5
 
     areas_aplicacion = forms.MultipleChoiceField(
         choices=[

@@ -1,14 +1,13 @@
 /* Variables de color */
 :root {
-    --verde-base: #265339;
-    --verde-oscuro: #449148;
-    --verde-claro: #c2e7c3;
+    --verde-base: #265339;      /* arriba */
+    --verde-oscuro: #449148;    /* Botones  */
+    --verde-claro: #c2e7c3;     /* fondo barra lateral  */
     --blanco: #ffffff;
-    --gris-claro: #f0f2f5;
+    --gris-claro: #f5f0f5;      /* fondo  */
     --gris-oscuro: #2c3e50;
-    --azul: #4285f4;
-    --azul-hover: #1567eb;
-    --verde-activo: #3F5D31;
+
+    --verde-activo: #3F5D31;    /* Boton activo  */
 }
 
 /* Estilos globales */
@@ -180,7 +179,7 @@ body, html {
     border-radius: 12px;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
     margin: 50px auto;
-    max-width: 1200px;
+    max-width: 1400px;
 }
 
 .form-group {
@@ -285,7 +284,6 @@ body, html {
     }
 }
 
-/* ... (estilos existentes) ... */
 
 /* Estilos para el formulario de Análisis 5W */
 .analisis-5w-form {
@@ -612,4 +610,73 @@ h2.text-danger {
     height: 45;  /* Ajusta la altura si es necesario */
     max-height: 100px;  /* Define una altura máxima */
     resize: none;  /* Evita que el usuario cambie el tamaño del campo */
+}
+#AccionesTable {
+    width: 90%;
+    border-collapse: collapse;
+    font-family: Arial, sans-serif;
+    margin: 0 auto; /* Centramos la tabla */
+}
+th, td {
+    border: 1px solid #ccc; /* Borde gris claro */
+    padding: 10px;
+    text-align: left; /* Alinear texto a la izquierda */
+}
+
+th {
+    background-color: #f2f2f2; /* Fondo gris suave para los encabezados */
+    font-weight: bold; /* Texto en negrita para los encabezados */
+}
+
+tbody tr:nth-child(even) {
+    background-color: #fafafa; /* Color de fondo para filas alternas */
+}
+
+/* Opcional: Estilo para hover */
+tbody tr:hover {
+    background-color: #f5f5f5; /* Cambio de color al pasar el ratón sobre una fila */
+}
+
+/* POPOVER */
+.popover-container {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+    text-align: center; /* Centra el ícono */
+}
+
+.popover-content {
+    visibility: hidden;
+    width: auto;
+    max-width: 2000px;  /* Aumenta el tamaño máximo del popover */
+    background-color: #fff;
+    color: #000;
+    text-align: center;
+    border-radius: 5px;
+    padding: 15px;  /* Aumenta el relleno para un mejor diseño */
+    position: absolute;
+    z-index: 1;
+    bottom: 125%;
+    left: 50%;
+    margin-left: -600px;  /* Centra el popover basado en el nuevo ancho */
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+}
+
+.popover-container:hover .popover-content {
+    visibility: visible;
+    opacity: 1;
+    transition: visibility 0s, opacity 0.3s ease-in-out;
+}
+
+.popover-content img {
+    max-width: 100%;  /* Asegúrate de que la imagen se ajuste al tamaño del popover */
+    height: auto;
+    max-height: 600px;  /* Limita la altura máxima si es necesario */
+}
+
+/* Alinea el contenedor y lo centra */
+.popover-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }

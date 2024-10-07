@@ -1,4 +1,6 @@
 {% extends 'miapp/base.html' %}
+{% load static %}
+
 
 {% block title %}5 POR QUÉ{% endblock %}
 
@@ -34,278 +36,280 @@
     <form method="post" class="analisis-5w-form" id="form" enctype="multipart/form-data">
         {% csrf_token %}
 
-        <!-- Sección Paso 0: Datos iniciales -->
-        <div id="seccion1" class="recuadro-paso">
-            <h2 class="text-primary">Paso 0: Datos Iniciales</h2>
-            <div class="form-row">
-                <div class="form-group col-md-6">
-                    <label for="categoria">Categoría</label>
-                    <input type="text" id="categoria" name="categoria" class="form-control" value="{{ form.categoria.value }}" readonly>
-                </div>
-                <div class="form-group col-md-6">
-                    <label for="subcategoria">Subcategoría</label>
-                    <select id="subcategoria" name="subcategoria" class="form-control">
-                        <option value="">Seleccione una subcategoría</option>
-                        <option value="Microbiología" {% if form.subcategoria.value == "Microbiología" %}selected{% endif %}>Microbiología</option>
-                        <option value="Break Down" {% if form.subcategoria.value == "Break Down" %}selected{% endif %}>Break Down</option>
-                    </select>
-                </div>
-            </div>
+<!-- Sección Paso 0: Datos iniciales -->
+<div id="seccion1" class="recuadro-paso">
+    <h2 class="text-primary">Paso 0: Datos Iniciales</h2>
+    <div class="form-row">
+        <div class="form-group col-md-6">
+            <label for="categoria">Categoría</label>
+            <input type="text" id="categoria" name="categoria" class="form-control" value="{{ form.categoria.value }}" readonly>
+        </div>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <div class="form-group col-md-6">
+            <label for="subcategoria">Subcategoría</label>
+            <select id="subcategoria" name="subcategoria" class="form-control">
+                <option value="">Seleccione una subcategoría</option>
+                <option value="Microbiología" {% if form.subcategoria.value == "Microbiología" %}selected{% endif %}>Microbiología</option>
+                <option value="Break Down" {% if form.subcategoria.value == "Break Down" %}selected{% endif %}>Break Down</option>
+            </select>
+        </div>
+    </div>
 
-            <div class="form-row">
-                <div class="form-group col-md-6">
-                    <label for="area">Área</label>
-                    <select id="area" name="area" class="form-control">
-                        <option value="">Seleccione un área</option>
-                        {% for opcion in opciones_area %}
-                            <option value="{{ opcion }}" {% if form.area.value == opcion %}selected{% endif %}>{{ opcion }}</option>
-                        {% endfor %}
-                    </select>
-                </div>
-                <div class="form-group col-md-6">
-                    <label for="subarea">Subárea</label>
-                    <select id="subarea" name="subarea" class="form-control">
-                        <option value="">Seleccione una línea</option>
-                        {% for opcion in opciones_subarea %}
-                            <option value="{{ opcion }}" {% if form.subarea.value == opcion %}selected{% endif %}>{{ opcion }}</option>
-                        {% endfor %}
-                    </select>
-                </div>
-            </div>
+    <div class="form-row">
+        <div class="form-group col-md-6">
+            <label for="area">Área</label>
+            <select id="area" name="area" class="form-control">
+                <option value="">Seleccione un área</option>
+                {% for opcion in opciones_area %}
+                    <option value="{{ opcion }}" {% if form.area.value == opcion %}selected{% endif %}>{{ opcion }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <div class="form-group col-md-6">
+            <label for="subarea">Subárea</label>
+            <select id="subarea" name="subarea" class="form-control">
+                <option value="">Seleccione una línea</option>
+                {% for opcion in opciones_subarea %}
+                    <option value="{{ opcion }}" {% if form.subarea.value == opcion %}selected{% endif %}>{{ opcion }}</option>
+                {% endfor %}
+            </select>
+        </div>
+    </div>
 
-            <div class="form-row">
-                <div class="form-group col-md-6">
-                    <label for="maquina">Máquina</label>
-                    <select id="maquina" name="maquina" class="form-control">
-                        <option value="">Seleccione una máquina</option>
-                        {% for opcion in opciones_maquina %}
-                            <option value="{{ opcion }}" {% if form.maquina.value == opcion %}selected{% endif %}>{{ opcion }}</option>
-                        {% endfor %}
-                    </select>
-                </div>
-                <div class="form-group col-md-6">
-                    <label for="miembros_equipo">Miembros del equipo</label>
-                    <select id="miembros_equipo" name="miembros_equipo" class="form-control select2" multiple>
-                        {% for miembro in opciones_miembros %}
-                            <option value="{{ miembro.id }}" data-email="{{ miembro.email }}" {% if miembro.id in form.miembros_equipo.value %}selected{% endif %}>
-                                {{ miembro.nombre }}
-                            </option>
-                        {% endfor %}
-                    </select>
-                </div>
-            </div>
+    <div class="form-row">
+        <div class="form-group col-md-6">
+            <label for="maquina">Máquina</label>
+            <select id="maquina" name="maquina" class="form-control">
+                <option value="">Seleccione una máquina</option>
+                {% for opcion in opciones_maquina %}
+                    <option value="{{ opcion }}" {% if form.maquina.value == opcion %}selected{% endif %}>{{ opcion }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <div class="form-group col-md-6">
+            <label for="miembros_equipo">Miembros del equipo</label>
+            <select id="miembros_equipo" name="miembros_equipo" class="form-control select2" multiple>
+                {% for miembro in opciones_miembros %}
+                    <option value="{{ miembro.id }}" data-email="{{ miembro.email }}" {% if miembro.id in form.miembros_equipo.value %}selected{% endif %}>
+                        {{ miembro.nombre }}
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
+    </div>
 
-            <div class="form-row">
-                <div class="form-group col-md-6">
-                    <label for="pilar">Pilar</label>
-                    <input type="text" id="pilar" name="pilar" class="form-control" value="{{ form.pilar.value }}" readonly>
-                </div>
-                <div class="form-group col-md-6">
-                    <label for="impacto">Impacto</label>
-                    <input type="text" id="impacto" name="impacto" class="form-control" value="{{ form.impacto.value }}">
-                </div>
-            </div>
+    <div class="form-row">
+        <div class="form-group col-md-6">
+            <label for="pilar">Pilar</label>
+            <input type="text" id="pilar" name="pilar" class="form-control" value="{{ form.pilar.value }}" readonly>
+        </div>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <div class="form-group col-md-6">
+            <label for="impacto">Impacto</label>
+            <input type="text" id="impacto" name="impacto" class="form-control" value="{{ form.impacto.value }}">
+        </div>
+    </div>
 
-            <div class="form-row">
-                <div class="form-group col-md-6">
-                    <label for="kpi_iceo">KPI ICEO</label>
-                    <input type="text" id="kpi_iceo" name="kpi_iceo" class="form-control" value="{{ form.kpi_iceo.value }}" readonly>
-                </div>
-                <div class="form-group col-md-6">
-                    <label for="kpi_secundario">KPI Secundario (KAI)</label>
-                    <select id="kpi_secundario" name="kpi_secundario" class="form-control">
-                        <option value="">Seleccione un KPI secundario</option>
-                        <option value="kpi1" {% if form.kpi_secundario.value == "kpi1" %}selected{% endif %}>Eficiencia Global de Equipos (OEE)</option>
-                        <option value="kpi2" {% if form.kpi_secundario.value == "kpi2" %}selected{% endif %}>Tasa de Defectos</option>
-                        <option value="kpi3" {% if form.kpi_secundario.value == "kpi3" %}selected{% endif %}>Tiempo Medio Entre Fallos (MTBF)</option>
-                    </select>
-                </div>
-            </div>
+    <div class="form-row">
+        <div class="form-group col-md-6">
+            <label for="kpi_iceo">KPI ICEO</label>
+            <input type="text" id="kpi_iceo" name="kpi_iceo" class="form-control" value="{{ form.kpi_iceo.value }}" readonly>
+        </div>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <div class="form-group col-md-6">
+            <label for="kpi_secundario">KPI Secundario (KAI)</label>
+            <select id="kpi_secundario" name="kpi_secundario" class="form-control">
+                <option value="">Seleccione un KPI secundario</option>
+                <option value="kpi1" {% if form.kpi_secundario.value == "kpi1" %}selected{% endif %}>Eficiencia Global de Equipos (OEE)</option>
+                <option value="kpi2" {% if form.kpi_secundario.value == "kpi2" %}selected{% endif %}>Tasa de Defectos</option>
+                <option value="kpi3" {% if form.kpi_secundario.value == "kpi3" %}selected{% endif %}>Tiempo Medio Entre Fallos (MTBF)</option>
+            </select>
+        </div>
+    </div>
 
-            <div class="form-row">
-                {% if not form.instance.pk %}
-                <div class="form-group col-md-6">
-                    <label for="fecha_inicio">Fecha Inicio</label>
-                    <input type="date" id="fecha_inicio" name="fecha_inicio" class="form-control" value="{{ form.fecha_inicio.value }}" readonly>
-                </div>
-                {% endif %}
-                <div class="form-group col-md-6">
-                    <label for="fecha_cierre">Fecha Estimada de Cierre</label>
-                    <input type="date" id="fecha_cierre" name="fecha_cierre" class="form-control" value="{{ form.fecha_cierre.value|date:'Y-m-d' }}">
-                </div>
+    <div class="form-row">
+        {% if not form.instance.pk %}
+        <div class="form-group col-md-6">
+            <label for="fecha_inicio">Fecha Inicio</label>
+            <input type="date" id="fecha_inicio" name="fecha_inicio" class="form-control" value="{{ form.fecha_inicio.value }}" readonly>
+        </div>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        {% endif %}
+        <div class="form-group col-md-6">
+            <label for="fecha_cierre">Fecha Estimada de Cierre</label>
+            <input type="date" id="fecha_cierre" name="fecha_cierre" class="form-control" value="{{ form.fecha_cierre.value|date:'Y-m-d' }}">
+        </div>
+    </div>
+</div>
+
+
+
+
+<!-- Sección Paso 1: Descripción del Problema (visible después del Paso 0) -->
+{% if mostrar_paso1 %}
+<div id="paso1-section" class="recuadro-paso mt-4" style="border: 1px solid #ff0000;">
+    <div class="paso-header" style="background-color: #ff0000; color: white; padding: 10px 15px; border-radius: 5px;">
+        <h2 class="collapsible" style="cursor: pointer; margin: 0;" onclick="toggleVisibility('contenido-paso1')">
+            <span style="margin-right: 10px;">&#x25BC;</span> Paso 1: Descripción del Problema
+        </h2>
+    </div>
+    <div id="contenido-paso1">
+        <div class="form-row">
+            <div class="form-group col-md-12">
+                {{ form.que_ocurre.label_tag }}
+                {{ form.que_ocurre }}
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-12">
+                {{ form.como_ocurre.label_tag }}
+                {{ form.como_ocurre }}
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-12">
+                {{ form.donde_ocurre.label_tag }}
+                {{ form.donde_ocurre }}
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-12">
+                {{ form.cuando_ocurre.label_tag }}
+                {{ form.cuando_ocurre }}
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-12">
+                {{ form.quien_presente.label_tag }}
+                {{ form.quien_presente }}
             </div>
         </div>
 
-
-
-
-        <!-- Sección Paso 1: Descripción del Problema (visible después del Paso 0) -->
-        {% if mostrar_paso1 %}
-        <div id="paso1-section" class="recuadro-paso mt-4" style="border: 1px solid #ff0000;">
-            <div class="paso-header" style="background-color: #ff0000; color: white; padding: 10px 15px; border-radius: 5px;">
-                <h2 class="collapsible" style="cursor: pointer; margin: 0;" onclick="toggleVisibility('contenido-paso1')">
-                    <span style="margin-right: 10px;">&#x25BC;</span> Paso 1: Descripción del Problema
-                </h2>
+        <!-- Señal antes de que ocurra el problema -->
+        <h2 class="text-danger">Señal antes de que ocurra el problema</h2>
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                {{ form.senal_antes.label_tag }}
+                {{ form.senal_antes }}
             </div>
-            <div id="contenido-paso1">
-                <div class="form-row">
-                    <div class="form-group col-md-12">
-                        {{ form.que_ocurre.label_tag }}
-                        {{ form.que_ocurre }}
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="form-group col-md-12">
-                        {{ form.como_ocurre.label_tag }}
-                        {{ form.como_ocurre }}
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="form-group col-md-12">
-                        {{ form.donde_ocurre.label_tag }}
-                        {{ form.donde_ocurre }}
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="form-group col-md-12">
-                        {{ form.cuando_ocurre.label_tag }}
-                        {{ form.cuando_ocurre }}
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="form-group col-md-12">
-                        {{ form.quien_presente.label_tag }}
-                        {{ form.quien_presente }}
-                    </div>
-                </div>
-
-                <!-- Señal antes de que ocurra el problema -->
-                <h2 class="text-danger">Señal antes de que ocurra el problema</h2>
-                <div class="form-row">
-                    <div class="form-group col-md-6">
-                        {{ form.senal_antes.label_tag }}
-                        {{ form.senal_antes }}
-                    </div>
-                    <div class="form-group col-md-6">
-                        {{ form.descripcion_senal.label_tag }}
-                        {{ form.descripcion_senal }}
-                    </div>
-                </div>
-
-                <!-- Falla funcional -->
-                <h2 class="text-danger">Falla funcional</h2>
-                <div class="form-row">
-                    <div class="form-group col-md-12">
-                        {{ form.falla_funcional.label_tag }}
-                        {{ form.falla_funcional }}
-                    </div>
-                    <div class="form-group col-md-6">
-                        {{ form.imagen_falla_funcional.label_tag }}
-                        {{ form.imagen_falla_funcional }}
-                    </div>
-                </div>
+            <div class="form-group col-md-6">
+                {{ form.descripcion_senal.label_tag }}
+                {{ form.descripcion_senal }}
             </div>
         </div>
+
+        <!-- Falla funcional -->
+        <h2 class="text-danger">Falla funcional</h2>
+        <div class="form-row">
+            <div class="form-group col-md-12">
+                {{ form.falla_funcional.label_tag }}
+                {{ form.falla_funcional }}
+            </div>
+            <div class="form-group col-md-6">
+                {{ form.imagen_falla_funcional.label_tag }}
+                {{ form.imagen_falla_funcional }}
+            </div>
+        </div>
+    </div>
+</div>
         
 
 
 
-
-
-        <!-- Sección Paso 2: Comprender y Restaurar Condiciones Básicas -->
-        <div id="paso2-section" class="recuadro-paso mt-4" style="border: 1px solid #e6007e;">
-            <div class="paso-header" style="background-color: #e6007e; color: white; padding: 10px 15px; border-radius: 5px;">
-                <h2 class="collapsible" style="cursor: pointer; margin: 0;" onclick="toggleVisibility('contenido-paso2')">
-                    <span style="margin-right: 10px;">&#x25BC;</span> Paso 2: Comprender y Restaurar Condiciones Básicas
-                </h2>
+<!-- Sección Paso 2: Comprender y Restaurar Condiciones Básicas -->
+<div id="paso2-section" class="recuadro-paso mt-4" style="border: 1px solid #e6007e;">
+    <div class="paso-header" style="background-color: #e6007e; color: white; padding: 10px 15px; border-radius: 5px;">
+        <h2 class="collapsible" style="cursor: pointer; margin: 0;" onclick="toggleVisibility('contenido-paso2')">
+            <span style="margin-right: 10px;">&#x25BC;</span> Paso 2: Comprender y Restaurar Condiciones Básicas
+        </h2>
+    </div>
+    <div id="contenido-paso2">
+        
+        <!-- Bloque 1: Principio de funcionamiento -->
+        <div class="sub-section" style="margin-bottom: 20px;">
+            <div class="sub-header" style="background-color: #e6007e; color: white; padding: 10px 15px; border-radius: 5px;">
+                <h3 style="margin: 0;">Principio de funcionamiento</h3>
             </div>
-            <div id="contenido-paso2">
-                
-                <!-- Bloque 1: Principio de funcionamiento -->
-                <div class="sub-section" style="margin-bottom: 20px;">
-                    <div class="sub-header" style="background-color: #e6007e; color: white; padding: 10px 15px; border-radius: 5px;">
-                        <h3 style="margin: 0;">Principio de funcionamiento</h3>
-                    </div>
-                    <div class="sub-content" style="padding: 10px; border: 1px solid #e6007e; border-radius: 5px;">
-                        <div class="form-row">
-                            <div class="form-group col-md-12">
-                                {{ form.principio_funcionamiento.label_tag }}
-                                {{ form.principio_funcionamiento }}
-                            </div>
-                        </div>
-                        <div class="form-row">
-                            <div class="form-group col-md-12">
-                                {{ form.imagen_funcionamiento.label_tag }}
-                                {{ form.imagen_funcionamiento }}
-                            </div>
-                        </div>
+            <div class="sub-content" style="padding: 10px; border: 1px solid #e6007e; border-radius: 5px;">
+                <div class="form-row">
+                    <div class="form-group col-md-12">
+                        {{ form.principio_funcionamiento.label_tag }}
+                        {{ form.principio_funcionamiento }}
                     </div>
                 </div>
-
-                <!-- Bloque 2: Restablecimiento de condiciones básicas y verificación de herramientas -->
-                <div class="sub-section" style="margin-bottom: 20px;">
-                    <div class="sub-header" style="background-color: #e6007e; color: white; padding: 10px 15px; border-radius: 5px;">
-                        <h3 style="margin: 0;">Restablecimiento de condiciones básicas y verificación de herramientas</h3>
-                    </div>
-                    <div class="sub-content" style="padding: 10px; border: 1px solid #e6007e; border-radius: 5px;">
-                        <div class="form-group">
-                            <label>{{ form.tarjetas_atrasadas.label }}</label>
-                            <div class="d-inline-block">
-                                {{ form.tarjetas_atrasadas }}
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label>{{ form.lila_asociado.label }}</label>
-                            <div>
-                                {{ form.lila_asociado }}
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label>{{ form.ejecuto_lila.label }}</label>
-                            <div>
-                                {{ form.ejecuto_lila }}
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label>{{ form.mantenimiento_no_ejecutado.label }}</label>
-                            <div>
-                                {{ form.mantenimiento_no_ejecutado }}
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label>{{ form.materiales_calidad.label }}</label>
-                            <div>
-                                {{ form.materiales_calidad }}
-                            </div>
-                        </div>                        
+                <div class="form-row">
+                    <div class="form-group col-md-12">
+                        {{ form.imagen_funcionamiento.label_tag }}
+                        {{ form.imagen_funcionamiento }}
                     </div>
                 </div>
-
-                <!-- Bloque 3: Modo de Falla -->
-                <div class="sub-section" style="margin-bottom: 20px;">
-                    <div class="sub-header" style="background-color: #e6007e; color: white; padding: 10px 15px; border-radius: 5px;">
-                        <h3 style="margin: 0;">Modo de Falla</h3>
-                    </div>
-                    <div class="sub-content" style="padding: 10px; border: 1px solid #e6007e; border-radius: 5px;">
-                        <div class="form-row">
-                            <div class="form-group col-md-12">
-                                {{ form.modo_falla_paso2.label_tag }}
-                                {{ form.modo_falla_paso2 }}
-                            </div>
-                        </div>
-                        <div class="form-row">
-                            <div class="form-group col-md-12">
-                                {{ form.imagen_falla.label_tag }}
-                                {{ form.imagen_falla }}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
             </div>
         </div>
 
+        <!-- Bloque 2: Restablecimiento de condiciones básicas y verificación de herramientas -->
+        <div class="sub-section" style="margin-bottom: 20px;">
+            <div class="sub-header" style="background-color: #e6007e; color: white; padding: 10px 15px; border-radius: 5px;">
+                <h3 style="margin: 0;">Restablecimiento de condiciones básicas y verificación de herramientas</h3>
+            </div>
+            <div class="sub-content" style="padding: 10px; border: 1px solid #e6007e; border-radius: 5px;">
+                <div class="form-group">
+                    <label>{{ form.tarjetas_atrasadas.label }}</label>
+                    <div class="d-inline-block">
+                        {{ form.tarjetas_atrasadas }}
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>{{ form.lila_asociado.label }}</label>
+                    <div>
+                        {{ form.lila_asociado }}
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>{{ form.ejecuto_lila.label }}</label>
+                    <div>
+                        {{ form.ejecuto_lila }}
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>{{ form.mantenimiento_no_ejecutado.label }}</label>
+                    <div>
+                        {{ form.mantenimiento_no_ejecutado }}
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>{{ form.materiales_calidad.label }}</label>
+                    <div>
+                        {{ form.materiales_calidad }}
+                    </div>
+                </div>                        
+            </div>
+        </div>
 
+        <!-- Bloque 3: Modo de Falla -->
+        <div class="sub-section" style="margin-bottom: 20px;">
+            <div class="sub-header" style="background-color: #e6007e; color: white; padding: 10px 15px; border-radius: 5px;">
+                <h3 style="margin: 0;">Modo de Falla</h3>
+            </div>
+            <div class="sub-content" style="padding: 10px; border: 1px solid #e6007e; border-radius: 5px;">
+                <div class="form-row">
+                    <div class="form-group col-md-12">
+                        {{ form.modo_falla_paso2.label_tag }}
+                        {{ form.modo_falla_paso2 }}
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-12">
+                        {{ form.imagen_falla.label_tag }}
+                        {{ form.imagen_falla }}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
 
 
         
@@ -318,12 +322,12 @@
     </div>
 
     <div id="contenido-paso3">
-        <div><h1></h1></div>
+        <br>
         <button id="addPorqueBtn" type="button" class="btn btn-primary mb-3">
             {% if form.porque6.value %}Agregar POR QUÉ?{% else %}Agregar POR QUÉ?{% endif %}
         </button>
         <button id="showMoreRows" type="button" class="btn btn-secondary mb-3">Mostrar más filas</button>
-        <div><h1></h1></div>
+        <br>
         <table id="porqueTable">
             <tr>
                 <th>Modo de Falla</th>
@@ -342,6 +346,7 @@
                 <th class="porque7-col" {% if not form.porque7.value %}style="display: none;"{% endif %}>¿POR QUÉ? (7)</th>
                 <th class="validacion7-col" {% if not form.porque7.value %}style="display: none;"{% endif %}></th>
                 <th>Raíz</th>
+                <th>6M</th>
             </tr>
 
             <!-- Primeras 4 filas visibles -->
@@ -376,6 +381,7 @@
                     {{ form.color_validacion7 }}
                 </td>
                 <td>{{ form.Raiz }}</td>
+                <td>{{ form.ISHIKAWA }}</td>
             </tr>
 
             <tr id="porque-row-2" style="display: none;">
@@ -409,6 +415,7 @@
                     {{ form.color_validacion7_2 }}
                 </td>
                 <td>{{ form.Raiz_2 }}</td>
+                <td>{{ form.ISHIKAWA_2 }}</td>
             </tr>
 
             <tr id="porque-row-3" style="display: none;">
@@ -442,6 +449,7 @@
                     {{ form.color_validacion7_3 }}
                 </td>
                 <td>{{ form.Raiz_3 }}</td>
+                <td>{{ form.ISHIKAWA_3 }}</td>
             </tr>
 
             <tr id="porque-row-4" style="display: none;">
@@ -475,6 +483,7 @@
                     {{ form.color_validacion7_4 }}
                 </td>
                 <td>{{ form.Raiz_4 }}</td>
+                <td>{{ form.ISHIKAWA_4 }}</td>
             </tr>
 
             <!-- Filas 5 a 8 ocultas inicialmente -->
@@ -509,6 +518,7 @@
                     {{ form.color_validacion7_5 }}
                 </td>
                 <td>{{ form.Raiz_5 }}</td>
+                <td>{{ form.ISHIKAWA_5 }}</td>
             </tr>
 
             <tr id="porque-row-6" style="display: none;">
@@ -542,6 +552,7 @@
                     {{ form.color_validacion7_6 }}
                 </td>
                 <td>{{ form.Raiz_6 }}</td>
+                <td>{{ form.ISHIKAWA_6 }}</td>
             </tr>
 
             <tr id="porque-row-7" style="display: none;">
@@ -575,6 +586,7 @@
                     {{ form.color_validacion7_7 }}
                 </td>
                 <td>{{ form.Raiz_7 }}</td>
+                <td>{{ form.ISHIKAWA_7 }}</td>
             </tr>
 
             <tr id="porque-row-8" style="display: none;">
@@ -608,179 +620,176 @@
                     {{ form.color_validacion7_8 }}
                 </td>
                 <td>{{ form.Raiz_8 }}</td>
+                <td>{{ form.ISHIKAWA_8 }}</td>
             </tr>
 
         </table>
     </div>
-</div>
-
-<script>
-    // Función para cambiar el color de las celdas
-    function changeColor(cell, inputId) {
-        const colors = ['white', 'green', 'red'];
-        let currentColor = cell.getAttribute('data-color');
-        let nextColorIndex = (colors.indexOf(currentColor) + 1) % colors.length;
-        let nextColor = colors[nextColorIndex];
-
-        // Cambiar el color de fondo de la celda
-        cell.style.backgroundColor = nextColor;
-        cell.setAttribute('data-color', nextColor);
-
-        // Actualizar el valor en el campo de formulario oculto
-        document.getElementById('id_' + inputId).value = nextColor;
-
-        // Actualizar el estado del checkbox de validación si existe
-        let checkboxId = inputId.replace('color_validacion', 'validado');
-        let checkbox = document.getElementById('id_' + checkboxId);
-        if (checkbox) {
-            checkbox.checked = (nextColor === 'green');
-        }
-    }
-
-    // Restaurar los colores iniciales basados en los valores almacenados
-    document.addEventListener('DOMContentLoaded', function() {
-        document.querySelectorAll('.color-cell').forEach(cell => {
-            let savedColor = cell.getAttribute('data-color');
-            if (savedColor) {
-                cell.style.backgroundColor = savedColor;  // Restaurar el color de la celda
-            }
-        });
-
-        let totalRows = 8;  // Número total de filas
-        let currentRow = 1;  // Filas visibles inicialmente
-        let porqueCount = 5; // Comenzamos con 5 columnas de "¿POR QUÉ?"
-
-        // Función para ocultar filas sin datos en las columnas "¿POR QUÉ?"
-        function manageRows() {
-            for (let i = 2; i <= totalRows; i++) {
-                let row = document.getElementById(`porque-row-${i}`);
-                
-                // Solo verificar las columnas "¿POR QUÉ?" (No validación)
-                let porqueInputs = row.querySelectorAll('[id^="id_porque"]'); // Busca campos de las columnas "¿POR QUÉ?"
-                let hasPorqueData = Array.from(porqueInputs).some(input => input.value.trim() !== ""); // Verifica si algún campo "¿POR QUÉ?" tiene valor
-
-                // Mostrar la fila si tiene datos en alguna columna "¿POR QUÉ?"
-                if (hasPorqueData) {
-                    row.style.display = '';  // Mostrar la fila con datos
-                    currentRow = i;  // Actualizar el número de la última fila visible
-                } else {
-                    row.style.display = 'none';  // Ocultar la fila sin datos
-                }
+    <script>
+        // Función para cambiar el color de las celdas
+        function changeColor(cell, inputId) {
+            const colors = ['white', 'green', 'red'];
+            let currentColor = cell.getAttribute('data-color');
+            let nextColorIndex = (colors.indexOf(currentColor) + 1) % colors.length;
+            let nextColor = colors[nextColorIndex];
+    
+            // Cambiar el color de fondo de la celda
+            cell.style.backgroundColor = nextColor;
+            cell.setAttribute('data-color', nextColor);
+    
+            // Actualizar el valor en el campo de formulario oculto
+            document.getElementById('id_' + inputId).value = nextColor;
+    
+            // Actualizar el estado del checkbox de validación si existe
+            let checkboxId = inputId.replace('color_validacion', 'validado');
+            let checkbox = document.getElementById('id_' + checkboxId);
+            if (checkbox) {
+                checkbox.checked = (nextColor === 'green');
             }
         }
-
-        // Mostrar las filas que tienen datos al cargar la página
-        manageRows();
-
-        // Función para verificar y mostrar columnas 6 y 7 si tienen información
-        function checkAndShowColumns() {
-            let showPorque6 = false;
-            let showPorque7 = false;
-
-            for (let i = 1; i <= totalRows; i++) {
-                const porque6 = document.querySelector(`#porque-row-${i} .porque6-col`);
-                const porque7 = document.querySelector(`#porque-row-${i} .porque7-col`);
-                
-                const porque6Input = porque6 ? porque6.querySelector('[id^="id_porque"]') : null; // Solo verificar campos "¿POR QUÉ?"
-                const porque7Input = porque7 ? porque7.querySelector('[id^="id_porque"]') : null; // Solo verificar campos "¿POR QUÉ?"
-
-                // Verificar si hay datos en la columna 6
-                if (porque6Input && porque6Input.value.trim() !== '') {
-                    showPorque6 = true;
-                    porque6.style.display = '';  // Mostrar la columna 6 en todas las filas
+    
+        // Restaurar los colores iniciales basados en los valores almacenados
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.color-cell').forEach(cell => {
+                let savedColor = cell.getAttribute('data-color');
+                if (savedColor) {
+                    cell.style.backgroundColor = savedColor;  // Restaurar el color de la celda
                 }
-
-                // Verificar si hay datos en la columna 7
-                if (porque7Input && porque7Input.value.trim() !== '') {
-                    showPorque7 = true;
-                    porque7.style.display = '';  // Mostrar la columna 7 en todas las filas
-                }
-            }
-
-            // Mostrar la columna 6 si hay datos en alguna fila
-            if (showPorque6) {
-                document.querySelectorAll('.porque6-col').forEach(col => col.style.display = '');
-                document.querySelectorAll('.validacion6-col').forEach(col => col.style.display = '');
-                porqueCount = 6;
-            }
-
-            // Mostrar la columna 7 si hay datos en alguna fila
-            if (showPorque7) {
-                document.querySelectorAll('.porque7-col').forEach(col => col.style.display = '');
-                document.querySelectorAll('.validacion7-col').forEach(col => col.style.display = '');
-                porqueCount = 7;
-            }
-
-            // Ajustar el botón de agregar columnas
-            const addPorqueBtn = document.getElementById('addPorqueBtn');
-            if (porqueCount >= 7) {
-                addPorqueBtn.style.display = 'none';
-            } else if (porqueCount === 6) {
-                addPorqueBtn.textContent = 'Agregar POR QUÉ?';
-            }
-        }
-
-        // Verificar y mostrar las columnas 6 y 7 al cargar la página
-        checkAndShowColumns();
-
-        // Botón para mostrar más filas
-        const showMoreRowsBtn = document.getElementById('showMoreRows');
-
-        showMoreRowsBtn.addEventListener('click', function() {
-            currentRow++;
-            const nextRow = document.getElementById(`porque-row-${currentRow}`);
-            if (nextRow) {
-                nextRow.style.display = ''; // Mostrar la siguiente fila oculta
-            }
-
-            // Si ya llegamos al total de filas, ocultar el botón
-            if (currentRow >= totalRows) {
-                showMoreRowsBtn.style.display = 'none';
-            }
-        });
-
-        // Evento para agregar más "¿POR QUÉ?" columnas
-        const addPorqueBtn = document.getElementById('addPorqueBtn');
-        addPorqueBtn.addEventListener('click', function() {
-            if (porqueCount < 7) {
-                porqueCount++;
-                const porqueCol = document.querySelectorAll(`.porque${porqueCount}-col`);
-                const validacionCol = document.querySelectorAll(`.validacion${porqueCount}-col`);
-
-                porqueCol.forEach(col => col.style.display = '');
-                validacionCol.forEach(col => col.style.display = '');
-
-                if (porqueCount === 6) {
-                    addPorqueBtn.textContent = 'Agregar POR QUÉ?';
-                } else if (porqueCount === 7) {
-                    addPorqueBtn.style.display = 'none';
-                }
-            }
-        });
-
-    });
-
-     document.addEventListener("DOMContentLoaded", function() {
-        const modoFallaPaso2 = document.getElementById("id_modo_falla_paso2");
-        const modoFallaPaso3 = document.getElementById("id_modo_falla_paso3");
-
-        // Verificar que ambos campos existan
-        if (modoFallaPaso2 && modoFallaPaso3) {
-            // Copiar el valor del Paso 2 al Paso 3 al cargar la página
-            modoFallaPaso3.value = modoFallaPaso2.value;
-
-            // Escuchar cambios en el Paso 2 para actualizar automáticamente el Paso 3
-            modoFallaPaso2.addEventListener('input', function() {
-                modoFallaPaso3.value = modoFallaPaso2.value;
             });
-        } else {
-            console.error('Campos modo_falla_paso2 o modo_falla_paso3 no encontrados');
-        }
-    });
-</script>
-
-
-
+    
+            let totalRows = 8;  // Número total de filas
+            let currentRow = 1;  // Filas visibles inicialmente
+            let porqueCount = 5; // Comenzamos con 5 columnas de "¿POR QUÉ?"
+    
+            // Función para ocultar filas sin datos en las columnas "¿POR QUÉ?"
+            function manageRows() {
+                for (let i = 2; i <= totalRows; i++) {
+                    let row = document.getElementById(`porque-row-${i}`);
+                    
+                    // Solo verificar las columnas "¿POR QUÉ?" (No validación)
+                    let porqueInputs = row.querySelectorAll('[id^="id_porque"]'); // Busca campos de las columnas "¿POR QUÉ?"
+                    let hasPorqueData = Array.from(porqueInputs).some(input => input.value.trim() !== ""); // Verifica si algún campo "¿POR QUÉ?" tiene valor
+    
+                    // Mostrar la fila si tiene datos en alguna columna "¿POR QUÉ?"
+                    if (hasPorqueData) {
+                        row.style.display = '';  // Mostrar la fila con datos
+                        currentRow = i;  // Actualizar el número de la última fila visible
+                    } else {
+                        row.style.display = 'none';  // Ocultar la fila sin datos
+                    }
+                }
+            }
+    
+            // Mostrar las filas que tienen datos al cargar la página
+            manageRows();
+    
+            // Función para verificar y mostrar columnas 6 y 7 si tienen información
+            function checkAndShowColumns() {
+                let showPorque6 = false;
+                let showPorque7 = false;
+    
+                for (let i = 1; i <= totalRows; i++) {
+                    const porque6 = document.querySelector(`#porque-row-${i} .porque6-col`);
+                    const porque7 = document.querySelector(`#porque-row-${i} .porque7-col`);
+                    
+                    const porque6Input = porque6 ? porque6.querySelector('[id^="id_porque"]') : null; // Solo verificar campos "¿POR QUÉ?"
+                    const porque7Input = porque7 ? porque7.querySelector('[id^="id_porque"]') : null; // Solo verificar campos "¿POR QUÉ?"
+    
+                    // Verificar si hay datos en la columna 6
+                    if (porque6Input && porque6Input.value.trim() !== '') {
+                        showPorque6 = true;
+                        porque6.style.display = '';  // Mostrar la columna 6 en todas las filas
+                    }
+    
+                    // Verificar si hay datos en la columna 7
+                    if (porque7Input && porque7Input.value.trim() !== '') {
+                        showPorque7 = true;
+                        porque7.style.display = '';  // Mostrar la columna 7 en todas las filas
+                    }
+                }
+    
+                // Mostrar la columna 6 si hay datos en alguna fila
+                if (showPorque6) {
+                    document.querySelectorAll('.porque6-col').forEach(col => col.style.display = '');
+                    document.querySelectorAll('.validacion6-col').forEach(col => col.style.display = '');
+                    porqueCount = 6;
+                }
+    
+                // Mostrar la columna 7 si hay datos en alguna fila
+                if (showPorque7) {
+                    document.querySelectorAll('.porque7-col').forEach(col => col.style.display = '');
+                    document.querySelectorAll('.validacion7-col').forEach(col => col.style.display = '');
+                    porqueCount = 7;
+                }
+    
+                // Ajustar el botón de agregar columnas
+                const addPorqueBtn = document.getElementById('addPorqueBtn');
+                if (porqueCount >= 7) {
+                    addPorqueBtn.style.display = 'none';
+                } else if (porqueCount === 6) {
+                    addPorqueBtn.textContent = 'Agregar POR QUÉ?';
+                }
+            }
+    
+            // Verificar y mostrar las columnas 6 y 7 al cargar la página
+            checkAndShowColumns();
+    
+            // Botón para mostrar más filas
+            const showMoreRowsBtn = document.getElementById('showMoreRows');
+    
+            showMoreRowsBtn.addEventListener('click', function() {
+                currentRow++;
+                const nextRow = document.getElementById(`porque-row-${currentRow}`);
+                if (nextRow) {
+                    nextRow.style.display = ''; // Mostrar la siguiente fila oculta
+                }
+    
+                // Si ya llegamos al total de filas, ocultar el botón
+                if (currentRow >= totalRows) {
+                    showMoreRowsBtn.style.display = 'none';
+                }
+            });
+    
+            // Evento para agregar más "¿POR QUÉ?" columnas
+            const addPorqueBtn = document.getElementById('addPorqueBtn');
+            addPorqueBtn.addEventListener('click', function() {
+                if (porqueCount < 7) {
+                    porqueCount++;
+                    const porqueCol = document.querySelectorAll(`.porque${porqueCount}-col`);
+                    const validacionCol = document.querySelectorAll(`.validacion${porqueCount}-col`);
+    
+                    porqueCol.forEach(col => col.style.display = '');
+                    validacionCol.forEach(col => col.style.display = '');
+    
+                    if (porqueCount === 6) {
+                        addPorqueBtn.textContent = 'Agregar POR QUÉ?';
+                    } else if (porqueCount === 7) {
+                        addPorqueBtn.style.display = 'none';
+                    }
+                }
+            });
+    
+        });
+    
+         document.addEventListener("DOMContentLoaded", function() {
+            const modoFallaPaso2 = document.getElementById("id_modo_falla_paso2");
+            const modoFallaPaso3 = document.getElementById("id_modo_falla_paso3");
+    
+            // Verificar que ambos campos existan
+            if (modoFallaPaso2 && modoFallaPaso3) {
+                // Copiar el valor del Paso 2 al Paso 3 al cargar la página
+                modoFallaPaso3.value = modoFallaPaso2.value;
+    
+                // Escuchar cambios en el Paso 2 para actualizar automáticamente el Paso 3
+                modoFallaPaso2.addEventListener('input', function() {
+                    modoFallaPaso3.value = modoFallaPaso2.value;
+                });
+            } else {
+                console.error('Campos modo_falla_paso2 o modo_falla_paso3 no encontrados');
+            }
+        });
+    </script>
+</div>
 
 
 
@@ -809,6 +818,7 @@
                         <h4 style="margin: 0;">Acciónes Correctivas</h4>
                     </div>
                     <div class="sub-content" style="padding: 8px; border: 1px solid #00C851; border-radius: 5px;">
+                        <button type="button" id="addAccionCorrectiva" class="btn btn-primary mt-2">Agregar Acción Correctiva</button>
                         <div class="form-row">
                             <table id="AccionesTable">
                                 <tr>
@@ -834,7 +844,7 @@
 
                                 </tr>
 
-                                <tr id="Acciones-row2">
+                                <tr id="Acciones-row2" style="display: none;">
                                     <td>{{ form.Accion_correctiva_2 }}</td>
                                     <td>
                                         <select id="Responsable1_2" name="Responsable1_2" class="select2">
@@ -850,7 +860,7 @@
                                     </td>
                                 </tr>
 
-                                <tr id="Acciones-row3">
+                                <tr id="Acciones-row3" style="display: none;">
                                     <td>{{ form.Accion_correctiva_3 }}</td>
                                     <td>
                                             <select id="Responsable1_3" name="Responsable1_3" class="select2">
@@ -866,7 +876,7 @@
                                     </td>
                                 </tr>
 
-                                <tr id="Acciones-row4">
+                                <tr id="Acciones-row4" style="display: none;">
                                     <td>{{ form.Accion_correctiva_4 }}</td>
                                     <td>
                                         <select id="Responsable1_4" name="Responsable1_4" class="select2">
@@ -882,7 +892,7 @@
                                     </td>
                                 </tr>
                             </table>
-
+                            
                             
                         </div>
                     </div>
@@ -1007,57 +1017,59 @@
 
 
                             </table>
-                            <style>
-                               #AccionesTable {
-                                    width: 90%;
-                                    border-collapse: collapse;
-                                    font-family: Arial, sans-serif;
-                                    margin: 0 auto; /* Centramos la tabla */
-                                }
-                                th, td {
-                                    border: 1px solid #ccc; /* Borde gris claro */
-                                    padding: 10px;
-                                    text-align: left; /* Alinear texto a la izquierda */
-                                }
-
-                                th {
-                                    background-color: #f2f2f2; /* Fondo gris suave para los encabezados */
-                                    font-weight: bold; /* Texto en negrita para los encabezados */
-                                }
-
-                                tbody tr:nth-child(even) {
-                                    background-color: #fafafa; /* Color de fondo para filas alternas */
-                                }
-
-                                /* Opcional: Estilo para hover */
-                                tbody tr:hover {
-                                    background-color: #f5f5f5; /* Cambio de color al pasar el ratón sobre una fila */
-                                }
-
-                            </style>
+                        </div>
+                        <br>
+                        <!-- Ícono con popover que mostrará la imagen -->
+                        <div class="popover-container">
+                            <i class="fas fa-question-circle"></i>
+                            <div class="popover-content">
+                                <img src="{% static 'images/Referencia.png' %}" alt="Descripción de la imagen">
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>        
     </div>
+    <script>
+        $(document).ready(function() {
+            // Inicialización para miembros del equipo
+            $('#miembros_equipo').select2({
+                placeholder: "Selecciona miembros del equipo",
+                templateResult: formatState,
+                templateSelection: formatState,
+                allowClear: true
+            });
+        
+        
+        });
+        document.addEventListener('DOMContentLoaded', function() {
+    let rowCount = 1;
+    const maxRows = 4;
+    
+    document.getElementById('addAccionCorrectiva').addEventListener('click', function() {
+        if (rowCount < maxRows) {
+            rowCount++;
+            const nextRow = document.getElementById(`Acciones-row${rowCount}`);
+            if (nextRow) {
+                nextRow.style.display = '';
+            }
+            
+            if (rowCount === maxRows) {
+                this.style.display = 'none';
+            }
+        }
+    });
+});
+        </script>
 </div>
 
-<script>
-$(document).ready(function() {
-    // Inicialización para miembros del equipo
-    $('#miembros_equipo').select2({
-        placeholder: "Selecciona miembros del equipo",
-        templateResult: formatState,
-        templateSelection: formatState,
-        allowClear: true
-    });
 
 
-});
 
 
-</script>
+
+
 
 
 
@@ -1081,7 +1093,6 @@ $(document).ready(function() {
     </div>
     <div id="contenido-paso5">
                 <div><h1></h1></div>
-                <div><button type="submit" class="btn btn-primary" >Levantar Acción Estandarización</button></div>
 
         <!-- Bloque 1 -->
         <div class="sub-section" style="margin-bottom: 20px;">
@@ -1090,12 +1101,82 @@ $(document).ready(function() {
                 <h3 style="margin: 0;">Estandarización</h3>
             </div>
             <div class="sub-content" style="padding: 10px; border: 1px solid #D86B20; border-radius: 5px;">
-                <div class="form-row">
 
-                <div><h1></h1></div>
-                &nbsp;&nbsp;&nbsp;&nbsp;<div><button type="submit" class="btn btn-primary" >Levantar Acción Expansión</button></div>
-                    
-                </div>
+                <table id="AccionesTable">
+                    <thead>
+                        <tr>
+                            <th>ACCIÓN DE ESTANDARIZACIÓN</th>
+                            <th>RESPONSABLE</th>
+                            <th>FECHA COMPROMISO</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr id = "estandarizacion-row">
+                            <td>{{ form.Estandarizacion }}</td>
+                            <td>
+                                <select id="Responsable3" name="Responsable3" class="select2">
+                                    {% for miembro in opciones_miembros %}
+                                        <option value="{{ miembro.id }}" data-email="{{ miembro.email }}" {% if miembro.id in form.Responsable3.value %}selected{% endif %}>
+                                            {{ miembro.nombre }}
+                                        </option>
+                                    {% endfor %}
+                                </select>
+                            </td>
+                            <td>
+                                <input type="date" id="Fecha_compromiso3" name="Fecha_compromiso3" class="form-control" value="{{ form.Fecha_compromiso3.value|date:'Y-m-d' }}">
+                            </td>
+                        </tr>
+
+                        <tr id = "estandarizacion-row2">
+                            <td>{{ form.Estandarizacion_2 }}</td>
+                            <td>
+                                <select id="Responsable3_2" name="Responsable3_2" class="select2">
+                                    {% for miembro in opciones_miembros %}
+                                        <option value="{{ miembro.id }}" data-email="{{ miembro.email }}" {% if miembro.id in form.Responsable3_2.value %}selected{% endif %}>
+                                            {{ miembro.nombre }}
+                                        </option>
+                                    {% endfor %}
+                                </select>
+                            </td>
+                            <td>
+                                <input type="date" id="Fecha_compromiso3_2" name="Fecha_compromiso3_2" class="form-control" value="{{ form.Fecha_compromiso3_2.value|date:'Y-m-d' }}">
+                            </td>
+                        </tr>
+
+                        <tr id = "estandarizacion-row3">
+                            <td>{{ form.Estandarizacion_3 }}</td>
+                            <td>
+                                <select id="Responsable3_3" name="Responsable3_3" class="select2">
+                                    {% for miembro in opciones_miembros %}
+                                        <option value="{{ miembro.id }}" data-email="{{ miembro.email }}" {% if miembro.id in form.Responsable3_3.value %}selected{% endif %}>
+                                            {{ miembro.nombre }}
+                                        </option>
+                                    {% endfor %}
+                                </select>
+                            </td>
+                            <td>
+                                <input type="date" id="Fecha_compromiso3_3" name="Fecha_compromiso3_3" class="form-control" value="{{ form.Fecha_compromiso3_3.value|date:'Y-m-d' }}">
+                            </td>
+                        </tr>
+
+                        <tr id = "estandarizacion-row4">
+                            <td>{{ form.Estandarizacion_4 }}</td>
+                            <td>
+                                <select id="Responsable3_4" name="Responsable3_4" class="select2">
+                                    {% for miembro in opciones_miembros %}
+                                        <option value="{{ miembro.id }}" data-email="{{ miembro.email }}" {% if miembro.id in form.Responsable3_4.value %}selected{% endif %}>
+                                            {{ miembro.nombre }}
+                                        </option>
+                                    {% endfor %}
+                                </select>
+                            </td>
+                            <td>
+                                <input type="date" id="Fecha_compromiso3_4" name="Fecha_compromiso3_4" class="form-control" value="{{ form.Fecha_compromiso3_4.value|date:'Y-m-d' }}">
+                            </td>
+                        </tr>
+                    </tbody>
+
+                </table>
             </div>
         </div>
 
@@ -1108,6 +1189,84 @@ $(document).ready(function() {
             <div class="sub-content" style="padding: 10px; border: 1px solid #D86B20; border-radius: 5px;">
                 <div class="form-row">
     
+
+
+                    <table id="AccionesTable">
+                        <thead>
+                            <tr>
+                                <th>ACCIÓN DE EXPANSIÓN</th>
+                                <th>RESPONSABLE</th>
+                                <th>FECHA COMPROMISO</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr id = "expansion-row">
+                                <td>{{ form.Expansion }}</td>
+                                <td>
+                                    <select id="Responsable4" name="Responsable4" class="select2">
+                                        {% for miembro in opciones_miembros %}
+                                            <option value="{{ miembro.id }}" data-email="{{ miembro.email }}" {% if miembro.id in form.Responsable4.value %}selected{% endif %}>
+                                                {{ miembro.nombre }}
+                                            </option>
+                                        {% endfor %}
+                                    </select>
+                                </td>
+                                <td>
+                                    <input type="date" id="Fecha_compromiso4" name="Fecha_compromiso4" class="form-control" value="{{ form.Fecha_compromiso4.value|date:'Y-m-d' }}">
+                                </td>
+                            </tr>
+
+                            <tr id = "expansion-row2">
+                                <td>{{ form.Expansion_2 }}</td>
+                                <td>
+                                    <select id="Responsable4_2" name="Responsable4_2" class="select2">
+                                        {% for miembro in opciones_miembros %}
+                                            <option value="{{ miembro.id }}" data-email="{{ miembro.email }}" {% if miembro.id in form.Responsable4_2.value %}selected{% endif %}>
+                                                {{ miembro.nombre }}
+                                            </option>
+                                        {% endfor %}
+                                    </select>
+                                </td>
+                                <td>
+                                    <input type="date" id="Fecha_compromiso4_2" name="Fecha_compromiso4_2" class="form-control" value="{{ form.Fecha_compromiso4_2.value|date:'Y-m-d' }}">
+                                </td>
+                            </tr>
+
+                            <tr id = "expansion-row3">
+                                <td>{{ form.Expansion_3 }}</td>
+                                <td>
+                                    <select id="Responsable4_3" name="Responsable4_3" class="select2">
+                                        {% for miembro in opciones_miembros %}
+                                            <option value="{{ miembro.id }}" data-email="{{ miembro.email }}" {% if miembro.id in form.Responsable4_3.value %}selected{% endif %}>
+                                                {{ miembro.nombre }}
+                                            </option>
+                                        {% endfor %}
+                                    </select>
+                                </td>
+                                <td>
+                                    <input type="date" id="Fecha_compromiso4_3" name="Fecha_compromiso4_3" class="form-control" value="{{ form.Fecha_compromiso4_3.value|date:'Y-m-d' }}">
+                                </td>
+                            </tr>
+
+                            <tr id = "expansion-row4">
+                                <td>{{ form.Expansion_4 }}</td>
+                                <td>
+                                    <select id="Responsable4_4" name="Responsable4_4" class="select2">
+                                        {% for miembro in opciones_miembros %}
+                                            <option value="{{ miembro.id }}" data-email="{{ miembro.email }}" {% if miembro.id in form.Responsable4_4.value %}selected{% endif %}>
+                                                {{ miembro.nombre }}
+                                            </option>
+                                        {% endfor %}
+                                    </select>
+                                </td>
+                                <td>
+                                    <input type="date" id="Fecha_compromiso4_4" name="Fecha_compromiso4_4" class="form-control" value="{{ form.Fecha_compromiso4_4.value|date:'Y-m-d' }}">
+                                </td>
+                            </tr>
+                        </tbody>
+    
+                    </table>
+
                     
                 </div>
             </div>
@@ -1151,6 +1310,8 @@ $(document).ready(function() {
 <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 
 
 <!-- Inicialización de Select2 y otros scripts -->
