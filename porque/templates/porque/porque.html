@@ -794,30 +794,22 @@
 
 
         <!-- Sección Paso 4: Contramedidas y Seguimiento -->
-<div id="paso4-section" class="recuadro-paso mt-4" style="border: 1px solid #00C851;">
-    <div class="paso-header" style="background-color: #00C851; color: white; padding: 10px 15px; border-radius: 5px;">
-        <h2 class="collapsible" style="cursor: pointer; margin: 0;" onclick="toggleVisibility('contenido-paso4')">
-            <span style="margin-right: 10px;">&#x25BC;</span> Paso 4: Contramedidas y Seguimiento
-        </h2>
-    </div>
-    <div id="contenido-paso4">
-                
-        <div class="sub-section" style="margin-bottom: 20px;">
-            <div><h1></h1></div>
-            
-            <!-- Subcategoría -->
-            <div class="sub-header" style="background-color: #00C851; color: white; padding: 10px 15px; border-radius: 5px;">
-                <h3 style="margin: 0;">Acciones (Contramedidas y Seguimiento)</h3>
+        <div id="paso4-section" class="recuadro-paso mt-4" style="border: 1px solid #00C851;">
+            <div class="paso-header" style="background-color: #00C851; color: white; padding: 10px 15px; border-radius: 5px;">
+                <h2 class="collapsible" style="cursor: pointer; margin: 0;" onclick="toggleVisibility('contenido-paso4')">
+                    <span style="margin-right: 10px;">&#x25BC;</span> Paso 4: Contramedidas y Seguimiento
+                </h2>
             </div>
-            
-            <div class="sub-content" style="padding: 10px; border: 1px solid #00C851; border-radius: 5px;">
-                
-                <!-- Sub-subcategoría 1 -->
-                <div class="sub-section" style="margin-bottom: 10px; margin-left: 20px;">
-                    <div class="sub-header" style="background-color: #00C851; color: white; padding: 10px 10px; border-radius: 5px;">
-                        <h4 style="margin: 0;">Acciónes Correctivas</h4>
+            <div id="contenido-paso4">
+                <div class="sub-section" style="margin-bottom: 20px;">
+                    <div><h1></h1></div>
+                    
+                    <!-- Subcategoría 1 -->
+                    <div class="sub-header" style="background-color: #00C851; color: white; padding: 10px 15px; border-radius: 5px;">
+                        <h3 style="margin: 0;">Acciones Correctivas</h3>
                     </div>
-                    <div class="sub-content" style="padding: 8px; border: 1px solid #00C851; border-radius: 5px;">
+                    
+                    <div class="sub-content" style="padding: 10px; border: 1px solid #00C851; border-radius: 5px;">
                         <button type="button" id="addAccionCorrectiva" class="btn btn-primary mt-2">Agregar Acción Correctiva</button>
                         <div class="form-row">
                             <table id="AccionesTable">
@@ -826,7 +818,7 @@
                                     &nbsp;<th>Responsable</th>
                                     &nbsp;<th>Fecha Compromiso</th>
                                 </tr>
-    
+        
                                 <tr id="Acciones-row">
                                     <td>{{ form.Accion_correctiva }}</td>
                                     <td>
@@ -841,9 +833,8 @@
                                     <td>
                                         <input type="date" id="Fecha_compromiso1" name="Fecha_compromiso1" class="form-control" value="{{ form.Fecha_compromiso1.value|date:'Y-m-d' }}">
                                     </td>
-
                                 </tr>
-
+        
                                 <tr id="Acciones-row2" style="display: none;">
                                     <td>{{ form.Accion_correctiva_2 }}</td>
                                     <td>
@@ -859,23 +850,23 @@
                                         <input type="date" id="Fecha_compromiso1_2" name="Fecha_compromiso1_2" class="form-control" value="{{ form.Fecha_compromiso1_2.value|date:'Y-m-d' }}">
                                     </td>
                                 </tr>
-
+        
                                 <tr id="Acciones-row3" style="display: none;">
                                     <td>{{ form.Accion_correctiva_3 }}</td>
                                     <td>
-                                            <select id="Responsable1_3" name="Responsable1_3" class="select2">
-                                                {% for miembro in opciones_miembros %}
-                                                    <option value="{{ miembro.id }}" data-email="{{ miembro.email }}" {% if miembro.id in form.Responsable1_3.value %}selected{% endif %}>
-                                                        {{ miembro.nombre }}
-                                                    </option>
-                                                {% endfor %}
-                                            </select>                                   
+                                        <select id="Responsable1_3" name="Responsable1_3" class="select2">
+                                            {% for miembro in opciones_miembros %}
+                                                <option value="{{ miembro.id }}" data-email="{{ miembro.email }}" {% if miembro.id in form.Responsable1_3.value %}selected{% endif %}>
+                                                    {{ miembro.nombre }}
+                                                </option>
+                                            {% endfor %}
+                                        </select>                                   
                                     </td>
                                     <td>
                                         <input type="date" id="Fecha_compromiso1_3" name="Fecha_compromiso1_3" class="form-control" value="{{ form.Fecha_compromiso1_3.value|date:'Y-m-d' }}">
                                     </td>
                                 </tr>
-
+        
                                 <tr id="Acciones-row4" style="display: none;">
                                     <td>{{ form.Accion_correctiva_4 }}</td>
                                     <td>
@@ -892,24 +883,19 @@
                                     </td>
                                 </tr>
                             </table>
-                            
-                            
                         </div>
                     </div>
-                </div>
         
-                <!-- Sub-subcategoría 2 -->
-                <div class="sub-section" style="margin-bottom: 10px; margin-left: 20px;">
-                    <div class="sub-header" style="background-color: #00C851; color: white; padding: 10px 10px; border-radius: 5px;">
-                        <h4 style="margin: 0;">Acciónes Preventivas</h4>
+                    <!-- Subcategoría 2 -->
+                    <div class="sub-header" style="background-color: #00C851; color: white; padding: 10px 15px; border-radius: 5px;">
+                        <h3 style="margin: 0;">Acciones Preventivas</h3>
                     </div>
-                    <div class="sub-content" style="padding: 8px; border: 1px solid #00C851; border-radius: 5px;">
+                    
+                    <div class="sub-content" style="padding: 10px; border: 1px solid #00C851; border-radius: 5px;">
                         <div class="form-row">
-
                             <table id="AccionesTable">
                                 <thead>
                                     <tr>
-                                        <!-- Títulos principales con colspan -->
                                         <th colspan="4">ACCIONES (CONTRAMEDIDAS Y SEGUIMIENTO)</th>
                                         <th colspan="2">VALIDACIÓN DE LA ACCIÓN</th>
                                     </tr>
@@ -923,8 +909,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <!-- FILA 1 -->
-                                    <tr id = "accionesPRE-row">
+                                    <tr id="accionesPRE-row">
                                         <td>{{ form.Accion_Preventiva }}</td>
                                         <td>
                                             <select id="Responsable2" name="Responsable2" class="select2">
@@ -944,9 +929,8 @@
                                         </td>
                                         <td>{{ form.MOC }}</td>
                                     </tr>
-
-                                    <!-- FILA 2 -->
-                                    <tr id = "accionesPRE-row2">
+        
+                                    <tr id="accionesPRE-row2">
                                         <td>{{ form.Accion_Preventiva_2 }}</td>
                                         <td>
                                             <select id="Responsable2_2" name="Responsable2_2" class="select2">
@@ -966,9 +950,8 @@
                                         </td>
                                         <td>{{ form.MOC_2 }}</td>
                                     </tr>
-
-                                    <!-- FILA 3 -->
-                                    <tr id = "accionesPRE-row3">
+        
+                                    <tr id="accionesPRE-row3">
                                         <td>{{ form.Accion_Preventiva_3 }}</td>
                                         <td>
                                             <select id="Responsable2_3" name="Responsable2_3" class="select2">
@@ -988,9 +971,8 @@
                                         </td>
                                         <td>{{ form.MOC_3 }}</td>
                                     </tr>
-
-                                    <!-- FILA 4 -->
-                                    <tr id = "accionesPRE-row4">
+        
+                                    <tr id="accionesPRE-row4">
                                         <td>{{ form.Accion_Preventiva_4 }}</td>
                                         <td>
                                             <select id="Responsable2_4" name="Responsable2_4" class="select2">
@@ -1010,16 +992,10 @@
                                         </td>
                                         <td>{{ form.MOC_4 }}</td>
                                     </tr>
-
-                                    
                                 </tbody>
-
-
-
                             </table>
                         </div>
                         <br>
-                        <!-- Ícono con popover que mostrará la imagen -->
                         <div class="popover-container">
                             <i class="fas fa-question-circle"></i>
                             <div class="popover-content">
@@ -1029,40 +1005,37 @@
                     </div>
                 </div>
             </div>
-        </div>        
-    </div>
-    <script>
-        $(document).ready(function() {
-            // Inicialización para miembros del equipo
-            $('#miembros_equipo').select2({
-                placeholder: "Selecciona miembros del equipo",
-                templateResult: formatState,
-                templateSelection: formatState,
-                allowClear: true
+        </div>
+        
+        <script>
+            $(document).ready(function() {
+                $('#miembros_equipo').select2({
+                    placeholder: "Selecciona miembros del equipo",
+                    templateResult: formatState,
+                    templateSelection: formatState,
+                    allowClear: true
+                });
             });
         
-        
-        });
-        document.addEventListener('DOMContentLoaded', function() {
-    let rowCount = 1;
-    const maxRows = 4;
-    
-    document.getElementById('addAccionCorrectiva').addEventListener('click', function() {
-        if (rowCount < maxRows) {
-            rowCount++;
-            const nextRow = document.getElementById(`Acciones-row${rowCount}`);
-            if (nextRow) {
-                nextRow.style.display = '';
-            }
-            
-            if (rowCount === maxRows) {
-                this.style.display = 'none';
-            }
-        }
-    });
-});
+            document.addEventListener('DOMContentLoaded', function() {
+                let rowCount = 1;
+                const maxRows = 4;
+                
+                document.getElementById('addAccionCorrectiva').addEventListener('click', function() {
+                    if (rowCount < maxRows) {
+                        rowCount++;
+                        const nextRow = document.getElementById(`Acciones-row${rowCount}`);
+                        if (nextRow) {
+                            nextRow.style.display = '';
+                        }
+                        
+                        if (rowCount === maxRows) {
+                            this.style.display = 'none';
+                        }
+                    }
+                });
+            });
         </script>
-</div>
 
 
 
