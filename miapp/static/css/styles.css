@@ -124,25 +124,22 @@ body, html {
     width: 100%;
 }
 
-/* Tablas de datos */
+/* Estilos generales para .tabla-datos */
 .tabla-datos {
     width: 100%;
     border-collapse: collapse;
 }
-
 .tabla-datos th,
 .tabla-datos td {
     border: 1px solid var(--verde-claro);
     padding: 8px;
     text-align: left;
 }
-
 .tabla-datos thead {
-    background-color: var(--verde-claro);
+    background-color:#66df6c; /* Color para el encabezado de .tabla-datos */
 }
-
 .tabla-datos tr:nth-child(even) {
-    background-color: var(--verde-claro);
+    background-color: var(--verde-claro); /* Color para filas pares */
 }
 
 /* Enlaces y botones */
@@ -586,7 +583,7 @@ h2.text-danger {
     border-collapse: collapse;
 }
 .table th, .table td {
-    border: 1px solid #ddd;
+    border: 1px solid #dddddd;
     padding: 8px;
     vertical-align: top;
 }
@@ -611,26 +608,26 @@ h2.text-danger {
     max-height: 100px;  /* Define una altura máxima */
     resize: none;  /* Evita que el usuario cambie el tamaño del campo */
 }
+/* Estilos específicos para #AccionesTable */
 #AccionesTable {
     width: 90%;
     border-collapse: collapse;
     font-family: Arial, sans-serif;
-    margin: 0 auto; /* Centramos la tabla */
+    margin: 0 auto; /* Centra la tabla */
 }
-th, td {
+#AccionesTable th, #AccionesTable td {
     border: 1px solid #ccc; /* Borde gris claro */
     padding: 10px;
-    text-align: left; /* Alinear texto a la izquierda */
+    text-align: left;
 }
-
-th {
+#AccionesTable th {
     background-color: #f2f2f2; /* Fondo gris suave para los encabezados */
     font-weight: bold; /* Texto en negrita para los encabezados */
 }
-
-tbody tr:nth-child(even) {
+#AccionesTable tbody tr:nth-child(even) {
     background-color: #fafafa; /* Color de fondo para filas alternas */
 }
+
 
 /* Opcional: Estilo para hover */
 tbody tr:hover {

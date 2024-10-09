@@ -46,7 +46,7 @@
                     {% if user.is_authenticated %}
                         <li><a href="{% url 'porque' %}" class="{% if request.resolver_match.url_name == 'porque' %}active{% endif %}">5 Por qué</a></li>
                         <li><a href="{% url 'miniproyectos' %}" class="{% if request.resolver_match.url_name == 'miniproyectos' %}active{% endif %}">Miniproyectos</a></li>
-                        <li><a href="{% url 'kaizer' %}" class="{% if request.resolver_match.url_name == 'kaizer' %}active{% endif %}">Kaizen</a></li>
+                        <li><a href="{% url 'kaizen' %}" class="{% if request.resolver_match.url_name == 'kaizen' %}active{% endif %}">Kaizen</a></li>
                         <li><a href="{% url 'visu' %}" class="{% if request.resolver_match.url_name == 'visu' %}active{% endif %}">Visualizacion</a></li>
                         <li><a href="{% url 'dashboard' %}" class="{% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}">Dashboard</a></li>
                     {% endif %}

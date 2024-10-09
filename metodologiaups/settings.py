@@ -22,6 +22,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'miapp',
     'porque',
+    'MiniProyecto',
+    'Kaizen',
     'visu5',
     'social_django',  # Asegúrate de que social_django esté instalado y agregado
 ]
