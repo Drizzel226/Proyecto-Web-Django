@@ -5,6 +5,7 @@ from django.contrib import messages
 from django.utils.timezone import now
 from google.oauth2 import service_account
 from googleapiclient.discovery import build
+from django.core.mail import send_mail  # Importar para enviar correos
 
 def porque_view(request, pk=None):
     # Configuración de Google Sheets API
@@ -33,6 +34,9 @@ def porque_view(request, pk=None):
         form = PorqueForm(request.POST, request.FILES, instance=porque_instance)
 
         if form.is_valid():
+            # Verificar si es un nuevo formulario (no tiene PK aún)
+            es_nuevo = porque_instance is None
+            
             # Guardar la instancia del formulario pero sin guardarla aún en la BD
             porque_instance = form.save(commit=False)
 
@@ -57,9 +61,46 @@ def porque_view(request, pk=None):
             # Guardar relaciones ManyToMany (miembros del equipo y responsables)
             form.save_m2m()
 
+            # Si el formulario es nuevo, enviar el correo
+            if es_nuevo:
+                # Obtener correos de los miembros del equipo
+                emails = [miembro.email for miembro in porque_instance.miembros_equipo.all()]
+
+                # Preparar el contenido del correo con la categoría e ID
+                categoria = porque_instance.categoria
+                id_analisis = porque_instance.id
+                subcategoria = porque_instance.subcategoria
+                area = porque_instance.area
+                subarea = porque_instance.subarea
+                mensaje = f"""
+                Has sido asignado a un nuevo proyecto de análisis "5 Por Qué".
+
+                Detalles:
+                - ID del Análisis: {id_analisis}
+                - Categoría: {categoria}
+                - Subcategoria: {subcategoria}
+                - Area: {area}
+                - Subarea: {subarea}
+
+                Por favor, revisa la plataforma para más detalles.
+                """
+
+                # Enviar correo a los miembros del equipo
+                try:
+                    send_mail(
+                        'Nuevo "5 Por Qué" asignado',
+                        mensaje,
+                        'from@example.com',
+                        emails,
+                        fail_silently=False,
+                    )
+                except Exception as e:
+                    print(f"Error al enviar el correo: {e}")
+                    messages.error(request, f"Error al enviar el correo: {e}")
+
             # Mensaje de éxito y redirigir con el ID
             messages.success(request, 'Se ha guardado con éxito. Puedes continuar.')
-            return redirect('porque', pk=porque_instance.pk)  # Redirigir a la misma página con el ID
+            return redirect('porque', pk=porque_instance.pk)
 
         else:
             # Si el formulario no es válido, mostrar errores

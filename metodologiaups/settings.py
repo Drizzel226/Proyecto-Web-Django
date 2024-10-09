@@ -116,3 +116,11 @@ LOGOUT_REDIRECT_URL = '/'
 
 # Additional settings for social-auth-app-django
 SOCIAL_AUTH_URL_NAMESPACE = 'social'
+
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'soybotbots@gmail.com'
+EMAIL_HOST_PASSWORD = 'ghnq auxt osyz sjlw'
