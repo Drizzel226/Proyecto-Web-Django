@@ -490,9 +490,7 @@ class Porque(models.Model):
 
 
 
-
     # PASO 5
-    areas_aplicacion = models.CharField(max_length=500, blank=True, null=True)
 
     Estandarizacion = models.TextField(blank=True, null=True)
     Responsable3 = models.ManyToManyField('MiembroEquipo', related_name="responsable3", blank=True)
@@ -526,6 +524,8 @@ class Porque(models.Model):
     Expansion_4 = models.TextField(blank=True, null=True)
     Responsable4_4 = models.ManyToManyField('MiembroEquipo', related_name="responsable4_4", blank=True)
     Fecha_compromiso4_4 = models.DateField(blank=True, null=True)
+
+    areas_aplicacion = models.CharField(max_length=500, blank=True, null=True)
 
 
 

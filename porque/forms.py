@@ -397,20 +397,15 @@ class PorqueForm(forms.ModelForm):
 
     areas_aplicacion = forms.MultipleChoiceField(
         choices=[
-            ('Linea 2', 'Línea 2'),
             ('Linea 3', 'Línea 3'),
             ('Linea 4', 'Línea 4'),
-            ('Linea 9', 'Línea 9'),
-            ('Linea 11', 'Línea 11'),
-            ('Linea 12', 'Línea 12'),
-            ('Linea 14', 'Línea 14'),
-            ('Linea 15', 'Línea 15'),
+            ('Linea 5', 'Línea 5'),
+            ('Linea 6', 'Línea 6'),
             ('Taller de Mantenimiento', 'Taller de Mantenimiento'),
             ('Almacén de Repuestos', 'Almacén de Repuestos'),
             ('Elaboración', 'Elaboración'),
             ('Suministros', 'Suministros'),
             ('Almacén', 'Almacén'),
-            ('Linea 7', 'Línea 7'),
         ],
         widget=forms.CheckboxSelectMultiple,
         required=False,  # Si es opcional

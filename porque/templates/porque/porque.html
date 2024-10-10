@@ -806,11 +806,11 @@
             
             <!-- Subcategoría Acciones Correctivas -->
             <div class="sub-header" style="background-color: #00C851; color: white; padding: 10px 15px; border-radius: 5px;">
-                <h3 style="margin: 0;">Acciones (Contramedidas y Seguimiento)</h3>
+                <h3 style="margin: 0;">Acciones Correctivas</h3>
             </div>
             
             <div class="sub-content" style="padding: 10px; border: 1px solid #00C851; border-radius: 5px;">
-                <button type="button" id="addAccionCorrectiva" class="btn btn-primary mt-2" style="margin-bottom: 8px;">Agregar Acción Correctiva</button>
+                <button type="button" id="addAccionCorrectiva" class="btn btn-primary mt-2" style="margin-left: 50px; margin-bottom: 8px;">Agregar Acción Correctiva</button>
                 <div class="form-row">
                     <table id="AccionesTable">
                         <tr>
@@ -1002,6 +1002,14 @@
                             </tr>
                         </tbody>
                     </table>
+                </div>
+            </div>
+            <br>
+            <!-- Ícono con popover que mostrará la imagen -->
+            <div class="popover-container">
+                <i class="fas fa-question-circle"></i>
+                <div class="popover-content">
+                    <img src="{% static 'images/Referencia.png' %}" alt="Descripción de la imagen">
                 </div>
             </div>
         </div>
@@ -1280,6 +1288,21 @@
                     </table>
                 </div>
             </div>
+        </div>
+
+        <!-- Bloque 3: Expansión a... -->
+        <div class="sub-section" style="margin-bottom: 20px;">
+            <div class="sub-header" style="background-color: #D86B20; color: white; padding: 10px 15px; border-radius: 5px;">
+                <h3 style="margin: 0;">Expansión a...</h3>
+            </div>
+
+            <div class="form-group">
+                <label for="areas_aplicacion">¿A qué áreas podría aplicar la mejora realizada?</label>
+                {{ form.areas_aplicacion }}
+            </div>
+
+                
+            
         </div>
     </div>
 
