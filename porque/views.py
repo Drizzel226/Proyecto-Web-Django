@@ -22,10 +22,33 @@ def porque_view(request, pk=None):
         result = sheet.values().get(spreadsheetId=SPREADSHEET_ID, range=rango).execute()
         return [opcion[0] for opcion in result.get('values', []) if opcion]
 
+    def obtener_subcategorias_y_datos():
+        """Función para obtener las subcategorías y sus datos asociados desde Google Sheets."""
+        rango = 'Subcategorias!A2:D'  # Asegúrate de que el rango sea correcto en Google Sheets
+        result = sheet.values().get(spreadsheetId=SPREADSHEET_ID, range=rango).execute()
+        valores = result.get('values', [])
+        
+        # Crear una lista de diccionarios para almacenar los datos
+        subcategorias_datos = []
+        for fila in valores:
+            if len(fila) >= 4:  # Asegúrate de que la fila tenga al menos 4 columnas
+                subcategorias_datos.append({
+                    'subcategoria': fila[0],
+                    'categoria': fila[1],
+                    'pilar': fila[2],
+                    'kpi_iceo': fila[3]
+                })
+        return subcategorias_datos
+
+
     # Obtener las opciones de Google Sheets
     opciones_area = obtener_opciones('Opciones!A2:A')
     opciones_subarea = obtener_opciones('Opciones!B2:B')
     opciones_maquina = obtener_opciones('Opciones!C2:C')
+    
+    # Obtener las subcategorías y datos asociados desde la hoja
+    subcategorias_datos = obtener_subcategorias_y_datos()
+   # print(subcategorias_datos)
 
     # Obtener la instancia de Porque si pk es proporcionado
     porque_instance = get_object_or_404(Porque, pk=pk) if pk else None
@@ -133,6 +156,7 @@ def porque_view(request, pk=None):
         'opciones_maquina': opciones_maquina,
         'opciones_miembros': opciones_miembros,
         'mostrar_paso1': mostrar_paso1,
+        'subcategorias_datos': subcategorias_datos,
     }
 
     return render(request, 'porque/porque.html', context)

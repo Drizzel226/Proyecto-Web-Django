@@ -39,19 +39,21 @@
 <!-- Sección Paso 0: Datos iniciales -->
 <div id="seccion1" class="recuadro-paso">
     <h2 class="text-primary">Paso 0: Datos Iniciales</h2>
+    
     <div class="form-row">
         <div class="form-group col-md-6">
             <label for="categoria">Categoría</label>
-            <input type="text" id="categoria" name="categoria" class="form-control" value="{{ form.categoria.value }}" readonly>
+            <input type="text" id="categoria" name="categoria" class="form-control" readonly>
         </div>
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
         <div class="form-group col-md-6">
             <label for="subcategoria">Subcategoría</label>
             <select id="subcategoria" name="subcategoria" class="form-control">
                 <option value="">Seleccione una subcategoría</option>
-                <option value="Microbiología" {% if form.subcategoria.value == "Microbiología" %}selected{% endif %}>Microbiología</option>
-                <option value="Break Down" {% if form.subcategoria.value == "Break Down" %}selected{% endif %}>Break Down</option>
-            </select>
+                {% for subcategoria in subcategorias_datos %}
+                    <option value="{{ subcategoria.subcategoria }}">{{ subcategoria.subcategoria }}</option>
+                {% endfor %}
+            </select>                                          
         </div>
     </div>
 
@@ -65,7 +67,7 @@
                 {% endfor %}
             </select>
         </div>
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
         <div class="form-group col-md-6">
             <label for="subarea">Subárea</label>
             <select id="subarea" name="subarea" class="form-control">
@@ -87,7 +89,7 @@
                 {% endfor %}
             </select>
         </div>
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
         <div class="form-group col-md-6">
             <label for="miembros_equipo">Miembros del equipo</label>
             <select id="miembros_equipo" name="miembros_equipo" class="form-control select2" multiple>
@@ -103,9 +105,9 @@
     <div class="form-row">
         <div class="form-group col-md-6">
             <label for="pilar">Pilar</label>
-            <input type="text" id="pilar" name="pilar" class="form-control" value="{{ form.pilar.value }}" readonly>
+            <input type="text" id="pilar" name="pilar" class="form-control" readonly>
         </div>
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
         <div class="form-group col-md-6">
             <label for="impacto">Impacto</label>
             <input type="text" id="impacto" name="impacto" class="form-control" value="{{ form.impacto.value }}">
@@ -115,9 +117,9 @@
     <div class="form-row">
         <div class="form-group col-md-6">
             <label for="kpi_iceo">KPI ICEO</label>
-            <input type="text" id="kpi_iceo" name="kpi_iceo" class="form-control" value="{{ form.kpi_iceo.value }}" readonly>
+            <input type="text" id="kpi_iceo" name="kpi_iceo" class="form-control" readonly>
         </div>
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
         <div class="form-group col-md-6">
             <label for="kpi_secundario">KPI Secundario (KAI)</label>
             <select id="kpi_secundario" name="kpi_secundario" class="form-control">
@@ -135,14 +137,74 @@
             <label for="fecha_inicio">Fecha Inicio</label>
             <input type="date" id="fecha_inicio" name="fecha_inicio" class="form-control" value="{{ form.fecha_inicio.value }}" readonly>
         </div>
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         {% endif %}
+        
         <div class="form-group col-md-6">
             <label for="fecha_cierre">Fecha Estimada de Cierre</label>
             <input type="date" id="fecha_cierre" name="fecha_cierre" class="form-control" value="{{ form.fecha_cierre.value|date:'Y-m-d' }}">
         </div>
     </div>
+
+
+    <script>
+        // Pasar los datos de subcategorias desde Django a JavaScript
+        var subcategoriasDatos = {{ subcategorias_datos|safe }};
+        
+        console.log("Datos de subcategorías (verifica si es un objeto válido): ", subcategoriasDatos);
+    </script>
+    
+    
+    <script>
+        document.getElementById('subcategoria').addEventListener('change', function() {
+            var subcategoriaSeleccionada = this.value;
+            console.log("Subcategoría seleccionada: " + subcategoriaSeleccionada);
+    
+            // Buscar la subcategoría en los datos
+            var subcategoriaDatos = subcategoriasDatos.find(function(item) {
+                return item.subcategoria === subcategoriaSeleccionada;
+            });
+    
+            console.log("Datos de la subcategoría encontrada: ", subcategoriaDatos);
+    
+            // Si encontramos la subcategoría, rellenar los otros campos
+            if (subcategoriaDatos) {
+                document.getElementById('categoria').value = subcategoriaDatos.categoria;
+                document.getElementById('pilar').value = subcategoriaDatos.pilar;
+                document.getElementById('kpi_iceo').value = subcategoriaDatos.kpi_iceo;
+            } else {
+                // Si no se encuentra, vaciar los campos
+                document.getElementById('categoria').value = '';
+                document.getElementById('pilar').value = '';
+                document.getElementById('kpi_iceo').value = '';
+            }
+        });
+    </script>
+    
+
+
 </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -156,6 +218,7 @@
         </h2>
     </div>
     <div id="contenido-paso1">
+        <div><h1></h1></div>
         <div class="form-row">
             <div class="form-group col-md-12">
                 {{ form.que_ocurre.label_tag }}
@@ -228,6 +291,7 @@
     <div id="contenido-paso2">
         
         <!-- Bloque 1: Principio de funcionamiento -->
+        <div><h1></h1></div>
         <div class="sub-section" style="margin-bottom: 20px;">
             <div class="sub-header" style="background-color: #e6007e; color: white; padding: 10px 15px; border-radius: 5px;">
                 <h3 style="margin: 0;">Principio de funcionamiento</h3>
@@ -313,7 +377,7 @@
 
 
         
-        <!-- Sección Paso 3: Causa Raíz -->
+<!-- Sección Paso 3: Causa Raíz -->
 <div id="paso3-section" class="recuadro-paso mt-4" style="border: 1px solid #FFC800;">
     <div class="paso-header" style="background-color: #FFC800; color: white; padding: 10px 15px; border-radius: 5px;">
         <h2 class="collapsible" style="cursor: pointer; margin: 0;" onclick="toggleVisibility('contenido-paso3')">
@@ -327,7 +391,7 @@
             {% if form.porque6.value %}Agregar POR QUÉ?{% else %}Agregar POR QUÉ?{% endif %}
         </button>
         <button id="showMoreRows" type="button" class="btn btn-primary mb-3">Agregar fila</button>
-        <br>
+        <div><h1></h1></div>
         <table id="AccionesTable">
             <tr>
                 <th>Modo de Falla</th>
@@ -1439,35 +1503,32 @@
             allowClear: true
         });
 
-        const mappings = {
-            "Microbiología": {
-                categoria: "CALIDAD",
-                pilar: "Pilar Calidad",
-                kpi_iceo: "Calidad de procesos"
-            },
-            "Break Down": {
-                categoria: "OPINONA",
-                pilar: "Pilar CA/MA",
-                kpi_iceo: "OPINONA"
+        $(document).ready(function() {
+        function formatState(state) {
+            if (!state.id) {
+                return state.text;
             }
-        };
-
-        function actualizarValoresForm(subcategoria) {
-            if (mappings[subcategoria]) {
-                $("#categoria").val(mappings[subcategoria].categoria);
-                $("#pilar").val(mappings[subcategoria].pilar);
-                $("#kpi_iceo").val(mappings[subcategoria].kpi_iceo);
-            } else {
-                $("#categoria").val('');
-                $("#pilar").val('');
-                $("#kpi_iceo").val('');
-            }
+            var email = $(state.element).data('email');
+            var $state = $('<span><strong>' + state.text + '</strong><br/><small>' + email + '</small></span>');
+            return $state;
         }
 
-        $("#subcategoria").change(function() {
-            const subcategoria = $(this).val();
-            actualizarValoresForm(subcategoria);
+        // Inicializar Select2 para la selección de miembros del equipo
+        $('#miembros_equipo').select2({
+            placeholder: "Selecciona miembros del equipo",
+            templateResult: formatState,
+            templateSelection: formatState,
+            allowClear: true
         });
+
+
+        // Establecer la fecha de inicio con la fecha de hoy
+        var today = new Date();
+        var day = ("0" + today.getDate()).slice(-2);
+        var month = ("0" + (today.getMonth() + 1)).slice(-2);
+        var todayFormatted = today.getFullYear() + "-" + month + "-" + day;
+        $('#fecha_inicio').val(todayFormatted);
+    });
 
         var today = new Date();
         var day = ("0" + today.getDate()).slice(-2);
