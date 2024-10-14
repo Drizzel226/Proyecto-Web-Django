@@ -147,9 +147,7 @@
 
 
     <script>
-        // Pasar los datos de subcategorias desde Django a JavaScript
-        var subcategoriasDatos = {{ subcategorias_datos|safe }};
-        
+        var subcategoriasDatos = {{ subcategorias_datos|json }};
         console.log("Datos de subcategorías (verifica si es un objeto válido): ", subcategoriasDatos);
     </script>
     
@@ -157,14 +155,12 @@
     <script>
         document.getElementById('subcategoria').addEventListener('change', function() {
             var subcategoriaSeleccionada = this.value;
-            console.log("Subcategoría seleccionada: " + subcategoriaSeleccionada);
     
             // Buscar la subcategoría en los datos
             var subcategoriaDatos = subcategoriasDatos.find(function(item) {
                 return item.subcategoria === subcategoriaSeleccionada;
             });
     
-            console.log("Datos de la subcategoría encontrada: ", subcategoriaDatos);
     
             // Si encontramos la subcategoría, rellenar los otros campos
             if (subcategoriaDatos) {
@@ -183,30 +179,6 @@
 
 
 </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 <!-- Sección Paso 1: Descripción del Problema (visible después del Paso 0) -->
@@ -278,7 +250,6 @@
     </div>
 </div>
         
-
 
 
 <!-- Sección Paso 2: Comprender y Restaurar Condiciones Básicas -->
@@ -1162,11 +1133,6 @@
 </div>
 
 
-    
-
-
-
-
 
 
 
@@ -1442,13 +1408,6 @@
 
 
 
-        
-        
-
-
-
-
-
         {% endif %} <!-- Este es el cierre del "if" que se abrió al principio -->
 
         <div class="form-actions">
@@ -1456,20 +1415,6 @@
         </div>
     </form>
 </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
