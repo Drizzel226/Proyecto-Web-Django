@@ -677,3 +677,40 @@ tbody tr:hover {
     justify-content: center;
     align-items: center;
 }
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    list-style-type: none; /* Eliminar el punteo de la lista */
+    padding: 0;
+}
+
+.pagination-button {
+    background-color: #4CAF50; /* Color verde */
+    color: white;
+    border: none;
+    border-radius: 50%; /* Hacer los botones redondos */
+    width: 40px;
+    height: 40px;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 20px;
+    margin: 0 5px; /* Espaciado entre botones */
+    cursor: pointer;
+}
+
+.pagination-button:hover {
+    background-color: #45a049; /* Cambiar color al pasar el cursor */
+}
+
+.pagination-span {
+    font-size: 18px;
+    margin: 0 10px;
+    display: inline-flex;
+    align-items: center;
+}
+.pagination a {
+    text-decoration: none; /* Quitar la subrayado del enlace */
+}
+
