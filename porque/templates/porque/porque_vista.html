@@ -6,7 +6,7 @@
 
 {% block content %}
 <div class="form-container">
-    <h1 id="analisis-5w" class="text-center">5 POR QUÉ (Auditoria)</h1>
+    <h1 id="analisis-5w" class="text-center">Auditoria 5 POR QUÉ</h1>
 
     {% if messages %}
     <div class="messages">
@@ -43,34 +43,35 @@
     <div class="form-row">
         <div class="form-group col-md-6">
             <label for="categoria">Categoría</label>
-            <input type="text" id="categoria" name="categoria" class="form-control" readonly>
+            <input type="text" id="categoria" name="categoria" class="form-control" value="{{ form.categoria.value }}" disabled>
         </div>
 
         <div class="form-group col-md-6">
             <label for="subcategoria">Subcategoría</label>
-            <select id="subcategoria" name="subcategoria" class="form-control">
+            <select id="subcategoria" name="subcategoria" class="form-control" disabled>
                 <option value="">Seleccione una subcategoría</option>
-                {% for subcategoria in subcategorias_datos %}
-                    <option value="{{ subcategoria.subcategoria }}">{{ subcategoria.subcategoria }}</option>
+                {% for subcategoria in form.subcategoria.field.choices %}
+                    <option value="{{ subcategoria.0 }}" {% if form.subcategoria.value == subcategoria.0 %}selected{% endif %}>{{ subcategoria.1 }}</option>
                 {% endfor %}
-            </select>                                          
+            </select>                                       
         </div>
     </div>
 
     <div class="form-row">
         <div class="form-group col-md-6">
             <label for="area">Área</label>
-            <select id="area" name="area" class="form-control">
+            <select id="area" name="area" class="form-control" disabled>
                 <option value="">Seleccione un área</option>
                 {% for opcion in opciones_area %}
                     <option value="{{ opcion }}" {% if form.area.value == opcion %}selected{% endif %}>{{ opcion }}</option>
                 {% endfor %}
             </select>
+            
         </div>
 
         <div class="form-group col-md-6">
             <label for="subarea">Subárea</label>
-            <select id="subarea" name="subarea" class="form-control">
+            <select id="subarea" name="subarea" class="form-control" disabled>
                 <option value="">Seleccione una línea</option>
                 {% for opcion in opciones_subarea %}
                     <option value="{{ opcion }}" {% if form.subarea.value == opcion %}selected{% endif %}>{{ opcion }}</option>
@@ -82,7 +83,7 @@
     <div class="form-row">
         <div class="form-group col-md-6">
             <label for="maquina">Máquina</label>
-            <select id="maquina" name="maquina" class="form-control">
+            <select id="maquina" name="maquina" class="form-control" disabled>
                 <option value="">Seleccione una máquina</option>
                 {% for opcion in opciones_maquina %}
                     <option value="{{ opcion }}" {% if form.maquina.value == opcion %}selected{% endif %}>{{ opcion }}</option>
@@ -92,37 +93,37 @@
 
         <div class="form-group col-md-6">
             <label for="miembros_equipo">Miembros del equipo</label>
-            <select id="miembros_equipo" name="miembros_equipo" class="form-control select2" multiple>
+            <select id="miembros_equipo" name="miembros_equipo" class="form-control select2" multiple disabled>
                 {% for miembro in opciones_miembros %}
-                    <option value="{{ miembro.id }}" data-email="{{ miembro.email }}" {% if miembro.id in form.miembros_equipo.value %}selected{% endif %}>
+                    <option value="{{ miembro.id }}" {% if miembro.id in form.miembros_equipo.value %}selected{% endif %}>
                         {{ miembro.nombre }}
                     </option>
                 {% endfor %}
-            </select>
+            </select>            
         </div>
     </div>
 
     <div class="form-row">
         <div class="form-group col-md-6">
             <label for="pilar">Pilar</label>
-            <input type="text" id="pilar" name="pilar" class="form-control" readonly>
+            <input type="text" id="pilar" name="pilar" class="form-control" value="{{ form.pilar.value }}" disabled>
         </div>
 
         <div class="form-group col-md-6">
             <label for="impacto">Impacto</label>
-            <input type="text" id="impacto" name="impacto" class="form-control" value="{{ form.impacto.value }}">
+            <input type="text" id="impacto" name="impacto" class="form-control" value="{{ form.impacto.value }}" disabled>
         </div>
     </div>
 
     <div class="form-row">
         <div class="form-group col-md-6">
             <label for="kpi_iceo">KPI ICEO</label>
-            <input type="text" id="kpi_iceo" name="kpi_iceo" class="form-control" readonly>
+            <input type="text" id="kpi_iceo" name="kpi_iceo" class="form-control" value="{{ form.kpi_iceo.value }}" disabled>
         </div>
 
         <div class="form-group col-md-6">
             <label for="kpi_secundario">KPI Secundario (KAI)</label>
-            <select id="kpi_secundario" name="kpi_secundario" class="form-control">
+            <select id="kpi_secundario" name="kpi_secundario" class="form-control" disabled>
                 <option value="">Seleccione un KPI secundario</option>
                 <option value="kpi1" {% if form.kpi_secundario.value == "kpi1" %}selected{% endif %}>Eficiencia Global de Equipos (OEE)</option>
                 <option value="kpi2" {% if form.kpi_secundario.value == "kpi2" %}selected{% endif %}>Tasa de Defectos</option>
@@ -135,15 +136,16 @@
         {% if not form.instance.pk %}
         <div class="form-group col-md-6">
             <label for="fecha_inicio">Fecha Inicio</label>
-            <input type="date" id="fecha_inicio" name="fecha_inicio" class="form-control" value="{{ form.fecha_inicio.value }}" readonly>
+            <input type="date" id="fecha_inicio" name="fecha_inicio" class="form-control" value="{{ form.fecha_inicio.value }}" disabled>
         </div>
         {% endif %}
         
         <div class="form-group col-md-6">
             <label for="fecha_cierre">Fecha Estimada de Cierre</label>
-            <input type="date" id="fecha_cierre" name="fecha_cierre" class="form-control" value="{{ form.fecha_cierre.value|date:'Y-m-d' }}">
+            <input type="date" id="fecha_cierre" name="fecha_cierre" class="form-control" value="{{ form.fecha_cierre.value|date:'Y-m-d' }}" disabled>
         </div>
     </div>
+
 
 
     <script>
@@ -185,7 +187,7 @@
 
 
 <!-- Sección Paso 1: Descripción del Problema (visible después del Paso 0) -->
-{% if mostrar_paso1 %}
+
 <div id="paso1-section" class="recuadro-paso mt-4" style="border: 1px solid #ff0000;">
     <div class="paso-header" style="background-color: #ff0000; color: white; padding: 10px 15px; border-radius: 5px;">
         <h2 class="collapsible" style="cursor: pointer; margin: 0;" onclick="toggleVisibility('contenido-paso1')">
@@ -1411,8 +1413,7 @@
 
 
 
-        {% endif %} <!-- Este es el cierre del "if" que se abrió al principio -->
-
+        
         <div class="form-actions">
             <button type="submit" class="btn btn-primary" name="seccion1">Guardar y Continuar</button>
         </div>

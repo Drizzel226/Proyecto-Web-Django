@@ -160,3 +160,28 @@ def porque_view(request, pk=None):
     }
 
     return render(request, 'porque/porque.html', context)
+
+
+
+
+
+
+
+
+
+def porque_vista(request, pk):
+    porque_instance = get_object_or_404(Porque, pk=pk)
+    form = PorqueForm(instance=porque_instance)
+    
+    print(form['categoria'].value())  # Esto imprimirá el valor del campo "categoria" en la consola
+
+    context = {
+        'form': form,
+        'modo_vista': True,
+    }
+
+    return render(request, 'porque/porque_vista.html', context)
+
+
+
+
