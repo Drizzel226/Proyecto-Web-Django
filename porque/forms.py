@@ -142,7 +142,7 @@ class PorqueForm(forms.ModelForm):
             'Expansion_3', 'Responsable4_3', 'Fecha_compromiso4_3',
             'Expansion_4', 'Responsable4_4', 'Fecha_compromiso4_4',
 
-
+            'puntaje'
 
         ]
         widgets = {

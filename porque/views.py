@@ -169,19 +169,54 @@ def porque_view(request, pk=None):
 
 
 
-def porque_vista(request, pk):
-    porque_instance = get_object_or_404(Porque, pk=pk)
-    form = PorqueForm(instance=porque_instance)
-    
-    print(form['categoria'].value())  # Esto imprimirá el valor del campo "categoria" en la consola
 
+from django.shortcuts import get_object_or_404, redirect, render
+from django.contrib import messages
+from .models import Porque
+from .forms import PorqueForm
+
+def porque_vista(request, pk=None):
+    # Obtener la instancia de Porque si existe, o None para crear una nueva
+    porque_instance = get_object_or_404(Porque, pk=pk) if pk else None
+
+    if request.method == 'POST':
+        form = PorqueForm(request.POST, instance=porque_instance)
+        puntaje_total = request.POST.get('puntaje_total', '0')  # Por defecto a '0' si está vacío
+
+        # Intentar convertir puntaje_total a entero, manejando posibles errores
+        try:
+            puntaje_total = int(puntaje_total)
+        except ValueError:
+            puntaje_total = 0  # Si no se puede convertir, usar 0 como valor predeterminado
+
+        print(f"Valor de puntaje_total recibido: {puntaje_total}")  # Depuración
+
+        # Validar el formulario y guardar la instancia
+        if form.is_valid():
+            porque_instance = form.save(commit=False)
+            porque_instance.puntaje = puntaje_total
+            porque_instance.save()
+            form.save_m2m()  # Si hay relaciones many-to-many
+
+            # Mensaje de éxito y redirección
+            messages.success(request, f'Formulario guardado exitosamente con el puntaje: {porque_instance.puntaje}')
+            return redirect('porque_vista', pk=porque_instance.pk)
+        else:
+            # Si hay errores en el formulario, mostrar un mensaje de error y los errores en la consola
+            messages.error(request, 'Por favor, corrige los errores en el formulario.')
+            print(form.errors)
+
+    else:
+        # Si la solicitud no es POST, crear un formulario vacío o con la instancia existente
+        form = PorqueForm(instance=porque_instance)
+
+    # Preparar el contexto para renderizar la plantilla
     context = {
         'form': form,
         'modo_vista': True,
+        'porque_instance': porque_instance,
     }
-
     return render(request, 'porque/porque_vista.html', context)
-
 
 
 
