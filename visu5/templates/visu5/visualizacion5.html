@@ -64,8 +64,10 @@
                 <td>{{ dato.porcentaje }}%</td>
                 <td>{{ dato.dias }}</td>
                 <td>
-                    <a href="{% url 'porque' pk=dato.pk %}" class="btn-verde">Auditar</a>
+                    <a href="{% url 'porque_vista' pk=dato.pk %}" class="btn-verde">Auditar</a>
                 </td>
+                <td>{{ dato.puntaje }}%</td>    
+                <td>{{ dato.promedio_puntaje_porcentaje }}%</td>  
             </tr>
             {% endfor %}
         </tbody>

@@ -528,8 +528,7 @@ class Porque(models.Model):
     areas_aplicacion = models.CharField(max_length=500, blank=True, null=True)
 
 
-    puntaje = models.IntegerField(default=0) 
-
+    puntaje = models.IntegerField(null=True, blank=True)
 
 
 

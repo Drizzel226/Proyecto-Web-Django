@@ -1,11 +1,11 @@
 from datetime import date
+import json
 from django.shortcuts import render
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
-import json
+from django.core.paginator import Paginator
 from porque.models import Porque
 from .models import Visu5Model
-from django.core.paginator import Paginator
 
 # Función para calcular el porcentaje con base en la fecha de inicio
 def calcula_porcentaje(fecha_inicio):
@@ -21,11 +21,14 @@ def calcula_porcentaje(fecha_inicio):
     elif dias_transcurridos == 10:
         return 25
     else:
-        return 0  # Para días mayores a 11 o negativos
+        return 0  # Para días mayores a 10 o negativos
 
 
-# Vista principal que muestra los datos en la tabla
 def visu(request):
+    numero_de_preguntas = 10  # Define aquí el número de preguntas
+    puntaje_maximo_por_pregunta = 3
+    puntaje_total = numero_de_preguntas * puntaje_maximo_por_pregunta
+
     datos = Porque.objects.all().order_by('-id')  # Ordenar de más nuevo a más viejo
     visualizaciones = Visu5Model.objects.all()
 
@@ -38,6 +41,14 @@ def visu(request):
         else:
             dato.porcentaje = 0 
             dato.dias = 0  
+
+        # Asegurarnos de que 'dato.puntaje' no sea None antes de la operación
+        puntaje_obtenido = dato.puntaje if dato.puntaje is not None else 0
+        dato.puntaje = round((puntaje_obtenido / puntaje_total) * 100, 2) if puntaje_total > 0 else 0
+
+        # Calcular el promedio de 'puntaje' y 'porcentaje'
+        dato.promedio_puntaje_porcentaje = round((dato.puntaje + dato.porcentaje) / 2, 2)
+
     # Paginación
     paginator = Paginator(datos, 10)  # Mostrar 10 filas por página
     page_number = request.GET.get('page')
@@ -48,9 +59,8 @@ def visu(request):
 
 
 
-# Vista para actualizar el checkbox mediante AJAX
-from datetime import date
 
+# Vista para actualizar el checkbox mediante AJAX
 @csrf_exempt
 def actualizar_checkbox(request):
     if request.method == 'POST':
@@ -77,8 +87,6 @@ def actualizar_checkbox(request):
         except Visu5Model.DoesNotExist:
             return JsonResponse({'error': 'Registro no encontrado'}, status=404)
     return JsonResponse({'error': 'Método no permitido'}, status=405)
-
-
 
 
 # Vista para el dashboard (sin cambios)
