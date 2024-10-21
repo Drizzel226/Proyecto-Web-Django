@@ -168,48 +168,52 @@ def porque_view(request, pk=None):
 
 
 
-
 from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib import messages
 from .models import Porque
 from .forms import PorqueForm
 
 def porque_vista(request, pk=None):
-    # Obtener la instancia de Porque si existe, o None para crear una nueva
     porque_instance = get_object_or_404(Porque, pk=pk) if pk else None
 
     if request.method == 'POST':
-        # Solo necesitamos el campo de puntaje del formulario, así que ignoramos los demás campos.
-        puntaje_total = request.POST.get('puntaje_total', '0')  # Por defecto a '0' si está vacío
-
-        # Intentar convertir puntaje_total a entero, manejando posibles errores
+        puntaje_total = request.POST.get('puntaje_total', '0')
         try:
             puntaje_total = int(puntaje_total)
         except ValueError:
-            puntaje_total = 0  # Si no se puede convertir, usar 0 como valor predeterminado
+            puntaje_total = 0
 
-        print(f"Valor de puntaje_total recibido: {puntaje_total}")  # Depuración
-
-        # Si hay una instancia existente, solo actualizamos el puntaje
         if porque_instance:
             porque_instance.puntaje = puntaje_total
             porque_instance.save()
-
-            # Mensaje de éxito y redirección
             messages.success(request, f'Formulario guardado exitosamente con el puntaje: {porque_instance.puntaje}')
             return redirect('porque_vista', pk=porque_instance.pk)
         else:
-            # En caso de que no haya instancia, mostrar un error
             messages.error(request, 'La instancia no existe.')
-
     else:
-        # Si la solicitud no es POST, crear un formulario vacío o con la instancia existente
         form = PorqueForm(instance=porque_instance)
 
-    # Preparar el contexto para renderizar la plantilla
+    # Preparar los datos para las preguntas de evaluación
+    preguntas = [
+        {'paso': 'PASO 0', 'pregunta': ' Se indica el Pilar + Indicador (KPI) / Disparador asociado (KAI)'},
+        {'paso': 'PASO 0', 'pregunta': 'Se indica el impacto (pérdida)'},
+        {'paso': 'PASO 0', 'pregunta': 'Se especifican los campos mandatorios (fecha, área subárea, integrantes, etc.)'},
+        {'paso': 'PASO 1', 'pregunta': 'Se describe correctamente el problema: Qué, Cómo, Cuándo,  Dónde, Quién'}
+    ]
+
+    ratings = [
+        (1, 'Muy insatisfecho'),
+        (2, 'Insatisfecho'),
+        (3, 'Neutral'),
+        (4, 'Satisfecho'),
+        (5, 'Muy Satisfecho')
+    ]
+
     context = {
         'form': form,
         'modo_vista': True,
         'porque_instance': porque_instance,
+        'preguntas': preguntas,
+        'ratings': ratings,
     }
     return render(request, 'porque/porque_vista.html', context)

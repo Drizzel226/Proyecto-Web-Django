@@ -26,7 +26,7 @@ def calcula_porcentaje(fecha_inicio):
 
 def visu(request):
     numero_de_preguntas = 10  # Define aquí el número de preguntas
-    puntaje_maximo_por_pregunta = 3
+    puntaje_maximo_por_pregunta = 3 # IMPORTANTE ESTOS DOS PUNTOS 
     puntaje_total = numero_de_preguntas * puntaje_maximo_por_pregunta
 
     datos = Porque.objects.all().order_by('-id')  # Ordenar de más nuevo a más viejo

@@ -1406,29 +1406,25 @@
 
 
 
-<!-- porque_vista.html -->
+
 <form method="post" action="{% url 'porque_vista' pk=porque_instance.pk %}" id="form-evaluacion">
     {% csrf_token %}
     
     <div class="evaluation-box floating-box">
         <h3>Evaluación del Formulario</h3>
         <div id="evaluation-content">
-            <h4 id="current-step">PASO 0</h4>
-            <p id="current-question">Subcategoría</p>
-            <div id="score-options">
-                <label>
-                    <input type="radio" name="score" value="0"> 0
-                </label>
-                <label>
-                    <input type="radio" name="score" value="1"> 1
-                </label>
-                <label>
-                    <input type="radio" name="score" value="2"> 2
-                </label>
-                <label>
-                    <input type="radio" name="score" value="3"> 3
-                </label>
+            <h4 id="current-step"></h4>
+            <p id="current-question"></p>
+            <div id="score-options" class="rating-container">
+                {% for value, label in ratings %}
+                    <label class="rating-button">
+                        <input type="radio" name="score" value="{{ value }}">
+                        <span class="button-face">{{ value }}</span>
+                        <span class="button-label">{{ label }}</span>
+                    </label>
+                {% endfor %}
             </div>
+                      
             <div class="navigation-buttons">
                 <button id="prev-question" class="btn btn-secondary" disabled>&larr; Anterior</button>
                 <button id="next-question" class="btn btn-secondary">Siguiente &rarr;</button>
@@ -1442,51 +1438,90 @@
     </div>
 </form>
 
-<!-- Estilos CSS -->
 <style>
     .floating-box {
         position: fixed;
         top: 20px;
         right: 20px;
-        width: 300px;
-        padding: 15px;
+        width: 350px;
+        max-height: 500px;
+        padding: 20px;
         background-color: #f1f1f1;
         border: 1px solid #ccc;
         box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
         z-index: 1000;
-        border-radius: 5px;
+        border-radius: 8px;
+        overflow-y: auto; /* Esto permite que se pueda hacer scroll si el contenido excede */
     }
 
-    #score-options {
+    .rating-container {
         display: flex;
-        gap: 10px;
-        margin-top: 10px;
-    }
-
-    #score-options label {
-        display: flex;
-        align-items: center;
+        justify-content: space-between;
         gap: 5px;
+        flex-wrap: wrap; /* Para que las opciones se ajusten automáticamente */
+        margin-top: 20px;
+    }
+    .rating-button {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        cursor: pointer;
+        flex: 1 0 45%; /* Cada botón ocupa 45% del ancho disponible */
+        margin: 5px 0;
+    }
+    .rating-button input {
+        display: none;
+    }
+    .button-face {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: #e0e0e0;
+        color: #333;
+        font-weight: bold;
+        transition: all 0.3s ease;
+    }
+    .rating-button:hover .button-face {
+        background-color: #d0d0d0;
+    }
+    .rating-button input:checked + .button-face {
+        background-color: #4CAF50;
+        color: white;
+    }
+    .button-label {
+        margin-top: 5px;
+        font-size: 14px;
+        text-align: center;
     }
 
     .navigation-buttons {
         display: flex;
         justify-content: space-between;
-        margin-top: 15px;
+        gap: 10px;
+        margin-top: 20px;
+    }
+
+    .btn {
+        padding: 10px;
+        border-radius: 5px;
+    }
+    .btn-secondary {
+        background-color: #6c757d;
+        color: #fff;
+    }
+    .btn-primary {
+        background-color: #4CAF50;
+        color: #fff;
     }
 </style>
 
-<!-- JavaScript -->
+
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        // Definir las preguntas
-        const preguntas = [
-            { paso: 'PASO 0', pregunta: 'Subcategoría' },
-            { paso: 'PASO 0', pregunta: 'Área' },
-            { paso: 'PASO 0', pregunta: 'Subárea' },
-            { paso: 'PASO 0', pregunta: 'Máquina' }
-        ];
-
+        const preguntas = {{ preguntas|safe }};
         let currentIndex = 0;
         const puntajes = {};
         const currentStepElement = document.getElementById('current-step');
@@ -1502,15 +1537,11 @@
             currentStepElement.textContent = paso;
             currentQuestionElement.textContent = pregunta;
 
-            // Restaurar el puntaje seleccionado previamente
             scoreOptions.forEach(option => {
                 option.checked = puntajes[currentIndex] === parseInt(option.value);
             });
 
-            // Mostrar u ocultar el botón "Siguiente" según la posición actual
             nextButton.style.display = currentIndex === preguntas.length - 1 ? 'none' : 'inline-block';
-
-            // Habilitar o deshabilitar el botón "Anterior"
             prevButton.disabled = currentIndex === 0;
         }
 
@@ -1525,7 +1556,7 @@
         function actualizarTotal() {
             const total = Object.values(puntajes).reduce((sum, score) => sum + score, 0);
             totalPuntajeElement.textContent = total;
-            puntajeTotalInput.value = total;  // Guardar el puntaje total en el campo oculto
+            puntajeTotalInput.value = total;
         }
 
         scoreOptions.forEach(option => {
@@ -1551,11 +1582,9 @@
             }
         });
 
-        // Mostrar la primera pregunta al cargar la página
         mostrarPregunta();
     });
 </script>
-
 
 
 
