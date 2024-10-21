@@ -169,7 +169,6 @@ def porque_view(request, pk=None):
 
 
 
-
 from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib import messages
 from .models import Porque
@@ -180,7 +179,7 @@ def porque_vista(request, pk=None):
     porque_instance = get_object_or_404(Porque, pk=pk) if pk else None
 
     if request.method == 'POST':
-        form = PorqueForm(request.POST, instance=porque_instance)
+        # Solo necesitamos el campo de puntaje del formulario, así que ignoramos los demás campos.
         puntaje_total = request.POST.get('puntaje_total', '0')  # Por defecto a '0' si está vacío
 
         # Intentar convertir puntaje_total a entero, manejando posibles errores
@@ -191,20 +190,17 @@ def porque_vista(request, pk=None):
 
         print(f"Valor de puntaje_total recibido: {puntaje_total}")  # Depuración
 
-        # Validar el formulario y guardar la instancia
-        if form.is_valid():
-            porque_instance = form.save(commit=False)
+        # Si hay una instancia existente, solo actualizamos el puntaje
+        if porque_instance:
             porque_instance.puntaje = puntaje_total
             porque_instance.save()
-            form.save_m2m()  # Si hay relaciones many-to-many
 
             # Mensaje de éxito y redirección
             messages.success(request, f'Formulario guardado exitosamente con el puntaje: {porque_instance.puntaje}')
             return redirect('porque_vista', pk=porque_instance.pk)
         else:
-            # Si hay errores en el formulario, mostrar un mensaje de error y los errores en la consola
-            messages.error(request, 'Por favor, corrige los errores en el formulario.')
-            print(form.errors)
+            # En caso de que no haya instancia, mostrar un error
+            messages.error(request, 'La instancia no existe.')
 
     else:
         # Si la solicitud no es POST, crear un formulario vacío o con la instancia existente
@@ -217,6 +213,3 @@ def porque_vista(request, pk=None):
         'porque_instance': porque_instance,
     }
     return render(request, 'porque/porque_vista.html', context)
-
-
-

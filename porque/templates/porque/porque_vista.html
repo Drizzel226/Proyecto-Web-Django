@@ -1340,172 +1340,6 @@
             
         </div>
     </div>
-
-
-
-<!-- Evaluación del Formulario -->
-<form method="post" action="{% url 'porque_vista' pk=porque_instance.pk %}" id="form-evaluacion">
-    {% csrf_token %}
-    
-    <!-- Otros campos del formulario, si existen -->
-
-    <div class="evaluation-box floating-box">
-        <h3>Evaluación del Formulario</h3>
-        <div id="evaluation-content">
-            <h4 id="current-step">PASO 0</h4>
-            <p id="current-question">Subcategoría</p>
-            <div id="score-options">
-                <label>
-                    <input type="radio" name="score" value="0"> 0
-                </label>
-                <label>
-                    <input type="radio" name="score" value="1"> 1
-                </label>
-                <label>
-                    <input type="radio" name="score" value="2"> 2
-                </label>
-                <label>
-                    <input type="radio" name="score" value="3"> 3
-                </label>
-            </div>
-            <div class="navigation-buttons">
-                <button id="prev-question" class="btn btn-secondary" disabled>&larr; Anterior</button>
-                <button id="next-question" class="btn btn-secondary">Siguiente &rarr;</button>
-            </div>
-            <h4>Total Puntaje: <span id="total-puntaje">0</span></h4>
-            <input type="hidden" name="puntaje_total" id="puntaje-total-input">
-        </div>
-    
-
-    <!-- Botón para enviar el formulario -->
-    <button type="submit" class="btn btn-primary">Guardar</button>
-    </div>
-</form>
-
-<!-- Estilos CSS -->
-<style>
-    .floating-box {
-        position: fixed;
-        top: 20px;
-        right: 20px;
-        width: 300px;
-        padding: 15px;
-        background-color: #f1f1f1;
-        border: 1px solid #ccc;
-        box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-        z-index: 1000;
-        border-radius: 5px;
-    }
-
-    #score-options {
-        display: flex;
-        gap: 10px;
-        margin-top: 10px;
-    }
-
-    #score-options label {
-        display: flex;
-        align-items: center;
-        gap: 5px;
-    }
-
-    .navigation-buttons {
-        display: flex;
-        justify-content: space-between;
-        margin-top: 15px;
-    }
-</style>
-
-<!-- JavaScript -->
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // Definir las preguntas
-        const preguntas = [
-            { paso: 'PASO 0', pregunta: 'Subcategoría' },
-            { paso: 'PASO 0', pregunta: 'Área' },
-            { paso: 'PASO 0', pregunta: 'Subárea' },
-            { paso: 'PASO 0', pregunta: 'Máquina' }
-            // Agrega más preguntas según tus necesidades
-        ];
-
-        let currentIndex = 0;
-        const puntajes = {};
-        const currentStepElement = document.getElementById('current-step');
-        const currentQuestionElement = document.getElementById('current-question');
-        const scoreOptions = document.querySelectorAll('input[name="score"]');
-        const totalPuntajeElement = document.getElementById('total-puntaje');
-        const puntajeTotalInput = document.getElementById('puntaje-total-input');
-        const nextButton = document.getElementById('next-question');
-        const prevButton = document.getElementById('prev-question');
-
-        function mostrarPregunta() {
-            const { paso, pregunta } = preguntas[currentIndex];
-            currentStepElement.textContent = paso;
-            currentQuestionElement.textContent = pregunta;
-
-            // Restaurar el puntaje seleccionado previamente
-            scoreOptions.forEach(option => {
-                option.checked = puntajes[currentIndex] === parseInt(option.value);
-            });
-
-            // Mostrar u ocultar el botón "Siguiente" según la posición actual
-            nextButton.style.display = currentIndex === preguntas.length - 1 ? 'none' : 'inline-block';
-
-            // Habilitar o deshabilitar el botón "Anterior"
-            prevButton.disabled = currentIndex === 0;
-        }
-
-        function actualizarPuntaje() {
-            const selectedOption = document.querySelector('input[name="score"]:checked');
-            if (selectedOption) {
-                puntajes[currentIndex] = parseInt(selectedOption.value);
-                actualizarTotal();
-            }
-        }
-
-        function actualizarTotal() {
-            const total = Object.values(puntajes).reduce((sum, score) => sum + score, 0);
-            totalPuntajeElement.textContent = total;
-            puntajeTotalInput.value = total;  // Guardar el puntaje total en el campo oculto
-        }
-
-        scoreOptions.forEach(option => {
-            option.addEventListener('change', actualizarPuntaje);
-        });
-
-        nextButton.addEventListener('click', function(event) {
-            event.preventDefault();
-            actualizarPuntaje();
-
-            if (currentIndex < preguntas.length - 1) {
-                currentIndex++;
-                mostrarPregunta();
-            }
-        });
-
-        prevButton.addEventListener('click', function(event) {
-            event.preventDefault();
-
-            if (currentIndex > 0) {
-                currentIndex--;
-                mostrarPregunta();
-            }
-        });
-
-        // Mostrar la primera pregunta al cargar la página
-        mostrarPregunta();
-    });
-</script>
-
-
-
-
-
-
-
-
-
-
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             let rowCountEstandarizacion = 1;
@@ -1580,6 +1414,175 @@
     </script>
     
 </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- porque_vista.html -->
+<form method="post" action="{% url 'porque_vista' pk=porque_instance.pk %}" id="form-evaluacion">
+    {% csrf_token %}
+    
+    <div class="evaluation-box floating-box">
+        <h3>Evaluación del Formulario</h3>
+        <div id="evaluation-content">
+            <h4 id="current-step">PASO 0</h4>
+            <p id="current-question">Subcategoría</p>
+            <div id="score-options">
+                <label>
+                    <input type="radio" name="score" value="0"> 0
+                </label>
+                <label>
+                    <input type="radio" name="score" value="1"> 1
+                </label>
+                <label>
+                    <input type="radio" name="score" value="2"> 2
+                </label>
+                <label>
+                    <input type="radio" name="score" value="3"> 3
+                </label>
+            </div>
+            <div class="navigation-buttons">
+                <button id="prev-question" class="btn btn-secondary" disabled>&larr; Anterior</button>
+                <button id="next-question" class="btn btn-secondary">Siguiente &rarr;</button>
+            </div>
+            <h4>Total Puntaje: <span id="total-puntaje">0</span></h4>
+            <input type="hidden" name="puntaje_total" id="puntaje-total-input">
+        </div>
+
+        <!-- Botón para enviar el formulario -->
+        <button type="submit" class="btn btn-primary">Guardar Puntaje</button>
+    </div>
+</form>
+
+<!-- Estilos CSS -->
+<style>
+    .floating-box {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        width: 300px;
+        padding: 15px;
+        background-color: #f1f1f1;
+        border: 1px solid #ccc;
+        box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+        z-index: 1000;
+        border-radius: 5px;
+    }
+
+    #score-options {
+        display: flex;
+        gap: 10px;
+        margin-top: 10px;
+    }
+
+    #score-options label {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+    }
+
+    .navigation-buttons {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 15px;
+    }
+</style>
+
+<!-- JavaScript -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Definir las preguntas
+        const preguntas = [
+            { paso: 'PASO 0', pregunta: 'Subcategoría' },
+            { paso: 'PASO 0', pregunta: 'Área' },
+            { paso: 'PASO 0', pregunta: 'Subárea' },
+            { paso: 'PASO 0', pregunta: 'Máquina' }
+        ];
+
+        let currentIndex = 0;
+        const puntajes = {};
+        const currentStepElement = document.getElementById('current-step');
+        const currentQuestionElement = document.getElementById('current-question');
+        const scoreOptions = document.querySelectorAll('input[name="score"]');
+        const totalPuntajeElement = document.getElementById('total-puntaje');
+        const puntajeTotalInput = document.getElementById('puntaje-total-input');
+        const nextButton = document.getElementById('next-question');
+        const prevButton = document.getElementById('prev-question');
+
+        function mostrarPregunta() {
+            const { paso, pregunta } = preguntas[currentIndex];
+            currentStepElement.textContent = paso;
+            currentQuestionElement.textContent = pregunta;
+
+            // Restaurar el puntaje seleccionado previamente
+            scoreOptions.forEach(option => {
+                option.checked = puntajes[currentIndex] === parseInt(option.value);
+            });
+
+            // Mostrar u ocultar el botón "Siguiente" según la posición actual
+            nextButton.style.display = currentIndex === preguntas.length - 1 ? 'none' : 'inline-block';
+
+            // Habilitar o deshabilitar el botón "Anterior"
+            prevButton.disabled = currentIndex === 0;
+        }
+
+        function actualizarPuntaje() {
+            const selectedOption = document.querySelector('input[name="score"]:checked');
+            if (selectedOption) {
+                puntajes[currentIndex] = parseInt(selectedOption.value);
+                actualizarTotal();
+            }
+        }
+
+        function actualizarTotal() {
+            const total = Object.values(puntajes).reduce((sum, score) => sum + score, 0);
+            totalPuntajeElement.textContent = total;
+            puntajeTotalInput.value = total;  // Guardar el puntaje total en el campo oculto
+        }
+
+        scoreOptions.forEach(option => {
+            option.addEventListener('change', actualizarPuntaje);
+        });
+
+        nextButton.addEventListener('click', function(event) {
+            event.preventDefault();
+            actualizarPuntaje();
+
+            if (currentIndex < preguntas.length - 1) {
+                currentIndex++;
+                mostrarPregunta();
+            }
+        });
+
+        prevButton.addEventListener('click', function(event) {
+            event.preventDefault();
+
+            if (currentIndex > 0) {
+                currentIndex--;
+                mostrarPregunta();
+            }
+        });
+
+        // Mostrar la primera pregunta al cargar la página
+        mostrarPregunta();
+    });
+</script>
+
+
+
 
 
 
