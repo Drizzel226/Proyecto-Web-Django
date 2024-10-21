@@ -48,47 +48,26 @@
 
         <div class="form-group col-md-6">
             <label for="subcategoria">Subcategoría</label>
-            <select id="subcategoria" name="subcategoria" class="form-control">
-                <option value="">Seleccione una subcategoría</option>
-                {% for subcategoria in form.subcategoria.field.choices %}
-                    <option value="{{ subcategoria.0 }}" {% if form.subcategoria.value == subcategoria.0 %}selected{% endif %}>{{ subcategoria.1 }}</option>
-                {% endfor %}
-            </select>                                     
+            <input type="text" id="subcategoria" name="subcategoria" class="form-control" value="{{ form.subcategoria.value }}" disabled>
         </div>
     </div>
 
     <div class="form-row">
         <div class="form-group col-md-6">
             <label for="area">Área</label>
-            <select id="area" name="area" class="form-control" disabled>
-                <option value="">Seleccione un área</option>
-                {% for opcion in opciones_area %}
-                    <option value="{{ opcion }}" {% if form.area.value == opcion %}selected{% endif %}>{{ opcion }}</option>
-                {% endfor %}
-            </select>
-            
+            <input type="text" id="area" name="area" class="form-control" value="{{ form.area.value }}" disabled>
         </div>
 
         <div class="form-group col-md-6">
             <label for="subarea">Subárea</label>
-            <select id="subarea" name="subarea" class="form-control" disabled>
-                <option value="">Seleccione una línea</option>
-                {% for opcion in opciones_subarea %}
-                    <option value="{{ opcion }}" {% if form.subarea.value == opcion %}selected{% endif %}>{{ opcion }}</option>
-                {% endfor %}
-            </select>
+            <input type="text" id="subarea" name="subarea" class="form-control" value="{{ form.subarea.value }}" disabled>
         </div>
     </div>
 
     <div class="form-row">
         <div class="form-group col-md-6">
             <label for="maquina">Máquina</label>
-            <select id="maquina" name="maquina" class="form-control">
-                <option value="">Seleccione una máquina</option>
-                {% for opcion in opciones_maquina %}
-                    <option value="{{ opcion }}" {% if form.maquina.value == opcion %}selected{% endif %}>{{ opcion }}</option>
-                {% endfor %}
-            </select>
+            <input type="text" id="maquina" name="maquina" class="form-control" value="{{ form.maquina.value }}" disabled>
         </div>
 
         <div class="form-group col-md-6">
@@ -123,12 +102,8 @@
 
         <div class="form-group col-md-6">
             <label for="kpi_secundario">KPI Secundario (KAI)</label>
-            <select id="kpi_secundario" name="kpi_secundario" class="form-control" disabled>
-                <option value="">Seleccione un KPI secundario</option>
-                <option value="kpi1" {% if form.kpi_secundario.value == "kpi1" %}selected{% endif %}>Eficiencia Global de Equipos (OEE)</option>
-                <option value="kpi2" {% if form.kpi_secundario.value == "kpi2" %}selected{% endif %}>Tasa de Defectos</option>
-                <option value="kpi3" {% if form.kpi_secundario.value == "kpi3" %}selected{% endif %}>Tiempo Medio Entre Fallos (MTBF)</option>
-            </select>
+            <input type="text" id="kpi_secundario" name="kpi_secundario" class="form-control" value="{{ form.kpi_secundario.value }}" disabled>
+
         </div>
     </div>
 

@@ -127,9 +127,9 @@
             <label for="kpi_secundario">KPI Secundario (KAI)</label>
             <select id="kpi_secundario" name="kpi_secundario" class="form-control">
                 <option value="">Seleccione un KPI secundario</option>
-                <option value="kpi1" {% if form.kpi_secundario.value == "kpi1" %}selected{% endif %}>Eficiencia Global de Equipos (OEE)</option>
-                <option value="kpi2" {% if form.kpi_secundario.value == "kpi2" %}selected{% endif %}>Tasa de Defectos</option>
-                <option value="kpi3" {% if form.kpi_secundario.value == "kpi3" %}selected{% endif %}>Tiempo Medio Entre Fallos (MTBF)</option>
+                <option {% if form.kpi_secundario.value == "kpi1" %}selected{% endif %}>Eficiencia Global de Equipos (OEE)</option>
+                <option {% if form.kpi_secundario.value == "kpi2" %}selected{% endif %}>Tasa de Defectos</option>
+                <option {% if form.kpi_secundario.value == "kpi3" %}selected{% endif %}>Tiempo Medio Entre Fallos (MTBF)</option>
             </select>
         </div>
     </div>
