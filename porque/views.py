@@ -195,10 +195,18 @@ def porque_vista(request, pk=None):
 
     # Preparar los datos para las preguntas de evaluación
     preguntas = [
-        {'paso': 'PASO 0', 'pregunta': ' Se indica el Pilar + Indicador (KPI) / Disparador asociado (KAI)'},
+        {'paso': 'Paso 0', 'pregunta': ' Se indica el Pilar + Indicador (KPI) / Disparador asociado (KAI)'},
         {'paso': 'PASO 0', 'pregunta': 'Se indica el impacto (pérdida)'},
         {'paso': 'PASO 0', 'pregunta': 'Se especifican los campos mandatorios (fecha, área subárea, integrantes, etc.)'},
-        {'paso': 'PASO 1', 'pregunta': 'Se describe correctamente el problema: Qué, Cómo, Cuándo,  Dónde, Quién'}
+        {'paso': 'PASO 1', 'pregunta': 'Se describe correctamente el problema: Qué, Cómo, Cuándo,  Dónde, Quién'},
+        {'paso': 'PASO 1', 'pregunta': 'El problema describe correctamente la falla funcional o defecto (lo que es evidente a la vista y que genera la desviación)'},
+        {'paso': 'PASO 2', 'pregunta': 'Se describen correctamente los modos de falla / defecto (puntos de partida del análisis 5 PQ)'},
+        {'paso': 'PASO 3', 'pregunta': 'Se encuentra definida la causa raíz del problema planteado'},
+        {'paso': 'PASO 3', 'pregunta': 'Se ha definido la causa dentro de las 5M (Máquina, Método, Hombre, Materiales, Medio Ambiente)'},
+        {'paso': 'PASO 4', 'pregunta': 'Se indican medidas correctivas / Se indican medidas preventivas'},
+        {'paso': 'PASO 4', 'pregunta': 'Se indican responsables en cada caso / Se indican fechas de compromiso'},
+        {'paso': 'PASO 4', 'pregunta': 'Se cumplen fechas de cierre?'},
+        {'paso': 'PASO 5', 'pregunta': '¿Se genera algún nuevo estándar tras este análisis?'},
     ]
 
     ratings = [

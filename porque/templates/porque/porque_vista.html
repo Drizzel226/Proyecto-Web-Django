@@ -1411,9 +1411,9 @@
     {% csrf_token %}
     
     <div class="evaluation-box floating-box">
-        <h3>Evaluación del Formulario</h3>
+        <h2>Auditoria 5 Por qué</h2>
         <div id="evaluation-content">
-            <h4 id="current-step"></h4>
+            <h3 id="current-step"></h3>
             <p id="current-question"></p>
             <div id="score-options" class="rating-container">
                 {% for value, label in ratings %}
@@ -1443,31 +1443,52 @@
         position: fixed;
         top: 20px;
         right: 20px;
-        width: 350px;
-        max-height: 500px;
+        width: 400px;
+        max-height: 600px;
         padding: 20px;
         background-color: #f1f1f1;
         border: 1px solid #ccc;
         box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
         z-index: 1000;
         border-radius: 8px;
-        overflow-y: auto; /* Esto permite que se pueda hacer scroll si el contenido excede */
+        overflow-y: auto; /* Permite scroll si el contenido es extenso */
     }
 
     .rating-container {
         display: flex;
-        justify-content: space-between;
-        gap: 5px;
-        flex-wrap: wrap; /* Para que las opciones se ajusten automáticamente */
+        justify-content: center; /* Cambiado de space-between a center */
         margin-top: 20px;
+        gap: 20px; /* Aumentado de 10px a 20px para más espacio entre botones */
+        text-align: center; /* Asegura que todo el contenido esté centrado */
     }
+    
     .rating-button {
         display: flex;
         flex-direction: column;
         align-items: center;
+        width: 70px; /* Ancho fijo para cada botón */
         cursor: pointer;
-        flex: 1 0 45%; /* Cada botón ocupa 45% del ancho disponible */
-        margin: 5px 0;
+    }
+    
+    .button-face {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: #e0e0e0;
+        color: #333;
+        font-weight: bold;
+        margin: 0 auto; /* Centra el círculo horizontalmente */
+        transition: background-color 0.3s ease, color 0.3s ease;
+    }
+    
+    .button-label {
+        margin-top: 8px;
+        font-size: 14px;
+        text-align: center;
+        width: 100%; /* Asegura que el texto use todo el ancho disponible */
     }
     .rating-button input {
         display: none;
@@ -1482,7 +1503,7 @@
         background-color: #e0e0e0;
         color: #333;
         font-weight: bold;
-        transition: all 0.3s ease;
+        transition: background-color 0.3s ease, color 0.3s ease;
     }
     .rating-button:hover .button-face {
         background-color: #d0d0d0;
@@ -1492,7 +1513,7 @@
         color: white;
     }
     .button-label {
-        margin-top: 5px;
+        margin-top: 8px;
         font-size: 14px;
         text-align: center;
     }
@@ -1511,13 +1532,22 @@
     .btn-secondary {
         background-color: #6c757d;
         color: #fff;
+        border: none;
+        cursor: pointer;
+    }
+    .btn-secondary:disabled {
+        background-color: #ddd;
+        cursor: not-allowed;
     }
     .btn-primary {
         background-color: #4CAF50;
         color: #fff;
+        border: none;
+        cursor: pointer;
+        width: 100%;
+        margin-top: 15px;
     }
 </style>
-
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
@@ -1537,10 +1567,12 @@
             currentStepElement.textContent = paso;
             currentQuestionElement.textContent = pregunta;
 
+            // Seleccionar la opción de puntaje actual si existe
             scoreOptions.forEach(option => {
                 option.checked = puntajes[currentIndex] === parseInt(option.value);
             });
 
+            // Actualizar la visibilidad de los botones
             nextButton.style.display = currentIndex === preguntas.length - 1 ? 'none' : 'inline-block';
             prevButton.disabled = currentIndex === 0;
         }
