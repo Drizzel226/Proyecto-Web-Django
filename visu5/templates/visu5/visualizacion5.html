@@ -29,7 +29,9 @@
                 <th>Paso 4</th>
                 <th>OT</th>
                 <th>Dias</th>
-                <th>Auditar</th>
+                {% if es_auditor %}
+                    <th>Auditar</th>
+                {% endif %}
                 <th>% UPS</th>
                 <th>% OTIF</th>
             </tr>
@@ -63,9 +65,11 @@
                 </td>
                 <td>{{ dato.porcentaje }}%</td>
                 <td>{{ dato.dias }}</td>
-                <td>
-                    <a href="{% url 'porque_vista' pk=dato.pk %}" class="btn-verde">Auditar</a>
-                </td>
+                {% if es_auditor %}
+                    <td>
+                        <a href="{% url 'porque_vista' pk=dato.pk %}" class="btn-verde">Auditar</a>
+                    </td>
+                {% endif %}
                 <td>{{ dato.puntaje }}%</td>    
                 <td>{{ dato.promedio_puntaje_porcentaje }}%</td>  
             </tr>
@@ -75,7 +79,6 @@
 </div>
 
 <!-- Controles de paginación -->
-
 <div class="pagination">
     <nav aria-label="Page navigation">
         <ul class="pagination">
@@ -99,8 +102,6 @@
         </ul>
     </nav>
 </div>
-
-
 
 <script>
     function actualizaCheckbox(id, estado) {

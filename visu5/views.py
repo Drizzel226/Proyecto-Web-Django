@@ -5,7 +5,7 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.core.paginator import Paginator
 from porque.models import Porque
-from .models import Visu5Model
+from .models import Visu5Model, Roles  # Asegúrate de importar el modelo Roles
 
 # Función para calcular el porcentaje con base en la fecha de inicio
 def calcula_porcentaje(fecha_inicio):
@@ -23,10 +23,10 @@ def calcula_porcentaje(fecha_inicio):
     else:
         return 0  # Para días mayores a 10 o negativos
 
-
+# Vista principal para mostrar los datos de "Visualización 5 Por qué"
 def visu(request):
     numero_de_preguntas = 12  # Define aquí el número de preguntas
-    puntaje_maximo_por_pregunta = 5 # IMPORTANTE ESTOS DOS PUNTOS 
+    puntaje_maximo_por_pregunta = 5  # IMPORTANTE ESTOS DOS PUNTOS 
     puntaje_total = numero_de_preguntas * puntaje_maximo_por_pregunta
 
     datos = Porque.objects.all().order_by('-id')  # Ordenar de más nuevo a más viejo
@@ -49,16 +49,19 @@ def visu(request):
         # Calcular el promedio de 'puntaje' y 'porcentaje'
         dato.promedio_puntaje_porcentaje = round((dato.puntaje + dato.porcentaje) / 2, 2)
 
+    # Verificar si el usuario autenticado es un auditor
+    miembro = Roles.objects.filter(email=request.user.email).first()
+    es_auditor = miembro.rol == 1 if miembro else False  # True si el rol es 1 (auditor)
+
     # Paginación
     paginator = Paginator(datos, 10)  # Mostrar 10 filas por página
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
 
-    return render(request, "visu5/visualizacion5.html", {"page_obj": page_obj})
-
-
-
-
+    return render(request, "visu5/visualizacion5.html", {
+        "page_obj": page_obj,
+        "es_auditor": es_auditor,  # Pasar la variable al contexto para la plantilla
+    })
 
 # Vista para actualizar el checkbox mediante AJAX
 @csrf_exempt
@@ -87,7 +90,6 @@ def actualizar_checkbox(request):
         except Visu5Model.DoesNotExist:
             return JsonResponse({'error': 'Registro no encontrado'}, status=404)
     return JsonResponse({'error': 'Método no permitido'}, status=405)
-
 
 # Vista para el dashboard (sin cambios)
 def dashboard(request):
