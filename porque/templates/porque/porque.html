@@ -43,7 +43,8 @@
     <div class="form-row">
         <div class="form-group col-md-6">
             <label for="categoria">Categoría</label>
-            <input type="text" id="categoria" name="categoria" class="form-control" readonly value="{{ form.categoria.value }}">
+            <input type="text" id="categoria" name="categoria" class="form-control" readonly value="{{ form.categoria.value|default_if_none:'' }}">
+
         </div>
 
         <div class="form-group col-md-6">
@@ -108,19 +109,21 @@
     <div class="form-row">
         <div class="form-group col-md-6">
             <label for="pilar">Pilar</label>
-            <input type="text" id="pilar" name="pilar" class="form-control" readonly value="{{ form.pilar.value }}">
+            <input type="text" id="pilar" name="pilar" class="form-control" readonly value="{{ form.pilar.value|default_if_none:''  }}">
         </div>
 
         <div class="form-group col-md-6">
             <label for="impacto">Impacto</label>
-            <input type="text" id="impacto" name="impacto" class="form-control" value="{{ form.impacto.value }}">
+            <input type="text" id="impacto" name="impacto" class="form-control" 
+                   value="{{ form.impacto.value|default_if_none:'' }}" 
+                   placeholder="Ej: Minutos, Opi, rendimiento...">
         </div>
     </div>
 
     <div class="form-row">
         <div class="form-group col-md-6">
             <label for="kpi_iceo">KPI ICEO</label>
-            <input type="text" id="kpi_iceo" name="kpi_iceo" class="form-control" readonly value="{{ form.kpi_iceo.value }}">
+            <input type="text" id="kpi_iceo" name="kpi_iceo" class="form-control" readonly value="{{ form.kpi_iceo.value|default_if_none:''}}">
         </div>
 
         <div class="form-group col-md-6">
