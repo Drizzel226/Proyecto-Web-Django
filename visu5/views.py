@@ -26,10 +26,10 @@ def calcula_porcentaje(fecha_inicio):
 # Vista principal para mostrar los datos de "Visualización 5 Por qué"
 def visu(request):
     numero_de_preguntas = 12  # Define aquí el número de preguntas
-    puntaje_maximo_por_pregunta = 5  # IMPORTANTE ESTOS DOS PUNTOS 
+    puntaje_maximo_por_pregunta = 5
     puntaje_total = numero_de_preguntas * puntaje_maximo_por_pregunta
 
-    datos = Porque.objects.all().order_by('-id')  # Ordenar de más nuevo a más viejo
+    datos = Porque.objects.all().order_by('-id')
     visualizaciones = Visu5Model.objects.all()
 
     for dato in datos:
@@ -40,39 +40,40 @@ def visu(request):
             accion_preventiva_completa = dato.Accion_Preventiva and dato.Fecha_compromiso2
             if accion_correctiva_completa or accion_preventiva_completa:
                 dato.paso_4 = True
-                # Si paso_4 es True, calcular el porcentaje y asignarlo a OT
                 dato.ot = f"{calcula_porcentaje(dato.fecha_inicio)}%"
             else:
                 dato.paso_4 = False
                 dato.ot = ""  # Vacío cuando 'paso_4' es False
 
             dato.porcentaje = visualizacion.porcentaje
-            dato.dias = visualizacion.dias
+
+            # Calcular los días desde la fecha de inicio hasta hoy
+            if dato.fecha_inicio:
+                hoy = date.today()
+                dato.dias = (hoy - dato.fecha_inicio).days
+            else:
+                dato.dias = 0
         else:
             dato.paso_4 = False
             dato.ot = ""
             dato.porcentaje = 0 
             dato.dias = 0  
 
-        # Asegurarnos de que 'dato.puntaje' no sea None antes de la operación
         puntaje_obtenido = dato.puntaje if dato.puntaje is not None else 0
         dato.puntaje = round((puntaje_obtenido / puntaje_total) * 100, 2) if puntaje_total > 0 else 0
-
-        # Calcular el promedio de 'puntaje' y 'porcentaje'
         dato.promedio_puntaje_porcentaje = round((dato.puntaje + dato.porcentaje) / 2, 2)
 
     # Verificar si el usuario autenticado es un auditor
     miembro = Roles.objects.filter(email=request.user.email).first()
-    es_auditor = miembro.rol == 1 if miembro else False  # True si el rol es 1 (auditor)
+    es_auditor = miembro.rol == 1 if miembro else False
 
-    # Paginación
-    paginator = Paginator(datos, 10)  # Mostrar 10 filas por página
+    paginator = Paginator(datos, 10)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
 
     return render(request, "visu5/visualizacion5.html", {
         "page_obj": page_obj,
-        "es_auditor": es_auditor,  # Pasar la variable al contexto para la plantilla
+        "es_auditor": es_auditor,
     })
 
 # Vista para actualizar el checkbox mediante AJAX
