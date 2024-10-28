@@ -60,10 +60,9 @@
                     <a href="{% url 'porque' pk=dato.pk %}" class="btn-verde">Editar</a>
                 </td>
                 <td>
-                    <input type="checkbox" name="checkbox_{{ dato.id }}" value="True" {% if dato.paso_4 %}checked{% endif %}
-                           onchange="actualizaCheckbox({{ dato.id }}, this.checked)">
-                </td>
-                <td>{{ dato.porcentaje }}%</td>
+                    <input type="checkbox" name="checkbox_{{ dato.id }}" value="True" {% if dato.paso_4 %}checked{% endif %} disabled>
+                </td>                
+                <td>{{ dato.ot }}</td>
                 <td>{{ dato.dias }}</td>
                 {% if es_auditor %}
                     <td>

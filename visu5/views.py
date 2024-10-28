@@ -35,10 +35,22 @@ def visu(request):
     for dato in datos:
         visualizacion = visualizaciones.filter(porque_id=dato.id).first()
         if visualizacion:
-            dato.paso_4 = visualizacion.paso_4
+            # Condición para marcar 'paso_4' automáticamente
+            accion_correctiva_completa = dato.Accion_correctiva and dato.Fecha_compromiso1
+            accion_preventiva_completa = dato.Accion_Preventiva and dato.Fecha_compromiso2
+            if accion_correctiva_completa or accion_preventiva_completa:
+                dato.paso_4 = True
+                # Si paso_4 es True, calcular el porcentaje y asignarlo a OT
+                dato.ot = f"{calcula_porcentaje(dato.fecha_inicio)}%"
+            else:
+                dato.paso_4 = False
+                dato.ot = ""  # Vacío cuando 'paso_4' es False
+
             dato.porcentaje = visualizacion.porcentaje
             dato.dias = visualizacion.dias
         else:
+            dato.paso_4 = False
+            dato.ot = ""
             dato.porcentaje = 0 
             dato.dias = 0  
 
