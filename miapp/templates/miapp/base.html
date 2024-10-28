@@ -7,6 +7,67 @@
     <title>{% block title %}GajardoOne Planta NPR{% endblock %}</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <style>
+        /* Estilos para el submenú */
+        .submenu {
+            display: none;
+            padding: 0;
+            text-align: center;
+            width: 100%; /* Asegura que ocupe todo el ancho del contenedor */
+        }
+        
+        .submenu.active {
+            display: block;
+        }
+
+        .menu-item-with-submenu {
+            position: relative;
+        }
+
+        .menu-item-with-submenu > a {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .submenu-icon {
+            transition: transform 0.3s ease;
+        }
+
+        .submenu-icon.rotated {
+            transform: rotate(180deg);
+        }
+
+        /* Estilos para los items del submenú */
+        .submenu li {
+            list-style: none;
+            width: 90%; /* Ajusta el ancho de cada elemento */
+            margin: 5px auto; /* Centra cada elemento en el contenedor */
+        }
+
+        .submenu li a {
+            display: block;
+            padding: 10px;
+            background-color: #5cb85c;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            text-align: center;
+            font-size: 0.9em;
+            line-height: 1.2;
+        }
+
+        /* Efecto hover para los elementos del submenú */
+        .submenu li a:hover {
+            background-color: #4CAF50;
+        }
+    </style>
 </head>
 <body>
     <!-- Barra superior -->
@@ -43,16 +104,27 @@
             <nav>
                 <ul>
                     <li><a href="{% url 'inicio' %}" class="{% if request.resolver_match.url_name == 'inicio' %}active{% endif %}">Menu Principal</a></li>
+                    
                     {% if user.is_authenticated %}
-                        <li><a href="{% url 'porque' %}" class="{% if request.resolver_match.url_name == 'porque' %}active{% endif %}">5 Por qué</a></li>
-                        <li><a href="{% url 'miniproyectos' %}" class="{% if request.resolver_match.url_name == 'miniproyectos' %}active{% endif %}">Miniproyectos</a></li>
-                        <li><a href="{% url 'kaizen' %}" class="{% if request.resolver_match.url_name == 'kaizen' %}active{% endif %}">Kaizen</a></li>
-                        <li><a href="{% url 'visu' %}" class="{% if request.resolver_match.url_name == 'visu' %}active{% endif %}">Visualizacion</a></li>
+                        <!-- Menú desplegable Herramientas -->
+                        <li class="menu-item-with-submenu">
+                            <a href="#" class="submenu-trigger">
+                                Herramientas
+                                <i class="fas fa-chevron-down submenu-icon"></i>
+                            </a>
+                            <ul class="submenu">
+                                <li><a href="{% url 'porque' %}" class="{% if request.resolver_match.url_name == 'porque' %}active{% endif %}">5 Por qué</a></li>
+                                <li><a href="{% url 'miniproyectos' %}" class="{% if request.resolver_match.url_name == 'miniproyectos' %}active{% endif %}">Miniproyectos</a></li>
+                                <li><a href="{% url 'kaizen' %}" class="{% if request.resolver_match.url_name == 'kaizen' %}active{% endif %}">Kaizen</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="{% url 'visu' %}" class="{% if request.resolver_match.url_name == 'visu' %}active{% endif %}">Visualización</a></li>
                         <li><a href="{% url 'dashboard' %}" class="{% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}">Dashboard</a></li>
                     {% endif %}
                 </ul>
             </nav>
         </div>
+
         <!-- Contenido principal -->
         <div class="content" id="content">
             {% block content %}
@@ -60,13 +132,13 @@
         </div>
     </div>
 
-    <!-- Script para manejar el comportamiento de la barra lateral -->
+    <!-- Scripts -->
     <script>
+        // Script para alternar la visibilidad de la barra lateral
         const menuToggle = document.getElementById('menu-toggle');
         const sidebar = document.getElementById('sidebar');
         const content = document.getElementById('content');
 
-        // Inicialmente la barra lateral está visible
         let sidebarVisible = true;
 
         menuToggle.addEventListener('click', function() {
@@ -78,6 +150,26 @@
                 content.classList.remove('sidebar-hidden');
             }
             sidebarVisible = !sidebarVisible;
+        });
+
+        // Script para manejar el submenú
+        document.addEventListener('DOMContentLoaded', function() {
+            const submenuTrigger = document.querySelector('.submenu-trigger');
+            const submenu = document.querySelector('.submenu');
+            const submenuIcon = document.querySelector('.submenu-icon');
+            
+            submenuTrigger.addEventListener('click', function(e) {
+                e.preventDefault();
+                submenu.classList.toggle('active');
+                submenuIcon.classList.toggle('rotated');
+            });
+
+            // Si alguna opción del submenú está activa, mostrar el submenú
+            const activeSubmenuItem = submenu.querySelector('.active');
+            if (activeSubmenuItem) {
+                submenu.classList.add('active');
+                submenuIcon.classList.add('rotated');
+            }
         });
     </script>
 </body>
