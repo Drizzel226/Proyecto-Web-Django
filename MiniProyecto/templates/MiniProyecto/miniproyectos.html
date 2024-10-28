@@ -1,12 +1,1580 @@
 {% extends 'miapp/base.html' %}
+{% load static %}
 
-{% block title %}Miniproyectos{% endblock %}
+
+{% block title %}Miniproyecto{% endblock %}
 
 {% block content %}
-<h1 style="text-align: center;">Miniproyectos</h1>
-<form method="post">
-    {% csrf_token %}
-    <textarea name="texto"></textarea>
-    <button type="submit">Enviar</button>
-</form>
+<div class="form-container">
+    <h1 id="analisis-5w" class="text-center">Miniproyecto</h1>
+
+    {% if messages %}
+    <div class="messages">
+        {% for message in messages %}
+        <div class="alert alert-{{ message.tags }}">
+            {{ message }}
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <form method="post" class="analisis-5w-form" id="form" enctype="multipart/form-data">
+        {% csrf_token %}
+        
+        <!-- Muestra los errores de validación si existen -->
+        {% if form.errors %}
+            <div class="alert alert-danger">
+                <ul>
+                    {% for field, errors in form.errors.items %}
+                        <li>{{ field }}: {{ errors|join:", " }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endif %}
+
+    
+    <form method="post" class="analisis-5w-form" id="form" enctype="multipart/form-data">
+        {% csrf_token %}
+
+<!-- Sección Paso 0: Datos iniciales -->
+<div id="seccion1" class="recuadro-paso">
+    <h2 class="text-primary">Paso 0: Datos Iniciales</h2>
+    
+    <div class="form-row">
+        <div class="form-group col-md-6">
+            <label for="categoria">Categoría</label>
+            <input type="text" id="categoria" name="categoria" class="form-control" readonly value="{{ form.categoria.value|default_if_none:'' }}">
+
+        </div>
+
+        <div class="form-group col-md-6">
+            <label for="subcategoria">Subcategoría</label>
+            <select id="subcategoria" name="subcategoria" class="form-control">
+                <option value="">Seleccione una subcategoría</option>
+                {% for subcategoria in subcategorias_datos %}
+                    <option value="{{ subcategoria.subcategoria }}" {% if form.subcategoria.value == subcategoria.subcategoria %}selected{% endif %}>
+                        {{ subcategoria.subcategoria }}
+                    </option>
+                {% endfor %}
+            </select>
+                                                
+        </div>
+    </div>
+
+    <div class="form-row">
+        <div class="form-group col-md-6">
+            <label for="area">Área</label>
+            <select id="area" name="area" class="form-control">
+                <option value="">Seleccione un área</option>
+                {% for opcion in opciones_area %}
+                    <option value="{{ opcion }}" {% if form.area.value == opcion %}selected{% endif %}>{{ opcion }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="form-group col-md-6">
+            <label for="subarea">Subárea</label>
+            <select id="subarea" name="subarea" class="form-control">
+                <option value="">Seleccione una línea</option>
+                {% for opcion in opciones_subarea %}
+                    <option value="{{ opcion }}" {% if form.subarea.value == opcion %}selected{% endif %}>{{ opcion }}</option>
+                {% endfor %}
+            </select>
+        </div>
+    </div>
+
+    <div class="form-row">
+        <div class="form-group col-md-6">
+            <label for="maquina">Máquina</label>
+            <select id="maquina" name="maquina" class="form-control">
+                <option value="">Seleccione una máquina</option>
+                {% for opcion in opciones_maquina %}
+                    <option value="{{ opcion }}" {% if form.maquina.value == opcion %}selected{% endif %}>{{ opcion }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="form-group col-md-6">
+            <label for="miembros_equipo">Miembros del equipo</label>
+            <select id="miembros_equipo" name="miembros_equipo" class="form-control select2" multiple>
+                {% for miembro in opciones_miembros %}
+                    <option value="{{ miembro.id }}" data-email="{{ miembro.email }}" {% if miembro.id in form.miembros_equipo.value %}selected{% endif %}>
+                        {{ miembro.nombre }}
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
+    </div>
+
+    <div class="form-row">
+        <div class="form-group col-md-6">
+            <label for="pilar">Pilar</label>
+            <input type="text" id="pilar" name="pilar" class="form-control" readonly value="{{ form.pilar.value|default_if_none:''  }}">
+        </div>
+
+        <div class="form-group col-md-6">
+            <label for="impacto">Impacto</label>
+            <input type="text" id="impacto" name="impacto" class="form-control" 
+                   value="{{ form.impacto.value|default_if_none:'' }}" 
+                   placeholder="Ej: Minutos, Opi, rendimiento...">
+        </div>
+    </div>
+
+    <div class="form-row">
+        <div class="form-group col-md-6">
+            <label for="kpi_iceo">KPI ICEO</label>
+            <input type="text" id="kpi_iceo" name="kpi_iceo" class="form-control" readonly value="{{ form.kpi_iceo.value|default_if_none:''}}">
+        </div>
+
+        <div class="form-group col-md-6">
+            <label for="kpi_secundario">KPI Secundario (KAI)</label>
+            <select id="kpi_secundario" name="kpi_secundario" class="form-control">
+                <option value="">Seleccione un KPI secundario</option>
+                <option {% if form.kpi_secundario.value == "kpi1" %}selected{% endif %}>Eficiencia Global de Equipos (OEE)</option>
+                <option {% if form.kpi_secundario.value == "kpi2" %}selected{% endif %}>Tasa de Defectos</option>
+                <option {% if form.kpi_secundario.value == "kpi3" %}selected{% endif %}>Tiempo Medio Entre Fallos (MTBF)</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="form-row">
+        {% if not form.instance.pk %}
+        <div class="form-group col-md-6">
+            <label for="fecha_inicio">Fecha Inicio</label>
+            <input type="date" id="fecha_inicio" name="fecha_inicio" class="form-control" value="{{ form.fecha_inicio.value }}" readonly>
+        </div>
+        {% endif %}
+        
+        <div class="form-group col-md-6">
+            <label for="fecha_cierre">Fecha Estimada de Cierre</label>
+            <input type="date" id="fecha_cierre" name="fecha_cierre" class="form-control" value="{{ form.fecha_cierre.value|date:'Y-m-d' }}">
+        </div>
+    </div>
+
+
+    <script>
+        // Pasar los datos de subcategorias desde Django a JavaScript
+        var subcategoriasDatos = {{ subcategorias_datos|safe }};
+        
+        console.log("Datos de subcategorías (verifica si es un objeto válido): ", subcategoriasDatos);
+    </script>
+    
+    
+    
+    <script>
+        document.getElementById('subcategoria').addEventListener('change', function() {
+            var subcategoriaSeleccionada = this.value;
+    
+            // Buscar la subcategoría en los datos
+            var subcategoriaDatos = subcategoriasDatos.find(function(item) {
+                return item.subcategoria === subcategoriaSeleccionada;
+            });
+    
+    
+            // Si encontramos la subcategoría, rellenar los otros campos
+            if (subcategoriaDatos) {
+                document.getElementById('categoria').value = subcategoriaDatos.categoria;
+                document.getElementById('pilar').value = subcategoriaDatos.pilar;
+                document.getElementById('kpi_iceo').value = subcategoriaDatos.kpi_iceo;
+            } else {
+                // Si no se encuentra, vaciar los campos
+                document.getElementById('categoria').value = '';
+                document.getElementById('pilar').value = '';
+                document.getElementById('kpi_iceo').value = '';
+            }
+        });
+    </script>
+    
+
+
+</div>
+
+
+<!-- Sección Paso 1: Descripción del Problema (visible después del Paso 0) -->
+{% if mostrar_paso1 %}
+<div id="paso1-section" class="recuadro-paso mt-4" style="border: 1px solid #ff0000;">
+    <div class="paso-header" style="background-color: #ff0000; color: white; padding: 10px 15px; border-radius: 5px;">
+        <h2 class="collapsible" style="cursor: pointer; margin: 0;" onclick="toggleVisibility('contenido-paso1')">
+            <span style="margin-right: 10px;">&#x25BC;</span> Paso 1: Descripción del Problema
+        </h2>
+    </div>
+    <div id="contenido-paso1">
+        <div><h1></h1></div>
+        <div class="form-row">
+            <div class="form-group col-md-12">
+                {{ form.que_ocurre.label_tag }}
+                {{ form.que_ocurre }}
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-12">
+                {{ form.como_ocurre.label_tag }}
+                {{ form.como_ocurre }}
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-12">
+                {{ form.donde_ocurre.label_tag }}
+                {{ form.donde_ocurre }}
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-12">
+                {{ form.cuando_ocurre.label_tag }}
+                {{ form.cuando_ocurre }}
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-12">
+                {{ form.quien_presente.label_tag }}
+                {{ form.quien_presente }}
+            </div>
+        </div>
+
+        <!-- Señal antes de que ocurra el problema -->
+        <h2 class="text-danger">Señal antes de que ocurra el problema</h2>
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                {{ form.senal_antes.label_tag }}
+                {{ form.senal_antes }}
+            </div>
+            <div class="form-group col-md-6">
+                {{ form.descripcion_senal.label_tag }}
+                {{ form.descripcion_senal }}
+            </div>
+        </div>
+
+        <!-- Falla funcional -->
+        <h2 class="text-danger">Falla funcional</h2>
+        <div class="form-row">
+            <div class="form-group col-md-12">
+                {{ form.falla_funcional.label_tag }}
+                {{ form.falla_funcional }}
+            </div>
+            <div class="form-group col-md-6">
+                {{ form.imagen_falla_funcional.label_tag }}
+                {{ form.imagen_falla_funcional }}
+            </div>
+        </div>
+    </div>
+</div>
+        
+
+
+<!-- Sección Paso 2: Comprender y Restaurar Condiciones Básicas -->
+<div id="paso2-section" class="recuadro-paso mt-4" style="border: 1px solid #e6007e;">
+    <div class="paso-header" style="background-color: #e6007e; color: white; padding: 10px 15px; border-radius: 5px;">
+        <h2 class="collapsible" style="cursor: pointer; margin: 0;" onclick="toggleVisibility('contenido-paso2')">
+            <span style="margin-right: 10px;">&#x25BC;</span> Paso 2: Comprender y Restaurar Condiciones Básicas
+        </h2>
+    </div>
+    <div id="contenido-paso2">
+        
+        <!-- Bloque 1: Principio de funcionamiento -->
+        <div><h1></h1></div>
+        <div class="sub-section" style="margin-bottom: 20px;">
+            <div class="sub-header" style="background-color: #e6007e; color: white; padding: 10px 15px; border-radius: 5px;">
+                <h3 style="margin: 0;">Principio de funcionamiento</h3>
+            </div>
+            <div class="sub-content" style="padding: 10px; border: 1px solid #e6007e; border-radius: 5px;">
+                <div class="form-row">
+                    <div class="form-group col-md-12">
+                        {{ form.principio_funcionamiento.label_tag }}
+                        {{ form.principio_funcionamiento }}
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-12">
+                        {{ form.imagen_funcionamiento.label_tag }}
+                        {{ form.imagen_funcionamiento }}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bloque 2: Restablecimiento de condiciones básicas y verificación de herramientas -->
+        <div class="sub-section" style="margin-bottom: 20px;">
+            <div class="sub-header" style="background-color: #e6007e; color: white; padding: 10px 15px; border-radius: 5px;">
+                <h3 style="margin: 0;">Restablecimiento de condiciones básicas y verificación de herramientas</h3>
+            </div>
+            <div class="sub-content" style="padding: 10px; border: 1px solid #e6007e; border-radius: 5px;">
+                <div class="form-group">
+                    <label>{{ form.tarjetas_atrasadas.label }}</label>
+                    <div class="d-inline-block">
+                        {{ form.tarjetas_atrasadas }}
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>{{ form.lila_asociado.label }}</label>
+                    <div>
+                        {{ form.lila_asociado }}
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>{{ form.ejecuto_lila.label }}</label>
+                    <div>
+                        {{ form.ejecuto_lila }}
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>{{ form.mantenimiento_no_ejecutado.label }}</label>
+                    <div>
+                        {{ form.mantenimiento_no_ejecutado }}
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>{{ form.materiales_calidad.label }}</label>
+                    <div>
+                        {{ form.materiales_calidad }}
+                    </div>
+                </div>                        
+            </div>
+        </div>
+
+        <!-- Bloque 3: Modo de Falla -->
+        <div class="sub-section" style="margin-bottom: 20px;">
+            <div class="sub-header" style="background-color: #e6007e; color: white; padding: 10px 15px; border-radius: 5px;">
+                <h3 style="margin: 0;">Modo de Falla</h3>
+            </div>
+            <div class="sub-content" style="padding: 10px; border: 1px solid #e6007e; border-radius: 5px;">
+                <div class="form-row">
+                    <div class="form-group col-md-12">
+                        {{ form.modo_falla_paso2.label_tag }}
+                        {{ form.modo_falla_paso2 }}
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-12">
+                        {{ form.imagen_falla.label_tag }}
+                        {{ form.imagen_falla }}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+        
+<!-- Sección Paso 3: Causa Raíz -->
+<div id="paso3-section" class="recuadro-paso mt-4" style="border: 1px solid #FFC800;">
+    <div class="paso-header" style="background-color: #FFC800; color: white; padding: 10px 15px; border-radius: 5px;">
+        <h2 class="collapsible" style="cursor: pointer; margin: 0;" onclick="toggleVisibility('contenido-paso3')">
+            <span style="margin-right: 10px;">▼</span> Paso 3: Causa Raíz
+        </h2>
+    </div>
+
+    <div id="contenido-paso3">
+        <br>
+        <button id="addPorqueBtn" type="button" class="btn btn-primary mb-3">
+            {% if form.porque6.value %}Agregar POR QUÉ?{% else %}Agregar POR QUÉ?{% endif %}
+        </button>
+        <button id="showMoreRows" type="button" class="btn btn-primary mb-3">Agregar fila</button>
+        <div><h1></h1></div>
+        <table id="AccionesTable">
+            <tr>
+                <th>Modo de Falla</th>
+                <th>¿POR QUÉ? (1)</th>
+                <th></th>
+                <th>¿POR QUÉ? (2)</th>
+                <th></th>
+                <th>¿POR QUÉ? (3)</th>
+                <th></th>
+                <th>¿POR QUÉ? (4)</th>
+                <th></th>
+                <th>¿POR QUÉ? (5)</th>
+                <th></th>
+                <th class="porque6-col" {% if not form.porque6.value %}style="display: none;"{% endif %}>¿POR QUÉ? (6)</th>
+                <th class="validacion6-col" {% if not form.porque6.value %}style="display: none;"{% endif %}></th>
+                <th class="porque7-col" {% if not form.porque7.value %}style="display: none;"{% endif %}>¿POR QUÉ? (7)</th>
+                <th class="validacion7-col" {% if not form.porque7.value %}style="display: none;"{% endif %}></th>
+                <th>Raíz</th>
+                <th>6M</th>
+            </tr>
+
+            <!-- Primeras 4 filas visibles -->
+            <tr id="porque-row">
+                <td>{{ form.modo_falla_paso3 }}</td>
+                <td>{{ form.porque1 }}</td>
+                <td class="color-cell form-control validacion-celda" data-color="{{ form.color_validacion1.value }}" onclick="changeColor(this, 'color_validacion1')">
+                    {{ form.color_validacion1 }}
+                </td>
+                <td>{{ form.porque2 }}</td>
+                <td class="color-cell" data-color="{{ form.color_validacion2.value }}" onclick="changeColor(this, 'color_validacion2')">
+                    {{ form.color_validacion2 }}
+                </td>
+                <td>{{ form.porque3 }}</td>
+                <td class="color-cell" data-color="{{ form.color_validacion3.value }}" onclick="changeColor(this, 'color_validacion3')">
+                    {{ form.color_validacion3 }}
+                </td>
+                <td>{{ form.porque4 }}</td>
+                <td class="color-cell" data-color="{{ form.color_validacion4.value }}" onclick="changeColor(this, 'color_validacion4')">
+                    {{ form.color_validacion4 }}
+                </td>
+                <td>{{ form.porque5 }}</td>
+                <td class="color-cell" data-color="{{ form.color_validacion5.value }}" onclick="changeColor(this, 'color_validacion5')">
+                    {{ form.color_validacion5 }}
+                </td>
+                <td class="porque6-col" {% if not form.porque6.value %}style="display: none;"{% endif %}>{{ form.porque6 }}</td>
+                <td class="color-cell validacion6-col" {% if not form.porque6.value %}style="display: none;"{% endif %} data-color="{{ form.color_validacion6.value }}" onclick="changeColor(this, 'color_validacion6')">
+                    {{ form.color_validacion6 }}
+                </td>
+                <td class="porque7-col" {% if not form.porque7.value %}style="display: none;"{% endif %}>{{ form.porque7 }}</td>
+                <td class="color-cell validacion7-col" {% if not form.porque7.value %}style="display: none;"{% endif %} data-color="{{ form.color_validacion7.value }}" onclick="changeColor(this, 'color_validacion7')">
+                    {{ form.color_validacion7 }}
+                </td>
+                <td>{{ form.Raiz }}</td>
+                <td>{{ form.ISHIKAWA }}</td>
+            </tr>
+
+            <tr id="porque-row-2" style="display: none;">
+                <td>{{ form.modo_falla_paso3_2 }}</td>
+                <td>{{ form.porque1_2 }}</td>
+                <td class="color-cell" data-color="{{ form.color_validacion1_2.value }}" onclick="changeColor(this, 'color_validacion1_2')">
+                    {{ form.color_validacion1_2 }}
+                </td>
+                <td>{{ form.porque2_2 }}</td>
+                <td class="color-cell" data-color="{{ form.color_validacion2_2.value }}" onclick="changeColor(this, 'color_validacion2_2')">
+                    {{ form.color_validacion2_2 }}
+                </td>
+                <td>{{ form.porque3_2 }}</td>
+                <td class="color-cell" data-color="{{ form.color_validacion3_2.value }}" onclick="changeColor(this, 'color_validacion3_2')">
+                    {{ form.color_validacion3_2 }}
+                </td>
+                <td>{{ form.porque4_2 }}</td>
+                <td class="color-cell" data-color="{{ form.color_validacion4_2.value }}" onclick="changeColor(this, 'color_validacion4_2')">
+                    {{ form.color_validacion4_2 }}
+                </td>
+                <td>{{ form.porque5_2 }}</td>
+                <td class="color-cell" data-color="{{ form.color_validacion5_2.value }}" onclick="changeColor(this, 'color_validacion5_2')">
+                    {{ form.color_validacion5_2 }}
+                </td>
+                <td class="porque6-col" {% if not form.porque6_2.value %}style="display: none;"{% endif %}>{{ form.porque6_2 }}</td>
+                <td class="color-cell validacion6-col" {% if not form.porque6_2.value %}style="display: none;"{% endif %} data-color="{{ form.color_validacion6_2.value }}" onclick="changeColor(this, 'color_validacion6_2')">
+                    {{ form.color_validacion6_2 }}
+                </td>
+                <td class="porque7-col" {% if not form.porque7_2.value %}style="display: none;"{% endif %}>{{ form.porque7_2 }}</td>
+                <td class="color-cell validacion7-col" {% if not form.porque7_2.value %}style="display: none;"{% endif %} data-color="{{ form.color_validacion7_2.value }}" onclick="changeColor(this, 'color_validacion7_2')">
+                    {{ form.color_validacion7_2 }}
+                </td>
+                <td>{{ form.Raiz_2 }}</td>
+                <td>{{ form.ISHIKAWA_2 }}</td>
+            </tr>
+
+            <tr id="porque-row-3" style="display: none;">
+                <td>{{ form.modo_falla_paso3_3 }}</td>
+                <td>{{ form.porque1_3 }}</td>
+                <td class="color-cell" data-color="{{ form.color_validacion1_3.value }}" onclick="changeColor(this, 'color_validacion1_3')">
+                    {{ form.color_validacion1_3 }}
+                </td>
+                <td>{{ form.porque2_3 }}</td>
+                <td class="color-cell" data-color="{{ form.color_validacion2_3.value }}" onclick="changeColor(this, 'color_validacion2_3')">
+                    {{ form.color_validacion2_3 }}
+                </td>
+                <td>{{ form.porque3_3 }}</td>
+                <td class="color-cell" data-color="{{ form.color_validacion3_3.value }}" onclick="changeColor(this, 'color_validacion3_3')">
+                    {{ form.color_validacion3_3 }}
+                </td>
+                <td>{{ form.porque4_3 }}</td>
+                <td class="color-cell" data-color="{{ form.color_validacion4_3.value }}" onclick="changeColor(this, 'color_validacion4_3')">
+                    {{ form.color_validacion4_3 }}
+                </td>
+                <td>{{ form.porque5_3 }}</td>
+                <td class="color-cell" data-color="{{ form.color_validacion5_3.value }}" onclick="changeColor(this, 'color_validacion5_3')">
+                    {{ form.color_validacion5_3 }}
+                </td>
+                <td class="porque6-col" {% if not form.porque6_3.value %}style="display: none;"{% endif %}>{{ form.porque6_3 }}</td>
+                <td class="color-cell validacion6-col" {% if not form.porque6_3.value %}style="display: none;"{% endif %} data-color="{{ form.color_validacion6_3.value }}" onclick="changeColor(this, 'color_validacion6_3')">
+                    {{ form.color_validacion6_3 }}
+                </td>
+                <td class="porque7-col" {% if not form.porque7_3.value %}style="display: none;"{% endif %}>{{ form.porque7_3 }}</td>
+                <td class="color-cell validacion7-col" {% if not form.porque7_3.value %}style="display: none;"{% endif %} data-color="{{ form.color_validacion7_3.value }}" onclick="changeColor(this, 'color_validacion7_3')">
+                    {{ form.color_validacion7_3 }}
+                </td>
+                <td>{{ form.Raiz_3 }}</td>
+                <td>{{ form.ISHIKAWA_3 }}</td>
+            </tr>
+
+            <tr id="porque-row-4" style="display: none;">
+                <td>{{ form.modo_falla_paso3_4 }}</td>
+                <td>{{ form.porque1_4 }}</td>
+                <td class="color-cell" data-color="{{ form.color_validacion1_4.value }}" onclick="changeColor(this, 'color_validacion1_4')">
+                    {{ form.color_validacion1_4 }}
+                </td>
+                <td>{{ form.porque2_4 }}</td>
+                <td class="color-cell" data-color="{{ form.color_validacion2_4.value }}" onclick="changeColor(this, 'color_validacion2_4')">
+                    {{ form.color_validacion2_4 }}
+                </td>
+                <td>{{ form.porque3_4 }}</td>
+                <td class="color-cell" data-color="{{ form.color_validacion3_4.value }}" onclick="changeColor(this, 'color_validacion3_4')">
+                    {{ form.color_validacion3_4 }}
+                </td>
+                <td>{{ form.porque4_4 }}</td>
+                <td class="color-cell" data-color="{{ form.color_validacion4_4.value }}" onclick="changeColor(this, 'color_validacion4_4')">
+                    {{ form.color_validacion4_4 }}
+                </td>
+                <td>{{ form.porque5_4 }}</td>
+                <td class="color-cell" data-color="{{ form.color_validacion5_4.value }}" onclick="changeColor(this, 'color_validacion5_4')">
+                    {{ form.color_validacion5_4 }}
+                </td>
+                <td class="porque6-col" {% if not form.porque6_4.value %}style="display: none;"{% endif %}>{{ form.porque6_4 }}</td>
+                <td class="color-cell validacion6-col" {% if not form.porque6_4.value %}style="display: none;"{% endif %} data-color="{{ form.color_validacion6_4.value }}" onclick="changeColor(this, 'color_validacion6_4')">
+                    {{ form.color_validacion6_4 }}
+                </td>
+                <td class="porque7-col" {% if not form.porque7_4.value %}style="display: none;"{% endif %}>{{ form.porque7_4 }}</td>
+                <td class="color-cell validacion7-col" {% if not form.porque7_4.value %}style="display: none;"{% endif %} data-color="{{ form.color_validacion7_4.value }}" onclick="changeColor(this, 'color_validacion7_4')">
+                    {{ form.color_validacion7_4 }}
+                </td>
+                <td>{{ form.Raiz_4 }}</td>
+                <td>{{ form.ISHIKAWA_4 }}</td>
+            </tr>
+
+            <!-- Filas 5 a 8 ocultas inicialmente -->
+            <tr id="porque-row-5" style="display: none;">
+                <td>{{ form.modo_falla_paso3_5 }}</td>
+                <td>{{ form.porque1_5 }}</td>
+                <td class="color-cell" data-color="{{ form.color_validacion1_5.value }}" onclick="changeColor(this, 'color_validacion1_5')">
+                    {{ form.color_validacion1_5 }}
+                </td>
+                <td>{{ form.porque2_5 }}</td>
+                <td class="color-cell" data-color="{{ form.color_validacion2_5.value }}" onclick="changeColor(this, 'color_validacion2_5')">
+                    {{ form.color_validacion2_5 }}
+                </td>
+                <td>{{ form.porque3_5 }}</td>
+                <td class="color-cell" data-color="{{ form.color_validacion3_5.value }}" onclick="changeColor(this, 'color_validacion3_5')">
+                    {{ form.color_validacion3_5 }}
+                </td>
+                <td>{{ form.porque4_5 }}</td>
+                <td class="color-cell" data-color="{{ form.color_validacion4_5.value }}" onclick="changeColor(this, 'color_validacion4_5')">
+                    {{ form.color_validacion4_5 }}
+                </td>
+                <td>{{ form.porque5_5 }}</td>
+                <td class="color-cell" data-color="{{ form.color_validacion5_5.value }}" onclick="changeColor(this, 'color_validacion5_5')">
+                    {{ form.color_validacion5_5 }}
+                </td>
+                <td class="porque6-col" {% if not form.porque6_5.value %}style="display: none;"{% endif %}>{{ form.porque6_5 }}</td>
+                <td class="color-cell validacion6-col" {% if not form.porque6_5.value %}style="display: none;"{% endif %} data-color="{{ form.color_validacion6_5.value }}" onclick="changeColor(this, 'color_validacion6_5')">
+                    {{ form.color_validacion6_5 }}
+                </td>
+                <td class="porque7-col" {% if not form.porque7_5.value %}style="display: none;"{% endif %}>{{ form.porque7_5 }}</td>
+                <td class="color-cell validacion7-col" {% if not form.porque7_5.value %}style="display: none;"{% endif %} data-color="{{ form.color_validacion7_5.value }}" onclick="changeColor(this, 'color_validacion7_5')">
+                    {{ form.color_validacion7_5 }}
+                </td>
+                <td>{{ form.Raiz_5 }}</td>
+                <td>{{ form.ISHIKAWA_5 }}</td>
+            </tr>
+
+            <tr id="porque-row-6" style="display: none;">
+                <td>{{ form.modo_falla_paso3_6 }}</td>
+                <td>{{ form.porque1_6 }}</td>
+                <td class="color-cell" data-color="{{ form.color_validacion1_6.value }}" onclick="changeColor(this, 'color_validacion1_6')">
+                    {{ form.color_validacion1_6 }}
+                </td>
+                <td>{{ form.porque2_6 }}</td>
+                <td class="color-cell" data-color="{{ form.color_validacion2_6.value }}" onclick="changeColor(this, 'color_validacion2_6')">
+                    {{ form.color_validacion2_6 }}
+                </td>
+                <td>{{ form.porque3_6 }}</td>
+                <td class="color-cell" data-color="{{ form.color_validacion3_6.value }}" onclick="changeColor(this, 'color_validacion3_6')">
+                    {{ form.color_validacion3_6 }}
+                </td>
+                <td>{{ form.porque4_6 }}</td>
+                <td class="color-cell" data-color="{{ form.color_validacion4_6.value }}" onclick="changeColor(this, 'color_validacion4_6')">
+                    {{ form.color_validacion4_6 }}
+                </td>
+                <td>{{ form.porque5_6 }}</td>
+                <td class="color-cell" data-color="{{ form.color_validacion5_6.value }}" onclick="changeColor(this, 'color_validacion5_6')">
+                    {{ form.color_validacion5_6 }}
+                </td>
+                <td class="porque6-col" {% if not form.porque6_6.value %}style="display: none;"{% endif %}>{{ form.porque6_6 }}</td>
+                <td class="color-cell validacion6-col" {% if not form.porque6_6.value %}style="display: none;"{% endif %} data-color="{{ form.color_validacion6_6.value }}" onclick="changeColor(this, 'color_validacion6_6')">
+                    {{ form.color_validacion6_6 }}
+                </td>
+                <td class="porque7-col" {% if not form.porque7_6.value %}style="display: none;"{% endif %}>{{ form.porque7_6 }}</td>
+                <td class="color-cell validacion7-col" {% if not form.porque7_6.value %}style="display: none;"{% endif %} data-color="{{ form.color_validacion7_6.value }}" onclick="changeColor(this, 'color_validacion7_6')">
+                    {{ form.color_validacion7_6 }}
+                </td>
+                <td>{{ form.Raiz_6 }}</td>
+                <td>{{ form.ISHIKAWA_6 }}</td>
+            </tr>
+
+            <tr id="porque-row-7" style="display: none;">
+                <td>{{ form.modo_falla_paso3_7 }}</td>
+                <td>{{ form.porque1_7 }}</td>
+                <td class="color-cell" data-color="{{ form.color_validacion1_7.value }}" onclick="changeColor(this, 'color_validacion1_7')">
+                    {{ form.color_validacion1_7 }}
+                </td>
+                <td>{{ form.porque2_7 }}</td>
+                <td class="color-cell" data-color="{{ form.color_validacion2_7.value }}" onclick="changeColor(this, 'color_validacion2_7')">
+                    {{ form.color_validacion2_7 }}
+                </td>
+                <td>{{ form.porque3_7 }}</td>
+                <td class="color-cell" data-color="{{ form.color_validacion3_7.value }}" onclick="changeColor(this, 'color_validacion3_7')">
+                    {{ form.color_validacion3_7 }}
+                </td>
+                <td>{{ form.porque4_7 }}</td>
+                <td class="color-cell" data-color="{{ form.color_validacion4_7.value }}" onclick="changeColor(this, 'color_validacion4_7')">
+                    {{ form.color_validacion4_7 }}
+                </td>
+                <td>{{ form.porque5_7 }}</td>
+                <td class="color-cell" data-color="{{ form.color_validacion5_7.value }}" onclick="changeColor(this, 'color_validacion5_7')">
+                    {{ form.color_validacion5_7 }}
+                </td>
+                <td class="porque6-col" {% if not form.porque6_7.value %}style="display: none;"{% endif %}>{{ form.porque6_7 }}</td>
+                <td class="color-cell validacion6-col" {% if not form.porque6_7.value %}style="display: none;"{% endif %} data-color="{{ form.color_validacion6_7.value }}" onclick="changeColor(this, 'color_validacion6_7')">
+                    {{ form.color_validacion6_7 }}
+                </td>
+                <td class="porque7-col" {% if not form.porque7_7.value %}style="display: none;"{% endif %}>{{ form.porque7_7 }}</td>
+                <td class="color-cell validacion7-col" {% if not form.porque7_7.value %}style="display: none;"{% endif %} data-color="{{ form.color_validacion7_7.value }}" onclick="changeColor(this, 'color_validacion7_7')">
+                    {{ form.color_validacion7_7 }}
+                </td>
+                <td>{{ form.Raiz_7 }}</td>
+                <td>{{ form.ISHIKAWA_7 }}</td>
+            </tr>
+
+            <tr id="porque-row-8" style="display: none;">
+                <td>{{ form.modo_falla_paso3_8 }}</td>
+                <td>{{ form.porque1_8 }}</td>
+                <td class="color-cell" data-color="{{ form.color_validacion1_8.value }}" onclick="changeColor(this, 'color_validacion1_8')">
+                    {{ form.color_validacion1_8 }}
+                </td>
+                <td>{{ form.porque2_8 }}</td>
+                <td class="color-cell" data-color="{{ form.color_validacion2_8.value }}" onclick="changeColor(this, 'color_validacion2_8')">
+                    {{ form.color_validacion2_8 }}
+                </td>
+                <td>{{ form.porque3_8 }}</td>
+                <td class="color-cell" data-color="{{ form.color_validacion3_8.value }}" onclick="changeColor(this, 'color_validacion3_8')">
+                    {{ form.color_validacion3_8 }}
+                </td>
+                <td>{{ form.porque4_8 }}</td>
+                <td class="color-cell" data-color="{{ form.color_validacion4_8.value }}" onclick="changeColor(this, 'color_validacion4_8')">
+                    {{ form.color_validacion4_8 }}
+                </td>
+                <td>{{ form.porque5_8 }}</td>
+                <td class="color-cell" data-color="{{ form.color_validacion5_8.value }}" onclick="changeColor(this, 'color_validacion5_8')">
+                    {{ form.color_validacion5_8 }}
+                </td>
+                <td class="porque6-col" {% if not form.porque6_8.value %}style="display: none;"{% endif %}>{{ form.porque6_8 }}</td>
+                <td class="color-cell validacion6-col" {% if not form.porque6_8.value %}style="display: none;"{% endif %} data-color="{{ form.color_validacion6_8.value }}" onclick="changeColor(this, 'color_validacion6_8')">
+                    {{ form.color_validacion6_8 }}
+                </td>
+                <td class="porque7-col" {% if not form.porque7_8.value %}style="display: none;"{% endif %}>{{ form.porque7_8 }}</td>
+                <td class="color-cell validacion7-col" {% if not form.porque7_8.value %}style="display: none;"{% endif %} data-color="{{ form.color_validacion7_8.value }}" onclick="changeColor(this, 'color_validacion7_8')">
+                    {{ form.color_validacion7_8 }}
+                </td>
+                <td>{{ form.Raiz_8 }}</td>
+                <td>{{ form.ISHIKAWA_8 }}</td>
+            </tr>
+
+        </table>
+    </div>
+    <script>
+        // Función para cambiar el color de las celdas
+        function changeColor(cell, inputId) {
+            const colors = ['white', 'green', 'red'];
+            let currentColor = cell.getAttribute('data-color');
+            let nextColorIndex = (colors.indexOf(currentColor) + 1) % colors.length;
+            let nextColor = colors[nextColorIndex];
+    
+            // Cambiar el color de fondo de la celda
+            cell.style.backgroundColor = nextColor;
+            cell.setAttribute('data-color', nextColor);
+    
+            // Actualizar el valor en el campo de formulario oculto
+            document.getElementById('id_' + inputId).value = nextColor;
+    
+            // Actualizar el estado del checkbox de validación si existe
+            let checkboxId = inputId.replace('color_validacion', 'validado');
+            let checkbox = document.getElementById('id_' + checkboxId);
+            if (checkbox) {
+                checkbox.checked = (nextColor === 'green');
+            }
+        }
+    
+        // Restaurar los colores iniciales basados en los valores almacenados
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.color-cell').forEach(cell => {
+                let savedColor = cell.getAttribute('data-color');
+                if (savedColor) {
+                    cell.style.backgroundColor = savedColor;  // Restaurar el color de la celda
+                }
+            });
+    
+            let totalRows = 8;  // Número total de filas
+            let currentRow = 1;  // Filas visibles inicialmente
+            let porqueCount = 5; // Comenzamos con 5 columnas de "¿POR QUÉ?"
+    
+            // Función para ocultar filas sin datos en las columnas "¿POR QUÉ?"
+            function manageRows() {
+                for (let i = 2; i <= totalRows; i++) {
+                    let row = document.getElementById(`porque-row-${i}`);
+                    
+                    // Solo verificar las columnas "¿POR QUÉ?" (No validación)
+                    let porqueInputs = row.querySelectorAll('[id^="id_porque"]'); // Busca campos de las columnas "¿POR QUÉ?"
+                    let hasPorqueData = Array.from(porqueInputs).some(input => input.value.trim() !== ""); // Verifica si algún campo "¿POR QUÉ?" tiene valor
+    
+                    // Mostrar la fila si tiene datos en alguna columna "¿POR QUÉ?"
+                    if (hasPorqueData) {
+                        row.style.display = '';  // Mostrar la fila con datos
+                        currentRow = i;  // Actualizar el número de la última fila visible
+                    } else {
+                        row.style.display = 'none';  // Ocultar la fila sin datos
+                    }
+                }
+            }
+    
+            // Mostrar las filas que tienen datos al cargar la página
+            manageRows();
+    
+            // Función para verificar y mostrar columnas 6 y 7 si tienen información
+            function checkAndShowColumns() {
+                let showPorque6 = false;
+                let showPorque7 = false;
+    
+                for (let i = 1; i <= totalRows; i++) {
+                    const porque6 = document.querySelector(`#porque-row-${i} .porque6-col`);
+                    const porque7 = document.querySelector(`#porque-row-${i} .porque7-col`);
+                    
+                    const porque6Input = porque6 ? porque6.querySelector('[id^="id_porque"]') : null; // Solo verificar campos "¿POR QUÉ?"
+                    const porque7Input = porque7 ? porque7.querySelector('[id^="id_porque"]') : null; // Solo verificar campos "¿POR QUÉ?"
+    
+                    // Verificar si hay datos en la columna 6
+                    if (porque6Input && porque6Input.value.trim() !== '') {
+                        showPorque6 = true;
+                        porque6.style.display = '';  // Mostrar la columna 6 en todas las filas
+                    }
+    
+                    // Verificar si hay datos en la columna 7
+                    if (porque7Input && porque7Input.value.trim() !== '') {
+                        showPorque7 = true;
+                        porque7.style.display = '';  // Mostrar la columna 7 en todas las filas
+                    }
+                }
+    
+                // Mostrar la columna 6 si hay datos en alguna fila
+                if (showPorque6) {
+                    document.querySelectorAll('.porque6-col').forEach(col => col.style.display = '');
+                    document.querySelectorAll('.validacion6-col').forEach(col => col.style.display = '');
+                    porqueCount = 6;
+                }
+    
+                // Mostrar la columna 7 si hay datos en alguna fila
+                if (showPorque7) {
+                    document.querySelectorAll('.porque7-col').forEach(col => col.style.display = '');
+                    document.querySelectorAll('.validacion7-col').forEach(col => col.style.display = '');
+                    porqueCount = 7;
+                }
+    
+                // Ajustar el botón de agregar columnas
+                const addPorqueBtn = document.getElementById('addPorqueBtn');
+                if (porqueCount >= 7) {
+                    addPorqueBtn.style.display = 'none';
+                } else if (porqueCount === 6) {
+                    addPorqueBtn.textContent = 'Agregar POR QUÉ?';
+                }
+            }
+    
+            // Verificar y mostrar las columnas 6 y 7 al cargar la página
+            checkAndShowColumns();
+    
+            // Botón para mostrar más filas
+            const showMoreRowsBtn = document.getElementById('showMoreRows');
+    
+            showMoreRowsBtn.addEventListener('click', function() {
+                currentRow++;
+                const nextRow = document.getElementById(`porque-row-${currentRow}`);
+                if (nextRow) {
+                    nextRow.style.display = ''; // Mostrar la siguiente fila oculta
+                }
+    
+                // Si ya llegamos al total de filas, ocultar el botón
+                if (currentRow >= totalRows) {
+                    showMoreRowsBtn.style.display = 'none';
+                }
+            });
+    
+            // Evento para agregar más "¿POR QUÉ?" columnas
+            const addPorqueBtn = document.getElementById('addPorqueBtn');
+            addPorqueBtn.addEventListener('click', function() {
+                if (porqueCount < 7) {
+                    porqueCount++;
+                    const porqueCol = document.querySelectorAll(`.porque${porqueCount}-col`);
+                    const validacionCol = document.querySelectorAll(`.validacion${porqueCount}-col`);
+    
+                    porqueCol.forEach(col => col.style.display = '');
+                    validacionCol.forEach(col => col.style.display = '');
+    
+                    if (porqueCount === 6) {
+                        addPorqueBtn.textContent = 'Agregar POR QUÉ?';
+                    } else if (porqueCount === 7) {
+                        addPorqueBtn.style.display = 'none';
+                    }
+                }
+            });
+    
+        });
+    
+         document.addEventListener("DOMContentLoaded", function() {
+            const modoFallaPaso2 = document.getElementById("id_modo_falla_paso2");
+            const modoFallaPaso3 = document.getElementById("id_modo_falla_paso3");
+    
+            // Verificar que ambos campos existan
+            if (modoFallaPaso2 && modoFallaPaso3) {
+                // Copiar el valor del Paso 2 al Paso 3 al cargar la página
+                modoFallaPaso3.value = modoFallaPaso2.value;
+    
+                // Escuchar cambios en el Paso 2 para actualizar automáticamente el Paso 3
+                modoFallaPaso2.addEventListener('input', function() {
+                    modoFallaPaso3.value = modoFallaPaso2.value;
+                });
+            } else {
+                console.error('Campos modo_falla_paso2 o modo_falla_paso3 no encontrados');
+            }
+        });
+    </script>
+</div>
+
+
+
+<!-- Sección Paso 4: Contramedidas y Seguimiento -->
+<div id="paso4-section" class="recuadro-paso mt-4" style="border: 1px solid #00C851;">
+    <div class="paso-header" style="background-color: #00C851; color: white; padding: 10px 15px; border-radius: 5px;">
+        <h2 class="collapsible" style="cursor: pointer; margin: 0;" onclick="toggleVisibility('contenido-paso4')">
+            <span style="margin-right: 10px;">&#x25BC;</span> Paso 4: Contramedidas y Seguimiento
+        </h2>
+    </div>
+    <div id="contenido-paso4">
+        <div class="sub-section" style="margin-bottom: 20px;">
+            <div><h1></h1></div>
+            
+            <!-- Subcategoría Acciones Correctivas -->
+            <div class="sub-header" style="background-color: #00C851; color: white; padding: 10px 15px; border-radius: 5px;">
+                <h3 style="margin: 0;">Acciones Correctivas</h3>
+            </div>
+            
+            <div class="sub-content" style="padding: 10px; border: 1px solid #00C851; border-radius: 5px;">
+                <button type="button" id="addAccionCorrectiva" class="btn btn-primary mt-2" style="margin-left: 50px; margin-bottom: 8px;">Agregar Acción Correctiva</button>
+                <div class="form-row">
+                    <table id="AccionesTable">
+                        <tr>
+                            <th>Acción Correctiva</th>
+                            <th>Responsable</th>
+                            <th>Fecha Compromiso</th>
+                        </tr>
+
+                        <!-- Primera fila visible -->
+                        <tr id="Acciones-row">
+                            <td>{{ form.Accion_correctiva }}</td>
+                            <td>
+                                <select id="Responsable1" name="Responsable1" class="select2">
+                                    {% for miembro in opciones_miembros %}
+                                        <option value="{{ miembro.id }}" data-email="{{ miembro.email }}" {% if miembro.id in form.Responsable1.value %}selected{% endif %}>
+                                            {{ miembro.nombre }}
+                                        </option>
+                                    {% endfor %}
+                                </select>
+                            </td>
+                            <td>
+                                <input type="date" id="Fecha_compromiso1" name="Fecha_compromiso1" class="form-control" value="{{ form.Fecha_compromiso1.value|date:'Y-m-d' }}">
+                            </td>
+                        </tr>
+
+                        <!-- Filas ocultas inicialmente -->
+                        <tr id="Acciones-row2" style="display: none;">
+                            <td>{{ form.Accion_correctiva_2 }}</td>
+                            <td>
+                                <select id="Responsable1_2" name="Responsable1_2" class="select2">
+                                    {% for miembro in opciones_miembros %}
+                                        <option value="{{ miembro.id }}" data-email="{{ miembro.email }}" {% if miembro.id in form.Responsable1_2.value %}selected{% endif %}>
+                                            {{ miembro.nombre }}
+                                        </option>
+                                    {% endfor %}
+                                </select>
+                            </td>
+                            <td>
+                                <input type="date" id="Fecha_compromiso1_2" name="Fecha_compromiso1_2" class="form-control" value="{{ form.Fecha_compromiso1_2.value|date:'Y-m-d' }}">
+                            </td>
+                        </tr>
+
+                        <tr id="Acciones-row3" style="display: none;">
+                            <td>{{ form.Accion_correctiva_3 }}</td>
+                            <td>
+                                <select id="Responsable1_3" name="Responsable1_3" class="select2">
+                                    {% for miembro in opciones_miembros %}
+                                        <option value="{{ miembro.id }}" data-email="{{ miembro.email }}" {% if miembro.id in form.Responsable1_3.value %}selected{% endif %}>
+                                            {{ miembro.nombre }}
+                                        </option>
+                                    {% endfor %}
+                                </select>
+                            </td>
+                            <td>
+                                <input type="date" id="Fecha_compromiso1_3" name="Fecha_compromiso1_3" class="form-control" value="{{ form.Fecha_compromiso1_3.value|date:'Y-m-d' }}">
+                            </td>
+                        </tr>
+
+                        <tr id="Acciones-row4" style="display: none;">
+                            <td>{{ form.Accion_correctiva_4 }}</td>
+                            <td>
+                                <select id="Responsable1_4" name="Responsable1_4" class="select2">
+                                    {% for miembro in opciones_miembros %}
+                                        <option value="{{ miembro.id }}" data-email="{{ miembro.email }}" {% if miembro.id in form.Responsable1_4.value %}selected{% endif %}>
+                                            {{ miembro.nombre }}
+                                        </option>
+                                    {% endfor %}
+                                </select>
+                            </td>
+                            <td>
+                                <input type="date" id="Fecha_compromiso1_4" name="Fecha_compromiso1_4" class="form-control" value="{{ form.Fecha_compromiso1_4.value|date:'Y-m-d' }}">
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+            <div><h1></h1></div>
+
+            <!-- Subcategoría Acciones Preventivas -->
+            <div class="sub-header" style="background-color: #00C851; color: white; padding: 10px 15px; border-radius: 5px;">
+                <h3 style="margin: 0;">Acciones Preventivas</h3>
+            </div>
+            
+            <div class="sub-content" style="padding: 10px; border: 1px solid #00C851; border-radius: 5px;">
+                <button type="button" id="addAccionPreventiva" class="btn btn-primary mt-2" style="margin-left: 50px; margin-bottom: 8px;">Agregar Acción Preventiva</button>
+
+                
+                <!-- Contenedor de la tabla centrado -->
+                <div class="form-row" style="display: flex; justify-content: center;">
+                    <table id="AccionesTable" >
+                        <thead>
+                            <tr>
+                                <th colspan="4">ACCIONES (CONTRAMEDIDAS Y SEGUIMIENTO)</th>
+                                <th colspan="2">VALIDACIÓN DE LA ACCIÓN</th>
+                            </tr>
+                            <tr>
+                                <th>ACCIÓN PREVENTIVA</th>
+                                <th>RESPONSABLE</th>
+                                <th>FECHA COMPROMISO</th>
+                                <th>TIPO</th>
+                                <th>FECHA CIERRE</th>
+                                <th>MOC</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr id="accionesPRE-row">
+                                <td>{{ form.Accion_Preventiva }}</td>
+                                <td>
+                                    <select id="Responsable2" name="Responsable2" class="select2">
+                                        {% for miembro in opciones_miembros %}
+                                            <option value="{{ miembro.id }}" data-email="{{ miembro.email }}" {% if miembro.id in form.Responsable2.value %}selected{% endif %}>
+                                                {{ miembro.nombre }}
+                                            </option>
+                                        {% endfor %}
+                                    </select>
+                                </td>
+                                <td>
+                                    <input type="date" id="Fecha_compromiso2" name="Fecha_compromiso2" class="form-control" value="{{ form.Fecha_compromiso2.value|date:'Y-m-d' }}">
+                                </td>
+                                <td>{{ form.tipo }}</td>
+                                <td>
+                                    <input type="date" id="Fecha_cierre_paso4" name="Fecha_cierre_paso4" class="form-control" value="{{ form.Fecha_cierre_paso4.value|date:'Y-m-d' }}">
+                                </td>
+                                <td>{{ form.MOC }}</td>
+                            </tr>
+
+                            <tr id="accionesPRE-row2" style="display: none;">
+                                <td>{{ form.Accion_Preventiva_2 }}</td>
+                                <td>
+                                    <select id="Responsable2_2" name="Responsable2_2" class="select2">
+                                        {% for miembro in opciones_miembros %}
+                                            <option value="{{ miembro.id }}" data-email="{{ miembro.email }}" {% if miembro.id in form.Responsable2_2.value %}selected{% endif %}>
+                                                {{ miembro.nombre }}
+                                            </option>
+                                        {% endfor %}
+                                    </select>
+                                </td>
+                                <td>
+                                    <input type="date" id="Fecha_compromiso2_2" name="Fecha_compromiso2_2" class="form-control" value="{{ form.Fecha_compromiso2_2.value|date:'Y-m-d' }}">
+                                </td>
+                                <td>{{ form.tipo_2 }}</td>
+                                <td>
+                                    <input type="date" id="Fecha_cierre_paso4_2" name="Fecha_cierre_paso4_2" class="form-control" value="{{ form.Fecha_cierre_paso4_2.value|date:'Y-m-d' }}">
+                                </td>
+                                <td>{{ form.MOC_2 }}</td>
+                            </tr>
+
+                            <tr id="accionesPRE-row3" style="display: none;">
+                                <td>{{ form.Accion_Preventiva_3 }}</td>
+                                <td>
+                                    <select id="Responsable2_3" name="Responsable2_3" class="select2">
+                                        {% for miembro in opciones_miembros %}
+                                            <option value="{{ miembro.id }}" data-email="{{ miembro.email }}" {% if miembro.id in form.Responsable2_3.value %}selected{% endif %}>
+                                                {{ miembro.nombre }}
+                                            </option>
+                                        {% endfor %}
+                                    </select>
+                                </td>
+                                <td>
+                                    <input type="date" id="Fecha_compromiso2_3" name="Fecha_compromiso2_3" class="form-control" value="{{ form.Fecha_compromiso2_3.value|date:'Y-m-d' }}">
+                                </td>
+                                <td>{{ form.tipo_3 }}</td>
+                                <td>
+                                    <input type="date" id="Fecha_cierre_paso4_3" name="Fecha_cierre_paso4_3" class="form-control" value="{{ form.Fecha_cierre_paso4_3.value|date:'Y-m-d' }}">
+                                </td>
+                                <td>{{ form.MOC_3 }}</td>
+                            </tr>
+
+                            <tr id="accionesPRE-row4" style="display: none;">
+                                <td>{{ form.Accion_Preventiva_4 }}</td>
+                                <td>
+                                    <select id="Responsable2_4" name="Responsable2_4" class="select2">
+                                        {% for miembro in opciones_miembros %}
+                                            <option value="{{ miembro.id }}" data-email="{{ miembro.email }}" {% if miembro.id in form.Responsable2_4.value %}selected{% endif %}>
+                                                {{ miembro.nombre }}
+                                            </option>
+                                        {% endfor %}
+                                    </select>
+                                </td>
+                                <td>
+                                    <input type="date" id="Fecha_compromiso2_4" name="Fecha_compromiso2_4" class="form-control" value="{{ form.Fecha_compromiso2_4.value|date:'Y-m-d' }}">
+                                </td>
+                                <td>{{ form.tipo_4 }}</td>
+                                <td>
+                                    <input type="date" id="Fecha_cierre_paso4_4" name="Fecha_cierre_paso4_4" class="form-control" value="{{ form.Fecha_cierre_paso4_4.value|date:'Y-m-d' }}">
+                                </td>
+                                <td>{{ form.MOC_4 }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <br>
+            <!-- Ícono con popover que mostrará la imagen -->
+            <div class="popover-container">
+                <i class="fas fa-question-circle"></i>
+                <div class="popover-content">
+                    <img src="{% static 'images/Referencia.png' %}" alt="Descripción de la imagen">
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            let rowCountCorrectivas = 1;
+            let rowCountPreventivas = 1;
+            const maxRows = 4;
+        
+            // Función para mostrar todas las filas hasta la última que tenga datos en "Acciones Correctivas"
+            function mostrarFilasCorrectivasHastaLaUltima() {
+                for (let i = maxRows; i >= 1; i--) {
+                    const accionInput = document.getElementById(`id_Accion_correctiva_${i}`);
+                    if (accionInput && accionInput.value.trim() !== "") {
+                        // Si la fila `i` tiene datos, mostramos todas las anteriores hasta esa fila
+                        for (let j = 1; j <= i; j++) {
+                            const fila = document.getElementById(`Acciones-row${j}`);
+                            if (fila) {
+                                fila.style.display = ''; // Mostrar la fila
+                            }
+                        }
+                        rowCountCorrectivas = i; // Actualizamos el contador con la última fila visible
+                        break; // No necesitamos seguir buscando más filas, ya que hemos encontrado la última con datos
+                    }
+                }
+            }
+        
+            // Función para mostrar todas las filas hasta la última que tenga datos en "Acciones Preventivas"
+            function mostrarFilasPreventivasHastaLaUltima() {
+                for (let i = maxRows; i >= 1; i--) {
+                    const accionInput = document.getElementById(`id_Accion_Preventiva_${i}`);
+                    if (accionInput && accionInput.value.trim() !== "") {
+                        // Si la fila `i` tiene datos, mostramos todas las anteriores hasta esa fila
+                        for (let j = 1; j <= i; j++) {
+                            const fila = document.getElementById(`accionesPRE-row${j}`);
+                            if (fila) {
+                                fila.style.display = ''; // Mostrar la fila
+                            }
+                        }
+                        rowCountPreventivas = i; // Actualizamos el contador con la última fila visible
+                        break; // No necesitamos seguir buscando más filas, ya que hemos encontrado la última con datos
+                    }
+                }
+            }
+        
+            // Evento para mostrar más filas en Acciones Correctivas
+            document.getElementById('addAccionCorrectiva').addEventListener('click', function() {
+                if (rowCountCorrectivas < maxRows) {
+                    rowCountCorrectivas++;
+                    const nextRow = document.getElementById(`Acciones-row${rowCountCorrectivas}`);
+                    if (nextRow) {
+                        nextRow.style.display = ''; // Mostrar la siguiente fila oculta
+                    }
+        
+                    // Si ya llegamos al total de filas, ocultar el botón
+                    if (rowCountCorrectivas >= maxRows) {
+                        this.style.display = 'none';
+                    }
+                }
+            });
+        
+            // Mostrar filas con datos en Acciones Correctivas al cargar la página
+            mostrarFilasCorrectivasHastaLaUltima();
+        
+            // Evento para mostrar más filas en Acciones Preventivas
+            document.getElementById('addAccionPreventiva').addEventListener('click', function() {
+                if (rowCountPreventivas < maxRows) {
+                    rowCountPreventivas++;
+                    const nextRow = document.getElementById(`accionesPRE-row${rowCountPreventivas}`);
+                    if (nextRow) {
+                        nextRow.style.display = ''; // Mostrar la siguiente fila oculta
+                    }
+        
+                    // Si ya llegamos al total de filas, ocultar el botón
+                    if (rowCountPreventivas >= maxRows) {
+                        this.style.display = 'none';
+                    }
+                }
+            });
+        
+            // Mostrar filas con datos en Acciones Preventivas al cargar la página
+            mostrarFilasPreventivasHastaLaUltima();
+        });
+    </script>
+</div>
+
+
+
+
+
+        <!-- Sección Paso 5: Estandarización y Expansión -->
+<div id="paso5-section" class="recuadro-paso mt-4" style="border: 1px solid #D86B20;">
+    <div class="paso-header" style="background-color: #D86B20; color: white; padding: 10px 15px; border-radius: 5px;">
+        <h2 class="collapsible" style="cursor: pointer; margin: 0;" onclick="toggleVisibility('contenido-paso5')">
+            <span style="margin-right: 10px;">&#x25BC;</span> Paso 5: Estandarización y Expansión
+        </h2>
+    </div>
+    <div><h1></h1></div>
+    <div id="contenido-paso5">
+        <!-- Bloque 1: Estandarización -->
+        <div class="sub-section" style="margin-bottom: 20px;">
+            <div class="sub-header" style="background-color: #D86B20; color: white; padding: 10px 15px; border-radius: 5px;">
+                <h3 style="margin: 0;">Estandarización</h3>
+            </div>
+            <div class="sub-content" style="padding: 10px; border: 1px solid #D86B20; border-radius: 5px;">
+                <!-- Botón para agregar filas en Estandarización -->
+                <button type="button" id="addEstandarizacion" class="btn btn-primary mt-2" style="margin-bottom: 8px;">Agregar Acción de Estandarización</button>
+                <div class="form-row" style="display: flex; justify-content: center;">
+                    <table id="AccionesTable" >
+                        <thead>
+                            <tr>
+                                <th>ACCIÓN DE ESTANDARIZACIÓN</th>
+                                <th>RESPONSABLE</th>
+                                <th>FECHA COMPROMISO</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- IDs de filas corregidos -->
+                            <tr id="estandarizacion-row1">
+                                <td>{{ form.Estandarizacion }}</td>
+                                <td>
+                                    <select id="Responsable3_1" name="Responsable3_1" class="select2">
+                                        {% for miembro in opciones_miembros %}
+                                            <option value="{{ miembro.id }}" data-email="{{ miembro.email }}" {% if miembro.id in form.Responsable3_1.value %}selected{% endif %}>
+                                                {{ miembro.nombre }}
+                                            </option>
+                                        {% endfor %}
+                                    </select>
+                                </td>
+                                <td>
+                                    <input type="date" id="Fecha_compromiso3_1" name="Fecha_compromiso3_1" class="form-control" value="{{ form.Fecha_compromiso3_1.value|date:'Y-m-d' }}">
+                                </td>
+                            </tr>
+
+                            <tr id="estandarizacion-row2" style="display: none;">
+                                <td>{{ form.Estandarizacion_2 }}</td>
+                                <td>
+                                    <select id="Responsable3_2" name="Responsable3_2" class="select2">
+                                        {% for miembro in opciones_miembros %}
+                                            <option value="{{ miembro.id }}" data-email="{{ miembro.email }}" {% if miembro.id in form.Responsable3_2.value %}selected{% endif %}>
+                                                {{ miembro.nombre }}
+                                            </option>
+                                        {% endfor %}
+                                    </select>
+                                </td>
+                                <td>
+                                    <input type="date" id="Fecha_compromiso3_2" name="Fecha_compromiso3_2" class="form-control" value="{{ form.Fecha_compromiso3_2.value|date:'Y-m-d' }}">
+                                </td>
+                            </tr>
+
+                            <tr id="estandarizacion-row3" style="display: none;">
+                                <td>{{ form.Estandarizacion_3 }}</td>
+                                <td>
+                                    <select id="Responsable3_3" name="Responsable3_3" class="select2">
+                                        {% for miembro in opciones_miembros %}
+                                            <option value="{{ miembro.id }}" data-email="{{ miembro.email }}" {% if miembro.id in form.Responsable3_3.value %}selected{% endif %}>
+                                                {{ miembro.nombre }}
+                                            </option>
+                                        {% endfor %}
+                                    </select>
+                                </td>
+                                <td>
+                                    <input type="date" id="Fecha_compromiso3_3" name="Fecha_compromiso3_3" class="form-control" value="{{ form.Fecha_compromiso3_3.value|date:'Y-m-d' }}">
+                                </td>
+                            </tr>
+
+                            <tr id="estandarizacion-row4" style="display: none;">
+                                <td>{{ form.Estandarizacion_4 }}</td>
+                                <td>
+                                    <select id="Responsable3_4" name="Responsable3_4" class="select2">
+                                        {% for miembro in opciones_miembros %}
+                                            <option value="{{ miembro.id }}" data-email="{{ miembro.email }}" {% if miembro.id in form.Responsable3_4.value %}selected{% endif %}>
+                                                {{ miembro.nombre }}
+                                            </option>
+                                        {% endfor %}
+                                    </select>
+                                </td>
+                                <td>
+                                    <input type="date" id="Fecha_compromiso3_4" name="Fecha_compromiso3_4" class="form-control" value="{{ form.Fecha_compromiso3_4.value|date:'Y-m-d' }}">
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bloque 2: Expansión -->
+        <div class="sub-section" style="margin-bottom: 20px;">
+            <div class="sub-header" style="background-color: #D86B20; color: white; padding: 10px 15px; border-radius: 5px;">
+                <h3 style="margin: 0;">Expansión</h3>
+            </div>
+            <div class="sub-content" style="padding: 10px; border: 1px solid #D86B20; border-radius: 5px;">
+                <!-- Botón para agregar filas en Expansión -->
+                <button type="button" id="addExpansion" class="btn btn-primary mt-2" style="margin-bottom: 8px;">Agregar Acción de Expansión</button>
+                <div class="form-row" style="display: flex; justify-content: center;">
+                    <table id="AccionesTable">
+                        <thead>
+                            <tr>
+                                <th>ACCIÓN DE EXPANSIÓN</th>
+                                <th>RESPONSABLE</th>
+                                <th>FECHA COMPROMISO</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr id="expansion-row1">
+                                <td>{{ form.Expansion }}</td>
+                                <td>
+                                    <select id="Responsable4_1" name="Responsable4_1" class="select2">
+                                        {% for miembro in opciones_miembros %}
+                                            <option value="{{ miembro.id }}" data-email="{{ miembro.email }}" {% if miembro.id in form.Responsable4_1.value %}selected{% endif %}>
+                                                {{ miembro.nombre }}
+                                            </option>
+                                        {% endfor %}
+                                    </select>
+                                </td>
+                                <td>
+                                    <input type="date" id="Fecha_compromiso4_1" name="Fecha_compromiso4_1" class="form-control" value="{{ form.Fecha_compromiso4_1.value|date:'Y-m-d' }}">
+                                </td>
+                            </tr>
+
+                            <tr id="expansion-row2" style="display: none;">
+                                <td>{{ form.Expansion_2 }}</td>
+                                <td>
+                                    <select id="Responsable4_2" name="Responsable4_2" class="select2">
+                                        {% for miembro in opciones_miembros %}
+                                            <option value="{{ miembro.id }}" data-email="{{ miembro.email }}" {% if miembro.id in form.Responsable4_2.value %}selected{% endif %}>
+                                                {{ miembro.nombre }}
+                                            </option>
+                                        {% endfor %}
+                                    </select>
+                                </td>
+                                <td>
+                                    <input type="date" id="Fecha_compromiso4_2" name="Fecha_compromiso4_2" class="form-control" value="{{ form.Fecha_compromiso4_2.value|date:'Y-m-d' }}">
+                                </td>
+                            </tr>
+
+                            <tr id="expansion-row3" style="display: none;">
+                                <td>{{ form.Expansion_3 }}</td>
+                                <td>
+                                    <select id="Responsable4_3" name="Responsable4_3" class="select2">
+                                        {% for miembro in opciones_miembros %}
+                                            <option value="{{ miembro.id }}" data-email="{{ miembro.email }}" {% if miembro.id in form.Responsable4_3.value %}selected{% endif %}>
+                                                {{ miembro.nombre }}
+                                            </option>
+                                        {% endfor %}
+                                    </select>
+                                </td>
+                                <td>
+                                    <input type="date" id="Fecha_compromiso4_3" name="Fecha_compromiso4_3" class="form-control" value="{{ form.Fecha_compromiso4_3.value|date:'Y-m-d' }}">
+                                </td>
+                            </tr>
+
+                            <tr id="expansion-row4" style="display: none;">
+                                <td>{{ form.Expansion_4 }}</td>
+                                <td>
+                                    <select id="Responsable4_4" name="Responsable4_4" class="select2">
+                                        {% for miembro in opciones_miembros %}
+                                            <option value="{{ miembro.id }}" data-email="{{ miembro.email }}" {% if miembro.id in form.Responsable4_4.value %}selected{% endif %}>
+                                                {{ miembro.nombre }}
+                                            </option>
+                                        {% endfor %}
+                                    </select>
+                                </td>
+                                <td>
+                                    <input type="date" id="Fecha_compromiso4_4" name="Fecha_compromiso4_4" class="form-control" value="{{ form.Fecha_compromiso4_4.value|date:'Y-m-d' }}">
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bloque 3: Expansión a... -->
+        <div class="sub-section" style="margin-bottom: 20px;">
+            <div class="sub-header" style="background-color: #D86B20; color: white; padding: 10px 15px; border-radius: 5px;">
+                <h3 style="margin: 0;">Expansión a...</h3>
+            </div>
+
+            <div class="form-group">
+                <label for="areas_aplicacion">¿A qué áreas podría aplicar la mejora realizada?</label>
+                {{ form.areas_aplicacion }}
+            </div>
+
+                
+            
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            let rowCountEstandarizacion = 1;
+            let rowCountExpansion = 1;
+            const maxRows = 4;
+    
+            // Función para mostrar filas con datos en Estandarización
+            function mostrarFilasConDatosEstandarizacion() {
+                for (let i = 1; i <= maxRows; i++) {
+                    const estandarizacionInput = document.querySelector(`#estandarizacion-row${i} [name^='Estandarizacion']`);
+    
+                    if (estandarizacionInput && estandarizacionInput.value.trim() !== '') {
+                        document.getElementById(`estandarizacion-row${i}`).style.display = ''; // Mostrar fila con datos
+                        rowCountEstandarizacion = i; // Actualizar el contador de filas visibles
+                    }
+                }
+            }
+    
+            // Función para mostrar filas con datos en Expansión
+            function mostrarFilasConDatosExpansion() {
+                for (let i = 1; i <= maxRows; i++) {
+                    const expansionInput = document.querySelector(`#expansion-row${i} [name^='Expansion']`);
+    
+                    if (expansionInput && expansionInput.value.trim() !== '') {
+                        document.getElementById(`expansion-row${i}`).style.display = ''; // Mostrar fila con datos
+                        rowCountExpansion = i; // Actualizar el contador de filas visibles
+                    }
+                }
+            }
+    
+            // Evento para agregar más filas en Estandarización
+            document.getElementById('addEstandarizacion').addEventListener('click', function() {
+                if (rowCountEstandarizacion < maxRows) {
+                    rowCountEstandarizacion++;
+                    document.getElementById(`estandarizacion-row${rowCountEstandarizacion}`).style.display = '';
+                    if (rowCountEstandarizacion >= maxRows) {
+                        this.style.display = 'none'; // Ocultar el botón cuando se alcance el máximo
+                    }
+                }
+            });
+    
+            // Evento para agregar más filas en Expansión
+            document.getElementById('addExpansion').addEventListener('click', function() {
+                if (rowCountExpansion < maxRows) {
+                    rowCountExpansion++;
+                    document.getElementById(`expansion-row${rowCountExpansion}`).style.display = '';
+                    if (rowCountExpansion >= maxRows) {
+                        this.style.display = 'none'; // Ocultar el botón cuando se alcance el máximo
+                    }
+                }
+            });
+    
+            // Mostrar filas con datos al cargar la página
+            mostrarFilasConDatosEstandarizacion();
+            mostrarFilasConDatosExpansion();
+    
+            // Ocultar botón si se alcanzó el máximo de filas
+            if (rowCountEstandarizacion >= maxRows) {
+                document.getElementById('addEstandarizacion').style.display = 'none';
+            }
+    
+            if (rowCountExpansion >= maxRows) {
+                document.getElementById('addExpansion').style.display = 'none';
+            }
+        });
+    </script>
+    
+</div>
+
+
+
+
+        {% endif %} <!-- Este es el cierre del "if" que se abrió al principio -->
+
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary" name="seccion1">Guardar y Continuar</button>
+        </div>
+    </form>
+</div>
+
+
+
+
+
+
+<!-- Incluir Select2 y jQuery -->
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
+
+<!-- Inicialización de Select2 y otros scripts -->
+<script type="text/javascript">
+    $(document).ready(function() {
+        function formatState(state) {
+            if (!state.id) {
+                return state.text;
+            }
+            var email = $(state.element).data('email');
+            var $state = $('<span><strong>' + state.text + '</strong><br/><small>' + email + '</small></span>');
+            return $state;
+        }
+
+        $('#miembros_equipo').select2({
+            placeholder: "Selecciona miembros del equipo",
+            templateResult: formatState,
+            templateSelection: formatState,
+            allowClear: true
+        });
+
+        $(document).ready(function() {
+        function formatState(state) {
+            if (!state.id) {
+                return state.text;
+            }
+            var email = $(state.element).data('email');
+            var $state = $('<span><strong>' + state.text + '</strong><br/><small>' + email + '</small></span>');
+            return $state;
+        }
+
+        // Inicializar Select2 para la selección de miembros del equipo
+        $('#miembros_equipo').select2({
+            placeholder: "Selecciona miembros del equipo",
+            templateResult: formatState,
+            templateSelection: formatState,
+            allowClear: true
+        });
+
+
+        // Establecer la fecha de inicio con la fecha de hoy
+        var today = new Date();
+        var day = ("0" + today.getDate()).slice(-2);
+        var month = ("0" + (today.getMonth() + 1)).slice(-2);
+        var todayFormatted = today.getFullYear() + "-" + month + "-" + day;
+        $('#fecha_inicio').val(todayFormatted);
+    });
+
+
+    });
+
+
+    function toggleVisibility(id) {
+    var content = document.getElementById(id);
+    
+    // Asegurarse de que el elemento existe antes de modificarlo
+    if (content) {
+        var icon = content.previousElementSibling.querySelector('span');
+        if (content.style.display === "none") {
+            content.style.display = "block";
+            if (icon) {
+                icon.innerHTML = "&#x25BC;";  // Cambia el ícono a la flecha hacia abajo
+            }
+        } else {
+            content.style.display = "none";
+            if (icon) {
+                icon.innerHTML = "&#x25B6;";  // Cambia el ícono a la flecha hacia la derecha
+            }
+        }
+    } else {
+        console.error("Elemento no encontrado: " + id);
+    }
+}
+
+    // Por defecto, hacer que el contenido esté colapsado al cargar la página
+    document.addEventListener("DOMContentLoaded", function() {
+        toggleVisibility('contenido-paso1');
+        toggleVisibility('contenido-paso2');
+        toggleVisibility('contenido-paso3');
+        toggleVisibility('contenido-paso4');
+        toggleVisibility('contenido-paso5');
+    });
+
+
+
+
+    function toggleVisibility(id) {
+        var element = document.getElementById(id);
+        var icon = element.previousElementSibling.querySelector('span');
+        if (element.style.display === "none") {
+            element.style.display = "block";
+            icon.innerHTML = "▼";
+        } else {
+            element.style.display = "none";
+            icon.innerHTML = "▶";
+        }
+    }
+
+
+
+    document.getElementById("togglePorque6").addEventListener("click", function() {
+        var porque6Header = document.getElementById("porque6-header");
+        var porque6Validacion = document.getElementById("porque6-validacion");
+        var porque6Cells = document.querySelectorAll(".porque6-cell, .porque6-validacion-cell");
+        var bloqueExtra = document.getElementById("bloque-extra");
+
+        if (porque6Header.style.display === "none") {
+            porque6Header.style.display = "table-cell";
+            porque6Validacion.style.display = "table-cell";
+            porque6Cells.forEach(cell => cell.style.display = "table-cell");
+            bloqueExtra.style.display = "block";
+            this.textContent = "Ocultar ¿POR QUÉ? (6)";
+        } else {
+            porque6Header.style.display = "none";
+            porque6Validacion.style.display = "none";
+            porque6Cells.forEach(cell => cell.style.display = "none");
+            bloqueExtra.style.display = "none";
+            this.textContent = "Agregar ¿POR QUÉ? (6)";
+        }
+    });
+
+
+    // Por defecto, hacer que el contenido esté colapsado al cargar la página
+    document.addEventListener("DOMContentLoaded", function() {
+        toggleVisibility('contenido-paso3');
+    });
+
+    function cambiarColor(celda) {
+        if (celda.style.backgroundColor === 'white' || celda.style.backgroundColor === '') {
+            celda.style.backgroundColor = '#28a745';  // Verde para validado
+        } else if (celda.style.backgroundColor === 'rgb(40, 167, 69)') {
+            celda.style.backgroundColor = '#dc3545';  // Rojo para no válido
+        } else {
+            celda.style.backgroundColor = 'white';  // Blanco para no validado
+        }
+    }
+
+
+
+</script> 
+
 {% endblock %}

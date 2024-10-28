@@ -3,7 +3,8 @@ from porque.utils import importar_miembros
 importar_miembros()
 from visu5.sync_google_sheets import importar_roles
 importar_roles()
-
+from miniproyecto.utils import importar_miembros
+importar_miembros()
 
 
 
