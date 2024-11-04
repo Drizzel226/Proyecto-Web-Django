@@ -27,25 +27,20 @@
         .menu-item-with-submenu > a {
             display: flex;
             align-items: center;
+            justify-content: space-between;
             padding: 10px;
             background-color: #4CAF50;
             color: white;
             text-decoration: none;
             border-radius: 5px;
             cursor: pointer;
-            width: 100%; /* Asegura que el enlace ocupe todo el ancho del contenedor */
-            box-sizing: border-box; /* Evita que el padding expanda el ancho */
         }
 
-        .menu-item-with-submenu > a > .submenu-icon {
-            margin-left: auto; /* Empuja el icono al borde derecho */
-        }
-
-        .submenu-icon i {
+        .submenu-icon {
             transition: transform 0.3s ease;
         }
 
-        .submenu-icon.rotated i {
+        .submenu-icon.rotated {
             transform: rotate(180deg);
         }
 
@@ -72,7 +67,6 @@
         .submenu li a:hover {
             background-color: #4CAF50;
         }
-        
     </style>
 </head>
 <body>
@@ -115,8 +109,8 @@
                         <!-- Menú desplegable Herramientas -->
                         <li class="menu-item-with-submenu">
                             <a href="#" class="submenu-trigger">
-                                <span>Herramientas</span>
-                                <span class="submenu-icon"><i class="fas fa-chevron-down"></i></span>
+                                Herramientas UPS
+                                <i class="fas fa-chevron-down submenu-icon"></i>
                             </a>
                             <ul class="submenu">
                                 <li><a href="{% url 'porque' %}" class="{% if request.resolver_match.url_name == 'porque' %}active{% endif %}">5 Por qué</a></li>
@@ -127,8 +121,8 @@
 
                         <li class="menu-item-with-submenu">
                             <a href="#" class="submenu-trigger">
-                                <span>Visualizaciones</span>
-                                <span class="submenu-icon"><i class="fas fa-chevron-down"></i></span>
+                                Visualizaciones
+                                <i class="fas fa-chevron-down submenu-icon"></i>
                             </a>
                             <ul class="submenu">
                                 <li><a href="{% url 'visu' %}" class="{% if request.resolver_match.url_name == 'visu' %}active{% endif %}">5 Por qué</a></li>
@@ -177,7 +171,7 @@
             
             submenuTriggers.forEach(trigger => {
                 const submenu = trigger.nextElementSibling; // El submenú asociado
-                const submenuIcon = trigger.querySelector('.submenu-icon i'); // Icono dentro del trigger
+                const submenuIcon = trigger.querySelector('.submenu-icon'); // Icono dentro del trigger
                 
                 // Evento de clic para cada trigger de submenú
                 trigger.addEventListener('click', function(e) {

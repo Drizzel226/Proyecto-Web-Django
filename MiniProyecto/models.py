@@ -18,26 +18,14 @@ class Miniproyecto(models.Model):
 
     # Paso 1
     que_ocurre = models.TextField("¿Qué ocurre? ¿En qué parte de la máquina o material se visualiza el problema?", blank=True, null=True)
-    como_ocurre = models.TextField("¿Cómo ocurre? Describir desde el punto de vista físico el mecanismo de acción visibilizado en el momento.", blank=True, null=True)
     donde_ocurre = models.TextField("¿Dónde ocurre? Producto, equipo, zona de la máquina, etc.", blank=True, null=True)
     cuando_ocurre = models.TextField("¿Cuándo ocurrió? Producción, arranque, saneado, cambio de formato, mantención, etc.", blank=True, null=True)
-    quien_presente = models.TextField("¿Quién estaba presente cuando ocurrió? ¿El problema pasa en todos los turnos?", blank=True, null=True)
+    quien_intervino = models.TextField("¿Quién pudo influir o interviene?", blank=True, null=True)
+    como_ocurre = models.TextField("¿Cómo ocurre? Describir desde el punto de vista físico el mecanismo de acción visibilizado en el momento.", blank=True, null=True)
+    perdida = models.TextField("¿Cuánto es la pérdida asociada? (horas, kilos, cajas, botellas, dinero, etc)", blank=True, null=True)
+    Resumen = models.TextField("Resumen del problema", blank=True, null=True)
 
-    senal_antes = models.CharField(
-        "Señal antes de que ocurra el problema",
-        max_length=100,
-        choices=[
-            ('alarma', 'Alarma'),
-            ('fuga', 'Fuga'),
-            ('cavitacion', 'Cavitación'),
-            ('ruido', 'Ruido'),
-            ('otros', 'Otros'),
-            ('nia', 'N/A'),
-        ],
-        blank=True, null=True
-    )
-    descripcion_senal = models.TextField("Descripción de la señal", blank=True, null=True)
-    falla_funcional = models.TextField("Falla funcional", blank=True, null=True)
+
     imagen_falla_funcional = models.ImageField(upload_to='imagenes_fallas/', blank=True, null=True)
 
     # Paso 2

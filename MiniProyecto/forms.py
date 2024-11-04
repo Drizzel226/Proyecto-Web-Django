@@ -11,14 +11,21 @@ class MiniproyectoForm(forms.ModelForm):
     class Meta:
         model = Miniproyecto
         fields = [
+            # Paso 0
             'categoria', 'subcategoria', 'area', 'subarea', 'maquina', 'miembros_equipo',
             'pilar', 'impacto', 'kpi_iceo', 'kpi_secundario', 'fecha_cierre',
-            'que_ocurre', 'como_ocurre', 'donde_ocurre', 'cuando_ocurre', 'quien_presente',
-            'senal_antes', 'descripcion_senal', 'falla_funcional', 'imagen_falla_funcional',
+
+            # Paso 1
+            'que_ocurre', 'donde_ocurre', 'cuando_ocurre', 'quien_intervino', 'como_ocurre',
+             'perdida', 'Resumen', 'imagen_falla_funcional',
+
+            # Paso 2
             'principio_funcionamiento', 'imagen_funcionamiento', 'condiciones_basicas',
             'tarjetas_atrasadas', 'lila_asociado', 'ejecuto_lila', 'mantenimiento_no_ejecutado',
             'materiales_calidad', 'modo_falla_paso2',
 
+
+            # Paso 3
             'modo_falla_paso3',
             'porque1', 'color_validacion1',
             'porque2', 'color_validacion2',

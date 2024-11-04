@@ -200,58 +200,48 @@
     </div>
     <div id="contenido-paso1">
         <div><h1></h1></div>
+            <div class="form-row" style="display: flex; gap: 15px;">
+                <div class="form-group" style="flex: 1;">
+                    {{ form.que_ocurre.label_tag }}
+                    {{ form.que_ocurre }}
+                </div>
+                <div class="form-group" style="flex: 1;">
+                    {{ form.donde_ocurre.label_tag }}
+                    {{ form.donde_ocurre }}
+                </div>
+            </div>
+            
+            <div class="form-row" style="display: flex; gap: 15px;">
+                <div class="form-group" style="flex: 1;">
+                    {{ form.cuando_ocurre.label_tag }}
+                    {{ form.cuando_ocurre }}
+                </div>
+                <div class="form-group" style="flex: 1;">
+                    {{ form.quien_intervino.label_tag }}
+                    {{ form.quien_intervino }}
+                </div>
+            </div>
+            
+            <div class="form-row" style="display: flex; gap: 15px;">
+                <div class="form-group" style="flex: 1;">
+                    {{ form.como_ocurre.label_tag }}
+                    {{ form.como_ocurre }}
+                </div>
+                <div class="form-group" style="flex: 1;">
+                    {{ form.perdida.label_tag }}
+                    {{ form.perdida }}
+                </div>
+            </div>
+            
+            <div class="form-row" style="display: flex; gap: 15px;">
+                <div class="form-group" style="flex: 1;">
+                    {{ form.Resumen.label_tag }}
+                    {{ form.Resumen }}
+                </div>
+            </div>
+            
         <div class="form-row">
             <div class="form-group col-md-12">
-                {{ form.que_ocurre.label_tag }}
-                {{ form.que_ocurre }}
-            </div>
-        </div>
-        <div class="form-row">
-            <div class="form-group col-md-12">
-                {{ form.como_ocurre.label_tag }}
-                {{ form.como_ocurre }}
-            </div>
-        </div>
-        <div class="form-row">
-            <div class="form-group col-md-12">
-                {{ form.donde_ocurre.label_tag }}
-                {{ form.donde_ocurre }}
-            </div>
-        </div>
-        <div class="form-row">
-            <div class="form-group col-md-12">
-                {{ form.cuando_ocurre.label_tag }}
-                {{ form.cuando_ocurre }}
-            </div>
-        </div>
-        <div class="form-row">
-            <div class="form-group col-md-12">
-                {{ form.quien_presente.label_tag }}
-                {{ form.quien_presente }}
-            </div>
-        </div>
-
-        <!-- Señal antes de que ocurra el problema -->
-        <h2 class="text-danger">Señal antes de que ocurra el problema</h2>
-        <div class="form-row">
-            <div class="form-group col-md-6">
-                {{ form.senal_antes.label_tag }}
-                {{ form.senal_antes }}
-            </div>
-            <div class="form-group col-md-6">
-                {{ form.descripcion_senal.label_tag }}
-                {{ form.descripcion_senal }}
-            </div>
-        </div>
-
-        <!-- Falla funcional -->
-        <h2 class="text-danger">Falla funcional</h2>
-        <div class="form-row">
-            <div class="form-group col-md-12">
-                {{ form.falla_funcional.label_tag }}
-                {{ form.falla_funcional }}
-            </div>
-            <div class="form-group col-md-6">
                 {{ form.imagen_falla_funcional.label_tag }}
                 {{ form.imagen_falla_funcional }}
             </div>
