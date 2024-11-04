@@ -27,20 +27,25 @@
         .menu-item-with-submenu > a {
             display: flex;
             align-items: center;
-            justify-content: space-between;
             padding: 10px;
             background-color: #4CAF50;
             color: white;
             text-decoration: none;
             border-radius: 5px;
             cursor: pointer;
+            width: 100%; /* Asegura que el enlace ocupe todo el ancho del contenedor */
+            box-sizing: border-box; /* Evita que el padding expanda el ancho */
         }
 
-        .submenu-icon {
+        .menu-item-with-submenu > a > .submenu-icon {
+            margin-left: auto; /* Empuja el icono al borde derecho */
+        }
+
+        .submenu-icon i {
             transition: transform 0.3s ease;
         }
 
-        .submenu-icon.rotated {
+        .submenu-icon.rotated i {
             transform: rotate(180deg);
         }
 
@@ -67,6 +72,7 @@
         .submenu li a:hover {
             background-color: #4CAF50;
         }
+        
     </style>
 </head>
 <body>
@@ -109,8 +115,8 @@
                         <!-- Menú desplegable Herramientas -->
                         <li class="menu-item-with-submenu">
                             <a href="#" class="submenu-trigger">
-                                Herramientas
-                                <i class="fas fa-chevron-down submenu-icon"></i>
+                                <span>Herramientas</span>
+                                <span class="submenu-icon"><i class="fas fa-chevron-down"></i></span>
                             </a>
                             <ul class="submenu">
                                 <li><a href="{% url 'porque' %}" class="{% if request.resolver_match.url_name == 'porque' %}active{% endif %}">5 Por qué</a></li>
@@ -118,7 +124,19 @@
                                 <li><a href="{% url 'kaizen' %}" class="{% if request.resolver_match.url_name == 'kaizen' %}active{% endif %}">Kaizen</a></li>
                             </ul>
                         </li>
-                        <li><a href="{% url 'visu' %}" class="{% if request.resolver_match.url_name == 'visu' %}active{% endif %}">Visualización</a></li>
+
+                        <li class="menu-item-with-submenu">
+                            <a href="#" class="submenu-trigger">
+                                <span>Visualizaciones</span>
+                                <span class="submenu-icon"><i class="fas fa-chevron-down"></i></span>
+                            </a>
+                            <ul class="submenu">
+                                <li><a href="{% url 'visu' %}" class="{% if request.resolver_match.url_name == 'visu' %}active{% endif %}">5 Por qué</a></li>
+                                <li><a href="{% url 'visuMini' %}" class="{% if request.resolver_match.url_name == 'visuMini' %}active{% endif %}">Miniproyectos</a></li>
+                                <li><a href="{% url 'visuKai' %}" class="{% if request.resolver_match.url_name == 'visuKai' %}active{% endif %}">Kaizen</a></li>
+                            </ul>
+                        </li>
+                        
                         <li><a href="{% url 'dashboard' %}" class="{% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}">Dashboard</a></li>
                     {% endif %}
                 </ul>
@@ -138,9 +156,9 @@
         const menuToggle = document.getElementById('menu-toggle');
         const sidebar = document.getElementById('sidebar');
         const content = document.getElementById('content');
-
+    
         let sidebarVisible = true;
-
+    
         menuToggle.addEventListener('click', function() {
             if (sidebarVisible) {
                 sidebar.classList.add('hidden');
@@ -151,26 +169,32 @@
             }
             sidebarVisible = !sidebarVisible;
         });
-
-        // Script para manejar el submenú
+    
+        // Script para manejar cada submenú de forma independiente
         document.addEventListener('DOMContentLoaded', function() {
-            const submenuTrigger = document.querySelector('.submenu-trigger');
-            const submenu = document.querySelector('.submenu');
-            const submenuIcon = document.querySelector('.submenu-icon');
+            // Selecciona todos los triggers de submenús
+            const submenuTriggers = document.querySelectorAll('.submenu-trigger');
             
-            submenuTrigger.addEventListener('click', function(e) {
-                e.preventDefault();
-                submenu.classList.toggle('active');
-                submenuIcon.classList.toggle('rotated');
+            submenuTriggers.forEach(trigger => {
+                const submenu = trigger.nextElementSibling; // El submenú asociado
+                const submenuIcon = trigger.querySelector('.submenu-icon i'); // Icono dentro del trigger
+                
+                // Evento de clic para cada trigger de submenú
+                trigger.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    submenu.classList.toggle('active');
+                    submenuIcon.classList.toggle('rotated');
+                });
+    
+                // Si alguna opción del submenú está activa, mostrar el submenú y rotar el icono
+                const activeSubmenuItem = submenu.querySelector('.active');
+                if (activeSubmenuItem) {
+                    submenu.classList.add('active');
+                    submenuIcon.classList.add('rotated');
+                }
             });
-
-            // Si alguna opción del submenú está activa, mostrar el submenú
-            const activeSubmenuItem = submenu.querySelector('.active');
-            if (activeSubmenuItem) {
-                submenu.classList.add('active');
-                submenuIcon.classList.add('rotated');
-            }
         });
     </script>
+    
 </body>
 </html>

@@ -84,22 +84,27 @@ def actualizar_checkbox(request):
 
         try:
             visualizacion = Visu5Model.objects.get(porque_id=porque_id)
-            visualizacion.paso_4 = estado
-
-            if estado:
+            
+            # Solo actualizar si paso_4 cambia de False a True por primera vez
+            if not visualizacion.paso_4 and estado:
+                visualizacion.paso_4 = True
                 fecha_inicio = Porque.objects.get(id=porque_id).fecha_inicio
-                visualizacion.porcentaje = calcula_porcentaje(fecha_inicio)
 
-                # Calcular la diferencia de días
-                hoy = date.today()
-                visualizacion.dias = (hoy - fecha_inicio).days
-            else:
-                visualizacion.dias = 0  # Resetear a 0 si se desmarca el checkbox
+                # Calcular solo una vez "dias" en base a fecha_inicio
+                visualizacion.dias = (date.today() - fecha_inicio).days  # Guardar los días calculados en la base de datos
+                visualizacion.porcentaje = calcula_porcentaje(fecha_inicio)
+            elif not estado:
+                # Resetear `paso_4` y opcionalmente `porcentaje` si se desmarca el checkbox
+                visualizacion.paso_4 = False
+                visualizacion.porcentaje = 0  # Opcional: resetear el porcentaje si se desmarca el checkbox
+                visualizacion.dias = None  # Dejar en None o resetear si se desmarca `paso_4`
 
             visualizacion.save()
             return JsonResponse({'message': 'Estado del checkbox, porcentaje y días actualizado correctamente'})
+        
         except Visu5Model.DoesNotExist:
             return JsonResponse({'error': 'Registro no encontrado'}, status=404)
+    
     return JsonResponse({'error': 'Método no permitido'}, status=405)
 
 # Vista para el dashboard (sin cambios)

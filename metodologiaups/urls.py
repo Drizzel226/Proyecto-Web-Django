@@ -22,6 +22,8 @@ urlpatterns = [
     path('', include('miapp.urls')),
     path('porque/', include('porque.urls')),
     path('visu5/', include('visu5.urls')),
+    path('visuMini/', include('visuMini.urls')),
+    path('visuKai/', include('visuKai.urls')),
     path('MiniProyecto/', include('MiniProyecto.urls')),
     path('Kaizen/', include('Kaizen.urls')),
     path('social-auth/', include('social_django.urls', namespace='social')),
