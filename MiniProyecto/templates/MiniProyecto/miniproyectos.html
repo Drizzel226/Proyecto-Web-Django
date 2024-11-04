@@ -1191,16 +1191,16 @@
                             <tr id="estandarizacion-row1">
                                 <td>{{ form.Estandarizacion }}</td>
                                 <td>
-                                    <select id="Responsable3_1" name="Responsable3_1" class="select2">
+                                    <select id="Responsable3" name="Responsable3" class="select2">
                                         {% for miembro in opciones_miembros %}
-                                            <option value="{{ miembro.id }}" data-email="{{ miembro.email }}" {% if miembro.id in form.Responsable3_1.value %}selected{% endif %}>
+                                            <option value="{{ miembro.id }}" data-email="{{ miembro.email }}" {% if miembro.id in form.Responsable3.value %}selected{% endif %}>
                                                 {{ miembro.nombre }}
                                             </option>
                                         {% endfor %}
                                     </select>
                                 </td>
                                 <td>
-                                    <input type="date" id="Fecha_compromiso3_1" name="Fecha_compromiso3_1" class="form-control" value="{{ form.Fecha_compromiso3_1.value|date:'Y-m-d' }}">
+                                    <input type="date" id="Fecha_compromiso3" name="Fecha_compromiso3" class="form-control" value="{{ form.Fecha_compromiso3.value|date:'Y-m-d' }}">
                                 </td>
                             </tr>
 
@@ -1278,16 +1278,16 @@
                             <tr id="expansion-row1">
                                 <td>{{ form.Expansion }}</td>
                                 <td>
-                                    <select id="Responsable4_1" name="Responsable4_1" class="select2">
+                                    <select id="Responsable4" name="Responsable4" class="select2">
                                         {% for miembro in opciones_miembros %}
-                                            <option value="{{ miembro.id }}" data-email="{{ miembro.email }}" {% if miembro.id in form.Responsable4_1.value %}selected{% endif %}>
+                                            <option value="{{ miembro.id }}" data-email="{{ miembro.email }}" {% if miembro.id in form.Responsable4.value %}selected{% endif %}>
                                                 {{ miembro.nombre }}
                                             </option>
                                         {% endfor %}
                                     </select>
                                 </td>
                                 <td>
-                                    <input type="date" id="Fecha_compromiso4_1" name="Fecha_compromiso4_1" class="form-control" value="{{ form.Fecha_compromiso4_1.value|date:'Y-m-d' }}">
+                                    <input type="date" id="Fecha_compromiso4" name="Fecha_compromiso4" class="form-control" value="{{ form.Fecha_compromiso4.value|date:'Y-m-d' }}">
                                 </td>
                             </tr>
 

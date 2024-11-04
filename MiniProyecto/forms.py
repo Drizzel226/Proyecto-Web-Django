@@ -397,6 +397,19 @@ class MiniproyectoForm(forms.ModelForm):
             'Fecha_compromiso3_4': forms.DateInput(format='%d-%m-%Y', attrs={'class': 'form-control', 'type': 'date'}),
 
 
+
+            'Expansion': forms.Textarea(attrs={'class': 'accion-correctiva'}), 
+            'Fecha_compromiso4': forms.DateInput(format='%d-%m-%Y', attrs={'class': 'form-control', 'type': 'date'}),
+
+            'Expansion_2': forms.Textarea(attrs={'class': 'accion-correctiva'}), 
+            'Fecha_compromiso4_2': forms.DateInput(format='%d-%m-%Y', attrs={'class': 'form-control', 'type': 'date'}),
+
+            'Expansion_3': forms.Textarea(attrs={'class': 'accion-correctiva'}), 
+            'Fecha_compromiso4_3': forms.DateInput(format='%d-%m-%Y', attrs={'class': 'form-control', 'type': 'date'}),
+
+            'Expansion_4': forms.Textarea(attrs={'class': 'accion-correctiva'}), 
+            'Fecha_compromiso4_4': forms.DateInput(format='%d-%m-%Y', attrs={'class': 'form-control', 'type': 'date'}),
+
         }
 
 
@@ -430,9 +443,6 @@ class MiniproyectoForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(MiniproyectoForm, self).__init__(*args, **kwargs)
-        #self.fields['Fecha_compromiso1'].input_formats = ['%d-%m-%Y']
-        #self.fields['Fecha_compromiso1_2'].input_formats = ['%d-%m-%Y']
-        #self.fields['Fecha_compromiso1_3'].input_formats = ['%d-%m-%Y']
-        #self.fields['Fecha_compromiso1_4'].input_formats = ['%d-%m-%Y']
+
         for field in self.fields.values():
             field.required = False

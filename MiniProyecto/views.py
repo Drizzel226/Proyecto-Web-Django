@@ -73,11 +73,6 @@ def miniproyecto_view(request, pk=None):
             if not miniproyecto_instance.fecha_inicio:
                 miniproyecto_instance.fecha_inicio = now().date()
 
-            # Manejo explícito de las fechas desde el formulario
-            miniproyecto_instance.Fecha_compromiso1 = form.cleaned_data.get('Fecha_compromiso1')
-            miniproyecto_instance.Fecha_compromiso1_2 = form.cleaned_data.get('Fecha_compromiso1_2')
-            miniproyecto_instance.Fecha_compromiso1_3 = form.cleaned_data.get('Fecha_compromiso1_3')
-            miniproyecto_instance.Fecha_compromiso1_4 = form.cleaned_data.get('Fecha_compromiso1_4')
 
             # Guardar la instancia en la base de datos
             miniproyecto_instance.save()
@@ -136,10 +131,7 @@ def miniproyecto_view(request, pk=None):
             areas_seleccionadas = miniproyecto_instance.areas_aplicacion.split(',') if miniproyecto_instance.areas_aplicacion else []
             form = MiniproyectoForm(instance=miniproyecto_instance, initial={
                 'areas_aplicacion': areas_seleccionadas,
-                'Fecha_compromiso1': miniproyecto_instance.Fecha_compromiso1,  # Cargar fechas existentes
-                'Fecha_compromiso1_2': miniproyecto_instance.Fecha_compromiso1_2,
-                'Fecha_compromiso1_3': miniproyecto_instance.Fecha_compromiso1_3,
-                'Fecha_compromiso1_4': miniproyecto_instance.Fecha_compromiso1_4,
+
             })
         else:
             form = MiniproyectoForm()
