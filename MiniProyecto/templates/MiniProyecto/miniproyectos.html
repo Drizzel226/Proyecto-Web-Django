@@ -39,12 +39,37 @@
 <!-- Sección Paso 0: Datos iniciales -->
 <div id="seccion1" class="recuadro-paso">
     <h2 class="text-primary">Paso 0: Datos Iniciales</h2>
+
+    <div class="form-row">
+        <div class="form-group col-md-6">
+            <label for="Nombre_MP">Nombre Miniproyecto</label>
+            <input type="text" id="Nombre_MP" name="Nombre_MP" class="form-control" 
+                   value="{{ form.Nombre_MP.value|default_if_none:'' }}" 
+                   placeholder="">
+        </div>
+    </div>
+
+    <div class="form-row">
+        <div class="form-group col-md-6">
+            <label for="costo">Costo [$]</label>
+            <input type="text" id="costo" name="costo" class="form-control" 
+                   value="{{ form.costo.value|default_if_none:'' }}" 
+                   placeholder="">
+        </div>
+
+        <div class="form-group col-md-6">
+            <label for="ahorro">Ahorro [$]</label>
+            <input type="text" id="ahorro" name="ahorro" class="form-control" 
+                   value="{{ form.ahorro.value|default_if_none:'' }}" 
+                   placeholder="">
+        </div>
+
+    </div>
     
     <div class="form-row">
         <div class="form-group col-md-6">
             <label for="categoria">Categoría</label>
             <input type="text" id="categoria" name="categoria" class="form-control" readonly value="{{ form.categoria.value|default_if_none:'' }}">
-
         </div>
 
         <div class="form-group col-md-6">

@@ -12,7 +12,7 @@ class MiniproyectoForm(forms.ModelForm):
         model = Miniproyecto
         fields = [
             # Paso 0
-            'categoria', 'subcategoria', 'area', 'subarea', 'maquina', 'miembros_equipo',
+            'Nombre_MP', 'costo', 'ahorro', 'categoria', 'subcategoria', 'area', 'subarea', 'maquina', 'miembros_equipo',
             'pilar', 'impacto', 'kpi_iceo', 'kpi_secundario', 'fecha_cierre',
 
             # Paso 1

@@ -124,7 +124,7 @@ def miniproyecto_view(request, pk=None):
 
             # Mensaje de éxito y redirigir con el ID
             messages.success(request, 'Se ha guardado con éxito. Puedes continuar.')
-            return redirect('miniproyecto', pk=miniproyecto_instance.pk)
+            return redirect('miniproyectos', pk=miniproyecto_instance.pk)
 
         else:
             # Si el formulario no es válido, mostrar errores
