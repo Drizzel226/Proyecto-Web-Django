@@ -128,3 +128,6 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'soybotbots@gmail.com'
 EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'imagenes_fallas')
+MEDIA_URL = '/media/'

@@ -29,7 +29,7 @@ class Miniproyecto(models.Model):
     Resumen = models.TextField("Resumen del problema", blank=True, null=True)
 
 
-    imagen_falla_funcional = models.ImageField(upload_to='imagenes_fallas/', blank=True, null=True)
+    imagen_falla_funcional = models.ImageField(upload_to='imagenes_fallas/', null=True, blank=True)
 
     # Paso 2
     principio_funcionamiento = models.TextField("Comprender el principio de funcionamiento de la máquina o proceso, incluyendo estándares y parámetros de trabajo", blank=True, null=True)
