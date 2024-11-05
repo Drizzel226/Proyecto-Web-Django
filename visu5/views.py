@@ -40,17 +40,22 @@ def visu(request):
             accion_preventiva_completa = dato.Accion_Preventiva and dato.Fecha_compromiso2
             if accion_correctiva_completa or accion_preventiva_completa:
                 dato.paso_4 = True
-                # Calcular "OT" como porcentaje y "Días" si paso_4 es True
+                # Calcular "OT" como porcentaje solo si `paso_4` es True
                 dato.ot = f"{calcula_porcentaje(dato.fecha_inicio)}%"
-                if dato.fecha_inicio:
+                
+                # Solo calcular `dias` una vez si aún no tiene valor en `visualizacion.dias`
+                if dato.fecha_inicio and visualizacion.dias is None:
                     hoy = date.today()
-                    dato.dias = (hoy - dato.fecha_inicio).days
+                    visualizacion.dias = (hoy - dato.fecha_inicio).days
+                    visualizacion.save()  # Guardar el valor de `dias` en la base de datos
             else:
                 dato.paso_4 = False
                 dato.ot = ""  # Vacío cuando 'paso_4' es False
-                dato.dias = ""  # Vacío cuando 'paso_4' es False
+                visualizacion.dias = None  # Limpia el valor de `dias` si `paso_4` es False
+                visualizacion.save()
 
             dato.porcentaje = visualizacion.porcentaje
+            dato.dias = visualizacion.dias  # Asigna el valor de `dias` de visualizacion a `dato`
         else:
             dato.paso_4 = False
             dato.ot = ""
@@ -64,7 +69,6 @@ def visu(request):
     # Verificar si el usuario autenticado es un auditor
     miembro = Roles.objects.filter(email=request.user.email).first()
     es_auditor = (miembro.rol in [1, 4, 5, 7] if miembro else False) or request.user.is_superuser
-
 
     paginator = Paginator(datos, 10)
     page_number = request.GET.get('page')
@@ -91,8 +95,9 @@ def actualizar_checkbox(request):
                 visualizacion.paso_4 = True
                 fecha_inicio = Porque.objects.get(id=porque_id).fecha_inicio
 
-                # Calcular solo una vez "dias" en base a fecha_inicio
-                visualizacion.dias = (date.today() - fecha_inicio).days  # Guardar los días calculados en la base de datos
+                # Calcular `dias` solo una vez en base a fecha_inicio
+                if visualizacion.dias is None:  # Solo calcula si `dias` es None
+                    visualizacion.dias = (date.today() - fecha_inicio).days
                 visualizacion.porcentaje = calcula_porcentaje(fecha_inicio)
             elif not estado:
                 # Resetear `paso_4` y opcionalmente `porcentaje` si se desmarca el checkbox
