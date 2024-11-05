@@ -1,7 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from .forms import MiniproyectoForm
-from .models import Miniproyecto
-from .models import  MiembroEquipo
+from .models import Miniproyecto, MiembroEquipo
 from django.contrib import messages
 from django.utils.timezone import now
 from google.oauth2 import service_account
@@ -41,7 +40,6 @@ def miniproyecto_view(request, pk=None):
                 })
         return subcategorias_datos
 
-
     # Obtener las opciones de Google Sheets
     opciones_area = obtener_opciones('Opciones!A2:A')
     opciones_subarea = obtener_opciones('Opciones!B2:B')
@@ -49,7 +47,6 @@ def miniproyecto_view(request, pk=None):
     
     # Obtener las subcategorías y datos asociados desde la hoja
     subcategorias_datos = obtener_subcategorias_y_datos()
-   # print(subcategorias_datos)
 
     # Obtener la instancia de Miniproyecto si pk es proporcionado
     miniproyecto_instance = get_object_or_404(Miniproyecto, pk=pk) if pk else None
@@ -64,6 +61,11 @@ def miniproyecto_view(request, pk=None):
             # Guardar la instancia del formulario pero sin guardarla aún en la BD
             miniproyecto_instance = form.save(commit=False)
 
+            # Verificar si el usuario indicó eliminar la imagen
+            if request.POST.get('delete_image') == 'true' and miniproyecto_instance.imagen_falla_funcional:
+                # Elimina la imagen de la base de datos y del sistema de archivos
+                miniproyecto_instance.imagen_falla_funcional.delete(save=False)
+            
             # Obtener las áreas seleccionadas y almacenarlas como cadena separada por comas
             areas_seleccionadas = form.cleaned_data.get('areas_aplicacion')
             if areas_seleccionadas:
@@ -72,7 +74,6 @@ def miniproyecto_view(request, pk=None):
             # Asignar la fecha de inicio si es la primera vez que se guarda
             if not miniproyecto_instance.fecha_inicio:
                 miniproyecto_instance.fecha_inicio = now().date()
-
 
             # Guardar la instancia en la base de datos
             miniproyecto_instance.save()
@@ -131,7 +132,6 @@ def miniproyecto_view(request, pk=None):
             areas_seleccionadas = miniproyecto_instance.areas_aplicacion.split(',') if miniproyecto_instance.areas_aplicacion else []
             form = MiniproyectoForm(instance=miniproyecto_instance, initial={
                 'areas_aplicacion': areas_seleccionadas,
-
             })
         else:
             form = MiniproyectoForm()
@@ -153,6 +153,3 @@ def miniproyecto_view(request, pk=None):
     }
 
     return render(request, 'MiniProyecto/miniproyectos.html', context)
-
-
-
