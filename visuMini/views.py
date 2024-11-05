@@ -5,7 +5,9 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.core.paginator import Paginator
 from MiniProyecto.models import Miniproyecto
-from .models import VisuMiniModel, Roles  # Asegúrate de importar el modelo Roles
+from .models import VisuMiniModel
+from visu5.models import Roles
+
 
 # Función para calcular el porcentaje con base en la fecha de inicio
 def calcula_porcentaje(fecha_inicio):
@@ -63,13 +65,13 @@ def visuMini(request):
 
     # Verificar si el usuario autenticado es un auditor
     miembro = Roles.objects.filter(email=request.user.email).first()
-    es_auditor = (miembro.rol == 1 if miembro else False) or request.user.is_superuser
+    es_auditor = (miembro.rol in [2, 4, 6, 7] if miembro else False) or request.user.is_superuser
 
     paginator = Paginator(datos, 10)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
 
-    return render(request, "visu5/visualizacion5.html", {
+    return render(request, "visuMini/visualizacionMini.html", {
         "page_obj": page_obj,
         "es_auditor": es_auditor,
     })

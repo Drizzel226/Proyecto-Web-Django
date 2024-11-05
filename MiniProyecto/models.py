@@ -4,8 +4,8 @@ from django.db import models
 class Miniproyecto(models.Model):
     # Campos existentes
     Nombre_MP = models.TextField(max_length=100, blank=True, null=True)
-    costo = models.DecimalField(max_digits=12, decimal_places=2, blank=True, null=True, default="-")
-    ahorro = models.DecimalField(max_digits=12, decimal_places=2, blank=True, null=True, default="-")
+    costo = models.DecimalField(max_digits=12, decimal_places=0, blank=True, null=True, default="0")
+    ahorro = models.DecimalField(max_digits=12, decimal_places=0, blank=True, null=True, default="0")
     categoria = models.CharField(max_length=100, blank=True, null=True)
     subcategoria = models.CharField(max_length=100, blank=True, null=True)
     area = models.CharField(max_length=100, blank=True, null=True)

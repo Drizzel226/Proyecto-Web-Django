@@ -5,4 +5,6 @@ from .views import visuMini
 
 urlpatterns = [
     path('visu/', views.visuMini, name='visuMini'),
+    path('actualizar-checkbox/', views.actualizar_checkbox, name='actualizar_checkbox'),
+
 ]

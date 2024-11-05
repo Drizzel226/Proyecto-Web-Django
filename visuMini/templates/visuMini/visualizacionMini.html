@@ -13,16 +13,17 @@
         <thead>
             <tr>
                 <th>ID</th>
+                <th style="max-width: 150px; min-width: 150px;">Nombre MP</th>
+                <th>Costo</th>
+                <th>Ahorro</th>
                 <th>Categorías</th>
                 <th>Subcategoría</th>
-                <th>Area</th>
-                <th>Linea</th>
-                <th>Subcategoria</th>
+                <th>Área</th>
+                <th>Subárea</th>
+                <th>Máquina</th>
                 <th>Miembros Equipo</th>
                 <th>Pilar</th>
-                <th>Impacto</th>
                 <th>KPI ICEO</th>
-                <th>KPI Secundario</th>
                 <th>Fecha Inicio</th>
                 <th>Fecha Cierre</th>
                 <th>Editar</th>
@@ -40,6 +41,11 @@
             {% for dato in page_obj %}
             <tr>
                 <td>{{ dato.id }}</td>
+                <td style="max-width: 150px; min-width: 150px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title="{{ dato.Nombre_MP }}">
+                    {{ dato.Nombre_MP }}
+                </td>
+                <td>[$]{{ dato.costo }}</td>
+                <td>[$]{{ dato.ahorro }}</td>
                 <td>{{ dato.categoria }}</td>
                 <td>{{ dato.subcategoria }}</td>
                 <td>{{ dato.area }}</td>
@@ -51,9 +57,7 @@
                     {% endfor %}
                 </td>
                 <td>{{ dato.pilar }}</td>
-                <td>{{ dato.impacto }}</td>
                 <td>{{ dato.kpi_iceo }}</td>
-                <td>{{ dato.kpi_secundario }}</td>
                 <td>{{ dato.fecha_inicio }}</td>
                 <td>{{ dato.fecha_cierre }}</td>
                 <td>

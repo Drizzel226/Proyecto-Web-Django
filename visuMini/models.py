@@ -22,12 +22,4 @@ def crear_visu5(sender, instance, created, **kwargs):
 
 
 
-from django.db import models
-
-class Roles(models.Model):
-    email = models.EmailField(unique=True)
-    rol = models.IntegerField(default=0)
-
-    def __str__(self):
-        return f"{self.email} ({self.rol})"
 

@@ -63,7 +63,8 @@ def visu(request):
 
     # Verificar si el usuario autenticado es un auditor
     miembro = Roles.objects.filter(email=request.user.email).first()
-    es_auditor = (miembro.rol == 1 if miembro else False) or request.user.is_superuser
+    es_auditor = (miembro.rol in [1, 4, 5, 7] if miembro else False) or request.user.is_superuser
+
 
     paginator = Paginator(datos, 10)
     page_number = request.GET.get('page')
