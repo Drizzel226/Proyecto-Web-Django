@@ -1,9 +1,122 @@
 {% extends 'miapp/base.html' %}
 
-{% block title %}Análisis 5 Por qué{% endblock %}
+{% block title %}Análisis Miniproyectos{% endblock %}
 
 {% block content %}
+<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+    <h1>Visualización Miniproyectos</h1>
+    <a href="{% url 'miniproyectos' %}" class="btn-verde btn-lg">Agregar</a>
+</div>
 
-<h1>Mini</h1>
+<div style="overflow-x: auto;">
+    <table class="tabla-datos">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Categorías</th>
+                <th>Subcategoría</th>
+                <th>Area</th>
+                <th>Linea</th>
+                <th>Subcategoria</th>
+                <th>Miembros Equipo</th>
+                <th>Pilar</th>
+                <th>Impacto</th>
+                <th>KPI ICEO</th>
+                <th>KPI Secundario</th>
+                <th>Fecha Inicio</th>
+                <th>Fecha Cierre</th>
+                <th>Editar</th>
+                <th>Paso 4</th>
+                <th>OT</th>
+                <th>Días</th>
+                {% if es_auditor %}
+                    <th>Auditar</th>
+                {% endif %}
+                <th>%UPS</th>
+                <th>%OTIF</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for dato in page_obj %}
+            <tr>
+                <td>{{ dato.id }}</td>
+                <td>{{ dato.categoria }}</td>
+                <td>{{ dato.subcategoria }}</td>
+                <td>{{ dato.area }}</td>
+                <td>{{ dato.subarea }}</td>
+                <td>{{ dato.maquina }}</td>
+                <td>
+                    {% for miembro in dato.miembros_equipo.all %}
+                        {{ miembro.nombre }}{% if not forloop.last %}, {% endif %}
+                    {% endfor %}
+                </td>
+                <td>{{ dato.pilar }}</td>
+                <td>{{ dato.impacto }}</td>
+                <td>{{ dato.kpi_iceo }}</td>
+                <td>{{ dato.kpi_secundario }}</td>
+                <td>{{ dato.fecha_inicio }}</td>
+                <td>{{ dato.fecha_cierre }}</td>
+                <td>
+                    <a href="{% url 'miniproyectos' pk=dato.pk %}" class="btn-verde">Editar</a>
+                </td>
+                <td>
+                    <input type="checkbox" name="checkbox_{{ dato.id }}" value="True" {% if dato.paso_4 %}checked{% endif %} disabled>
+                </td>                
+                <td>{{ dato.ot }}</td>
+                <td>{{ dato.dias }}</td>
+                {% if es_auditor %}
+                    <td>
+                        <a href="{% url 'porque_vista' pk=dato.pk %}" class="btn-verde">Auditar</a>
+                    </td>
+                {% endif %}
+                <td>{{ dato.puntaje }}%</td>    
+                <td>{{ dato.promedio_puntaje_porcentaje }}%</td>  
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<!-- Controles de paginación -->
+<div class="pagination">
+    <nav aria-label="Page navigation">
+        <ul class="pagination">
+            {% if page_obj.has_previous %}
+                <li>
+                    <a class="pagination-button" href="?page={{ page_obj.previous_page_number }}" aria-label="Anterior">
+                        <span>&#x276E;</span> <!-- Flecha izquierda -->
+                    </a>
+                </li>
+            {% endif %}
+
+            <span class="pagination-span">{{ page_obj.start_index }} - {{ page_obj.end_index }}</span>
+
+            {% if page_obj.has_next %}
+                <li>
+                    <a class="pagination-button" href="?page={{ page_obj.next_page_number }}" aria-label="Siguiente">
+                        <span>&#x276F;</span> <!-- Flecha derecha -->
+                    </a>
+                </li>
+            {% endif %}
+        </ul>
+    </nav>
+</div>
+
+<script>
+    function actualizaCheckbox(id, estado) {
+        // Usamos fetch para enviar los cambios automáticamente vía AJAX
+        fetch("{% url 'actualizar_checkbox' %}", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': '{{ csrf_token }}'
+            },
+            body: JSON.stringify({ 'id': id, 'estado': estado })
+        }).then(response => response.json())
+          .then(data => {
+              console.log(data.message);  // Puedes mostrar un mensaje o actualizar algo en la página
+          });
+    }
+</script>
 
 {% endblock %}
