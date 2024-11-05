@@ -224,7 +224,6 @@
         </h2>
     </div>
     <div id="contenido-paso1">
-        <div><h1></h1></div>
         <div class="form-row" style="display: flex; gap: 15px;">
             <div class="form-group" style="flex: 1;">
                 {{ form.que_ocurre.label_tag }}
@@ -265,24 +264,30 @@
             </div>
         </div>
 
-        <div class="form-row">
-            <div class="form-group col-md-12">
-                {{ form.imagen_falla_funcional.label_tag }}
-                <div class="image-preview-container" style="position: relative;">
-                    {% if form.imagen_falla_funcional.value %}
-                        <!-- Icono de eliminar -->
-                        <span class="close-icon" onclick="removeImage()">✖</span>
-                        
-                        <!-- Imagen en tamaño pequeño -->
-                        <img id="smallImage" src="{{ form.imagen_falla_funcional.value.url }}" alt="Imagen de Falla Funcional" class="small-image" onclick="openModal()">
-                    {% else %}
-                        {{ form.imagen_falla_funcional }}
-                    {% endif %}
-                </div>
-            </div>
-            <!-- Campo oculto para indicar si la imagen debe eliminarse -->
-            <input type="hidden" id="delete_image" name="delete_image" value="false">
+        <!-- Campo para subir múltiples imágenes -->
+        <div class="form-group">
+            {{ form.imagenes.label_tag }}
+            {{ form.imagenes }}
         </div>
+
+        <!-- Contenedor para mostrar las imágenes ya cargadas con opción de eliminar -->
+        <div id="imagenes-container" class="form-row">
+            {% for imagen in miniproyecto.imagenes.all %}
+                <div class="image-preview-container" style="position: relative; display: inline-block; margin: 5px;">
+                    <!-- Icono de eliminar -->
+                    <span class="close-icon" onclick="removeImage('{{ imagen.id }}')">✖</span>
+                    
+                    <!-- Imagen en tamaño pequeño -->
+                    <img src="{{ imagen.imagen.url }}" alt="Imagen de Miniproyecto" class="small-image" onclick="openModal('{{ imagen.imagen.url }}')">
+                </div>
+            {% endfor %}
+        </div>
+
+        <!-- Contenedor para previsualizar las nuevas imágenes seleccionadas -->
+        <div id="preview-container" class="form-row" style="display: flex; gap: 10px; flex-wrap: wrap; margin-top: 10px;"></div>
+
+        <!-- Campo oculto para almacenar IDs de imágenes a eliminar -->
+        <input type="hidden" id="delete_images" name="delete_images" value="">
     </div>
 </div>
 
@@ -351,22 +356,21 @@
 </style>
 
 <script>
-    function removeImage() {
+    function removeImage(imageId) {
         // Oculta la imagen y el botón de eliminar
-        document.getElementById("smallImage").style.display = "none";
-        document.querySelector(".close-icon").style.display = "none";
-    
-        // Marca el campo oculto para que el servidor sepa que la imagen debe eliminarse
-        document.getElementById("delete_image").value = "true";
+        const imageContainer = document.querySelector(`span[onclick="removeImage('${imageId}')"]`).parentElement;
+        imageContainer.style.display = "none";
+
+        // Añadir el ID de la imagen al campo oculto para ser eliminada
+        let deleteImagesField = document.getElementById("delete_images");
+        deleteImagesField.value += imageId + ",";
     }
     
     // Abre el modal y muestra la imagen en tamaño completo
-    function openModal() {
+    function openModal(imageUrl) {
         var modal = document.getElementById("imageModal");
         var fullImage = document.getElementById("fullImage");
-        var smallImage = document.getElementById("smallImage");
-
-        fullImage.src = smallImage.src; // Asigna la misma fuente de imagen en tamaño completo
+        fullImage.src = imageUrl; // Asigna la fuente de imagen en tamaño completo
         modal.style.display = "block";
     }
 
@@ -384,7 +388,44 @@
             content.style.display = "none";
         }
     }
+
+    // Previsualizar imágenes seleccionadas sin recargar la página
+    document.querySelector('input[type="file"][multiple]').addEventListener('change', function(event) {
+        const previewContainer = document.getElementById("preview-container");
+        previewContainer.innerHTML = '';  // Limpiar previsualizaciones anteriores
+
+        Array.from(event.target.files).forEach(file => {
+            const reader = new FileReader();
+
+            reader.onload = function(e) {
+                // Crear contenedor de previsualización
+                const imagePreview = document.createElement("div");
+                imagePreview.classList.add("image-preview-container");
+                imagePreview.style.position = "relative";
+                imagePreview.style.display = "inline-block";
+                imagePreview.style.margin = "5px";
+
+                // Agregar botón de eliminación
+                const closeIcon = document.createElement("span");
+                closeIcon.classList.add("close-icon");
+                closeIcon.innerHTML = "✖";
+                closeIcon.onclick = () => imagePreview.remove();  // Eliminar previsualización
+
+                // Agregar imagen de previsualización
+                const img = document.createElement("img");
+                img.src = e.target.result;
+                img.classList.add("small-image");
+
+                imagePreview.appendChild(closeIcon);
+                imagePreview.appendChild(img);
+                previewContainer.appendChild(imagePreview);
+            }
+
+            reader.readAsDataURL(file);  // Leer archivo como URL de datos
+        });
+    });
 </script>
+
 
 
         

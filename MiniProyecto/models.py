@@ -539,3 +539,15 @@ from .utils import exportar_miembros
 @receiver(post_save, sender=MiembroEquipo)
 def actualizar_google_sheets(sender, instance, **kwargs):
     exportar_miembros()  # Actualiza Google Sheets cada vez que un miembro se guarda
+
+
+# models.py
+
+from django.db import models
+
+class ImagenMiniproyecto(models.Model):
+    miniproyecto = models.ForeignKey(Miniproyecto, related_name='imagenes', on_delete=models.CASCADE)
+    imagen = models.ImageField(upload_to='imagenes_miniproyectos/')
+    
+    def __str__(self):
+        return f"Imagen para {self.miniproyecto.Nombre_MP}"

@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from .forms import MiniproyectoForm
-from .models import Miniproyecto, MiembroEquipo
+from .models import Miniproyecto, MiembroEquipo, ImagenMiniproyecto  # Importar el modelo de imágenes
 from django.contrib import messages
 from django.utils.timezone import now
 from google.oauth2 import service_account
@@ -81,6 +81,16 @@ def miniproyecto_view(request, pk=None):
             # Guardar relaciones ManyToMany (miembros del equipo y responsables)
             form.save_m2m()
 
+            # Guardar las nuevas imágenes subidas
+            for image_file in request.FILES.getlist('imagenes'):
+                ImagenMiniproyecto.objects.create(miniproyecto=miniproyecto_instance, imagen=image_file)
+
+            # Eliminar imágenes seleccionadas para ser eliminadas
+            delete_images = request.POST.get("delete_images", "")
+            for image_id in delete_images.split(","):
+                if image_id:
+                    ImagenMiniproyecto.objects.filter(id=image_id).delete()
+
             # Si el formulario es nuevo, enviar el correo
             if es_nuevo:
                 # Obtener correos de los miembros del equipo
@@ -150,6 +160,7 @@ def miniproyecto_view(request, pk=None):
         'opciones_miembros': opciones_miembros,
         'mostrar_paso1': mostrar_paso1,
         'subcategorias_datos': subcategorias_datos,
+        'miniproyecto': miniproyecto_instance,  # Pasar instancia para mostrar imágenes en la plantilla
     }
 
     return render(request, 'MiniProyecto/miniproyectos.html', context)

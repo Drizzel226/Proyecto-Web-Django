@@ -1,11 +1,12 @@
 from django import forms
-from .models import Miniproyecto, MiembroEquipo
+from .models import Miniproyecto, MiembroEquipo, ImagenMiniproyecto
 
 class MiniproyectoForm(forms.ModelForm):
     miembros_equipo = forms.ModelMultipleChoiceField(
         queryset=MiembroEquipo.objects.all(),
         widget=forms.SelectMultiple(attrs={'class': 'form-control select2'})
     )
+    imagenes = forms.FileField(widget=forms.ClearableFileInput(attrs={'multiple': True}), required=False)
 
 
     class Meta:
@@ -430,8 +431,6 @@ class MiniproyectoForm(forms.ModelForm):
         widget=forms.CheckboxSelectMultiple,
         required=False,  # Si es opcional
     )
-
-
 
 
 
