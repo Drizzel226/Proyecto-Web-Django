@@ -224,6 +224,7 @@
         </h2>
     </div>
     <div id="contenido-paso1">
+        <div><h1></h1></div>
         <div class="form-row" style="display: flex; gap: 15px;">
             <div class="form-group" style="flex: 1;">
                 {{ form.que_ocurre.label_tag }}
@@ -288,6 +289,193 @@
 
         <!-- Campo oculto para almacenar IDs de imágenes a eliminar -->
         <input type="hidden" id="delete_images" name="delete_images" value="">
+    </div>
+
+
+    <!-- Modal para ver la imagen en tamaño completo -->
+    <div id="imageModal" class="modal" onclick="closeModal()">
+        <span class="close">&times;</span>
+        <img class="modal-content" id="fullImage">
+    </div>
+
+    <style>
+        /* Icono de cierre */
+        .close-icon {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            color: #ff0000;
+            font-size: 20px;
+            font-weight: bold;
+            cursor: pointer;
+            background-color: white;
+            border-radius: 50%;
+            padding: 2px 5px;
+            z-index: 10;
+        }
+
+        /* Estilo para la imagen en tamaño pequeño */
+        .small-image {
+            max-width: 100px;
+            max-height: 100px;
+            cursor: pointer;
+            border: 1px solid #ccc;
+            padding: 5px;
+            object-fit: cover; /* Mantiene la imagen ajustada al contenedor */
+        }
+
+        /* Estilos del modal */
+        .modal {
+            display: none; /* Oculto por defecto */
+            position: fixed;
+            z-index: 1000;
+            padding-top: 60px;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.9);
+        }
+
+        .modal-content {
+            margin: auto;
+            display: block;
+            max-width: 80%;
+            max-height: 80%;
+        }
+
+        .close {
+            position: absolute;
+            top: 15px;
+            right: 35px;
+            color: #ffffff;
+            font-size: 40px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+    </style>
+
+    <script>
+        function removeImage(imageId) {
+            // Oculta la imagen y el botón de eliminar
+            const imageContainer = document.querySelector(`span[onclick="removeImage('${imageId}')"]`).parentElement;
+            imageContainer.style.display = "none";
+
+            // Añadir el ID de la imagen al campo oculto para ser eliminada
+            let deleteImagesField = document.getElementById("delete_images");
+            deleteImagesField.value += imageId + ",";
+        }
+        
+        // Abre el modal y muestra la imagen en tamaño completo
+        function openModal(imageUrl) {
+            var modal = document.getElementById("imageModal");
+            var fullImage = document.getElementById("fullImage");
+            fullImage.src = imageUrl; // Asigna la fuente de imagen en tamaño completo
+            modal.style.display = "block";
+        }
+
+        // Cierra el modal
+        function closeModal() {
+            document.getElementById("imageModal").style.display = "none";
+        }
+
+        // Función para colapsar y expandir el contenido
+        function toggleVisibility(contentId) {
+            var content = document.getElementById(contentId);
+            if (content.style.display === "none" || content.style.display === "") {
+                content.style.display = "block";
+            } else {
+                content.style.display = "none";
+            }
+        }
+
+        // Previsualizar imágenes seleccionadas sin recargar la página
+        document.querySelector('input[type="file"][multiple]').addEventListener('change', function(event) {
+            const previewContainer = document.getElementById("preview-container");
+            previewContainer.innerHTML = '';  // Limpiar previsualizaciones anteriores
+
+            Array.from(event.target.files).forEach(file => {
+                const reader = new FileReader();
+
+                reader.onload = function(e) {
+                    // Crear contenedor de previsualización
+                    const imagePreview = document.createElement("div");
+                    imagePreview.classList.add("image-preview-container");
+                    imagePreview.style.position = "relative";
+                    imagePreview.style.display = "inline-block";
+                    imagePreview.style.margin = "5px";
+
+                    // Agregar botón de eliminación
+                    const closeIcon = document.createElement("span");
+                    closeIcon.classList.add("close-icon");
+                    closeIcon.innerHTML = "✖";
+                    closeIcon.onclick = () => imagePreview.remove();  // Eliminar previsualización
+
+                    // Agregar imagen de previsualización
+                    const img = document.createElement("img");
+                    img.src = e.target.result;
+                    img.classList.add("small-image");
+
+                    imagePreview.appendChild(closeIcon);
+                    imagePreview.appendChild(img);
+                    previewContainer.appendChild(imagePreview);
+                }
+
+                reader.readAsDataURL(file);  // Leer archivo como URL de datos
+            });
+        });
+    </script>
+
+</div>
+
+        
+
+
+<!-- Sección Paso 2: Comprender y Restaurar Condiciones Básicas -->
+<div id="paso2-section" class="recuadro-paso mt-4" style="border: 1px solid #e6007e;">
+    <div class="paso-header" style="background-color: #e6007e; color: white; padding: 10px 15px; border-radius: 5px;">
+        <h2 class="collapsible" style="cursor: pointer; margin: 0;" onclick="toggleVisibility('contenido-paso2')">
+            <span style="margin-right: 10px;">&#x25BC;</span> Paso 2: Comprender y Restaurar Condiciones Básicas
+        </h2>
+    </div>
+    <div id="contenido-paso2">
+        
+        <!-- Bloque 1: Principio de funcionamiento -->
+        <div><h1></h1></div>
+        <div class="sub-section" style="margin-bottom: 20px;">
+            <div class="form-row">
+                <div class="form-group col-md-12">
+                    {{ form.condicion_basica.label_tag }}
+                    {{ form.condicion_basica }}
+                </div>
+            </div>
+
+            <!-- Campo para subir múltiples imágenes para Paso 2 -->
+            <div class="form-group">
+                <label>Imágenes de Funcionamiento:</label>
+                <input type="file" name="imagen_funcionamiento_files" multiple class="form-control">
+            </div>
+
+            <!-- Contenedor para mostrar las imágenes ya cargadas con opción de eliminar -->
+            <div id="imagenes-funcionamiento-container" class="form-row">
+                {% for imagen in imagenes_paso2 %}
+                    <div class="image-preview-container" style="position: relative; display: inline-block; margin: 5px;">
+                        <!-- Icono de eliminar -->
+                        <span class="close-icon" onclick="removeFuncionamientoImage('{{ imagen.id }}')">✖</span>
+                        
+                        <!-- Imagen en tamaño pequeño -->
+                        <img src="{{ imagen.imagen.url }}" alt="Imagen de Condición Básica" class="small-image" onclick="openModal('{{ imagen.imagen.url }}')">
+                    </div>
+                {% endfor %}
+            </div>
+
+            <!-- Contenedor para previsualizar las nuevas imágenes seleccionadas -->
+            <div id="preview-container-funcionamiento" class="form-row" style="display: flex; gap: 10px; flex-wrap: wrap; margin-top: 10px;"></div>
+
+            <!-- Campo oculto para almacenar IDs de imágenes a eliminar -->
+            <input type="hidden" id="delete_images_funcionamiento" name="delete_images_funcionamiento" value="">
+        </div>
     </div>
 </div>
 
@@ -356,13 +544,13 @@
 </style>
 
 <script>
-    function removeImage(imageId) {
+    function removeFuncionamientoImage(imageId) {
         // Oculta la imagen y el botón de eliminar
-        const imageContainer = document.querySelector(`span[onclick="removeImage('${imageId}')"]`).parentElement;
+        const imageContainer = document.querySelector(`span[onclick="removeFuncionamientoImage('${imageId}')"]`).parentElement;
         imageContainer.style.display = "none";
 
         // Añadir el ID de la imagen al campo oculto para ser eliminada
-        let deleteImagesField = document.getElementById("delete_images");
+        let deleteImagesField = document.getElementById("delete_images_funcionamiento");
         deleteImagesField.value += imageId + ",";
     }
     
@@ -379,19 +567,9 @@
         document.getElementById("imageModal").style.display = "none";
     }
 
-    // Función para colapsar y expandir el contenido
-    function toggleVisibility(contentId) {
-        var content = document.getElementById(contentId);
-        if (content.style.display === "none" || content.style.display === "") {
-            content.style.display = "block";
-        } else {
-            content.style.display = "none";
-        }
-    }
-
     // Previsualizar imágenes seleccionadas sin recargar la página
-    document.querySelector('input[type="file"][multiple]').addEventListener('change', function(event) {
-        const previewContainer = document.getElementById("preview-container");
+    document.querySelector('input[type="file"][name="imagen_funcionamiento_files"]').addEventListener('change', function(event) {
+        const previewContainer = document.getElementById("preview-container-funcionamiento");
         previewContainer.innerHTML = '';  // Limpiar previsualizaciones anteriores
 
         Array.from(event.target.files).forEach(file => {
@@ -427,103 +605,6 @@
 </script>
 
 
-
-        
-
-
-<!-- Sección Paso 2: Comprender y Restaurar Condiciones Básicas -->
-<div id="paso2-section" class="recuadro-paso mt-4" style="border: 1px solid #e6007e;">
-    <div class="paso-header" style="background-color: #e6007e; color: white; padding: 10px 15px; border-radius: 5px;">
-        <h2 class="collapsible" style="cursor: pointer; margin: 0;" onclick="toggleVisibility('contenido-paso2')">
-            <span style="margin-right: 10px;">&#x25BC;</span> Paso 2: Comprender y Restaurar Condiciones Básicas
-        </h2>
-    </div>
-    <div id="contenido-paso2">
-        
-        <!-- Bloque 1: Principio de funcionamiento -->
-        <div><h1></h1></div>
-        <div class="sub-section" style="margin-bottom: 20px;">
-            <div class="sub-header" style="background-color: #e6007e; color: white; padding: 10px 15px; border-radius: 5px;">
-                <h3 style="margin: 0;">Principio de funcionamiento</h3>
-            </div>
-            <div class="sub-content" style="padding: 10px; border: 1px solid #e6007e; border-radius: 5px;">
-                <div class="form-row">
-                    <div class="form-group col-md-12">
-                        {{ form.principio_funcionamiento.label_tag }}
-                        {{ form.principio_funcionamiento }}
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="form-group col-md-12">
-                        {{ form.imagen_funcionamiento.label_tag }}
-                        {{ form.imagen_funcionamiento }}
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Bloque 2: Restablecimiento de condiciones básicas y verificación de herramientas -->
-        <div class="sub-section" style="margin-bottom: 20px;">
-            <div class="sub-header" style="background-color: #e6007e; color: white; padding: 10px 15px; border-radius: 5px;">
-                <h3 style="margin: 0;">Restablecimiento de condiciones básicas y verificación de herramientas</h3>
-            </div>
-            <div class="sub-content" style="padding: 10px; border: 1px solid #e6007e; border-radius: 5px;">
-                <div class="form-group">
-                    <label>{{ form.tarjetas_atrasadas.label }}</label>
-                    <div class="d-inline-block">
-                        {{ form.tarjetas_atrasadas }}
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label>{{ form.lila_asociado.label }}</label>
-                    <div>
-                        {{ form.lila_asociado }}
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label>{{ form.ejecuto_lila.label }}</label>
-                    <div>
-                        {{ form.ejecuto_lila }}
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label>{{ form.mantenimiento_no_ejecutado.label }}</label>
-                    <div>
-                        {{ form.mantenimiento_no_ejecutado }}
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label>{{ form.materiales_calidad.label }}</label>
-                    <div>
-                        {{ form.materiales_calidad }}
-                    </div>
-                </div>                        
-            </div>
-        </div>
-
-        <!-- Bloque 3: Modo de Falla -->
-        <div class="sub-section" style="margin-bottom: 20px;">
-            <div class="sub-header" style="background-color: #e6007e; color: white; padding: 10px 15px; border-radius: 5px;">
-                <h3 style="margin: 0;">Modo de Falla</h3>
-            </div>
-            <div class="sub-content" style="padding: 10px; border: 1px solid #e6007e; border-radius: 5px;">
-                <div class="form-row">
-                    <div class="form-group col-md-12">
-                        {{ form.modo_falla_paso2.label_tag }}
-                        {{ form.modo_falla_paso2 }}
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="form-group col-md-12">
-                        {{ form.imagen_falla.label_tag }}
-                        {{ form.imagen_falla }}
-                    </div>
-                </div>
-            </div>
-        </div>
-
-    </div>
-</div>
 
 
         

@@ -7,6 +7,11 @@ class MiniproyectoForm(forms.ModelForm):
         widget=forms.SelectMultiple(attrs={'class': 'form-control select2'})
     )
     imagenes = forms.FileField(widget=forms.ClearableFileInput(attrs={'multiple': True}), required=False)
+    imagen_funcionamiento_files = forms.FileField(
+        widget=forms.ClearableFileInput(attrs={'multiple': True}),
+        required=False,
+        label="Imagenes Funcionamiento"
+    )
 
 
     class Meta:
@@ -18,12 +23,10 @@ class MiniproyectoForm(forms.ModelForm):
 
             # Paso 1
             'que_ocurre', 'donde_ocurre', 'cuando_ocurre', 'quien_intervino', 'como_ocurre',
-             'perdida', 'Resumen', 'imagen_falla_funcional',
+             'perdida', 'resumen', 'imagen_falla_funcional',
 
             # Paso 2
-            'principio_funcionamiento', 'imagen_funcionamiento', 'condiciones_basicas',
-            'tarjetas_atrasadas', 'lila_asociado', 'ejecuto_lila', 'mantenimiento_no_ejecutado',
-            'materiales_calidad', 'modo_falla_paso2',
+            'condicion_basica', 'imagen_funcionamiento', 
 
 
             # Paso 3
@@ -164,29 +167,24 @@ class MiniproyectoForm(forms.ModelForm):
             'kpi_iceo': forms.TextInput(attrs={'class': 'form-control'}),
             'kpi_secundario': forms.TextInput(attrs={'class': 'form-control'}),
             'fecha_cierre': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
-            'que_ocurre': forms.Textarea(attrs={'class': 'form-control'}),
-            'como_ocurre': forms.Textarea(attrs={'class': 'form-control'}),
-            'donde_ocurre': forms.Textarea(attrs={'class': 'form-control'}),
-            'cuando_ocurre': forms.Textarea(attrs={'class': 'form-control'}),
-            'quien_presente': forms.Textarea(attrs={'class': 'form-control'}),
-            'senal_antes': forms.Select(attrs={'class': 'form-control'}),
-            'descripcion_senal': forms.Textarea(attrs={'class': 'form-control'}),
-            'falla_funcional': forms.Textarea(attrs={'class': 'form-control'}),
-            'imagen_falla_funcional': forms.ClearableFileInput(attrs={'class': 'form-control'}),
-            'principio_funcionamiento': forms.Textarea(attrs={'class': 'form-control'}),
-            'imagen_funcionamiento': forms.ClearableFileInput(attrs={'class': 'form-control'}),
-            'condiciones_basicas': forms.Textarea(attrs={'class': 'form-control'}),
-            
-            'tarjetas_atrasadas': forms.RadioSelect(),
-            'lila_asociado': forms.RadioSelect(),
-            'ejecuto_lila': forms.RadioSelect(),
-            'mantenimiento_no_ejecutado': forms.RadioSelect(),
-            'materiales_calidad': forms.RadioSelect(),
-            
-            'modo_falla': forms.Textarea(attrs={'class': 'form-control'}),
-            'imagen_falla': forms.ClearableFileInput(attrs={'class': 'form-control'}),
-            'modo_falla_paso2': forms.Textarea(attrs={'class': 'form-control'}),
 
+            # Paso 1
+            'que_ocurre': forms.Textarea(attrs={'class': 'form-control'}),
+            'donde_ocurre': forms.Textarea(attrs={'class': 'form-control'}),
+            'como_ocurre': forms.Textarea(attrs={'class': 'form-control'}),
+            'cuando_ocurre': forms.Textarea(attrs={'class': 'form-control'}),
+            'quien_intervino': forms.Textarea(attrs={'class': 'form-control'}),
+            'perdida': forms.Textarea(attrs={'class': 'form-control'}),
+            'resumen': forms.Textarea(attrs={'class': 'form-control'}),
+            'imagen_falla_funcional': forms.ClearableFileInput(attrs={'class': 'form-control'}),
+
+            # Paso 2
+            'condicion_basica': forms.Textarea(attrs={'class': 'form-control'}),
+            'imagen_funcionamiento': forms.ClearableFileInput(attrs={'class': 'form-control'}),
+            
+            
+
+            # Paso 3
             'modo_falla_paso3': forms.Textarea(attrs={'class': 'form-control'}),
             'porque1': forms.Textarea(attrs={'class': 'form-control'}),
             'porque2': forms.Textarea(attrs={'class': 'form-control'}),

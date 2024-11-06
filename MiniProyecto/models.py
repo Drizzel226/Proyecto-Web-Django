@@ -22,73 +22,17 @@ class Miniproyecto(models.Model):
     # Paso 1
     que_ocurre = models.TextField("¿Qué ocurre? ¿En qué parte de la máquina o material se visualiza el problema?", blank=True, null=True)
     donde_ocurre = models.TextField("¿Dónde ocurre? Producto, equipo, zona de la máquina, etc.", blank=True, null=True)
+    como_ocurre = models.TextField("¿Cómo ocurre? Describir desde el punto de vista físico el mecanismo de acción visibilizado en el momento.", blank=True, null=True)
     cuando_ocurre = models.TextField("¿Cuándo ocurrió? Producción, arranque, saneado, cambio de formato, mantención, etc.", blank=True, null=True)
     quien_intervino = models.TextField("¿Quién pudo influir o interviene?", blank=True, null=True)
-    como_ocurre = models.TextField("¿Cómo ocurre? Describir desde el punto de vista físico el mecanismo de acción visibilizado en el momento.", blank=True, null=True)
     perdida = models.TextField("¿Cuánto es la pérdida asociada? (horas, kilos, cajas, botellas, dinero, etc)", blank=True, null=True)
-    Resumen = models.TextField("Resumen del problema", blank=True, null=True)
-
-
+    resumen = models.TextField("Resumen del problema", blank=True, null=True)
     imagen_falla_funcional = models.ImageField(upload_to='imagenes_fallas/', null=True, blank=True)
 
     # Paso 2
-    principio_funcionamiento = models.TextField("Comprender el principio de funcionamiento de la máquina o proceso, incluyendo estándares y parámetros de trabajo", blank=True, null=True)
+    condicion_basica = models.TextField("¿Existe un estándar (procedimiento/instructivo/formato definido)?, ¿Es conocido por todos, existe un entrenamiento (Registro de capacitación/LUP) ?¿Cumple mantenciones preventivas?", blank=True, null=True)
     imagen_funcionamiento = models.ImageField(upload_to='imagenes_funcionamiento/', blank=True, null=True)
-    condiciones_basicas = models.TextField("Verificar condiciones básicas definidas e identificar desviaciones que impacten en el problema", blank=True, null=True)
 
-    RESPUESTA_CHOICES = [
-        ('no', 'NO'),
-        ('no_aplica', 'NO APLICA'),
-        ('si', 'SI'),
-    ]
-
-    tarjetas_atrasadas = models.CharField(
-        "¿Hay tarjetas atrasadas o pendientes asociadas a la falla funcional?",
-        max_length=10,
-        choices=RESPUESTA_CHOICES,
-        default='no_aplica',
-        blank=False,
-        null=True
-    )
-
-    lila_asociado = models.CharField(
-        "¿Hay LILA asociado a la máquina?",
-        max_length=10,
-        choices=RESPUESTA_CHOICES,
-        default='no_aplica',
-        blank=False,
-        null=True
-    )
-
-    ejecuto_lila = models.CharField(
-        "¿Se ejecutó correctamente el LILA?",
-        max_length=10,
-        choices=RESPUESTA_CHOICES,
-        default='no_aplica',
-        blank=False,
-        null=True
-    )
-
-    mantenimiento_no_ejecutado = models.CharField(
-        "¿Hay actividades de mantenimiento no ejecutadas asociadas a la falla funcional (revisar plan de 52 semanas)?",
-        max_length=10,
-        choices=RESPUESTA_CHOICES,
-        default='no_aplica',
-        blank=False,
-        null=True
-    )
-
-    materiales_calidad = models.CharField(
-        "¿Los materiales cumplen con las especificaciones de calidad?",
-        max_length=10,
-        choices=RESPUESTA_CHOICES,
-        default='no_aplica',
-        blank=False,
-        null=True
-    )
-
-    modo_falla_paso2 = models.TextField("El modo de falla corresponde al evento o situación que causa la falla funcional. Ej: presión inestable por válvula rota, inspector detecta elemento extraño pero no lo rechaza, inspector no detecta elemento extraño, sulfatación de sensor de seguridad, etc.", blank=True, null=True)
-    imagen_falla = models.ImageField(upload_to='imagenes_falla/', blank=True, null=True)
 
 
     # PASO 3
@@ -548,6 +492,13 @@ from django.db import models
 class ImagenMiniproyecto(models.Model):
     miniproyecto = models.ForeignKey(Miniproyecto, related_name='imagenes', on_delete=models.CASCADE)
     imagen = models.ImageField(upload_to='imagenes_miniproyectos/')
-    
+
     def __str__(self):
         return f"Imagen para {self.miniproyecto.Nombre_MP}"
+    
+class ImagenFuncionamiento(models.Model):
+    miniproyecto = models.ForeignKey(Miniproyecto, related_name='imagenes_funcionamiento', on_delete=models.CASCADE)
+    imagen = models.ImageField(upload_to='imagenes_funcionamiento/')
+
+    def __str__(self):
+        return f"Imagen de funcionamiento para {self.miniproyecto.Nombre_MP}"
