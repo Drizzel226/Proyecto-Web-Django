@@ -42,39 +42,43 @@
             <tr>
                 <td>{{ dato.id }}</td>
                 <td style="max-width: 150px; min-width: 150px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title="{{ dato.Nombre_MP }}">
-                    {{ dato.Nombre_MP }}
+                    {{ dato.Nombre_MP|default_if_none:"-" }}
                 </td>
-                <td>[$]{{ dato.costo }}</td>
-                <td>[$]{{ dato.ahorro }}</td>
-                <td>{{ dato.categoria }}</td>
-                <td>{{ dato.subcategoria }}</td>
-                <td>{{ dato.area }}</td>
-                <td>{{ dato.subarea }}</td>
-                <td>{{ dato.maquina }}</td>
+                <td>[$]{{ dato.costo|default_if_none:"-" }}</td>
+                <td>[$]{{ dato.ahorro|default_if_none:"-" }}</td>
+                <td>{{ dato.categoria|default_if_none:"-" }}</td>
+                <td>{{ dato.subcategoria|default_if_none:"-" }}</td>
+                <td>{{ dato.area|default_if_none:"-" }}</td>
+                <td>{{ dato.subarea|default_if_none:"-" }}</td>
+                <td>{{ dato.maquina|default_if_none:"-" }}</td>
                 <td>
-                    {% for miembro in dato.miembros_equipo.all %}
-                        {{ miembro.nombre }}{% if not forloop.last %}, {% endif %}
-                    {% endfor %}
+                    {% if dato.miembros_equipo.all %}
+                        {% for miembro in dato.miembros_equipo.all %}
+                            {{ miembro.nombre }}{% if not forloop.last %}, {% endif %}
+                        {% endfor %}
+                    {% else %}
+                        -
+                    {% endif %}
                 </td>
-                <td>{{ dato.pilar }}</td>
-                <td>{{ dato.kpi_iceo }}</td>
-                <td>{{ dato.fecha_inicio }}</td>
-                <td>{{ dato.fecha_cierre }}</td>
+                <td>{{ dato.pilar|default_if_none:"-" }}</td>
+                <td>{{ dato.kpi_iceo|default_if_none:"-" }}</td>
+                <td>{{ dato.fecha_inicio|default_if_none:"-" }}</td>
+                <td>{{ dato.fecha_cierre|default_if_none:"-" }}</td>
                 <td>
                     <a href="{% url 'miniproyectos' pk=dato.pk %}" class="btn-verde">Editar</a>
                 </td>
                 <td>
                     <input type="checkbox" name="checkbox_{{ dato.id }}" value="True" {% if dato.paso_4 %}checked{% endif %} disabled>
                 </td>                
-                <td>{{ dato.ot }}</td>
-                <td>{{ dato.dias }}</td>
+                <td>{{ dato.ot|default_if_none:"-" }}</td>
+                <td>{{ dato.dias|default_if_none:"-" }}</td>
                 {% if es_auditor %}
                     <td>
                         <a href="{% url 'porque_vista' pk=dato.pk %}" class="btn-verde">Auditar</a>
                     </td>
                 {% endif %}
-                <td>{{ dato.puntaje }}%</td>    
-                <td>{{ dato.promedio_puntaje_porcentaje }}%</td>  
+                <td>{{ dato.puntaje|default_if_none:"-" }}%</td>    
+                <td>{{ dato.promedio_puntaje_porcentaje|default_if_none:"-" }}%</td>  
             </tr>
             {% endfor %}
         </tbody>
