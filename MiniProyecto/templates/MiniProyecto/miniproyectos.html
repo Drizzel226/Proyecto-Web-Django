@@ -647,65 +647,102 @@
         
 
         
-            <style>
-                .btn-primary {
-                    background-color: #28a745; /* Ajusta el color al verde */
-                    border: none;
-                    color: white;
-                    padding: 8px 12px;
-                    text-align: center;
-                    text-decoration: none;
-                    display: inline-block;
-                    font-size: 14px;
-                    margin: 4px 2px;
-                    cursor: pointer;
-                    border-radius: 4px;
-                }
-            </style>
-            <h2>5 Porqués Asociados</h2>
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Categoría</th>
-                        <th>Subcategoría</th>
-                        <th>Área</th>
-                        <th>KPI ICEO</th>
-                        <th>Miembros del Equipo</th>
-                        <th>Acciones</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for porque in porques %}
-                    <tr>
-                        <td>{{ porque.id }}</td>
-                        <td>{{ porque.categoria }}</td>
-                        <td>{{ porque.subcategoria }}</td>
-                        <td>{{ porque.area }}</td>
-                        <td>{{ porque.kpi_iceo }}</td>
-                        <td>
-                            {% for miembro in porque.miembros_equipo.all %}
-                                {{ miembro.nombre }}{% if not forloop.last %}, {% endif %}
-                            {% endfor %}
-                        </td>
-                        <td>
+        <style>
+            .btn-primary {
+                background-color: #28a745; /* Ajusta el color al verde */
+                border: none;
+                color: white;
+                padding: 8px 12px;
+                text-align: center;
+                text-decoration: none;
+                display: inline-block;
+                font-size: 14px;
+                margin: 4px 2px;
+                cursor: pointer;
+                border-radius: 4px;
+            }
+        
+            /* Clase para alinear los botones "Editar" y "Quitar" horizontalmente */
+            .botones-acciones {
+                display: inline-flex;
+                gap: 5px; /* Espacio entre los botones */
+            }
+        
+            /* Clase para reducir el ancho de la columna de acciones */
+            .columna-acciones {
+                width: 150px;
+                text-align: center;
+            }
+        </style>
+        
+        <h2>5 Porqués Asociados</h2>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Categoría</th>
+                    <th>Subcategoría</th>
+                    <th>Área</th>
+                    <th>KPI ICEO</th>
+                    <th>Miembros del Equipo</th>
+                    <th class="columna-acciones">Acciones</th>
+                </tr>
+            </thead>
+            <tbody id="porques-table-body">
+                {% for porque in porques %}
+                <tr id="porque-row-{{ porque.id }}">
+                    <td>{{ porque.id }}</td>
+                    <td>{{ porque.categoria }}</td>
+                    <td>{{ porque.subcategoria }}</td>
+                    <td>{{ porque.area }}</td>
+                    <td>{{ porque.kpi_iceo }}</td>
+                    <td>
+                        {% for miembro in porque.miembros_equipo.all %}
+                            {{ miembro.nombre }}{% if not forloop.last %}, {% endif %}
+                        {% endfor %}
+                    </td>
+                    <td class="columna-acciones">
+                        <div class="botones-acciones">
                             <a href="{% url 'porque' porque.id %}" class="btn btn-primary">Editar</a>
-                        
-                            <!-- Botón para quitar el "5 Porqué" -->
-                            <form method="post" style="display:inline;">
-                                {% csrf_token %}
-                                <input type="hidden" name="quitar_porque_id" value="{{ porque.id }}">
-                                <button type="submit" class="btn btn-primary">Quitar</button>
-                            </form>
-                        </td>
-                    </tr>
-                    {% empty %}
-                    <tr>
-                        <td colspan="5">No hay análisis de 5 Porqués asociados.</td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+                            
+                            <!-- Botón para quitar el "5 Porqué" con JavaScript, sin recargar la página -->
+                            <button type="button" class="btn btn-primary" onclick="quitarPorque({{ porque.id }})">Quitar</button>
+                        </div>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="7">No hay análisis de 5 Porqués asociados.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        
+        <!-- Campo oculto para almacenar los IDs de "5 Porqués" a eliminar -->
+        <input type="hidden" name="porques_a_eliminar" id="porques_a_eliminar" value="">
+        
+        <script>
+            // Array para almacenar los IDs de los "5 Porqués" que se quieren quitar
+            let porquesParaEliminar = [];
+        
+            function quitarPorque(id) {
+                // Agrega el ID a la lista de eliminaciones si no está ya presente
+                if (!porquesParaEliminar.includes(id)) {
+                    porquesParaEliminar.push(id);
+                }
+        
+                // Actualiza el campo oculto con los IDs
+                document.getElementById('porques_a_eliminar').value = porquesParaEliminar.join(',');
+        
+                // Oculta la fila correspondiente al "5 Porqué" que se quitó
+                const row = document.getElementById(`porque-row-${id}`);
+                if (row) {
+                    row.style.display = 'none'; // Oculta la fila de la tabla
+                }
+            }
+        </script>
+        
+        
         
 
         

@@ -1,11 +1,11 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from .forms import MiniproyectoForm
-from .models import Miniproyecto, MiembroEquipo, ImagenMiniproyecto, ImagenFuncionamiento  # Importar los modelos de imágenes
+from .models import Miniproyecto, MiembroEquipo, ImagenMiniproyecto, ImagenFuncionamiento
 from django.contrib import messages
 from django.utils.timezone import now
 from google.oauth2 import service_account
 from googleapiclient.discovery import build
-from django.core.mail import send_mail  # Importar para enviar correos
+from django.core.mail import send_mail
 from porque.models import Porque
 
 def miniproyecto_view(request, pk=None):
@@ -25,14 +25,13 @@ def miniproyecto_view(request, pk=None):
 
     def obtener_subcategorias_y_datos():
         """Función para obtener las subcategorías y sus datos asociados desde Google Sheets."""
-        rango = 'Subcategorias!A2:D'  # Asegúrate de que el rango sea correcto en Google Sheets
+        rango = 'Subcategorias!A2:D'
         result = sheet.values().get(spreadsheetId=SPREADSHEET_ID, range=rango).execute()
         valores = result.get('values', [])
         
-        # Crear una lista de diccionarios para almacenar los datos
         subcategorias_datos = []
         for fila in valores:
-            if len(fila) >= 4:  # Asegúrate de que la fila tenga al menos 4 columnas
+            if len(fila) >= 4:
                 subcategorias_datos.append({
                     'subcategoria': fila[0],
                     'categoria': fila[1],
@@ -53,30 +52,16 @@ def miniproyecto_view(request, pk=None):
     miniproyecto_instance = get_object_or_404(Miniproyecto, pk=pk) if pk else None
 
     if request.method == 'POST':
-        # Manejar la asociación de un "5 Porqué" existente
-        if 'porque_id' in request.POST:
-            porque_id = request.POST.get('porque_id')
-            if porque_id:
-                porque = get_object_or_404(Porque, id=porque_id)
-                porque.miniproyecto = miniproyecto_instance
-                porque.save()
-                messages.success(request, '5 Porqué asociado correctamente.')
-                return redirect('miniproyectos', pk=pk)
-
-        # Manejar la desasociación de un "5 Porqué"
-        elif 'quitar_porque_id' in request.POST:
-            quitar_porque_id = request.POST.get('quitar_porque_id')
-            porque = get_object_or_404(Porque, id=quitar_porque_id, miniproyecto=miniproyecto_instance)
-            porque.miniproyecto = None  # Eliminar la asociación
-            porque.save()
-            messages.success(request, '5 Porqué desasociado correctamente.')
-            return redirect('miniproyectos', pk=pk)
-
         # Procesar el formulario del Miniproyecto
         form = MiniproyectoForm(request.POST, request.FILES, instance=miniproyecto_instance)
 
+        # Verificar si hay "5 Porqués" para quitar
+        porques_a_eliminar = request.POST.get('porques_a_eliminar')
+        if porques_a_eliminar:
+            porques_ids = porques_a_eliminar.split(',')
+            Porque.objects.filter(id__in=porques_ids, miniproyecto=miniproyecto_instance).update(miniproyecto=None)
+
         if form.is_valid():
-            # Verificar si es un nuevo formulario (no tiene PK aún)
             es_nuevo = miniproyecto_instance is None
             
             # Guardar la instancia del formulario pero sin guardarla aún en la BD
@@ -84,9 +69,8 @@ def miniproyecto_view(request, pk=None):
 
             # Verificar si el usuario indicó eliminar la imagen de falla funcional (Paso 1)
             if request.POST.get('delete_image') == 'true' and miniproyecto_instance.imagen_falla_funcional:
-                # Elimina la imagen de la base de datos y del sistema de archivos
                 miniproyecto_instance.imagen_falla_funcional.delete(save=False)
-                miniproyecto_instance.imagen_falla_funcional = None  # Asegurarse de limpiar el campo
+                miniproyecto_instance.imagen_falla_funcional = None
 
             # Obtener las áreas seleccionadas y almacenarlas como cadena separada por comas
             areas_seleccionadas = form.cleaned_data.get('areas_aplicacion')
@@ -125,10 +109,7 @@ def miniproyecto_view(request, pk=None):
 
             # Si el formulario es nuevo, enviar el correo
             if es_nuevo:
-                # Obtener correos de los miembros del equipo
                 emails = [miembro.email for miembro in miniproyecto_instance.miembros_equipo.all()]
-
-                # Preparar el contenido del correo con la categoría e ID
                 categoria = miniproyecto_instance.categoria
                 id_analisis = miniproyecto_instance.id
                 subcategoria = miniproyecto_instance.subcategoria
@@ -152,7 +133,7 @@ def miniproyecto_view(request, pk=None):
                     send_mail(
                         'Nuevo "Miniproyecto" asignado',
                         mensaje,
-                        'from@example.com',  # Cambia esto por el correo del remitente
+                        'from@example.com',
                         emails,
                         fail_silently=False,
                     )
@@ -165,7 +146,6 @@ def miniproyecto_view(request, pk=None):
             return redirect('miniproyectos', pk=miniproyecto_instance.pk)
 
         else:
-            # Si el formulario no es válido, mostrar errores
             messages.error(request, 'Por favor corrige los errores.')
 
     else:
@@ -199,10 +179,10 @@ def miniproyecto_view(request, pk=None):
         'opciones_miembros': opciones_miembros,
         'mostrar_paso1': mostrar_paso1,
         'subcategorias_datos': subcategorias_datos,
-        'miniproyecto': miniproyecto_instance,  # Pasar instancia para mostrar imágenes en la plantilla
+        'miniproyecto': miniproyecto_instance,
         'imagenes_paso1': imagenes_paso1,
         'imagenes_paso2': imagenes_paso2,
-        'porques': porques,  # Pasar los "5 Porqués" asociados al contexto
+        'porques': porques,
     }
 
     return render(request, 'MiniProyecto/miniproyectos.html', context)
