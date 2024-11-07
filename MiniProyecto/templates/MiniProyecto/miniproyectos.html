@@ -793,242 +793,107 @@
         </h2>
     </div>
     <div id="contenido-paso4">
-        <div class="sub-section" style="margin-bottom: 20px;">
-            <div><h1></h1></div>
-            
-            <!-- Subcategoría Acciones Correctivas -->
-            <div class="sub-header" style="background-color: #00C851; color: white; padding: 10px 15px; border-radius: 5px;">
-                <h3 style="margin: 0;">Acciones Correctivas</h3>
-            </div>
-            
-            <div class="sub-content" style="padding: 10px; border: 1px solid #00C851; border-radius: 5px;">
-                <button type="button" id="addAccionCorrectiva" class="btn btn-primary mt-2" style="margin-left: 50px; margin-bottom: 8px;">Agregar Acción Correctiva</button>
-                <div class="form-row">
-                    <table id="AccionesTable">
-                        <tr>
-                            <th>Acción Correctiva</th>
-                            <th>Responsable</th>
-                            <th>Fecha Compromiso</th>
-                        </tr>
-
-                        <!-- Primera fila visible -->
-                        <tr id="Acciones-row">
-                            <td>{{ form.Accion_correctiva }}</td>
-                            <td>
-                                <select id="Responsable1" name="Responsable1" class="select2">
-                                    {% for miembro in opciones_miembros %}
-                                        <option value="{{ miembro.id }}" data-email="{{ miembro.email }}" {% if miembro.id in form.Responsable1.value %}selected{% endif %}>
-                                            {{ miembro.nombre }}
-                                        </option>
-                                    {% endfor %}
-                                </select>
-                            </td>
-                            <td>
-                                <input type="date" id="Fecha_compromiso1" name="Fecha_compromiso1" class="form-control" value="{{ form.Fecha_compromiso1.value|date:'Y-m-d' }}">
-                            </td>
-                        </tr>
-
-                        <!-- Filas ocultas inicialmente -->
-                        <tr id="Acciones-row2" style="display: none;">
-                            <td>{{ form.Accion_correctiva_2 }}</td>
-                            <td>
-                                <select id="Responsable1_2" name="Responsable1_2" class="select2">
-                                    {% for miembro in opciones_miembros %}
-                                        <option value="{{ miembro.id }}" data-email="{{ miembro.email }}" {% if miembro.id in form.Responsable1_2.value %}selected{% endif %}>
-                                            {{ miembro.nombre }}
-                                        </option>
-                                    {% endfor %}
-                                </select>
-                            </td>
-                            <td>
-                                <input type="date" id="Fecha_compromiso1_2" name="Fecha_compromiso1_2" class="form-control" value="{{ form.Fecha_compromiso1_2.value|date:'Y-m-d' }}">
-                            </td>
-                        </tr>
-
-                        <tr id="Acciones-row3" style="display: none;">
-                            <td>{{ form.Accion_correctiva_3 }}</td>
-                            <td>
-                                <select id="Responsable1_3" name="Responsable1_3" class="select2">
-                                    {% for miembro in opciones_miembros %}
-                                        <option value="{{ miembro.id }}" data-email="{{ miembro.email }}" {% if miembro.id in form.Responsable1_3.value %}selected{% endif %}>
-                                            {{ miembro.nombre }}
-                                        </option>
-                                    {% endfor %}
-                                </select>
-                            </td>
-                            <td>
-                                <input type="date" id="Fecha_compromiso1_3" name="Fecha_compromiso1_3" class="form-control" value="{{ form.Fecha_compromiso1_3.value|date:'Y-m-d' }}">
-                            </td>
-                        </tr>
-
-                        <tr id="Acciones-row4" style="display: none;">
-                            <td>{{ form.Accion_correctiva_4 }}</td>
-                            <td>
-                                <select id="Responsable1_4" name="Responsable1_4" class="select2">
-                                    {% for miembro in opciones_miembros %}
-                                        <option value="{{ miembro.id }}" data-email="{{ miembro.email }}" {% if miembro.id in form.Responsable1_4.value %}selected{% endif %}>
-                                            {{ miembro.nombre }}
-                                        </option>
-                                    {% endfor %}
-                                </select>
-                            </td>
-                            <td>
-                                <input type="date" id="Fecha_compromiso1_4" name="Fecha_compromiso1_4" class="form-control" value="{{ form.Fecha_compromiso1_4.value|date:'Y-m-d' }}">
-                            </td>
-                        </tr>
-                    </table>
-                </div>
-            </div>
-
-            <div><h1></h1></div>
-
-            <!-- Subcategoría Acciones Preventivas -->
-            <div class="sub-header" style="background-color: #00C851; color: white; padding: 10px 15px; border-radius: 5px;">
-                <h3 style="margin: 0;">Acciones Preventivas</h3>
-            </div>
-            
-            <div class="sub-content" style="padding: 10px; border: 1px solid #00C851; border-radius: 5px;">
-                <button type="button" id="addAccionPreventiva" class="btn btn-primary mt-2" style="margin-left: 50px; margin-bottom: 8px;">Agregar Acción Preventiva</button>
-
-                
-                <!-- Contenedor de la tabla centrado -->
-                <div class="form-row" style="display: flex; justify-content: center;">
-                    <table id="AccionesTable" >
-                        <thead>
-                            <tr>
-                                <th colspan="4">ACCIONES (CONTRAMEDIDAS Y SEGUIMIENTO)</th>
-                                <th colspan="2">VALIDACIÓN DE LA ACCIÓN</th>
-                            </tr>
-                            <tr>
-                                <th>ACCIÓN PREVENTIVA</th>
-                                <th>RESPONSABLE</th>
-                                <th>FECHA COMPROMISO</th>
-                                <th>TIPO</th>
-                                <th>FECHA CIERRE</th>
-                                <th>MOC</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr id="accionesPRE-row">
-                                <td>{{ form.Accion_Preventiva }}</td>
-                                <td>
-                                    <select id="Responsable2" name="Responsable2" class="select2">
-                                        {% for miembro in opciones_miembros %}
-                                            <option value="{{ miembro.id }}" data-email="{{ miembro.email }}" {% if miembro.id in form.Responsable2.value %}selected{% endif %}>
-                                                {{ miembro.nombre }}
-                                            </option>
-                                        {% endfor %}
-                                    </select>
-                                </td>
-                                <td>
-                                    <input type="date" id="Fecha_compromiso2" name="Fecha_compromiso2" class="form-control" value="{{ form.Fecha_compromiso2.value|date:'Y-m-d' }}">
-                                </td>
-                                <td>{{ form.tipo }}</td>
-                                <td>
-                                    <input type="date" id="Fecha_cierre_paso4" name="Fecha_cierre_paso4" class="form-control" value="{{ form.Fecha_cierre_paso4.value|date:'Y-m-d' }}">
-                                </td>
-                                <td>{{ form.MOC }}</td>
-                            </tr>
-
-                            <tr id="accionesPRE-row2" style="display: none;">
-                                <td>{{ form.Accion_Preventiva_2 }}</td>
-                                <td>
-                                    <select id="Responsable2_2" name="Responsable2_2" class="select2">
-                                        {% for miembro in opciones_miembros %}
-                                            <option value="{{ miembro.id }}" data-email="{{ miembro.email }}" {% if miembro.id in form.Responsable2_2.value %}selected{% endif %}>
-                                                {{ miembro.nombre }}
-                                            </option>
-                                        {% endfor %}
-                                    </select>
-                                </td>
-                                <td>
-                                    <input type="date" id="Fecha_compromiso2_2" name="Fecha_compromiso2_2" class="form-control" value="{{ form.Fecha_compromiso2_2.value|date:'Y-m-d' }}">
-                                </td>
-                                <td>{{ form.tipo_2 }}</td>
-                                <td>
-                                    <input type="date" id="Fecha_cierre_paso4_2" name="Fecha_cierre_paso4_2" class="form-control" value="{{ form.Fecha_cierre_paso4_2.value|date:'Y-m-d' }}">
-                                </td>
-                                <td>{{ form.MOC_2 }}</td>
-                            </tr>
-
-                            <tr id="accionesPRE-row3" style="display: none;">
-                                <td>{{ form.Accion_Preventiva_3 }}</td>
-                                <td>
-                                    <select id="Responsable2_3" name="Responsable2_3" class="select2">
-                                        {% for miembro in opciones_miembros %}
-                                            <option value="{{ miembro.id }}" data-email="{{ miembro.email }}" {% if miembro.id in form.Responsable2_3.value %}selected{% endif %}>
-                                                {{ miembro.nombre }}
-                                            </option>
-                                        {% endfor %}
-                                    </select>
-                                </td>
-                                <td>
-                                    <input type="date" id="Fecha_compromiso2_3" name="Fecha_compromiso2_3" class="form-control" value="{{ form.Fecha_compromiso2_3.value|date:'Y-m-d' }}">
-                                </td>
-                                <td>{{ form.tipo_3 }}</td>
-                                <td>
-                                    <input type="date" id="Fecha_cierre_paso4_3" name="Fecha_cierre_paso4_3" class="form-control" value="{{ form.Fecha_cierre_paso4_3.value|date:'Y-m-d' }}">
-                                </td>
-                                <td>{{ form.MOC_3 }}</td>
-                            </tr>
-
-                            <tr id="accionesPRE-row4" style="display: none;">
-                                <td>{{ form.Accion_Preventiva_4 }}</td>
-                                <td>
-                                    <select id="Responsable2_4" name="Responsable2_4" class="select2">
-                                        {% for miembro in opciones_miembros %}
-                                            <option value="{{ miembro.id }}" data-email="{{ miembro.email }}" {% if miembro.id in form.Responsable2_4.value %}selected{% endif %}>
-                                                {{ miembro.nombre }}
-                                            </option>
-                                        {% endfor %}
-                                    </select>
-                                </td>
-                                <td>
-                                    <input type="date" id="Fecha_compromiso2_4" name="Fecha_compromiso2_4" class="form-control" value="{{ form.Fecha_compromiso2_4.value|date:'Y-m-d' }}">
-                                </td>
-                                <td>{{ form.tipo_4 }}</td>
-                                <td>
-                                    <input type="date" id="Fecha_cierre_paso4_4" name="Fecha_cierre_paso4_4" class="form-control" value="{{ form.Fecha_cierre_paso4_4.value|date:'Y-m-d' }}">
-                                </td>
-                                <td>{{ form.MOC_4 }}</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-            <br>
-            <!-- Ícono con popover que mostrará la imagen -->
-            <div class="popover-container">
-                <i class="fas fa-question-circle"></i>
-                <div class="popover-content">
-                    <img src="{% static 'images/Referencia.png' %}" alt="Descripción de la imagen">
-                </div>
-            </div>
+        
+        <div><h1></h1></div>
+        
+        <button type="button" id="addAccionPreventiva" class="btn btn-primary mt-2" style="margin-left: 50px; margin-bottom: 8px;">Agregar Acción Preventiva</button>  
+        <!-- Contenedor de la tabla centrado -->
+        <div class="form-row" style="display: flex; justify-content: center;">
+            <table id="AccionesTable">
+                <thead>
+                    <tr>
+                        <th colspan="6">ACCIONES (CONTRAMEDIDAS Y SEGUIMIENTO)</th>
+                        <th colspan="2">VALIDACIÓN DE LA ACCIÓN</th>
+                    </tr>
+                    <tr>
+                        <th>ACCIÓN PREVENTIVA</th>
+                        <th>RESPONSABLE</th>
+                        <th>FECHA INICIO</th>
+                        <th>FECHA COMPROMISO</th>
+                        <th>TIPO</th>
+                        <th>ESTADO</th>
+                        <th>FECHA CIERRE</th>
+                        <th>CERRAR</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr id="accionesPRE-row">
+                        <td>{{ form.Accion_Preventiva }}</td>
+                        <td>
+                            <select id="Responsable2" name="Responsable2" class="select2">
+                                {% for miembro in opciones_miembros %}
+                                    <option value="{{ miembro.id }}" data-email="{{ miembro.email }}" {% if miembro.id in form.Responsable2.value %}selected{% endif %}>
+                                        {{ miembro.nombre }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </td>
+                        <td>
+                            <input type="date" id="Fecha_inicio2" name="Fecha_inicio2" class="form-control" value="{{ form.Fecha_inicio2.value|date:'Y-m-d' }}">
+                        </td>
+                        <td>
+                            <input type="date" id="Fecha_compromiso2" name="Fecha_compromiso2" class="form-control" value="{{ form.Fecha_compromiso2.value|date:'Y-m-d' }}">
+                        </td>
+                        <td>{{ form.tipo }}</td>
+                        <td>
+                            <span id="estado-1" class="estado-texto">Pendiente</span>
+                        </td>
+                        <td>
+                            <input type="date" id="Fecha_cierre_paso4" name="Fecha_cierre_paso4" class="form-control" value="{{ form.Fecha_cierre_paso4.value|date:'Y-m-d' }}">
+                        </td>
+                        <td>
+                            <button type="button" class="cerrar-btn" onclick="cerrarAccion('estado-1')">&#10004;</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
+        <script>
+            function cerrarAccion(estadoId) {
+                // Selecciona el elemento de estado usando el ID
+                const estadoElemento = document.getElementById(estadoId);
+            
+                // Cambia el estado a "Cerrada" si está en "Pendiente"
+                if (estadoElemento.innerText === "Pendiente") {
+                    estadoElemento.innerText = "Cerrada";
+            
+                    // Aquí puedes agregar una llamada AJAX para actualizar el estado en el servidor
+                    // Si estás usando Django, puedes hacer una petición al backend
+                    fetch(`/actualizar_estado/`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRFToken': '{{ csrf_token }}' // Incluye el token CSRF para seguridad
+                        },
+                        body: JSON.stringify({
+                            estado_id: estadoId,
+                            nuevo_estado: "Cerrada"
+                        })
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            console.log("Estado actualizado en el servidor.");
+                        } else {
+                            console.error("Hubo un error al actualizar el estado.");
+                        }
+                    })
+                    .catch(error => {
+                        console.error("Error en la petición:", error);
+                    });
+                }
+            }
+            </script>
+        
     </div>
+
+
+
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             let rowCountCorrectivas = 1;
             let rowCountPreventivas = 1;
             const maxRows = 4;
-        
-            // Función para mostrar todas las filas hasta la última que tenga datos en "Acciones Correctivas"
-            function mostrarFilasCorrectivasHastaLaUltima() {
-                for (let i = maxRows; i >= 1; i--) {
-                    const accionInput = document.getElementById(`id_Accion_correctiva_${i}`);
-                    if (accionInput && accionInput.value.trim() !== "") {
-                        // Si la fila `i` tiene datos, mostramos todas las anteriores hasta esa fila
-                        for (let j = 1; j <= i; j++) {
-                            const fila = document.getElementById(`Acciones-row${j}`);
-                            if (fila) {
-                                fila.style.display = ''; // Mostrar la fila
-                            }
-                        }
-                        rowCountCorrectivas = i; // Actualizamos el contador con la última fila visible
-                        break; // No necesitamos seguir buscando más filas, ya que hemos encontrado la última con datos
-                    }
-                }
-            }
         
             // Función para mostrar todas las filas hasta la última que tenga datos en "Acciones Preventivas"
             function mostrarFilasPreventivasHastaLaUltima() {
@@ -1048,21 +913,6 @@
                 }
             }
         
-            // Evento para mostrar más filas en Acciones Correctivas
-            document.getElementById('addAccionCorrectiva').addEventListener('click', function() {
-                if (rowCountCorrectivas < maxRows) {
-                    rowCountCorrectivas++;
-                    const nextRow = document.getElementById(`Acciones-row${rowCountCorrectivas}`);
-                    if (nextRow) {
-                        nextRow.style.display = ''; // Mostrar la siguiente fila oculta
-                    }
-        
-                    // Si ya llegamos al total de filas, ocultar el botón
-                    if (rowCountCorrectivas >= maxRows) {
-                        this.style.display = 'none';
-                    }
-                }
-            });
         
             // Mostrar filas con datos en Acciones Correctivas al cargar la página
             mostrarFilasCorrectivasHastaLaUltima();

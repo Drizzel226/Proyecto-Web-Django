@@ -6,7 +6,9 @@ from django.utils.timezone import now
 from google.oauth2 import service_account
 from googleapiclient.discovery import build
 from django.core.mail import send_mail
+from django.http import JsonResponse
 from porque.models import Porque
+import json
 
 def miniproyecto_view(request, pk=None):
     # Configuración de Google Sheets API
@@ -186,3 +188,21 @@ def miniproyecto_view(request, pk=None):
     }
 
     return render(request, 'MiniProyecto/miniproyectos.html', context)
+
+from django.views.decorators.csrf import csrf_exempt
+
+@csrf_exempt
+def actualizar_estado(request):
+    if request.method == "POST":
+        data = json.loads(request.body)
+        miniproyecto_id = data.get("miniproyecto_id")
+        nuevo_estado = data.get("nuevo_estado")
+
+        try:
+            miniproyecto = Miniproyecto.objects.get(id=miniproyecto_id)
+            miniproyecto.estado = nuevo_estado  # Actualizar el estado en la base de datos
+            miniproyecto.save()
+            return JsonResponse({"success": True})
+        except Miniproyecto.DoesNotExist:
+            return JsonResponse({"success": False, "error": "Miniproyecto no encontrado."})
+    return JsonResponse({"success": False, "error": "Método no permitido."})

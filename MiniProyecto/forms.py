@@ -34,26 +34,19 @@ class MiniproyectoForm(forms.ModelForm):
             'desarrollo',
         
 
-
-
             # PASO 4
 
-            'Accion_correctiva', 'Responsable1', 'Fecha_compromiso1',
-            'Accion_correctiva_2', 'Responsable1_2', 'Fecha_compromiso1_2',
-            'Accion_correctiva_3', 'Responsable1_3', 'Fecha_compromiso1_3',
-            'Accion_correctiva_4', 'Responsable1_4', 'Fecha_compromiso1_4',
+            'Accion_Preventiva', 'Responsable2', 'Fecha_inicio2', 'Fecha_compromiso2', 'tipo',
+            'Fecha_cierre_paso4', 
 
-            'Accion_Preventiva', 'Responsable2', 'Fecha_compromiso2', 'tipo',
-            'Fecha_cierre_paso4', 'MOC',
+            'Accion_Preventiva_2', 'Responsable2_2', 'Fecha_inicio2_2', 'Fecha_compromiso2_2', 'tipo_2',
+            'Fecha_cierre_paso4_2', 
 
-            'Accion_Preventiva_2', 'Responsable2_2', 'Fecha_compromiso2_2', 'tipo_2',
-            'Fecha_cierre_paso4_2', 'MOC_2',
+            'Accion_Preventiva_3', 'Responsable2_3', 'Fecha_inicio2_3', 'Fecha_compromiso2_3', 'tipo_3',
+            'Fecha_cierre_paso4_3', 
 
-            'Accion_Preventiva_3', 'Responsable2_3', 'Fecha_compromiso2_3', 'tipo_3',
-            'Fecha_cierre_paso4_3', 'MOC_3',
-
-            'Accion_Preventiva_4', 'Responsable2_4', 'Fecha_compromiso2_4', 'tipo_4',
-            'Fecha_cierre_paso4_4', 'MOC_4',
+            'Accion_Preventiva_4', 'Responsable2_4', 'Fecha_inicio2_4', 'Fecha_compromiso2_4', 'tipo_4',
+            'Fecha_cierre_paso4_4', 
             
             #PASO 5
 
@@ -105,25 +98,17 @@ class MiniproyectoForm(forms.ModelForm):
 
             
 
-            #paso 4
-            'Accion_correctiva': forms.Textarea(attrs={'class': 'accion-correctiva'}), 
-            'Fecha_compromiso1': forms.DateInput(format='%d-%m-%Y', attrs={'class': 'form-control', 'type': 'date'}),
-
-            'Accion_correctiva_2': forms.Textarea(attrs={'class': 'accion-correctiva'}),
-            'Fecha_compromiso1_2': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
-
-            'Accion_correctiva_3': forms.Textarea(attrs={'class': 'accion-correctiva'}),
-            'Fecha_compromiso1_3': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
-
-            'Accion_correctiva_4': forms.Textarea(attrs={'class': 'accion-correctiva'}),
-            'Fecha_compromiso1_4': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
-
-
+            # Paso 4
 
             'Accion_Preventiva': forms.Textarea(attrs={'class': 'accion-correctiva'}),
             'Accion_Preventiva_2': forms.Textarea(attrs={'class': 'accion-correctiva'}),
             'Accion_Preventiva_3': forms.Textarea(attrs={'class': 'accion-correctiva'}),
             'Accion_Preventiva_4': forms.Textarea(attrs={'class': 'accion-correctiva'}),
+
+            'Fecha_inicio2': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
+            'Fecha_inicio2_2': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
+            'Fecha_inicio2_3': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
+            'Fecha_inicio2_4': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
 
             'Fecha_compromiso2': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
             'Fecha_compromiso2_2': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
@@ -140,10 +125,6 @@ class MiniproyectoForm(forms.ModelForm):
             'Fecha_cierre_paso4_3': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
             'Fecha_cierre_paso4_4': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
 
-            'MOC': forms.Select(attrs={'class': 'form-control'}),
-            'MOC_2': forms.Select(attrs={'class': 'form-control'}),
-            'MOC_3': forms.Select(attrs={'class': 'form-control'}),
-            'MOC_4': forms.Select(attrs={'class': 'form-control'}),
 
     # Paso 5
 

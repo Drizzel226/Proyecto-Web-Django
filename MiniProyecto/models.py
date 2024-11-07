@@ -56,25 +56,7 @@ class Miniproyecto(models.Model):
 
     
     
-    #PASO 4
-
-    Accion_correctiva = models.TextField(blank=True, null=True)
-    Responsable1 = models.ManyToManyField('MiembroEquipo', related_name="responsable1", blank=True)
-    Fecha_compromiso1 = models.DateField(blank=True, null=True)
-
-    Accion_correctiva_2 = models.TextField(blank=True, null=True)
-    Responsable1_2 = models.ManyToManyField('MiembroEquipo', related_name="responsable1_2", blank=True)
-    Fecha_compromiso1_2 = models.DateField(blank=True, null=True)
-
-    Accion_correctiva_3 = models.TextField(blank=True, null=True)
-    Responsable1_3 = models.ManyToManyField('MiembroEquipo', related_name="responsable1_3", blank=True)
-    Fecha_compromiso1_3 = models.DateField(blank=True, null=True)
-
-    Accion_correctiva_4 = models.TextField(blank=True, null=True)
-    Responsable1_4 = models.ManyToManyField('MiembroEquipo', related_name="responsable1_4", blank=True)
-    Fecha_compromiso1_4 = models.DateField(blank=True, null=True)
-
-
+    # PASO 4
 
 
     Accion_Preventiva = models.TextField(blank=True, null=True)
@@ -86,6 +68,11 @@ class Miniproyecto(models.Model):
     Responsable2_2 = models.ManyToManyField('MiembroEquipo', related_name="responsable2_2", blank=True)
     Responsable2_3 = models.ManyToManyField('MiembroEquipo', related_name="responsable2_3", blank=True)
     Responsable2_4 = models.ManyToManyField('MiembroEquipo', related_name="responsable2_4", blank=True)
+
+    Fecha_inicio2 = models.DateField(blank=True, null=True)
+    Fecha_inicio2_2 = models.DateField(blank=True, null=True)
+    Fecha_inicio2_3 = models.DateField(blank=True, null=True)
+    Fecha_inicio2_4 = models.DateField(blank=True, null=True)
 
     Fecha_compromiso2 = models.DateField(blank=True, null=True)
     Fecha_compromiso2_2 = models.DateField(blank=True, null=True)
@@ -137,52 +124,19 @@ class Miniproyecto(models.Model):
         blank=True, null=True
     )
 
+    ESTADO_OPCIONES = [
+            ('Pendiente', 'Pendiente'),
+            ('Cerrada', 'Cerrada'),
+        ]
+    estado = models.CharField(max_length=10, choices=ESTADO_OPCIONES, default='Pendiente'),
+
+    
+
     Fecha_cierre_paso4 = models.DateField(blank=True, null=True)
     Fecha_cierre_paso4_2 = models.DateField(blank=True, null=True)
     Fecha_cierre_paso4_3 = models.DateField(blank=True, null=True)
     Fecha_cierre_paso4_4 = models.DateField(blank=True, null=True)
     
-    MOC = models.CharField(
-        max_length=100,
-        choices=[
-            ('aplica', 'Aplica'),
-            ('no aplica', 'No aplica'),
-
-  
-        ],
-        blank=True, null=True
-    )
-    MOC_2 = models.CharField(
-        max_length=100,
-        choices=[
-            ('aplica', 'Aplica'),
-            ('no aplica', 'No aplica'),
-
-  
-        ],
-        blank=True, null=True
-    )
-    MOC_3 = models.CharField(
-        max_length=100,
-        choices=[
-            ('aplica', 'Aplica'),
-            ('no aplica', 'No aplica'),
-
-  
-        ],
-        blank=True, null=True
-    )
-    MOC_4 = models.CharField(
-        max_length=100,
-        choices=[
-            ('aplica', 'Aplica'),
-            ('no aplica', 'No aplica'),
-
-  
-        ],
-        blank=True, null=True
-    )
-
 
 
 
