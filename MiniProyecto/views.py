@@ -6,6 +6,7 @@ from django.utils.timezone import now
 from google.oauth2 import service_account
 from googleapiclient.discovery import build
 from django.core.mail import send_mail  # Importar para enviar correos
+from porque.models import Porque
 
 def miniproyecto_view(request, pk=None):
     # Configuración de Google Sheets API
@@ -52,6 +53,26 @@ def miniproyecto_view(request, pk=None):
     miniproyecto_instance = get_object_or_404(Miniproyecto, pk=pk) if pk else None
 
     if request.method == 'POST':
+        # Manejar la asociación de un "5 Porqué" existente
+        if 'porque_id' in request.POST:
+            porque_id = request.POST.get('porque_id')
+            if porque_id:
+                porque = get_object_or_404(Porque, id=porque_id)
+                porque.miniproyecto = miniproyecto_instance
+                porque.save()
+                messages.success(request, '5 Porqué asociado correctamente.')
+                return redirect('miniproyectos', pk=pk)
+
+        # Manejar la desasociación de un "5 Porqué"
+        elif 'quitar_porque_id' in request.POST:
+            quitar_porque_id = request.POST.get('quitar_porque_id')
+            porque = get_object_or_404(Porque, id=quitar_porque_id, miniproyecto=miniproyecto_instance)
+            porque.miniproyecto = None  # Eliminar la asociación
+            porque.save()
+            messages.success(request, '5 Porqué desasociado correctamente.')
+            return redirect('miniproyectos', pk=pk)
+
+        # Procesar el formulario del Miniproyecto
         form = MiniproyectoForm(request.POST, request.FILES, instance=miniproyecto_instance)
 
         if form.is_valid():
@@ -167,6 +188,9 @@ def miniproyecto_view(request, pk=None):
     imagenes_paso1 = ImagenMiniproyecto.objects.filter(miniproyecto=miniproyecto_instance) if miniproyecto_instance else []
     imagenes_paso2 = ImagenFuncionamiento.objects.filter(miniproyecto=miniproyecto_instance) if miniproyecto_instance else []
 
+    # Obtener los "5 Porqués" asociados al Miniproyecto
+    porques = Porque.objects.filter(miniproyecto=miniproyecto_instance) if miniproyecto_instance else []
+
     context = {
         'form': form,
         'opciones_area': opciones_area,
@@ -178,6 +202,7 @@ def miniproyecto_view(request, pk=None):
         'miniproyecto': miniproyecto_instance,  # Pasar instancia para mostrar imágenes en la plantilla
         'imagenes_paso1': imagenes_paso1,
         'imagenes_paso2': imagenes_paso2,
+        'porques': porques,  # Pasar los "5 Porqués" asociados al contexto
     }
 
     return render(request, 'MiniProyecto/miniproyectos.html', context)

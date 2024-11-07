@@ -1,7 +1,12 @@
 from django.db import models
+from MiniProyecto.models import Miniproyecto 
 
 
 class Porque(models.Model):
+
+    # Llave foranea para los miniproyectos
+    miniproyecto = models.ForeignKey(Miniproyecto, on_delete=models.CASCADE, null=True, blank=True, related_name="porques")
+
     # Campos existentes
     categoria = models.CharField(max_length=100, blank=True, null=True)
     subcategoria = models.CharField(max_length=100, blank=True, null=True)

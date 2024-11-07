@@ -638,8 +638,77 @@
             </div>
         </div>
         
-        <a href="{% url 'porque' %}" class="btn-verde btn-lg">Agregar 5 Por qué</a>
+        <br>
+        <div>
+        <a href="{% url 'porque' %}" class="btn-verde btn-lg" onclick="abrirEnNuevaVentana('{% url 'porque' %}'); return false;">Crear 5 Por qué</a>
+        <a href="{% url 'asociar_porque_existente' miniproyecto.id %}" class="btn-verde btn-lg">Asociar 5 Por qué Existente</a>
+        </div>
+        <div><h1></h1></div>
+        
 
+        
+            <style>
+                .btn-primary {
+                    background-color: #28a745; /* Ajusta el color al verde */
+                    border: none;
+                    color: white;
+                    padding: 8px 12px;
+                    text-align: center;
+                    text-decoration: none;
+                    display: inline-block;
+                    font-size: 14px;
+                    margin: 4px 2px;
+                    cursor: pointer;
+                    border-radius: 4px;
+                }
+            </style>
+            <h2>5 Porqués Asociados</h2>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Categoría</th>
+                        <th>Subcategoría</th>
+                        <th>Área</th>
+                        <th>KPI ICEO</th>
+                        <th>Miembros del Equipo</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for porque in porques %}
+                    <tr>
+                        <td>{{ porque.id }}</td>
+                        <td>{{ porque.categoria }}</td>
+                        <td>{{ porque.subcategoria }}</td>
+                        <td>{{ porque.area }}</td>
+                        <td>{{ porque.kpi_iceo }}</td>
+                        <td>
+                            {% for miembro in porque.miembros_equipo.all %}
+                                {{ miembro.nombre }}{% if not forloop.last %}, {% endif %}
+                            {% endfor %}
+                        </td>
+                        <td>
+                            <a href="{% url 'porque' porque.id %}" class="btn btn-primary">Editar</a>
+                        
+                            <!-- Botón para quitar el "5 Porqué" -->
+                            <form method="post" style="display:inline;">
+                                {% csrf_token %}
+                                <input type="hidden" name="quitar_porque_id" value="{{ porque.id }}">
+                                <button type="submit" class="btn btn-primary">Quitar</button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="5">No hay análisis de 5 Porqués asociados.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        
+
+        
         
         
 
@@ -647,6 +716,14 @@
     </div>
 
     <script>
+        //script para abrir una ventan nueva al apretar el boton 5pq
+        function abrirEnNuevaVentana(url) {
+            window.open(
+                url,
+                'nuevaVentana',
+                'width=800,height=600,resizable=yes,scrollbars=yes,status=yes'
+            );
+        }
         // Sincroniza el valor de ambos recuadros
         document.addEventListener("DOMContentLoaded", function () {
             const resumenOriginal = document.getElementById("{{ form.resumen.id_for_label }}");

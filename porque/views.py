@@ -225,3 +225,30 @@ def porque_vista(request, pk=None):
         'ratings': ratings,
     }
     return render(request, 'porque/porque_vista.html', context)
+
+
+# porque/views.py
+from django.shortcuts import render, redirect, get_object_or_404
+from .models import Porque
+from MiniProyecto.models import Miniproyecto
+from django.contrib import messages
+
+def asociar_porque_existente(request, miniproyecto_id):
+    miniproyecto = get_object_or_404(Miniproyecto, id=miniproyecto_id)
+    if request.method == 'POST':
+        porque_id = request.POST.get('porque_id')
+        if porque_id:
+            porque = get_object_or_404(Porque, id=porque_id)
+            porque.miniproyecto = miniproyecto  # Asociar el "5 Porqué" al Miniproyecto
+            porque.save()
+            messages.success(request, '5 Porqué asociado correctamente.')
+            return redirect('miniproyectos', pk=miniproyecto_id)  # Redirigir de vuelta al Miniproyecto
+        else:
+            messages.error(request, 'Por favor selecciona un "5 Porqué" válido.')
+    else:
+        porques_no_asociados = Porque.objects.filter(miniproyecto__isnull=True)  # Obtener solo los "5 Porqués" sin asociación
+
+    return render(request, 'porque/asociar_porque_existente.html', {
+        'miniproyecto': miniproyecto,
+        'porques_no_asociados': porques_no_asociados,
+    })
