@@ -190,19 +190,28 @@ def miniproyecto_view(request, pk=None):
     return render(request, 'MiniProyecto/miniproyectos.html', context)
 
 from django.views.decorators.csrf import csrf_exempt
+from django.http import JsonResponse
+import json
+from .models import Miniproyecto
 
 @csrf_exempt
-def actualizar_estado(request):
-    if request.method == "POST":
-        data = json.loads(request.body)
-        miniproyecto_id = data.get("miniproyecto_id")
-        nuevo_estado = data.get("nuevo_estado")
-
+def actualizar_estado(request, accion_id):
+    if request.method == 'POST':
         try:
-            miniproyecto = Miniproyecto.objects.get(id=miniproyecto_id)
-            miniproyecto.estado = nuevo_estado  # Actualizar el estado en la base de datos
-            miniproyecto.save()
-            return JsonResponse({"success": True})
+            data = json.loads(request.body)
+            nuevo_estado = data.get("estado", "Pendiente")  # Obtén el estado de la solicitud
+
+            # Obtén la acción por su ID
+            accion = Miniproyecto.objects.get(id=accion_id)
+            accion.estado = nuevo_estado  # Actualiza el estado
+            accion.save()  # Guarda el cambio en la base de datos
+
+            # Devuelve una respuesta JSON confirmando el éxito
+            return JsonResponse({"success": True, "estado": nuevo_estado})
         except Miniproyecto.DoesNotExist:
-            return JsonResponse({"success": False, "error": "Miniproyecto no encontrado."})
-    return JsonResponse({"success": False, "error": "Método no permitido."})
+            return JsonResponse({"success": False, "error": "Acción no encontrada"}, status=404)
+        except json.JSONDecodeError:
+            return JsonResponse({"success": False, "error": "Error de JSON"}, status=400)
+    else:
+        return JsonResponse({"success": False, "error": "Método no permitido"}, status=405)
+

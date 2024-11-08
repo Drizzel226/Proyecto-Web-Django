@@ -125,10 +125,11 @@ class Miniproyecto(models.Model):
     )
 
     ESTADO_OPCIONES = [
-            ('Pendiente', 'Pendiente'),
-            ('Cerrada', 'Cerrada'),
-        ]
-    estado = models.CharField(max_length=10, choices=ESTADO_OPCIONES, default='Pendiente'),
+    ('Pendiente', 'Pendiente'),
+    ('Cerrada', 'Cerrada'),
+    ]
+    estado = models.CharField(max_length=10, choices=ESTADO_OPCIONES, default='Pendiente')
+
 
     
 

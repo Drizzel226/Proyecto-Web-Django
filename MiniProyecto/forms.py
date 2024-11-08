@@ -36,7 +36,7 @@ class MiniproyectoForm(forms.ModelForm):
 
             # PASO 4
 
-            'Accion_Preventiva', 'Responsable2', 'Fecha_inicio2', 'Fecha_compromiso2', 'tipo',
+            'Accion_Preventiva', 'Responsable2', 'Fecha_inicio2', 'Fecha_compromiso2', 'tipo', 'estado' ,
             'Fecha_cierre_paso4', 
 
             'Accion_Preventiva_2', 'Responsable2_2', 'Fecha_inicio2_2', 'Fecha_compromiso2_2', 'tipo_2',

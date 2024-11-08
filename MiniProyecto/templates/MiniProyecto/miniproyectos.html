@@ -799,10 +799,10 @@
         <button type="button" id="addAccionPreventiva" class="btn btn-primary mt-2" style="margin-left: 50px; margin-bottom: 8px;">Agregar Acción Preventiva</button>  
         <!-- Contenedor de la tabla centrado -->
         <div class="form-row" style="display: flex; justify-content: center;">
-            <table id="AccionesTable">
+            <table id="AccionesTable" class="table table-striped">
                 <thead>
                     <tr>
-                        <th colspan="6">ACCIONES (CONTRAMEDIDAS Y SEGUIMIENTO)</th>
+                        <th colspan="5">ACCIONES (CONTRAMEDIDAS Y SEGUIMIENTO)</th>
                         <th colspan="2">VALIDACIÓN DE LA ACCIÓN</th>
                     </tr>
                     <tr>
@@ -810,7 +810,6 @@
                         <th>RESPONSABLE</th>
                         <th>FECHA INICIO</th>
                         <th>FECHA COMPROMISO</th>
-                        <th>TIPO</th>
                         <th>ESTADO</th>
                         <th>FECHA CIERRE</th>
                         <th>CERRAR</th>
@@ -834,110 +833,124 @@
                         <td>
                             <input type="date" id="Fecha_compromiso2" name="Fecha_compromiso2" class="form-control" value="{{ form.Fecha_compromiso2.value|date:'Y-m-d' }}">
                         </td>
-                        <td>{{ form.tipo }}</td>
                         <td>
-                            <span id="estado-1" class="estado-texto">Pendiente</span>
-                        </td>
+                            <input type="text" id="estado-{{ accion.id }}" name="estado" value="{{ form.estado.value }}" class="form-control readonly">
+                        </td>                                              
                         <td>
                             <input type="date" id="Fecha_cierre_paso4" name="Fecha_cierre_paso4" class="form-control" value="{{ form.Fecha_cierre_paso4.value|date:'Y-m-d' }}">
                         </td>
                         <td>
-                            <button type="button" class="cerrar-btn" onclick="cerrarAccion('estado-1')">&#10004;</button>
-                        </td>
+                            <!-- Modificación del botón -->
+                            <button type="button" class="cerrar-btn" onclick="cerrarAccion('estado-{{ accion.id }}', {{ accion.id }})">
+                                &#10004;
+                            </button>
+                        </td>                        
                     </tr>
+                    
                 </tbody>
             </table>
-        </div>
-        <script>
-            function cerrarAccion(estadoId) {
-                // Selecciona el elemento de estado usando el ID
-                const estadoElemento = document.getElementById(estadoId);
-            
-                // Cambia el estado a "Cerrada" si está en "Pendiente"
-                if (estadoElemento.innerText === "Pendiente") {
-                    estadoElemento.innerText = "Cerrada";
-            
-                    // Aquí puedes agregar una llamada AJAX para actualizar el estado en el servidor
-                    // Si estás usando Django, puedes hacer una petición al backend
-                    fetch(`/actualizar_estado/`, {
+            <style>
+                .readonly {
+                    background-color: #e9ecef; /* Color de fondo de campo deshabilitado */
+                    pointer-events: none;      /* Evita la edición */
+                }
+            </style>
+            <script>
+                function cerrarAccion(estadoId, accionId) {
+                    // Cambiar el estado a "Cerrada" en el HTML
+                    const estadoField = document.getElementById(estadoId);
+                    if (estadoField) {
+                        estadoField.value = "Cerrada";
+                    } else {
+                        console.error("Campo de estado no encontrado", estadoId);
+                        return;
+                    }
+                
+                    // Realizar una petición AJAX para actualizar el estado en el servidor
+                    fetch(`/actualizar-estado/${accionId}/`, {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
-                            'X-CSRFToken': '{{ csrf_token }}' // Incluye el token CSRF para seguridad
+                            'X-CSRFToken': getCSRFToken()  // Asegúrate de que el CSRF token esté disponible
                         },
-                        body: JSON.stringify({
-                            estado_id: estadoId,
-                            nuevo_estado: "Cerrada"
-                        })
+                        body: JSON.stringify({ estado: "Cerrada" })
                     })
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.success) {
-                            console.log("Estado actualizado en el servidor.");
+                    .then(response => {
+                        if (response.ok) {
+                            console.log("Estado actualizado exitosamente en la base de datos");
+                            return response.json();  // Convertir a JSON
                         } else {
-                            console.error("Hubo un error al actualizar el estado.");
+                            console.error("Error al actualizar el estado en el servidor");
                         }
                     })
-                    .catch(error => {
-                        console.error("Error en la petición:", error);
-                    });
+                    .then(data => {
+                        if (data.success) {
+                            console.log("Respuesta del servidor:", data);
+                        }
+                    })
+                    .catch(error => console.error("Error de red:", error));
                 }
-            }
+                function actualizarEstadoYEnviar() {
+                    // Selecciona todos los campos de estado
+                    const estadoElements = document.querySelectorAll('input[name="estado"]');
+                    estadoElements.forEach(element => {
+                        if (element.value === "Cerrada") {
+                            element.classList.remove('readonly');  // Asegura que el campo esté habilitado visualmente si es necesario
+                        }
+                    });
+                
+                    // Enviar el formulario
+                    document.getElementById("form").submit();
+                }
+                
+                                                   
             </script>
-        
+            
+        </div> 
     </div>
-
-
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             let rowCountCorrectivas = 1;
             let rowCountPreventivas = 1;
             const maxRows = 4;
-        
+
             // Función para mostrar todas las filas hasta la última que tenga datos en "Acciones Preventivas"
             function mostrarFilasPreventivasHastaLaUltima() {
                 for (let i = maxRows; i >= 1; i--) {
                     const accionInput = document.getElementById(`id_Accion_Preventiva_${i}`);
                     if (accionInput && accionInput.value.trim() !== "") {
-                        // Si la fila `i` tiene datos, mostramos todas las anteriores hasta esa fila
                         for (let j = 1; j <= i; j++) {
                             const fila = document.getElementById(`accionesPRE-row${j}`);
                             if (fila) {
-                                fila.style.display = ''; // Mostrar la fila
+                                fila.style.display = '';  // Mostrar la fila
                             }
                         }
-                        rowCountPreventivas = i; // Actualizamos el contador con la última fila visible
-                        break; // No necesitamos seguir buscando más filas, ya que hemos encontrado la última con datos
+                        rowCountPreventivas = i;
+                        break;
                     }
                 }
             }
-        
-        
-            // Mostrar filas con datos en Acciones Correctivas al cargar la página
-            mostrarFilasCorrectivasHastaLaUltima();
-        
-            // Evento para mostrar más filas en Acciones Preventivas
+
+            mostrarFilasPreventivasHastaLaUltima();
+
             document.getElementById('addAccionPreventiva').addEventListener('click', function() {
                 if (rowCountPreventivas < maxRows) {
                     rowCountPreventivas++;
                     const nextRow = document.getElementById(`accionesPRE-row${rowCountPreventivas}`);
                     if (nextRow) {
-                        nextRow.style.display = ''; // Mostrar la siguiente fila oculta
+                        nextRow.style.display = '';  // Mostrar la siguiente fila oculta
                     }
         
-                    // Si ya llegamos al total de filas, ocultar el botón
                     if (rowCountPreventivas >= maxRows) {
                         this.style.display = 'none';
                     }
                 }
             });
-        
-            // Mostrar filas con datos en Acciones Preventivas al cargar la página
-            mostrarFilasPreventivasHastaLaUltima();
         });
     </script>
 </div>
+
 
 
 
@@ -1218,7 +1231,7 @@
         {% endif %} <!-- Este es el cierre del "if" que se abrió al principio -->
 
         <div class="form-actions">
-            <button type="submit" class="btn btn-primary" name="seccion1">Guardar y Continuar</button>
+            <button type="button" class="btn btn-primary" onclick="actualizarEstadoYEnviar()">Guardar y Continuar</button>
         </div>
     </form>
 </div>

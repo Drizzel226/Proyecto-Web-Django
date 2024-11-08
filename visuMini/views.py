@@ -8,7 +8,6 @@ from MiniProyecto.models import Miniproyecto
 from .models import VisuMiniModel
 from visu5.models import Roles
 
-
 # Función para calcular el porcentaje con base en la fecha de inicio
 def calcula_porcentaje(fecha_inicio):
     hoy = date.today()
@@ -25,7 +24,7 @@ def calcula_porcentaje(fecha_inicio):
     else:
         return 0  # Para días mayores a 10 o negativos
 
-# Vista principal para mostrar los datos de "Visualización 5 Por qué"
+# Vista principal para mostrar los datos de "Visualización Mini Proyecto"
 def visuMini(request):
     numero_de_preguntas = 12  # Define aquí el número de preguntas
     puntaje_maximo_por_pregunta = 5
@@ -41,17 +40,22 @@ def visuMini(request):
             accion_preventiva_completa = dato.Accion_Preventiva and dato.Fecha_compromiso2
             if accion_preventiva_completa:
                 dato.paso_4 = True
-                # Calcular "OT" como porcentaje y "Días" si paso_4 es True
+                # Calcular "OT" como porcentaje solo si `paso_4` es True
                 dato.ot = f"{calcula_porcentaje(dato.fecha_inicio)}%"
-                if dato.fecha_inicio:
+
+                # Calcular `dias` solo si `paso_4` es True y `dias` es None
+                if dato.fecha_inicio and visualizacion.dias is None:
                     hoy = date.today()
-                    dato.dias = (hoy - dato.fecha_inicio).days
+                    visualizacion.dias = (hoy - dato.fecha_inicio).days
+                    visualizacion.save()  # Guardar el valor de `dias` en la base de datos
             else:
                 dato.paso_4 = False
                 dato.ot = ""  # Vacío cuando 'paso_4' es False
-                dato.dias = ""  # Vacío cuando 'paso_4' es False
+                visualizacion.dias = None  # Limpiar `dias` si `paso_4` es False
+                visualizacion.save()
 
             dato.porcentaje = visualizacion.porcentaje
+            dato.dias = visualizacion.dias  # Asigna el valor de `dias` de visualizacion a `dato`
         else:
             dato.paso_4 = False
             dato.ot = ""
@@ -91,14 +95,15 @@ def actualizar_checkbox(request):
                 visualizacion.paso_4 = True
                 fecha_inicio = Miniproyecto.objects.get(id=MiniProyecto_id).fecha_inicio
 
-                # Calcular solo una vez "dias" en base a fecha_inicio
-                visualizacion.dias = (date.today() - fecha_inicio).days  # Guardar los días calculados en la base de datos
+                # Calcular `dias` solo una vez en base a fecha_inicio
+                if visualizacion.dias is None:  # Solo calcula si `dias` es None
+                    visualizacion.dias = (date.today() - fecha_inicio).days
                 visualizacion.porcentaje = calcula_porcentaje(fecha_inicio)
             elif not estado:
-                # Resetear `paso_4` y opcionalmente `porcentaje` si se desmarca el checkbox
+                # Resetear `paso_4`, `porcentaje` y `dias` si se desmarca el checkbox
                 visualizacion.paso_4 = False
                 visualizacion.porcentaje = 0  # Opcional: resetear el porcentaje si se desmarca el checkbox
-                visualizacion.dias = None  # Dejar en None o resetear si se desmarca `paso_4`
+                visualizacion.dias = None  # Resetear `dias` si `paso_4` es False
 
             visualizacion.save()
             return JsonResponse({'message': 'Estado del checkbox, porcentaje y días actualizado correctamente'})
@@ -108,4 +113,6 @@ def actualizar_checkbox(request):
     
     return JsonResponse({'error': 'Método no permitido'}, status=405)
 
-
+# Vista para el dashboard (sin cambios)
+def dashboard(request):
+    return render(request, 'visuMini/dashboard.html')
