@@ -610,7 +610,7 @@ h2.text-danger {
 }
 /* Estilos específicos para #AccionesTable */
 #AccionesTable {
-    width: 90%;
+    width: 100%;
     border-collapse: collapse;
     font-family: Arial, sans-serif;
     margin: 0 auto; /* Centra la tabla */

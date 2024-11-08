@@ -806,7 +806,27 @@
     </script>
 </div>
 
-
+<style>
+    /* Estilos específicos para #AccionesTable */
+    #AccionesTable {
+        width: 90%;
+        border-collapse: collapse;
+        font-family: Arial, sans-serif;
+        margin: 0 auto; /* Centra la tabla */
+    }
+    #AccionesTable th, #AccionesTable td {
+        border: 1px solid #ccc; /* Borde gris claro */
+        padding: 10px;
+        text-align: left;
+    }
+    #AccionesTable th {
+        background-color: #f2f2f2; /* Fondo gris suave para los encabezados */
+        font-weight: bold; /* Texto en negrita para los encabezados */
+    }
+    #AccionesTable tbody tr:nth-child(even) {
+        background-color: #fafafa; /* Color de fondo para filas alternas */
+    }
+</style>
 
 <!-- Sección Paso 4: Contramedidas y Seguimiento -->
 <div id="paso4-section" class="recuadro-paso mt-4" style="border: 1px solid #00C851;">
@@ -825,7 +845,6 @@
             </div>
             
             <div class="sub-content" style="padding: 10px; border: 1px solid #00C851; border-radius: 5px;">
-                <button type="button" id="addAccionCorrectiva" class="btn btn-primary mt-2" style="margin-left: 50px; margin-bottom: 8px;">Agregar Acción Correctiva</button>
                 <div class="form-row">
                     <table id="AccionesTable">
                         <tr>
@@ -911,7 +930,6 @@
             </div>
             
             <div class="sub-content" style="padding: 10px; border: 1px solid #00C851; border-radius: 5px;">
-                <button type="button" id="addAccionPreventiva" class="btn btn-primary mt-2" style="margin-left: 50px; margin-bottom: 8px;">Agregar Acción Preventiva</button>
 
                 
                 <!-- Contenedor de la tabla centrado -->
@@ -1131,8 +1149,6 @@
                 <h3 style="margin: 0;">Estandarización</h3>
             </div>
             <div class="sub-content" style="padding: 10px; border: 1px solid #D86B20; border-radius: 5px;">
-                <!-- Botón para agregar filas en Estandarización -->
-                <button type="button" id="addEstandarizacion" class="btn btn-primary mt-2" style="margin-bottom: 8px;">Agregar Acción de Estandarización</button>
                 <div class="form-row" style="display: flex; justify-content: center;">
                     <table id="AccionesTable" >
                         <thead>
@@ -1219,8 +1235,6 @@
                 <h3 style="margin: 0;">Expansión</h3>
             </div>
             <div class="sub-content" style="padding: 10px; border: 1px solid #D86B20; border-radius: 5px;">
-                <!-- Botón para agregar filas en Expansión -->
-                <button type="button" id="addExpansion" class="btn btn-primary mt-2" style="margin-bottom: 8px;">Agregar Acción de Expansión</button>
                 <div class="form-row" style="display: flex; justify-content: center;">
                     <table id="AccionesTable">
                         <thead>

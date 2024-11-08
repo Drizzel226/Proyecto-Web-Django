@@ -796,9 +796,9 @@
         
         <div><h1></h1></div>
         
-        <button type="button" id="addAccionPreventiva" class="btn btn-primary mt-2" style="margin-left: 50px; margin-bottom: 8px;">Agregar Acción Preventiva</button>  
+        <button type="button" id="addAccionPreventiva" class="btn btn-primary mt-2">Agregar Acción Preventiva</button>  
         <!-- Contenedor de la tabla centrado -->
-        <div class="form-row" style="display: flex; justify-content: center;">
+        <div class="custom-table-container">
             <table id="AccionesTable" class="table table-striped">
                 <thead>
                     <tr>
@@ -840,73 +840,72 @@
                             <input type="date" id="Fecha_cierre_paso4" name="Fecha_cierre_paso4" class="form-control" value="{{ form.Fecha_cierre_paso4.value|date:'Y-m-d' }}">
                         </td>
                         <td>
-                            <!-- Modificación del botón -->
                             <button type="button" class="cerrar-btn" onclick="cerrarAccion('estado-{{ accion.id }}', {{ accion.id }})">
                                 &#10004;
                             </button>
                         </td>                        
                     </tr>
-                    
                 </tbody>
             </table>
-            <style>
-                .readonly {
-                    background-color: #e9ecef; /* Color de fondo de campo deshabilitado */
-                    pointer-events: none;      /* Evita la edición */
+        </div>
+        
+        <style>
+            .readonly {
+                background-color: #e9ecef; /* Color de fondo de campo deshabilitado */
+                pointer-events: none;      /* Evita la edición */
+            }
+        </style>
+        <script>
+            function cerrarAccion(estadoId, accionId) {
+                // Cambiar el estado a "Cerrada" en el HTML
+                const estadoField = document.getElementById(estadoId);
+                if (estadoField) {
+                    estadoField.value = "Cerrada";
+                } else {
+                    console.error("Campo de estado no encontrado", estadoId);
+                    return;
                 }
-            </style>
-            <script>
-                function cerrarAccion(estadoId, accionId) {
-                    // Cambiar el estado a "Cerrada" en el HTML
-                    const estadoField = document.getElementById(estadoId);
-                    if (estadoField) {
-                        estadoField.value = "Cerrada";
-                    } else {
-                        console.error("Campo de estado no encontrado", estadoId);
-                        return;
-                    }
-                
-                    // Realizar una petición AJAX para actualizar el estado en el servidor
-                    fetch(`/actualizar-estado/${accionId}/`, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'X-CSRFToken': getCSRFToken()  // Asegúrate de que el CSRF token esté disponible
-                        },
-                        body: JSON.stringify({ estado: "Cerrada" })
-                    })
-                    .then(response => {
-                        if (response.ok) {
-                            console.log("Estado actualizado exitosamente en la base de datos");
-                            return response.json();  // Convertir a JSON
-                        } else {
-                            console.error("Error al actualizar el estado en el servidor");
-                        }
-                    })
-                    .then(data => {
-                        if (data.success) {
-                            console.log("Respuesta del servidor:", data);
-                        }
-                    })
-                    .catch(error => console.error("Error de red:", error));
-                }
-                function actualizarEstadoYEnviar() {
-                    // Selecciona todos los campos de estado
-                    const estadoElements = document.querySelectorAll('input[name="estado"]');
-                    estadoElements.forEach(element => {
-                        if (element.value === "Cerrada") {
-                            element.classList.remove('readonly');  // Asegura que el campo esté habilitado visualmente si es necesario
-                        }
-                    });
-                
-                    // Enviar el formulario
-                    document.getElementById("form").submit();
-                }
-                
-                                                   
-            </script>
             
-        </div> 
+                // Realizar una petición AJAX para actualizar el estado en el servidor
+                fetch(`/actualizar-estado/${accionId}/`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': getCSRFToken()  // Asegúrate de que el CSRF token esté disponible
+                    },
+                    body: JSON.stringify({ estado: "Cerrada" })
+                })
+                .then(response => {
+                    if (response.ok) {
+                        console.log("Estado actualizado exitosamente en la base de datos");
+                        return response.json();  // Convertir a JSON
+                    } else {
+                        console.error("Error al actualizar el estado en el servidor");
+                    }
+                })
+                .then(data => {
+                    if (data.success) {
+                        console.log("Respuesta del servidor:", data);
+                    }
+                })
+                .catch(error => console.error("Error de red:", error));
+            }
+            function actualizarEstadoYEnviar() {
+                // Selecciona todos los campos de estado
+                const estadoElements = document.querySelectorAll('input[name="estado"]');
+                estadoElements.forEach(element => {
+                    if (element.value === "Cerrada") {
+                        element.classList.remove('readonly');  // Asegura que el campo esté habilitado visualmente si es necesario
+                    }
+                });
+            
+                // Enviar el formulario
+                document.getElementById("form").submit();
+            }
+            
+                                                
+        </script>
+        
     </div>
 
     <script>

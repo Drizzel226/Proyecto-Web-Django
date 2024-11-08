@@ -9,15 +9,29 @@ importar_miembros()
 
 
 
+    css para tablas, agregar directamente en el html
 
-
-                            <!-- Ícono con popover que mostrará la imagen -->
-                            <div class="popover-container">
-                                <i class="fas fa-question-circle"></i>
-                                <div class="popover-content">
-                                    <img src="{% static 'images/logo.png' %}" alt="Descripción de la imagen" style="width: 300px;">
-                                </div>
-                            </div>
+            <style>
+                /* Estilos específicos para #AccionesTable */
+                #AccionesTable {
+                    width: 90%;
+                    border-collapse: collapse;
+                    font-family: Arial, sans-serif;
+                    margin: 0 auto; /* Centra la tabla */
+                }
+                #AccionesTable th, #AccionesTable td {
+                    border: 1px solid #ccc; /* Borde gris claro */
+                    padding: 10px;
+                    text-align: left;
+                }
+                #AccionesTable th {
+                    background-color: #f2f2f2; /* Fondo gris suave para los encabezados */
+                    font-weight: bold; /* Texto en negrita para los encabezados */
+                }
+                #AccionesTable tbody tr:nth-child(even) {
+                    background-color: #fafafa; /* Color de fondo para filas alternas */
+                }
+            </style>
 
 
 views.py
