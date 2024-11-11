@@ -79,59 +79,14 @@ class Miniproyecto(models.Model):
     Fecha_compromiso2_3 = models.DateField(blank=True, null=True)
     Fecha_compromiso2_4 = models.DateField(blank=True, null=True)
 
-    tipo = models.CharField(
-        max_length=100,
-        choices=[
-            ('p', 'P'),
-            ('gv', 'GV'),
-            ('py', 'PY'),
-            ('m', 'M'),
-  
-        ],
-        blank=True, null=True
-    )
-    tipo_2 = models.CharField(
-        max_length=100,
-        choices=[
-            ('p', 'P'),
-            ('gv', 'GV'),
-            ('py', 'PY'),
-            ('m', 'M'),
-  
-        ],
-        blank=True, null=True
-    )
-    tipo_3 = models.CharField(
-        max_length=100,
-        choices=[
-            ('p', 'P'),
-            ('gv', 'GV'),
-            ('py', 'PY'),
-            ('m', 'M'),
-  
-        ],
-        blank=True, null=True
-    )
-    tipo_4 = models.CharField(
-        max_length=100,
-        choices=[
-            ('p', 'P'),
-            ('gv', 'GV'),
-            ('py', 'PY'),
-            ('m', 'M'),
-  
-        ],
-        blank=True, null=True
-    )
-
     ESTADO_OPCIONES = [
     ('Pendiente', 'Pendiente'),
     ('Cerrada', 'Cerrada'),
     ]
     estado = models.CharField(max_length=10, choices=ESTADO_OPCIONES, default='Pendiente')
-
-
-    
+    estado_2 = models.CharField(max_length=10, choices=ESTADO_OPCIONES, default='Pendiente')
+    estado_3 = models.CharField(max_length=10, choices=ESTADO_OPCIONES, default='Pendiente')
+    estado_4 = models.CharField(max_length=10, choices=ESTADO_OPCIONES, default='Pendiente')
 
     Fecha_cierre_paso4 = models.DateField(blank=True, null=True)
     Fecha_cierre_paso4_2 = models.DateField(blank=True, null=True)

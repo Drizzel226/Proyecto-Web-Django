@@ -36,16 +36,16 @@ class MiniproyectoForm(forms.ModelForm):
 
             # PASO 4
 
-            'Accion_Preventiva', 'Responsable2', 'Fecha_inicio2', 'Fecha_compromiso2', 'tipo', 'estado' ,
+            'Accion_Preventiva', 'Responsable2', 'Fecha_inicio2', 'Fecha_compromiso2',  'estado',
             'Fecha_cierre_paso4', 
 
-            'Accion_Preventiva_2', 'Responsable2_2', 'Fecha_inicio2_2', 'Fecha_compromiso2_2', 'tipo_2',
+            'Accion_Preventiva_2', 'Responsable2_2', 'Fecha_inicio2_2', 'Fecha_compromiso2_2', 'estado_2',
             'Fecha_cierre_paso4_2', 
 
-            'Accion_Preventiva_3', 'Responsable2_3', 'Fecha_inicio2_3', 'Fecha_compromiso2_3', 'tipo_3',
+            'Accion_Preventiva_3', 'Responsable2_3', 'Fecha_inicio2_3', 'Fecha_compromiso2_3', 'estado_3',
             'Fecha_cierre_paso4_3', 
 
-            'Accion_Preventiva_4', 'Responsable2_4', 'Fecha_inicio2_4', 'Fecha_compromiso2_4', 'tipo_4',
+            'Accion_Preventiva_4', 'Responsable2_4', 'Fecha_inicio2_4', 'Fecha_compromiso2_4', 'estado_4',
             'Fecha_cierre_paso4_4', 
             
             #PASO 5
@@ -114,11 +114,6 @@ class MiniproyectoForm(forms.ModelForm):
             'Fecha_compromiso2_2': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
             'Fecha_compromiso2_3': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
             'Fecha_compromiso2_4': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
-
-            'tipo': forms.Select(attrs={'class': 'form-control'}),
-            'tipo_2': forms.Select(attrs={'class': 'form-control'}),
-            'tipo_3': forms.Select(attrs={'class': 'form-control'}),
-            'tipo_4': forms.Select(attrs={'class': 'form-control'}),
 
             'Fecha_cierre_paso4': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
             'Fecha_cierre_paso4_2': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),

@@ -845,6 +845,99 @@
                             </button>
                         </td>                        
                     </tr>
+ 
+
+                    <tr id="accionesPRE-row2" style="display: none;">
+                        <td>{{ form.Accion_Preventiva_2 }}</td>
+                        <td>
+                            <select id="Responsable2_2" name="Responsable2_2" class="select2">
+                                {% for miembro in opciones_miembros %}
+                                    <option value="{{ miembro.id }}" data-email="{{ miembro.email }}" {% if miembro.id in form.Responsable2_2.value %}selected{% endif %}>
+                                        {{ miembro.nombre }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </td>
+                        <td>
+                            <input type="date" id="Fecha_inicio2_2" name="Fecha_inicio2_2" class="form-control" value="{{ form.Fecha_inicio2_2.value|date:'Y-m-d' }}">
+                        </td>
+                        <td>
+                            <input type="date" id="Fecha_compromiso2_2" name="Fecha_compromiso2_2" class="form-control" value="{{ form.Fecha_compromiso2_2.value|date:'Y-m-d' }}">
+                        </td>
+                        <td>
+                            <input type="text" id="estado_2-{{ accion.id }}" name="estado_2" value="{{ form.estado_2.value }}" class="form-control readonly">
+                        </td>                                              
+                        <td>
+                            <input type="date" id="Fecha_cierre_paso4_2" name="Fecha_cierre_paso4_2" class="form-control" value="{{ form.Fecha_cierre_paso4_2.value|date:'Y-m-d' }}">
+                        </td>
+                        <td>
+                            <button type="button" class="cerrar-btn" onclick="cerrarAccion('estado_2-{{ accion.id }}', {{ accion.id }})">
+                                &#10004;
+                            </button>
+                        </td> 
+                    </tr>
+
+
+                    <tr id="accionesPRE-row3" style="display: none;">
+                        <td>{{ form.Accion_Preventiva_3 }}</td>
+                        <td>
+                            <select id="Responsable2_3" name="Responsable2_3" class="select2">
+                                {% for miembro in opciones_miembros %}
+                                    <option value="{{ miembro.id }}" data-email="{{ miembro.email }}" {% if miembro.id in form.Responsable2_3.value %}selected{% endif %}>
+                                        {{ miembro.nombre }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </td>
+                        <td>
+                            <input type="date" id="Fecha_inicio2_3" name="Fecha_inicio2_3" class="form-control" value="{{ form.Fecha_inicio2_3.value|date:'Y-m-d' }}">
+                        </td>
+                        <td>
+                            <input type="date" id="Fecha_compromiso2_3" name="Fecha_compromiso2_3" class="form-control" value="{{ form.Fecha_compromiso2_3.value|date:'Y-m-d' }}">
+                        </td>
+                        <td>
+                            <input type="text" id="estado_3-{{ accion.id }}" name="estado_3" value="{{ form.estado_3.value }}" class="form-control readonly">
+                        </td>                                              
+                        <td>
+                            <input type="date" id="Fecha_cierre_paso4_3" name="Fecha_cierre_paso4_3" class="form-control" value="{{ form.Fecha_cierre_paso4_3.value|date:'Y-m-d' }}">
+                        </td>
+                        <td>
+                            <button type="button" class="cerrar-btn" onclick="cerrarAccion('estado_3-{{ accion.id }}', {{ accion.id }})">
+                                &#10004;
+                            </button>
+                        </td> 
+                    </tr>
+
+
+                    <tr id="accionesPRE-row4" style="display: none;">
+                        <td>{{ form.Accion_Preventiva_4 }}</td>
+                        <td>
+                            <select id="Responsable2_4" name="Responsable2_4" class="select2">
+                                {% for miembro in opciones_miembros %}
+                                    <option value="{{ miembro.id }}" data-email="{{ miembro.email }}" {% if miembro.id in form.Responsable2_4.value %}selected{% endif %}>
+                                        {{ miembro.nombre }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </td>
+                        <td>
+                            <input type="date" id="Fecha_inicio2_4" name="Fecha_inicio2_4" class="form-control" value="{{ form.Fecha_inicio2_4.value|date:'Y-m-d' }}">
+                        </td>
+                        <td>
+                            <input type="date" id="Fecha_compromiso2_4" name="Fecha_compromiso2_4" class="form-control" value="{{ form.Fecha_compromiso2_4.value|date:'Y-m-d' }}">
+                        </td>
+                        <td>
+                            <input type="text" id="estado_4-{{ accion.id }}" name="estado_4" value="{{ form.estado_4.value }}" class="form-control readonly">
+                        </td>                                              
+                        <td>
+                            <input type="date" id="Fecha_cierre_paso4_4" name="Fecha_cierre_paso4_4" class="form-control" value="{{ form.Fecha_cierre_paso4_4.value|date:'Y-m-d' }}">
+                        </td>
+                        <td>
+                            <button type="button" class="cerrar-btn" onclick="cerrarAccion('estado_4-{{ accion.id }}', {{ accion.id }})">
+                                &#10004;
+                            </button>
+                        </td> 
+                    </tr>
                 </tbody>
             </table>
         </div>
