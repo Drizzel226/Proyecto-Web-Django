@@ -36,1286 +36,1296 @@
     <form method="post" class="analisis-5w-form" id="form" enctype="multipart/form-data">
         {% csrf_token %}
 
-<!-- Sección Paso 0: Datos iniciales -->
-<div id="seccion1" class="recuadro-paso">
-    <h2 class="text-primary">Paso 0: Datos Iniciales</h2>
+        <!-- Sección Paso 0: Datos iniciales -->
+        <div id="seccion1" class="recuadro-paso">
+            <h2 class="text-primary">Paso 0: Datos Iniciales</h2>
 
-    <div class="form-row">
-        <div class="form-group col-md-6">
-            <label for="Nombre_MP">Nombre Miniproyecto</label>
-            <input type="text" id="Nombre_MP" name="Nombre_MP" class="form-control" 
-                   value="{{ form.Nombre_MP.value|default_if_none:'' }}" 
-                   placeholder="">
-        </div>
-    </div>
-
-    <div class="form-row">
-        <div class="form-group col-md-6">
-            <label for="costo">Costo [$]</label>
-            <input type="text" id="costo" name="costo" class="form-control" 
-                   value="{{ form.costo.value|default_if_none:'' }}" 
-                   placeholder="">
-        </div>
-
-        <div class="form-group col-md-6">
-            <label for="ahorro">Ahorro [$]</label>
-            <input type="text" id="ahorro" name="ahorro" class="form-control" 
-                   value="{{ form.ahorro.value|default_if_none:'' }}" 
-                   placeholder="">
-        </div>
-
-    </div>
-    
-    <div class="form-row">
-        <div class="form-group col-md-6">
-            <label for="categoria">Categoría</label>
-            <input type="text" id="categoria" name="categoria" class="form-control" readonly value="{{ form.categoria.value|default_if_none:'' }}">
-        </div>
-
-        <div class="form-group col-md-6">
-            <label for="subcategoria">Subcategoría</label>
-            <select id="subcategoria" name="subcategoria" class="form-control">
-                <option value="">Seleccione una subcategoría</option>
-                {% for subcategoria in subcategorias_datos %}
-                    <option value="{{ subcategoria.subcategoria }}" {% if form.subcategoria.value == subcategoria.subcategoria %}selected{% endif %}>
-                        {{ subcategoria.subcategoria }}
-                    </option>
-                {% endfor %}
-            </select>
-                                                
-        </div>
-    </div>
-
-    <div class="form-row">
-        <div class="form-group col-md-6">
-            <label for="area">Área</label>
-            <select id="area" name="area" class="form-control">
-                <option value="">Seleccione un área</option>
-                {% for opcion in opciones_area %}
-                    <option value="{{ opcion }}" {% if form.area.value == opcion %}selected{% endif %}>{{ opcion }}</option>
-                {% endfor %}
-            </select>
-        </div>
-
-        <div class="form-group col-md-6">
-            <label for="subarea">Subárea</label>
-            <select id="subarea" name="subarea" class="form-control">
-                <option value="">Seleccione una línea</option>
-                {% for opcion in opciones_subarea %}
-                    <option value="{{ opcion }}" {% if form.subarea.value == opcion %}selected{% endif %}>{{ opcion }}</option>
-                {% endfor %}
-            </select>
-        </div>
-    </div>
-
-    <div class="form-row">
-        <div class="form-group col-md-6">
-            <label for="maquina">Máquina</label>
-            <select id="maquina" name="maquina" class="form-control">
-                <option value="">Seleccione una máquina</option>
-                {% for opcion in opciones_maquina %}
-                    <option value="{{ opcion }}" {% if form.maquina.value == opcion %}selected{% endif %}>{{ opcion }}</option>
-                {% endfor %}
-            </select>
-        </div>
-
-        <div class="form-group col-md-6">
-            <label for="miembros_equipo">Miembros del equipo</label>
-            <select id="miembros_equipo" name="miembros_equipo" class="form-control select2" multiple>
-                {% for miembro in opciones_miembros %}
-                    <option value="{{ miembro.id }}" data-email="{{ miembro.email }}" {% if miembro.id in form.miembros_equipo.value %}selected{% endif %}>
-                        {{ miembro.nombre }}
-                    </option>
-                {% endfor %}
-            </select>
-        </div>
-    </div>
-
-    <div class="form-row">
-        <div class="form-group col-md-6">
-            <label for="pilar">Pilar</label>
-            <input type="text" id="pilar" name="pilar" class="form-control" readonly value="{{ form.pilar.value|default_if_none:''  }}">
-        </div>
-
-        <div class="form-group col-md-6">
-            <label for="impacto">Impacto</label>
-            <input type="text" id="impacto" name="impacto" class="form-control" 
-                   value="{{ form.impacto.value|default_if_none:'' }}" 
-                   placeholder="Ej: Minutos, Opi, rendimiento...">
-        </div>
-    </div>
-
-    <div class="form-row">
-        <div class="form-group col-md-6">
-            <label for="kpi_iceo">KPI ICEO</label>
-            <input type="text" id="kpi_iceo" name="kpi_iceo" class="form-control" readonly value="{{ form.kpi_iceo.value|default_if_none:''}}">
-        </div>
-
-        <div class="form-group col-md-6">
-            <label for="kpi_secundario">KPI Secundario (KAI)</label>
-            <select id="kpi_secundario" name="kpi_secundario" class="form-control">
-                <option value="">Seleccione un KPI secundario</option>
-                <option {% if form.kpi_secundario.value == "kpi1" %}selected{% endif %}>Eficiencia Global de Equipos (OEE)</option>
-                <option {% if form.kpi_secundario.value == "kpi2" %}selected{% endif %}>Tasa de Defectos</option>
-                <option {% if form.kpi_secundario.value == "kpi3" %}selected{% endif %}>Tiempo Medio Entre Fallos (MTBF)</option>
-            </select>
-        </div>
-    </div>
-
-    <div class="form-row">
-        {% if not form.instance.pk %}
-        <div class="form-group col-md-6">
-            <label for="fecha_inicio">Fecha Inicio</label>
-            <input type="date" id="fecha_inicio" name="fecha_inicio" class="form-control" value="{{ form.fecha_inicio.value }}" readonly>
-        </div>
-        {% endif %}
-        
-        <div class="form-group col-md-6">
-            <label for="fecha_cierre">Fecha Estimada de Cierre</label>
-            <input type="date" id="fecha_cierre" name="fecha_cierre" class="form-control" value="{{ form.fecha_cierre.value|date:'Y-m-d' }}">
-        </div>
-    </div>
-
-
-    <script>
-        // Pasar los datos de subcategorias desde Django a JavaScript
-        var subcategoriasDatos = {{ subcategorias_datos|safe }};
-        
-        console.log("Datos de subcategorías (verifica si es un objeto válido): ", subcategoriasDatos);
-    </script>
-    
-    
-    
-    <script>
-        document.getElementById('subcategoria').addEventListener('change', function() {
-            var subcategoriaSeleccionada = this.value;
-    
-            // Buscar la subcategoría en los datos
-            var subcategoriaDatos = subcategoriasDatos.find(function(item) {
-                return item.subcategoria === subcategoriaSeleccionada;
-            });
-    
-    
-            // Si encontramos la subcategoría, rellenar los otros campos
-            if (subcategoriaDatos) {
-                document.getElementById('categoria').value = subcategoriaDatos.categoria;
-                document.getElementById('pilar').value = subcategoriaDatos.pilar;
-                document.getElementById('kpi_iceo').value = subcategoriaDatos.kpi_iceo;
-            } else {
-                // Si no se encuentra, vaciar los campos
-                document.getElementById('categoria').value = '';
-                document.getElementById('pilar').value = '';
-                document.getElementById('kpi_iceo').value = '';
-            }
-        });
-    </script>
-    
-
-
-</div>
-
-
-<!-- Sección Paso 1: Descripción del Problema (visible después del Paso 0) -->
-{% if mostrar_paso1 %}
-<div id="paso1-section" class="recuadro-paso mt-4" style="border: 1px solid #ff0000;">
-    <div class="paso-header" style="background-color: #ff0000; color: white; padding: 10px 15px; border-radius: 5px;">
-        <h2 class="collapsible" style="cursor: pointer; margin: 0;" onclick="toggleVisibility('contenido-paso1')">
-            <span style="margin-right: 10px;">&#x25BC;</span> Paso 1: Descripción del Problema
-        </h2>
-    </div>
-    <div id="contenido-paso1">
-        <div><h1></h1></div>
-        <div class="form-row" style="display: flex; gap: 15px;">
-            <div class="form-group" style="flex: 1;">
-                {{ form.que_ocurre.label_tag }}
-                {{ form.que_ocurre }}
-            </div>
-            <div class="form-group" style="flex: 1;">
-                {{ form.donde_ocurre.label_tag }}
-                {{ form.donde_ocurre }}
-            </div>
-        </div>
-
-        <div class="form-row" style="display: flex; gap: 15px;">
-            <div class="form-group" style="flex: 1;">
-                {{ form.cuando_ocurre.label_tag }}
-                {{ form.cuando_ocurre }}
-            </div>
-            <div class="form-group" style="flex: 1;">
-                {{ form.quien_intervino.label_tag }}
-                {{ form.quien_intervino }}
-            </div>
-        </div>
-
-        <div class="form-row" style="display: flex; gap: 15px;">
-            <div class="form-group" style="flex: 1;">
-                {{ form.como_ocurre.label_tag }}
-                {{ form.como_ocurre }}
-            </div>
-            <div class="form-group" style="flex: 1;">
-                {{ form.perdida.label_tag }}
-                {{ form.perdida }}
-            </div>
-        </div>
-
-        <div class="form-row" style="display: flex; gap: 15px;">
-            <div class="form-group" style="flex: 1;">
-                {{ form.resumen.label_tag }}
-                {{ form.resumen }}
-            </div>
-        </div>
-
-        <!-- Campo para subir múltiples imágenes -->
-        <div class="form-group">
-            {{ form.imagenes.label_tag }}
-            {{ form.imagenes }}
-        </div>
-
-        <!-- Contenedor para mostrar las imágenes ya cargadas con opción de eliminar -->
-        <div id="imagenes-container" class="form-row">
-            {% for imagen in miniproyecto.imagenes.all %}
-                <div class="image-preview-container" style="position: relative; display: inline-block; margin: 5px;">
-                    <!-- Icono de eliminar -->
-                    <span class="close-icon" onclick="removeImage('{{ imagen.id }}')">✖</span>
-                    
-                    <!-- Imagen en tamaño pequeño -->
-                    <img src="{{ imagen.imagen.url }}" alt="Imagen de Miniproyecto" class="small-image" onclick="openModal('{{ imagen.imagen.url }}')">
-                </div>
-            {% endfor %}
-        </div>
-
-        <!-- Contenedor para previsualizar las nuevas imágenes seleccionadas -->
-        <div id="preview-container" class="form-row" style="display: flex; gap: 10px; flex-wrap: wrap; margin-top: 10px;"></div>
-
-        <!-- Campo oculto para almacenar IDs de imágenes a eliminar -->
-        <input type="hidden" id="delete_images" name="delete_images" value="">
-    </div>
-
-
-    <!-- Modal para ver la imagen en tamaño completo -->
-    <div id="imageModal" class="modal" onclick="closeModal()">
-        <span class="close">&times;</span>
-        <img class="modal-content" id="fullImage">
-    </div>
-
-    <style>
-        /* Icono de cierre */
-        .close-icon {
-            position: absolute;
-            top: 5px;
-            right: 5px;
-            color: #ff0000;
-            font-size: 20px;
-            font-weight: bold;
-            cursor: pointer;
-            background-color: white;
-            border-radius: 50%;
-            padding: 2px 5px;
-            z-index: 10;
-        }
-
-        /* Estilo para la imagen en tamaño pequeño */
-        .small-image {
-            max-width: 100px;
-            max-height: 100px;
-            cursor: pointer;
-            border: 1px solid #ccc;
-            padding: 5px;
-            object-fit: cover; /* Mantiene la imagen ajustada al contenedor */
-        }
-
-        /* Estilos del modal */
-        .modal {
-            display: none; /* Oculto por defecto */
-            position: fixed;
-            z-index: 1000;
-            padding-top: 60px;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            overflow: auto;
-            background-color: rgba(0,0,0,0.9);
-        }
-
-        .modal-content {
-            margin: auto;
-            display: block;
-            max-width: 80%;
-            max-height: 80%;
-        }
-
-        .close {
-            position: absolute;
-            top: 15px;
-            right: 35px;
-            color: #ffffff;
-            font-size: 40px;
-            font-weight: bold;
-            cursor: pointer;
-        }
-    </style>
-
-    <script>
-        function removeImage(imageId) {
-            // Oculta la imagen y el botón de eliminar
-            const imageContainer = document.querySelector(`span[onclick="removeImage('${imageId}')"]`).parentElement;
-            imageContainer.style.display = "none";
-
-            // Añadir el ID de la imagen al campo oculto para ser eliminada
-            let deleteImagesField = document.getElementById("delete_images");
-            deleteImagesField.value += imageId + ",";
-        }
-        
-        // Abre el modal y muestra la imagen en tamaño completo
-        function openModal(imageUrl) {
-            var modal = document.getElementById("imageModal");
-            var fullImage = document.getElementById("fullImage");
-            fullImage.src = imageUrl; // Asigna la fuente de imagen en tamaño completo
-            modal.style.display = "block";
-        }
-
-        // Cierra el modal
-        function closeModal() {
-            document.getElementById("imageModal").style.display = "none";
-        }
-
-        // Función para colapsar y expandir el contenido
-        function toggleVisibility(contentId) {
-            var content = document.getElementById(contentId);
-            if (content.style.display === "none" || content.style.display === "") {
-                content.style.display = "block";
-            } else {
-                content.style.display = "none";
-            }
-        }
-
-        // Previsualizar imágenes seleccionadas sin recargar la página
-        document.querySelector('input[type="file"][multiple]').addEventListener('change', function(event) {
-            const previewContainer = document.getElementById("preview-container");
-            previewContainer.innerHTML = '';  // Limpiar previsualizaciones anteriores
-
-            Array.from(event.target.files).forEach(file => {
-                const reader = new FileReader();
-
-                reader.onload = function(e) {
-                    // Crear contenedor de previsualización
-                    const imagePreview = document.createElement("div");
-                    imagePreview.classList.add("image-preview-container");
-                    imagePreview.style.position = "relative";
-                    imagePreview.style.display = "inline-block";
-                    imagePreview.style.margin = "5px";
-
-                    // Agregar botón de eliminación
-                    const closeIcon = document.createElement("span");
-                    closeIcon.classList.add("close-icon");
-                    closeIcon.innerHTML = "✖";
-                    closeIcon.onclick = () => imagePreview.remove();  // Eliminar previsualización
-
-                    // Agregar imagen de previsualización
-                    const img = document.createElement("img");
-                    img.src = e.target.result;
-                    img.classList.add("small-image");
-
-                    imagePreview.appendChild(closeIcon);
-                    imagePreview.appendChild(img);
-                    previewContainer.appendChild(imagePreview);
-                }
-
-                reader.readAsDataURL(file);  // Leer archivo como URL de datos
-            });
-        });
-    </script>
-
-</div>
-
-        
-
-
-<!-- Sección Paso 2: Comprender y Restaurar Condiciones Básicas -->
-<div id="paso2-section" class="recuadro-paso mt-4" style="border: 1px solid #e6007e;">
-    <div class="paso-header" style="background-color: #e6007e; color: white; padding: 10px 15px; border-radius: 5px;">
-        <h2 class="collapsible" style="cursor: pointer; margin: 0;" onclick="toggleVisibility('contenido-paso2')">
-            <span style="margin-right: 10px;">&#x25BC;</span> Paso 2: Comprender y Restaurar Condiciones Básicas
-        </h2>
-    </div>
-    <div id="contenido-paso2">
-        
-        <!-- Bloque 1: Principio de funcionamiento -->
-        <div><h1></h1></div>
-        <div class="sub-section" style="margin-bottom: 20px;">
             <div class="form-row">
-                <div class="form-group col-md-12">
-                    {{ form.condicion_basica.label_tag }}
-                    {{ form.condicion_basica }}
+                <div class="form-group col-md-6">
+                    <label for="Nombre_MP">Nombre Miniproyecto</label>
+                    <input type="text" id="Nombre_MP" name="Nombre_MP" class="form-control" 
+                        value="{{ form.Nombre_MP.value|default_if_none:'' }}" 
+                        placeholder="">
                 </div>
             </div>
 
-            <!-- Campo para subir múltiples imágenes para Paso 2 -->
-            <div class="form-group">
-                <label>Imágenes de Funcionamiento:</label>
-                <input type="file" name="imagen_funcionamiento_files" multiple class="form-control">
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="costo">Costo [$]</label>
+                    <input type="text" id="costo" name="costo" class="form-control" 
+                        value="{{ form.costo.value|default_if_none:'' }}" 
+                        placeholder="">
+                </div>
+
+                <div class="form-group col-md-6">
+                    <label for="ahorro">Ahorro [$]</label>
+                    <input type="text" id="ahorro" name="ahorro" class="form-control" 
+                        value="{{ form.ahorro.value|default_if_none:'' }}" 
+                        placeholder="">
+                </div>
+
             </div>
-
-            <!-- Contenedor para mostrar las imágenes ya cargadas con opción de eliminar -->
-            <div id="imagenes-funcionamiento-container" class="form-row">
-                {% for imagen in imagenes_paso2 %}
-                    <div class="image-preview-container" style="position: relative; display: inline-block; margin: 5px;">
-                        <!-- Icono de eliminar -->
-                        <span class="close-icon" onclick="removeFuncionamientoImage('{{ imagen.id }}')">✖</span>
-                        
-                        <!-- Imagen en tamaño pequeño -->
-                        <img src="{{ imagen.imagen.url }}" alt="Imagen de Condición Básica" class="small-image" onclick="openModal('{{ imagen.imagen.url }}')">
-                    </div>
-                {% endfor %}
-            </div>
-
-            <!-- Contenedor para previsualizar las nuevas imágenes seleccionadas -->
-            <div id="preview-container-funcionamiento" class="form-row" style="display: flex; gap: 10px; flex-wrap: wrap; margin-top: 10px;"></div>
-
-            <!-- Campo oculto para almacenar IDs de imágenes a eliminar -->
-            <input type="hidden" id="delete_images_funcionamiento" name="delete_images_funcionamiento" value="">
-        </div>
-    </div>
-
-
-    <!-- Modal para ver la imagen en tamaño completo -->
-    <div id="imageModal" class="modal" onclick="closeModal()">
-        <span class="close">&times;</span>
-        <img class="modal-content" id="fullImage">
-    </div>
-
-    <style>
-        /* Icono de cierre */
-        .close-icon {
-            position: absolute;
-            top: 5px;
-            right: 5px;
-            color: #ff0000;
-            font-size: 20px;
-            font-weight: bold;
-            cursor: pointer;
-            background-color: white;
-            border-radius: 50%;
-            padding: 2px 5px;
-            z-index: 10;
-        }
-
-        /* Estilo para la imagen en tamaño pequeño */
-        .small-image {
-            max-width: 100px;
-            max-height: 100px;
-            cursor: pointer;
-            border: 1px solid #ccc;
-            padding: 5px;
-            object-fit: cover; /* Mantiene la imagen ajustada al contenedor */
-        }
-
-        /* Estilos del modal */
-        .modal {
-            display: none; /* Oculto por defecto */
-            position: fixed;
-            z-index: 1000;
-            padding-top: 60px;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            overflow: auto;
-            background-color: rgba(0,0,0,0.9);
-        }
-
-        .modal-content {
-            margin: auto;
-            display: block;
-            max-width: 80%;
-            max-height: 80%;
-        }
-
-        .close {
-            position: absolute;
-            top: 15px;
-            right: 35px;
-            color: #ffffff;
-            font-size: 40px;
-            font-weight: bold;
-            cursor: pointer;
-        }
-    </style>
-
-    <script>
-        function removeFuncionamientoImage(imageId) {
-            // Oculta la imagen y el botón de eliminar
-            const imageContainer = document.querySelector(`span[onclick="removeFuncionamientoImage('${imageId}')"]`).parentElement;
-            imageContainer.style.display = "none";
-
-            // Añadir el ID de la imagen al campo oculto para ser eliminada
-            let deleteImagesField = document.getElementById("delete_images_funcionamiento");
-            deleteImagesField.value += imageId + ",";
-        }
-        
-        // Abre el modal y muestra la imagen en tamaño completo
-        function openModal(imageUrl) {
-            var modal = document.getElementById("imageModal");
-            var fullImage = document.getElementById("fullImage");
-            fullImage.src = imageUrl; // Asigna la fuente de imagen en tamaño completo
-            modal.style.display = "block";
-        }
-
-        // Cierra el modal
-        function closeModal() {
-            document.getElementById("imageModal").style.display = "none";
-        }
-
-        // Previsualizar imágenes seleccionadas sin recargar la página
-        document.querySelector('input[type="file"][name="imagen_funcionamiento_files"]').addEventListener('change', function(event) {
-            const previewContainer = document.getElementById("preview-container-funcionamiento");
-            previewContainer.innerHTML = '';  // Limpiar previsualizaciones anteriores
-
-            Array.from(event.target.files).forEach(file => {
-                const reader = new FileReader();
-
-                reader.onload = function(e) {
-                    // Crear contenedor de previsualización
-                    const imagePreview = document.createElement("div");
-                    imagePreview.classList.add("image-preview-container");
-                    imagePreview.style.position = "relative";
-                    imagePreview.style.display = "inline-block";
-                    imagePreview.style.margin = "5px";
-
-                    // Agregar botón de eliminación
-                    const closeIcon = document.createElement("span");
-                    closeIcon.classList.add("close-icon");
-                    closeIcon.innerHTML = "✖";
-                    closeIcon.onclick = () => imagePreview.remove();  // Eliminar previsualización
-
-                    // Agregar imagen de previsualización
-                    const img = document.createElement("img");
-                    img.src = e.target.result;
-                    img.classList.add("small-image");
-
-                    imagePreview.appendChild(closeIcon);
-                    imagePreview.appendChild(img);
-                    previewContainer.appendChild(imagePreview);
-                }
-
-                reader.readAsDataURL(file);  // Leer archivo como URL de datos
-            });
-        });
-    </script>
-</div>
-
-
-
-        
-<!-- Sección Paso 3: Causa Raíz -->
-<div id="paso3-section" class="recuadro-paso mt-4" style="border: 1px solid #FFC800;">
-    <div class="paso-header" style="background-color: #FFC800; color: white; padding: 10px 15px; border-radius: 5px;">
-        <h2 class="collapsible" style="cursor: pointer; margin: 0;" onclick="toggleVisibility('contenido-paso3')">
-            <span style="margin-right: 10px;">▼</span> Paso 3: Análisis de causa raíz
-        </h2>
-    </div>
-
-    <div id="contenido-paso3">
-        <br>        
-        <div class="form-row" style="display: flex; gap: 15px; margin-top: 20px;">
-            <div class="form-group" style="flex: 1;">
-                <label for="resumen-mirror">Resumen del problema:</label>
-                <textarea id="resumen-mirror" class="form-control">{{ form.resumen.value }}</textarea>
-            </div>
-        </div>
-        <div class="form-row" style="display: flex; gap: 15px;">
-            <div class="form-group" style="flex: 1;">
-                {{ form.ISHIKAWA.label_tag }}
-                {{ form.ISHIKAWA }}
-            </div>
-        </div>
-        
-        <div class="form-row" style="display: flex; gap: 15px;">
-            <div class="form-group" style="flex: 1;">
-                {{ form.desarrollo.label_tag }}
-                {{ form.desarrollo }}
-            </div>
-        </div>
-        
-        <br>
-        <div>
-        <a href="{% url 'porque' %}" class="btn-verde btn-lg" onclick="abrirEnNuevaVentana('{% url 'porque' %}'); return false;">Crear 5 Por qué</a>
-        <a href="{% url 'asociar_porque_existente' miniproyecto.id %}" class="btn-verde btn-lg">Asociar 5 Por qué Existente</a>
-        </div>
-        <div><h1></h1></div>
-        
-
-        
-        <style>
-            .btn-primary {
-                background-color: #28a745; /* Ajusta el color al verde */
-                border: none;
-                color: white;
-                padding: 8px 12px;
-                text-align: center;
-                text-decoration: none;
-                display: inline-block;
-                font-size: 14px;
-                margin: 4px 2px;
-                cursor: pointer;
-                border-radius: 4px;
-            }
-        
-            /* Clase para alinear los botones "Editar" y "Quitar" horizontalmente */
-            .botones-acciones {
-                display: inline-flex;
-                gap: 5px; /* Espacio entre los botones */
-            }
-        
-            /* Clase para reducir el ancho de la columna de acciones */
-            .columna-acciones {
-                width: 150px;
-                text-align: center;
-            }
-        </style>
-        
-        <h2>5 Porqués Asociados</h2>
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Categoría</th>
-                    <th>Subcategoría</th>
-                    <th>Área</th>
-                    <th>KPI ICEO</th>
-                    <th>Miembros del Equipo</th>
-                    <th class="columna-acciones">Acciones</th>
-                </tr>
-            </thead>
-            <tbody id="porques-table-body">
-                {% for porque in porques %}
-                <tr id="porque-row-{{ porque.id }}">
-                    <td>{{ porque.id }}</td>
-                    <td>{{ porque.categoria }}</td>
-                    <td>{{ porque.subcategoria }}</td>
-                    <td>{{ porque.area }}</td>
-                    <td>{{ porque.kpi_iceo }}</td>
-                    <td>
-                        {% for miembro in porque.miembros_equipo.all %}
-                            {{ miembro.nombre }}{% if not forloop.last %}, {% endif %}
-                        {% endfor %}
-                    </td>
-                    <td class="columna-acciones">
-                        <div class="botones-acciones">
-                            <a href="{% url 'porque' porque.id %}" class="btn btn-primary">Editar</a>
-                            
-                            <!-- Botón para quitar el "5 Porqué" con JavaScript, sin recargar la página -->
-                            <button type="button" class="btn btn-primary" onclick="quitarPorque({{ porque.id }})">Quitar</button>
-                        </div>
-                    </td>
-                </tr>
-                {% empty %}
-                <tr>
-                    <td colspan="7">No hay análisis de 5 Porqués asociados.</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-        
-        <!-- Campo oculto para almacenar los IDs de "5 Porqués" a eliminar -->
-        <input type="hidden" name="porques_a_eliminar" id="porques_a_eliminar" value="">
-        
-        <script>
-            // Array para almacenar los IDs de los "5 Porqués" que se quieren quitar
-            let porquesParaEliminar = [];
-        
-            function quitarPorque(id) {
-                // Agrega el ID a la lista de eliminaciones si no está ya presente
-                if (!porquesParaEliminar.includes(id)) {
-                    porquesParaEliminar.push(id);
-                }
-        
-                // Actualiza el campo oculto con los IDs
-                document.getElementById('porques_a_eliminar').value = porquesParaEliminar.join(',');
-        
-                // Oculta la fila correspondiente al "5 Porqué" que se quitó
-                const row = document.getElementById(`porque-row-${id}`);
-                if (row) {
-                    row.style.display = 'none'; // Oculta la fila de la tabla
-                }
-            }
-        </script>
-        
-        
-        
-
-        
-        
-        
-
-
-    </div>
-
-    <script>
-        //script para abrir una ventan nueva al apretar el boton 5pq
-        function abrirEnNuevaVentana(url) {
-            window.open(
-                url,
-                'nuevaVentana',
-                'width=800,height=600,resizable=yes,scrollbars=yes,status=yes'
-            );
-        }
-        // Sincroniza el valor de ambos recuadros
-        document.addEventListener("DOMContentLoaded", function () {
-            const resumenOriginal = document.getElementById("{{ form.resumen.id_for_label }}");
-            const resumenMirror = document.getElementById("resumen-mirror");
-    
-            // Inicializa el segundo campo con el valor del primero al cargar la página
-            resumenMirror.value = resumenOriginal.value;
-    
-            // Sincroniza cuando cambias el contenido del recuadro original
-            resumenOriginal.addEventListener("input", function () {
-                resumenMirror.value = resumenOriginal.value;
-            });
-    
-            // Sincroniza cuando cambias el contenido del recuadro espejo
-            resumenMirror.addEventListener("input", function () {
-                resumenOriginal.value = resumenMirror.value;
-            });
-        });
-    </script>
-
-</div>
-
-
-
-<!-- Sección Paso 4: Contramedidas y Seguimiento -->
-<div id="paso4-section" class="recuadro-paso mt-4" style="border: 1px solid #00C851;">
-    <div class="paso-header" style="background-color: #00C851; color: white; padding: 10px 15px; border-radius: 5px;">
-        <h2 class="collapsible" style="cursor: pointer; margin: 0;" onclick="toggleVisibility('contenido-paso4')">
-            <span style="margin-right: 10px;">&#x25BC;</span> Paso 4: Contramedidas y Seguimiento
-        </h2>
-    </div>
-    <div id="contenido-paso4">
-        
-        <div><h1></h1></div>
-        
-        <button type="button" id="addAccionPreventiva" class="btn btn-primary mt-2">Agregar Acción Preventiva</button>  
-        <!-- Contenedor de la tabla centrado -->
-        <div class="custom-table-container">
-            <table id="AccionesTable" class="table table-striped">
-                <thead>
-                    <tr>
-                        <th colspan="5">ACCIONES (CONTRAMEDIDAS Y SEGUIMIENTO)</th>
-                        <th colspan="2">VALIDACIÓN DE LA ACCIÓN</th>
-                    </tr>
-                    <tr>
-                        <th>ACCIÓN PREVENTIVA</th>
-                        <th>RESPONSABLE</th>
-                        <th>FECHA INICIO</th>
-                        <th>FECHA COMPROMISO</th>
-                        <th>ESTADO</th>
-                        <th>FECHA CIERRE</th>
-                        <th>CERRAR</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr id="accionesPRE-row">
-                        <td>{{ form.Accion_Preventiva }}</td>
-                        <td>
-                            <select id="Responsable2" name="Responsable2" class="select2">
-                                {% for miembro in opciones_miembros %}
-                                    <option value="{{ miembro.id }}" data-email="{{ miembro.email }}" {% if miembro.id in form.Responsable2.value %}selected{% endif %}>
-                                        {{ miembro.nombre }}
-                                    </option>
-                                {% endfor %}
-                            </select>
-                        </td>
-                        <td>
-                            <input type="date" id="Fecha_inicio2" name="Fecha_inicio2" class="form-control" value="{{ form.Fecha_inicio2.value|date:'Y-m-d' }}">
-                        </td>
-                        <td>
-                            <input type="date" id="Fecha_compromiso2" name="Fecha_compromiso2" class="form-control" value="{{ form.Fecha_compromiso2.value|date:'Y-m-d' }}">
-                        </td>
-                        <td>
-                            <input type="text" id="estado-{{ accion.id }}" name="estado" value="{{ form.estado.value }}" class="form-control readonly">
-                        </td>                                              
-                        <td>
-                            <input type="date" id="Fecha_cierre_paso4" name="Fecha_cierre_paso4" class="form-control" value="{{ form.Fecha_cierre_paso4.value|date:'Y-m-d' }}">
-                        </td>
-                        <td>
-                            <button type="button" class="cerrar-btn" onclick="cerrarAccion('estado-{{ accion.id }}', {{ accion.id }})">
-                                &#10004;
-                            </button>
-                        </td>                        
-                    </tr>
- 
-
-                    <tr id="accionesPRE-row2" style="display: none;">
-                        <td>{{ form.Accion_Preventiva_2 }}</td>
-                        <td>
-                            <select id="Responsable2_2" name="Responsable2_2" class="select2">
-                                {% for miembro in opciones_miembros %}
-                                    <option value="{{ miembro.id }}" data-email="{{ miembro.email }}" {% if miembro.id in form.Responsable2_2.value %}selected{% endif %}>
-                                        {{ miembro.nombre }}
-                                    </option>
-                                {% endfor %}
-                            </select>
-                        </td>
-                        <td>
-                            <input type="date" id="Fecha_inicio2_2" name="Fecha_inicio2_2" class="form-control" value="{{ form.Fecha_inicio2_2.value|date:'Y-m-d' }}">
-                        </td>
-                        <td>
-                            <input type="date" id="Fecha_compromiso2_2" name="Fecha_compromiso2_2" class="form-control" value="{{ form.Fecha_compromiso2_2.value|date:'Y-m-d' }}">
-                        </td>
-                        <td>
-                            <input type="text" id="estado_2-{{ accion.id }}" name="estado_2" value="{{ form.estado_2.value }}" class="form-control readonly">
-                        </td>                                              
-                        <td>
-                            <input type="date" id="Fecha_cierre_paso4_2" name="Fecha_cierre_paso4_2" class="form-control" value="{{ form.Fecha_cierre_paso4_2.value|date:'Y-m-d' }}">
-                        </td>
-                        <td>
-                            <button type="button" class="cerrar-btn" onclick="cerrarAccion('estado_2-{{ accion.id }}', {{ accion.id }})">
-                                &#10004;
-                            </button>
-                        </td> 
-                    </tr>
-
-
-                    <tr id="accionesPRE-row3" style="display: none;">
-                        <td>{{ form.Accion_Preventiva_3 }}</td>
-                        <td>
-                            <select id="Responsable2_3" name="Responsable2_3" class="select2">
-                                {% for miembro in opciones_miembros %}
-                                    <option value="{{ miembro.id }}" data-email="{{ miembro.email }}" {% if miembro.id in form.Responsable2_3.value %}selected{% endif %}>
-                                        {{ miembro.nombre }}
-                                    </option>
-                                {% endfor %}
-                            </select>
-                        </td>
-                        <td>
-                            <input type="date" id="Fecha_inicio2_3" name="Fecha_inicio2_3" class="form-control" value="{{ form.Fecha_inicio2_3.value|date:'Y-m-d' }}">
-                        </td>
-                        <td>
-                            <input type="date" id="Fecha_compromiso2_3" name="Fecha_compromiso2_3" class="form-control" value="{{ form.Fecha_compromiso2_3.value|date:'Y-m-d' }}">
-                        </td>
-                        <td>
-                            <input type="text" id="estado_3-{{ accion.id }}" name="estado_3" value="{{ form.estado_3.value }}" class="form-control readonly">
-                        </td>                                              
-                        <td>
-                            <input type="date" id="Fecha_cierre_paso4_3" name="Fecha_cierre_paso4_3" class="form-control" value="{{ form.Fecha_cierre_paso4_3.value|date:'Y-m-d' }}">
-                        </td>
-                        <td>
-                            <button type="button" class="cerrar-btn" onclick="cerrarAccion('estado_3-{{ accion.id }}', {{ accion.id }})">
-                                &#10004;
-                            </button>
-                        </td> 
-                    </tr>
-
-
-                    <tr id="accionesPRE-row4" style="display: none;">
-                        <td>{{ form.Accion_Preventiva_4 }}</td>
-                        <td>
-                            <select id="Responsable2_4" name="Responsable2_4" class="select2">
-                                {% for miembro in opciones_miembros %}
-                                    <option value="{{ miembro.id }}" data-email="{{ miembro.email }}" {% if miembro.id in form.Responsable2_4.value %}selected{% endif %}>
-                                        {{ miembro.nombre }}
-                                    </option>
-                                {% endfor %}
-                            </select>
-                        </td>
-                        <td>
-                            <input type="date" id="Fecha_inicio2_4" name="Fecha_inicio2_4" class="form-control" value="{{ form.Fecha_inicio2_4.value|date:'Y-m-d' }}">
-                        </td>
-                        <td>
-                            <input type="date" id="Fecha_compromiso2_4" name="Fecha_compromiso2_4" class="form-control" value="{{ form.Fecha_compromiso2_4.value|date:'Y-m-d' }}">
-                        </td>
-                        <td>
-                            <input type="text" id="estado_4-{{ accion.id }}" name="estado_4" value="{{ form.estado_4.value }}" class="form-control readonly">
-                        </td>                                              
-                        <td>
-                            <input type="date" id="Fecha_cierre_paso4_4" name="Fecha_cierre_paso4_4" class="form-control" value="{{ form.Fecha_cierre_paso4_4.value|date:'Y-m-d' }}">
-                        </td>
-                        <td>
-                            <button type="button" class="cerrar-btn" onclick="cerrarAccion('estado_4-{{ accion.id }}', {{ accion.id }})">
-                                &#10004;
-                            </button>
-                        </td> 
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-        
-        <style>
-            .readonly {
-                background-color: #e9ecef; /* Color de fondo de campo deshabilitado */
-                pointer-events: none;      /* Evita la edición */
-            }
-        </style>
-        <script>
-            function cerrarAccion(estadoId, accionId) {
-                // Cambiar el estado a "Cerrada" en el HTML
-                const estadoField = document.getElementById(estadoId);
-                if (estadoField) {
-                    estadoField.value = "Cerrada";
-                } else {
-                    console.error("Campo de estado no encontrado", estadoId);
-                    return;
-                }
             
-                // Realizar una petición AJAX para actualizar el estado en el servidor
-                fetch(`/actualizar-estado/${accionId}/`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRFToken': getCSRFToken()  // Asegúrate de que el CSRF token esté disponible
-                    },
-                    body: JSON.stringify({ estado: "Cerrada" })
-                })
-                .then(response => {
-                    if (response.ok) {
-                        console.log("Estado actualizado exitosamente en la base de datos");
-                        return response.json();  // Convertir a JSON
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="categoria">Categoría</label>
+                    <input type="text" id="categoria" name="categoria" class="form-control" readonly value="{{ form.categoria.value|default_if_none:'' }}">
+                </div>
+
+                <div class="form-group col-md-6">
+                    <label for="subcategoria">Subcategoría</label>
+                    <select id="subcategoria" name="subcategoria" class="form-control">
+                        <option value="">Seleccione una subcategoría</option>
+                        {% for subcategoria in subcategorias_datos %}
+                            <option value="{{ subcategoria.subcategoria }}" {% if form.subcategoria.value == subcategoria.subcategoria %}selected{% endif %}>
+                                {{ subcategoria.subcategoria }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                                                        
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="area">Área</label>
+                    <select id="area" name="area" class="form-control">
+                        <option value="">Seleccione un área</option>
+                        {% for opcion in opciones_area %}
+                            <option value="{{ opcion }}" {% if form.area.value == opcion %}selected{% endif %}>{{ opcion }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="form-group col-md-6">
+                    <label for="subarea">Subárea</label>
+                    <select id="subarea" name="subarea" class="form-control">
+                        <option value="">Seleccione una línea</option>
+                        {% for opcion in opciones_subarea %}
+                            <option value="{{ opcion }}" {% if form.subarea.value == opcion %}selected{% endif %}>{{ opcion }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="maquina">Máquina</label>
+                    <select id="maquina" name="maquina" class="form-control">
+                        <option value="">Seleccione una máquina</option>
+                        {% for opcion in opciones_maquina %}
+                            <option value="{{ opcion }}" {% if form.maquina.value == opcion %}selected{% endif %}>{{ opcion }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="form-group col-md-6">
+                    <label for="miembros_equipo">Miembros del equipo</label>
+                    <select id="miembros_equipo" name="miembros_equipo" class="form-control select2" multiple>
+                        {% for miembro in opciones_miembros %}
+                            <option value="{{ miembro.id }}" data-email="{{ miembro.email }}" {% if miembro.id in form.miembros_equipo.value %}selected{% endif %}>
+                                {{ miembro.nombre }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="pilar">Pilar</label>
+                    <input type="text" id="pilar" name="pilar" class="form-control" readonly value="{{ form.pilar.value|default_if_none:''  }}">
+                </div>
+
+                <div class="form-group col-md-6">
+                    <label for="impacto">Impacto</label>
+                    <input type="text" id="impacto" name="impacto" class="form-control" 
+                        value="{{ form.impacto.value|default_if_none:'' }}" 
+                        placeholder="Ej: Minutos, Opi, rendimiento...">
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="kpi_iceo">KPI ICEO</label>
+                    <input type="text" id="kpi_iceo" name="kpi_iceo" class="form-control" readonly value="{{ form.kpi_iceo.value|default_if_none:''}}">
+                </div>
+
+                <div class="form-group col-md-6">
+                    <label for="kpi_secundario">KPI Secundario (KAI)</label>
+                    <select id="kpi_secundario" name="kpi_secundario" class="form-control">
+                        <option value="">Seleccione un KPI secundario</option>
+                        <option {% if form.kpi_secundario.value == "kpi1" %}selected{% endif %}>Eficiencia Global de Equipos (OEE)</option>
+                        <option {% if form.kpi_secundario.value == "kpi2" %}selected{% endif %}>Tasa de Defectos</option>
+                        <option {% if form.kpi_secundario.value == "kpi3" %}selected{% endif %}>Tiempo Medio Entre Fallos (MTBF)</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-row">
+                {% if not form.instance.pk %}
+                <div class="form-group col-md-6">
+                    <label for="fecha_inicio">Fecha Inicio</label>
+                    <input type="date" id="fecha_inicio" name="fecha_inicio" class="form-control" value="{{ form.fecha_inicio.value }}" readonly>
+                </div>
+                {% endif %}
+                
+                <div class="form-group col-md-6">
+                    <label for="fecha_cierre">Fecha Estimada de Cierre</label>
+                    <input type="date" id="fecha_cierre" name="fecha_cierre" class="form-control" value="{{ form.fecha_cierre.value|date:'Y-m-d' }}">
+                </div>
+            </div>
+
+
+            <script>
+                // Pasar los datos de subcategorias desde Django a JavaScript
+                var subcategoriasDatos = {{ subcategorias_datos|safe }};
+                
+                console.log("Datos de subcategorías (verifica si es un objeto válido): ", subcategoriasDatos);
+            </script>
+            
+            
+            
+            <script>
+                document.getElementById('subcategoria').addEventListener('change', function() {
+                    var subcategoriaSeleccionada = this.value;
+            
+                    // Buscar la subcategoría en los datos
+                    var subcategoriaDatos = subcategoriasDatos.find(function(item) {
+                        return item.subcategoria === subcategoriaSeleccionada;
+                    });
+            
+            
+                    // Si encontramos la subcategoría, rellenar los otros campos
+                    if (subcategoriaDatos) {
+                        document.getElementById('categoria').value = subcategoriaDatos.categoria;
+                        document.getElementById('pilar').value = subcategoriaDatos.pilar;
+                        document.getElementById('kpi_iceo').value = subcategoriaDatos.kpi_iceo;
                     } else {
-                        console.error("Error al actualizar el estado en el servidor");
-                    }
-                })
-                .then(data => {
-                    if (data.success) {
-                        console.log("Respuesta del servidor:", data);
-                    }
-                })
-                .catch(error => console.error("Error de red:", error));
-            }
-            function actualizarEstadoYEnviar() {
-                // Selecciona todos los campos de estado
-                const estadoElements = document.querySelectorAll('input[name="estado"]');
-                estadoElements.forEach(element => {
-                    if (element.value === "Cerrada") {
-                        element.classList.remove('readonly');  // Asegura que el campo esté habilitado visualmente si es necesario
+                        // Si no se encuentra, vaciar los campos
+                        document.getElementById('categoria').value = '';
+                        document.getElementById('pilar').value = '';
+                        document.getElementById('kpi_iceo').value = '';
                     }
                 });
+            </script>
             
-                // Enviar el formulario
-                document.getElementById("form").submit();
-            }
-            
-                                                
-        </script>
-        
-    </div>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            let rowCountCorrectivas = 1;
-            let rowCountPreventivas = 1;
-            const maxRows = 4;
 
-            // Función para mostrar todas las filas hasta la última que tenga datos en "Acciones Preventivas"
-            function mostrarFilasPreventivasHastaLaUltima() {
-                for (let i = maxRows; i >= 1; i--) {
-                    const accionInput = document.getElementById(`id_Accion_Preventiva_${i}`);
-                    if (accionInput && accionInput.value.trim() !== "") {
-                        for (let j = 1; j <= i; j++) {
-                            const fila = document.getElementById(`accionesPRE-row${j}`);
-                            if (fila) {
-                                fila.style.display = '';  // Mostrar la fila
-                            }
+        </div>
+
+
+        <!-- Sección Paso 1: Descripción del Problema (visible después del Paso 0) -->
+        {% if mostrar_paso1 %}
+        <div id="paso1-section" class="recuadro-paso mt-4" style="border: 1px solid #ff0000;">
+            <div class="paso-header" style="background-color: #ff0000; color: white; padding: 10px 15px; border-radius: 5px;">
+                <h2 class="collapsible" style="cursor: pointer; margin: 0;" onclick="toggleVisibility('contenido-paso1')">
+                    <span style="margin-right: 10px;">&#x25BC;</span> Paso 1: Descripción del Problema
+                </h2>
+            </div>
+                <div id="contenido-paso1">
+                    <div><h1></h1></div>
+
+                    <div class="form-row" style="display: flex; gap: 15px;">
+                        <div class="form-group" style="flex: 1;">
+                            {{ form.que_ocurre.label_tag }}
+                            {{ form.que_ocurre }}
+                        </div>
+                        <div class="form-group" style="flex: 1;">
+                            {{ form.donde_ocurre.label_tag }}
+                            {{ form.donde_ocurre }}
+                        </div>
+                    </div>
+
+                    <div class="form-row" style="display: flex; gap: 15px;">
+                        <div class="form-group" style="flex: 1;">
+                            {{ form.cuando_ocurre.label_tag }}
+                            {{ form.cuando_ocurre }}
+                        </div>
+                        <div class="form-group" style="flex: 1;">
+                            {{ form.quien_intervino.label_tag }}
+                            {{ form.quien_intervino }}
+                        </div>
+                    </div>
+
+                    <div class="form-row" style="display: flex; gap: 15px;">
+                        <div class="form-group" style="flex: 1;">
+                            {{ form.como_ocurre.label_tag }}
+                            {{ form.como_ocurre }}
+                        </div>
+                        <div class="form-group" style="flex: 1;">
+                            {{ form.perdida.label_tag }}
+                            {{ form.perdida }}
+                        </div>
+                    </div>
+
+                    <div class="form-row" style="display: flex; gap: 15px;">
+                        <div class="form-group" style="flex: 1;">
+                            {{ form.resumen.label_tag }}
+                            {{ form.resumen }}
+                        </div>
+                    </div>
+
+                    <!-- Campo para subir múltiples imágenes -->
+                    <div class="form-group">
+                        {{ form.imagenes.label_tag }}
+                        {{ form.imagenes }}
+                    </div>
+
+                    <!-- Contenedor para mostrar las imágenes ya cargadas con opción de eliminar -->
+                    <div id="imagenes-container" class="form-row">
+                        {% for imagen in miniproyecto.imagenes.all %}
+                            <div class="image-preview-container" style="position: relative; display: inline-block; margin: 5px;">
+                                <!-- Icono de eliminar -->
+                                <span class="close-icon" onclick="removeImage('{{ imagen.id }}')">✖</span>
+                                
+                                <!-- Imagen en tamaño pequeño -->
+                                <img src="{{ imagen.imagen.url }}" alt="Imagen de Miniproyecto" class="small-image" onclick="openModal('{{ imagen.imagen.url }}')">
+                            </div>
+                        {% endfor %}
+                    </div>
+
+                    <!-- Contenedor para previsualizar las nuevas imágenes seleccionadas -->
+                    <div id="preview-container" class="form-row" style="display: flex; gap: 10px; flex-wrap: wrap; margin-top: 10px;"></div>
+
+                    <!-- Campo oculto para almacenar IDs de imágenes a eliminar -->
+                    <input type="hidden" id="delete_images" name="delete_images" value="">
+                </div>
+
+                <!-- Modal para ver la imagen en tamaño completo -->
+                <div id="imageModal" class="modal" onclick="closeModal()">
+                    <span class="close">&times;</span>
+                    <img class="modal-content" id="fullImage">
+                </div>
+
+            <style>
+                /* Icono de cierre */
+                .close-icon {
+                    position: absolute;
+                    top: 5px;
+                    right: 5px;
+                    color: #ff0000;
+                    font-size: 20px;
+                    font-weight: bold;
+                    cursor: pointer;
+                    background-color: white;
+                    border-radius: 50%;
+                    padding: 2px 5px;
+                    z-index: 10;
+                }
+
+                /* Estilo para la imagen en tamaño pequeño */
+                .small-image {
+                    max-width: 100px;
+                    max-height: 100px;
+                    cursor: pointer;
+                    border: 1px solid #ccc;
+                    padding: 5px;
+                    object-fit: cover; /* Mantiene la imagen ajustada al contenedor */
+                }
+
+                /* Estilos del modal */
+                .modal {
+                    display: none; /* Oculto por defecto */
+                    position: fixed;
+                    z-index: 1000;
+                    padding-top: 60px;
+                    left: 0;
+                    top: 0;
+                    width: 100%;
+                    height: 100%;
+                    overflow: auto;
+                    background-color: rgba(0,0,0,0.9);
+                }
+
+                .modal-content {
+                    margin: auto;
+                    display: block;
+                    max-width: 80%;
+                    max-height: 80%;
+                }
+
+                .close {
+                    position: absolute;
+                    top: 15px;
+                    right: 35px;
+                    color: #ffffff;
+                    font-size: 40px;
+                    font-weight: bold;
+                    cursor: pointer;
+                }
+            </style>
+
+            <script>
+                function removeImage(imageId) {
+                    // Oculta la imagen y el botón de eliminar
+                    const imageContainer = document.querySelector(`span[onclick="removeImage('${imageId}')"]`).parentElement;
+                    imageContainer.style.display = "none";
+
+                    // Añadir el ID de la imagen al campo oculto para ser eliminada
+                    let deleteImagesField = document.getElementById("delete_images");
+                    deleteImagesField.value += imageId + ",";
+                }
+                
+                // Abre el modal y muestra la imagen en tamaño completo
+                function openModal(imageUrl) {
+                    var modal = document.getElementById("imageModal");
+                    var fullImage = document.getElementById("fullImage");
+                    fullImage.src = imageUrl; // Asigna la fuente de imagen en tamaño completo
+                    modal.style.display = "block";
+                }
+
+                // Cierra el modal
+                function closeModal() {
+                    document.getElementById("imageModal").style.display = "none";
+                }
+
+                // Previsualizar imágenes seleccionadas sin recargar la página
+                document.querySelector('input[type="file"][multiple]').addEventListener('change', function(event) {
+                    const previewContainer = document.getElementById("preview-container");
+                    previewContainer.innerHTML = '';  // Limpiar previsualizaciones anteriores
+
+                    Array.from(event.target.files).forEach(file => {
+                        const reader = new FileReader();
+
+                        reader.onload = function(e) {
+                            // Crear contenedor de previsualización
+                            const imagePreview = document.createElement("div");
+                            imagePreview.classList.add("image-preview-container");
+                            imagePreview.style.position = "relative";
+                            imagePreview.style.display = "inline-block";
+                            imagePreview.style.margin = "5px";
+
+                            // Agregar botón de eliminación
+                            const closeIcon = document.createElement("span");
+                            closeIcon.classList.add("close-icon");
+                            closeIcon.innerHTML = "✖";
+                            closeIcon.onclick = () => imagePreview.remove();  // Eliminar previsualización
+
+                            // Agregar imagen de previsualización
+                            const img = document.createElement("img");
+                            img.src = e.target.result;
+                            img.classList.add("small-image");
+
+                            imagePreview.appendChild(closeIcon);
+                            imagePreview.appendChild(img);
+                            previewContainer.appendChild(imagePreview);
                         }
-                        rowCountPreventivas = i;
-                        break;
-                    }
-                }
-            }
 
-            mostrarFilasPreventivasHastaLaUltima();
-
-            document.getElementById('addAccionPreventiva').addEventListener('click', function() {
-                if (rowCountPreventivas < maxRows) {
-                    rowCountPreventivas++;
-                    const nextRow = document.getElementById(`accionesPRE-row${rowCountPreventivas}`);
-                    if (nextRow) {
-                        nextRow.style.display = '';  // Mostrar la siguiente fila oculta
-                    }
-        
-                    if (rowCountPreventivas >= maxRows) {
-                        this.style.display = 'none';
-                    }
-                }
-            });
-        });
-    </script>
-</div>
-
-
-
-
-
-
-<!-- Sección Paso 5: Estandarización y Expansión -->
-<div id="paso5-section" class="recuadro-paso mt-4" style="border: 1px solid #D86B20;">
-    <div class="paso-header" style="background-color: #D86B20; color: white; padding: 10px 15px; border-radius: 5px;">
-        <h2 class="collapsible" style="cursor: pointer; margin: 0;" onclick="toggleVisibility('contenido-paso5')">
-            <span style="margin-right: 10px;">&#x25BC;</span> Paso 5: Estandarización y Expansión
-        </h2>
-    </div>
-    <div><h1></h1></div>
-    <div id="contenido-paso5">
-        <!-- Bloque 1: Estandarización -->
-        <div class="sub-section" style="margin-bottom: 20px;">
-            <div class="sub-header" style="background-color: #D86B20; color: white; padding: 10px 15px; border-radius: 5px;">
-                <h3 style="margin: 0;">Estandarización</h3>
-            </div>
-            <div class="sub-content" style="padding: 10px; border: 1px solid #D86B20; border-radius: 5px;">
-                <!-- Botón para agregar filas en Estandarización -->
-                <button type="button" id="addEstandarizacion" class="btn btn-primary mt-2" style="margin-bottom: 8px;">Agregar Acción de Estandarización</button>
-                <div class="form-row" style="display: flex; justify-content: center;">
-                    <table id="AccionesTable" >
-                        <thead>
-                            <tr>
-                                <th>ACCIÓN DE ESTANDARIZACIÓN</th>
-                                <th>RESPONSABLE</th>
-                                <th>FECHA COMPROMISO</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <!-- IDs de filas corregidos -->
-                            <tr id="estandarizacion-row1">
-                                <td>{{ form.Estandarizacion }}</td>
-                                <td>
-                                    <select id="Responsable3" name="Responsable3" class="select2">
-                                        {% for miembro in opciones_miembros %}
-                                            <option value="{{ miembro.id }}" data-email="{{ miembro.email }}" {% if miembro.id in form.Responsable3.value %}selected{% endif %}>
-                                                {{ miembro.nombre }}
-                                            </option>
-                                        {% endfor %}
-                                    </select>
-                                </td>
-                                <td>
-                                    <input type="date" id="Fecha_compromiso3" name="Fecha_compromiso3" class="form-control" value="{{ form.Fecha_compromiso3.value|date:'Y-m-d' }}">
-                                </td>
-                            </tr>
-
-                            <tr id="estandarizacion-row2" style="display: none;">
-                                <td>{{ form.Estandarizacion_2 }}</td>
-                                <td>
-                                    <select id="Responsable3_2" name="Responsable3_2" class="select2">
-                                        {% for miembro in opciones_miembros %}
-                                            <option value="{{ miembro.id }}" data-email="{{ miembro.email }}" {% if miembro.id in form.Responsable3_2.value %}selected{% endif %}>
-                                                {{ miembro.nombre }}
-                                            </option>
-                                        {% endfor %}
-                                    </select>
-                                </td>
-                                <td>
-                                    <input type="date" id="Fecha_compromiso3_2" name="Fecha_compromiso3_2" class="form-control" value="{{ form.Fecha_compromiso3_2.value|date:'Y-m-d' }}">
-                                </td>
-                            </tr>
-
-                            <tr id="estandarizacion-row3" style="display: none;">
-                                <td>{{ form.Estandarizacion_3 }}</td>
-                                <td>
-                                    <select id="Responsable3_3" name="Responsable3_3" class="select2">
-                                        {% for miembro in opciones_miembros %}
-                                            <option value="{{ miembro.id }}" data-email="{{ miembro.email }}" {% if miembro.id in form.Responsable3_3.value %}selected{% endif %}>
-                                                {{ miembro.nombre }}
-                                            </option>
-                                        {% endfor %}
-                                    </select>
-                                </td>
-                                <td>
-                                    <input type="date" id="Fecha_compromiso3_3" name="Fecha_compromiso3_3" class="form-control" value="{{ form.Fecha_compromiso3_3.value|date:'Y-m-d' }}">
-                                </td>
-                            </tr>
-
-                            <tr id="estandarizacion-row4" style="display: none;">
-                                <td>{{ form.Estandarizacion_4 }}</td>
-                                <td>
-                                    <select id="Responsable3_4" name="Responsable3_4" class="select2">
-                                        {% for miembro in opciones_miembros %}
-                                            <option value="{{ miembro.id }}" data-email="{{ miembro.email }}" {% if miembro.id in form.Responsable3_4.value %}selected{% endif %}>
-                                                {{ miembro.nombre }}
-                                            </option>
-                                        {% endfor %}
-                                    </select>
-                                </td>
-                                <td>
-                                    <input type="date" id="Fecha_compromiso3_4" name="Fecha_compromiso3_4" class="form-control" value="{{ form.Fecha_compromiso3_4.value|date:'Y-m-d' }}">
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+                        reader.readAsDataURL(file);  // Leer archivo como URL de datos
+                    });
+                });
+            </script>
         </div>
-
-        <!-- Bloque 2: Expansión -->
-        <div class="sub-section" style="margin-bottom: 20px;">
-            <div class="sub-header" style="background-color: #D86B20; color: white; padding: 10px 15px; border-radius: 5px;">
-                <h3 style="margin: 0;">Expansión</h3>
-            </div>
-            <div class="sub-content" style="padding: 10px; border: 1px solid #D86B20; border-radius: 5px;">
-                <!-- Botón para agregar filas en Expansión -->
-                <button type="button" id="addExpansion" class="btn btn-primary mt-2" style="margin-bottom: 8px;">Agregar Acción de Expansión</button>
-                <div class="form-row" style="display: flex; justify-content: center;">
-                    <table id="AccionesTable">
-                        <thead>
-                            <tr>
-                                <th>ACCIÓN DE EXPANSIÓN</th>
-                                <th>RESPONSABLE</th>
-                                <th>FECHA COMPROMISO</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr id="expansion-row1">
-                                <td>{{ form.Expansion }}</td>
-                                <td>
-                                    <select id="Responsable4" name="Responsable4" class="select2">
-                                        {% for miembro in opciones_miembros %}
-                                            <option value="{{ miembro.id }}" data-email="{{ miembro.email }}" {% if miembro.id in form.Responsable4.value %}selected{% endif %}>
-                                                {{ miembro.nombre }}
-                                            </option>
-                                        {% endfor %}
-                                    </select>
-                                </td>
-                                <td>
-                                    <input type="date" id="Fecha_compromiso4" name="Fecha_compromiso4" class="form-control" value="{{ form.Fecha_compromiso4.value|date:'Y-m-d' }}">
-                                </td>
-                            </tr>
-
-                            <tr id="expansion-row2" style="display: none;">
-                                <td>{{ form.Expansion_2 }}</td>
-                                <td>
-                                    <select id="Responsable4_2" name="Responsable4_2" class="select2">
-                                        {% for miembro in opciones_miembros %}
-                                            <option value="{{ miembro.id }}" data-email="{{ miembro.email }}" {% if miembro.id in form.Responsable4_2.value %}selected{% endif %}>
-                                                {{ miembro.nombre }}
-                                            </option>
-                                        {% endfor %}
-                                    </select>
-                                </td>
-                                <td>
-                                    <input type="date" id="Fecha_compromiso4_2" name="Fecha_compromiso4_2" class="form-control" value="{{ form.Fecha_compromiso4_2.value|date:'Y-m-d' }}">
-                                </td>
-                            </tr>
-
-                            <tr id="expansion-row3" style="display: none;">
-                                <td>{{ form.Expansion_3 }}</td>
-                                <td>
-                                    <select id="Responsable4_3" name="Responsable4_3" class="select2">
-                                        {% for miembro in opciones_miembros %}
-                                            <option value="{{ miembro.id }}" data-email="{{ miembro.email }}" {% if miembro.id in form.Responsable4_3.value %}selected{% endif %}>
-                                                {{ miembro.nombre }}
-                                            </option>
-                                        {% endfor %}
-                                    </select>
-                                </td>
-                                <td>
-                                    <input type="date" id="Fecha_compromiso4_3" name="Fecha_compromiso4_3" class="form-control" value="{{ form.Fecha_compromiso4_3.value|date:'Y-m-d' }}">
-                                </td>
-                            </tr>
-
-                            <tr id="expansion-row4" style="display: none;">
-                                <td>{{ form.Expansion_4 }}</td>
-                                <td>
-                                    <select id="Responsable4_4" name="Responsable4_4" class="select2">
-                                        {% for miembro in opciones_miembros %}
-                                            <option value="{{ miembro.id }}" data-email="{{ miembro.email }}" {% if miembro.id in form.Responsable4_4.value %}selected{% endif %}>
-                                                {{ miembro.nombre }}
-                                            </option>
-                                        {% endfor %}
-                                    </select>
-                                </td>
-                                <td>
-                                    <input type="date" id="Fecha_compromiso4_4" name="Fecha_compromiso4_4" class="form-control" value="{{ form.Fecha_compromiso4_4.value|date:'Y-m-d' }}">
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-
-        <!-- Bloque 3: Expansión a... -->
-        <div class="sub-section" style="margin-bottom: 20px;">
-            <div class="sub-header" style="background-color: #D86B20; color: white; padding: 10px 15px; border-radius: 5px;">
-                <h3 style="margin: 0;">Expansión a...</h3>
-            </div>
-
-            <div class="form-group">
-                <label for="areas_aplicacion">¿A qué áreas podría aplicar la mejora realizada?</label>
-                {{ form.areas_aplicacion }}
-            </div>
 
                 
-            
-        </div>
-    </div>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            let rowCountEstandarizacion = 1;
-            let rowCountExpansion = 1;
-            const maxRows = 4;
-    
-            // Función para mostrar filas con datos en Estandarización
-            function mostrarFilasConDatosEstandarizacion() {
-                for (let i = 1; i <= maxRows; i++) {
-                    const estandarizacionInput = document.querySelector(`#estandarizacion-row${i} [name^='Estandarizacion']`);
-    
-                    if (estandarizacionInput && estandarizacionInput.value.trim() !== '') {
-                        document.getElementById(`estandarizacion-row${i}`).style.display = ''; // Mostrar fila con datos
-                        rowCountEstandarizacion = i; // Actualizar el contador de filas visibles
-                    }
+
+        <!-- Sección Paso 2: Comprender y Restaurar Condiciones Básicas -->
+        <div id="paso2-section" class="recuadro-paso mt-4" style="border: 1px solid #e6007e;">
+            <div class="paso-header" style="background-color: #e6007e; color: white; padding: 10px 15px; border-radius: 5px;">
+                <h2 class="collapsible" style="cursor: pointer; margin: 0;" onclick="toggleVisibility('contenido-paso2')">
+                    <span style="margin-right: 10px;">&#x25BC;</span> Paso 2: Comprender y Restaurar Condiciones Básicas
+                </h2>
+            </div>
+            <div id="contenido-paso2">
+                <!-- Bloque 1: Principio de funcionamiento -->
+                <div><h1></h1></div>
+                <div class="sub-section" style="margin-bottom: 20px;">
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
+                            {{ form.condicion_basica.label_tag }}
+                            {{ form.condicion_basica }}
+                        </div>
+                    </div>
+
+                    <!-- Campo para subir múltiples imágenes para Paso 2 -->
+                    <div class="form-group">
+                        <label>Imágenes de Funcionamiento:</label>
+                        <input type="file" name="imagen_funcionamiento_files" multiple class="form-control">
+                    </div>
+
+                    <!-- Contenedor para mostrar las imágenes ya cargadas con opción de eliminar -->
+                    <div id="imagenes-funcionamiento-container" class="form-row">
+                        {% for imagen in imagenes_paso2 %}
+                            <div class="image-preview-container" style="position: relative; display: inline-block; margin: 5px;">
+                                <!-- Icono de eliminar -->
+                                <span class="close-icon" onclick="removeFuncionamientoImage('{{ imagen.id }}')">✖</span>
+                                
+                                <!-- Imagen en tamaño pequeño -->
+                                <img src="{{ imagen.imagen.url }}" alt="Imagen de Condición Básica" class="small-image" onclick="openModal('{{ imagen.imagen.url }}')">
+                            </div>
+                        {% endfor %}
+                    </div>
+
+                    <!-- Contenedor para previsualizar las nuevas imágenes seleccionadas -->
+                    <div id="preview-container-funcionamiento" class="form-row" style="display: flex; gap: 10px; flex-wrap: wrap; margin-top: 10px;"></div>
+
+                    <!-- Campo oculto para almacenar IDs de imágenes a eliminar -->
+                    <input type="hidden" id="delete_images_funcionamiento" name="delete_images_funcionamiento" value="">
+                </div>
+            </div>
+
+
+            <!-- Modal para ver la imagen en tamaño completo -->
+            <div id="imageModal" class="modal" onclick="closeModal()">
+                <span class="close">&times;</span>
+                <img class="modal-content" id="fullImage">
+            </div>
+
+            <style>
+                /* Icono de cierre */
+                .close-icon {
+                    position: absolute;
+                    top: 5px;
+                    right: 5px;
+                    color: #ff0000;
+                    font-size: 20px;
+                    font-weight: bold;
+                    cursor: pointer;
+                    background-color: white;
+                    border-radius: 50%;
+                    padding: 2px 5px;
+                    z-index: 10;
                 }
-            }
-    
-            // Función para mostrar filas con datos en Expansión
-            function mostrarFilasConDatosExpansion() {
-                for (let i = 1; i <= maxRows; i++) {
-                    const expansionInput = document.querySelector(`#expansion-row${i} [name^='Expansion']`);
-    
-                    if (expansionInput && expansionInput.value.trim() !== '') {
-                        document.getElementById(`expansion-row${i}`).style.display = ''; // Mostrar fila con datos
-                        rowCountExpansion = i; // Actualizar el contador de filas visibles
-                    }
+
+                /* Estilo para la imagen en tamaño pequeño */
+                .small-image {
+                    max-width: 100px;
+                    max-height: 100px;
+                    cursor: pointer;
+                    border: 1px solid #ccc;
+                    padding: 5px;
+                    object-fit: cover; /* Mantiene la imagen ajustada al contenedor */
                 }
-            }
-    
-            // Evento para agregar más filas en Estandarización
-            document.getElementById('addEstandarizacion').addEventListener('click', function() {
-                if (rowCountEstandarizacion < maxRows) {
-                    rowCountEstandarizacion++;
-                    document.getElementById(`estandarizacion-row${rowCountEstandarizacion}`).style.display = '';
-                    if (rowCountEstandarizacion >= maxRows) {
-                        this.style.display = 'none'; // Ocultar el botón cuando se alcance el máximo
-                    }
+
+                /* Estilos del modal */
+                .modal {
+                    display: none; /* Oculto por defecto */
+                    position: fixed;
+                    z-index: 1000;
+                    padding-top: 60px;
+                    left: 0;
+                    top: 0;
+                    width: 100%;
+                    height: 100%;
+                    overflow: auto;
+                    background-color: rgba(0,0,0,0.9);
                 }
-            });
-    
-            // Evento para agregar más filas en Expansión
-            document.getElementById('addExpansion').addEventListener('click', function() {
-                if (rowCountExpansion < maxRows) {
-                    rowCountExpansion++;
-                    document.getElementById(`expansion-row${rowCountExpansion}`).style.display = '';
-                    if (rowCountExpansion >= maxRows) {
-                        this.style.display = 'none'; // Ocultar el botón cuando se alcance el máximo
-                    }
+
+                .modal-content {
+                    margin: auto;
+                    display: block;
+                    max-width: 80%;
+                    max-height: 80%;
                 }
-            });
-    
-            // Mostrar filas con datos al cargar la página
-            mostrarFilasConDatosEstandarizacion();
-            mostrarFilasConDatosExpansion();
-    
-            // Ocultar botón si se alcanzó el máximo de filas
-            if (rowCountEstandarizacion >= maxRows) {
-                document.getElementById('addEstandarizacion').style.display = 'none';
-            }
-    
-            if (rowCountExpansion >= maxRows) {
-                document.getElementById('addExpansion').style.display = 'none';
-            }
-        });
-    </script>
-    
-</div>
+
+                .close {
+                    position: absolute;
+                    top: 15px;
+                    right: 35px;
+                    color: #ffffff;
+                    font-size: 40px;
+                    font-weight: bold;
+                    cursor: pointer;
+                }
+            </style>
+
+            <script>
+                function removeFuncionamientoImage(imageId) {
+                    // Oculta la imagen y el botón de eliminar
+                    const imageContainer = document.querySelector(`span[onclick="removeFuncionamientoImage('${imageId}')"]`).parentElement;
+                    imageContainer.style.display = "none";
+
+                    // Añadir el ID de la imagen al campo oculto para ser eliminada
+                    let deleteImagesField = document.getElementById("delete_images_funcionamiento");
+                    deleteImagesField.value += imageId + ",";
+                }
+                
+                // Abre el modal y muestra la imagen en tamaño completo
+                function openModal(imageUrl) {
+                    var modal = document.getElementById("imageModal");
+                    var fullImage = document.getElementById("fullImage");
+                    fullImage.src = imageUrl; // Asigna la fuente de imagen en tamaño completo
+                    modal.style.display = "block";
+                }
+
+                // Cierra el modal
+                function closeModal() {
+                    document.getElementById("imageModal").style.display = "none";
+                }
+
+                // Previsualizar imágenes seleccionadas sin recargar la página
+                document.querySelector('input[type="file"][name="imagen_funcionamiento_files"]').addEventListener('change', function(event) {
+                    const previewContainer = document.getElementById("preview-container-funcionamiento");
+                    previewContainer.innerHTML = '';  // Limpiar previsualizaciones anteriores
+
+                    Array.from(event.target.files).forEach(file => {
+                        const reader = new FileReader();
+
+                        reader.onload = function(e) {
+                            // Crear contenedor de previsualización
+                            const imagePreview = document.createElement("div");
+                            imagePreview.classList.add("image-preview-container");
+                            imagePreview.style.position = "relative";
+                            imagePreview.style.display = "inline-block";
+                            imagePreview.style.margin = "5px";
+
+                            // Agregar botón de eliminación
+                            const closeIcon = document.createElement("span");
+                            closeIcon.classList.add("close-icon");
+                            closeIcon.innerHTML = "✖";
+                            closeIcon.onclick = () => imagePreview.remove();  // Eliminar previsualización
+
+                            // Agregar imagen de previsualización
+                            const img = document.createElement("img");
+                            img.src = e.target.result;
+                            img.classList.add("small-image");
+
+                            imagePreview.appendChild(closeIcon);
+                            imagePreview.appendChild(img);
+                            previewContainer.appendChild(imagePreview);
+                        }
+
+                        reader.readAsDataURL(file);  // Leer archivo como URL de datos
+                    });
+                });
+            </script>
+        </div>
+
+
+        
+        <!-- Sección Paso 3: Causa Raíz -->
+        <div id="paso3-section" class="recuadro-paso mt-4" style="border: 1px solid #FFC800;">
+            <div class="paso-header" style="background-color: #FFC800; color: white; padding: 10px 15px; border-radius: 5px;">
+                <h2 class="collapsible" style="cursor: pointer; margin: 0;" onclick="toggleVisibility('contenido-paso3')">
+                    <span style="margin-right: 10px;">▼</span> Paso 3: Análisis de causa raíz
+                </h2>
+            </div>
+
+            <div id="contenido-paso3">
+                <br>        
+                <div class="form-row" style="display: flex; gap: 15px; margin-top: 20px;">
+                    <div class="form-group" style="flex: 1;">
+                        <label for="resumen-mirror">Resumen del problema:</label>
+                        <textarea id="resumen-mirror" class="form-control">{{ form.resumen.value }}</textarea>
+                    </div>
+                </div>
+
+                <div class="form-row" style="display: flex; gap: 15px;">
+                    <div class="form-group" style="flex: 1;">
+                        {{ form.ISHIKAWA.label_tag }}
+                        {{ form.ISHIKAWA }}
+                    </div>
+                </div>
+                
+                <div class="form-row" style="display: flex; gap: 15px;">
+                    <div class="form-group" style="flex: 1;">
+                        {{ form.desarrollo.label_tag }}
+                        {{ form.desarrollo }}
+                    </div>
+                </div>
+                
+                <br>
+                <div>
+                <a href="{% url 'porque' %}" class="btn-verde btn-lg" onclick="abrirEnNuevaVentana('{% url 'porque' %}'); return false;">Crear 5 Por qué</a>
+                <a href="{% url 'asociar_porque_existente' miniproyecto.id %}" class="btn-verde btn-lg">Asociar 5 Por qué Existente</a>
+                </div>
+                <div><h1></h1></div>
+                
+
+                
+                <style>
+                    .btn-primary {
+                        background-color: #28a745; /* Ajusta el color al verde */
+                        border: none;
+                        color: white;
+                        padding: 8px 12px;
+                        text-align: center;
+                        text-decoration: none;
+                        display: inline-block;
+                        font-size: 14px;
+                        margin: 4px 2px;
+                        cursor: pointer;
+                        border-radius: 4px;
+                    }
+                
+                    /* Clase para alinear los botones "Editar" y "Quitar" horizontalmente */
+                    .botones-acciones {
+                        display: inline-flex;
+                        gap: 5px; /* Espacio entre los botones */
+                    }
+                
+                    /* Clase para reducir el ancho de la columna de acciones */
+                    .columna-acciones {
+                        width: 150px;
+                        text-align: center;
+                    }
+                </style>
+                
+                <h2>5 Porqués Asociados</h2>
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Categoría</th>
+                            <th>Subcategoría</th>
+                            <th>Área</th>
+                            <th>KPI ICEO</th>
+                            <th>Miembros del Equipo</th>
+                            <th class="columna-acciones">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="porques-table-body">
+                        {% for porque in porques %}
+                        <tr id="porque-row-{{ porque.id }}">
+                            <td>{{ porque.id }}</td>
+                            <td>{{ porque.categoria }}</td>
+                            <td>{{ porque.subcategoria }}</td>
+                            <td>{{ porque.area }}</td>
+                            <td>{{ porque.kpi_iceo }}</td>
+                            <td>
+                                {% for miembro in porque.miembros_equipo.all %}
+                                    {{ miembro.nombre }}{% if not forloop.last %}, {% endif %}
+                                {% endfor %}
+                            </td>
+                            <td class="columna-acciones">
+                                <div class="botones-acciones">
+                                    <a href="{% url 'porque' porque.id %}" class="btn btn-primary">Editar</a>
+                                    
+                                    <!-- Botón para quitar el "5 Porqué" con JavaScript, sin recargar la página -->
+                                    <button type="button" class="btn btn-primary" onclick="quitarPorque({{ porque.id }})">Quitar</button>
+                                </div>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="7">No hay análisis de 5 Porqués asociados.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                
+                <!-- Campo oculto para almacenar los IDs de "5 Porqués" a eliminar -->
+                <input type="hidden" name="porques_a_eliminar" id="porques_a_eliminar" value="">
+                
+                <script>
+                    // Array para almacenar los IDs de los "5 Porqués" que se quieren quitar
+                    let porquesParaEliminar = [];
+                
+                    function quitarPorque(id) {
+                        // Agrega el ID a la lista de eliminaciones si no está ya presente
+                        if (!porquesParaEliminar.includes(id)) {
+                            porquesParaEliminar.push(id);
+                        }
+                
+                        // Actualiza el campo oculto con los IDs
+                        document.getElementById('porques_a_eliminar').value = porquesParaEliminar.join(',');
+                
+                        // Oculta la fila correspondiente al "5 Porqué" que se quitó
+                        const row = document.getElementById(`porque-row-${id}`);
+                        if (row) {
+                            row.style.display = 'none'; // Oculta la fila de la tabla
+                        }
+                    }
+                </script>
+            </div>
+
+            <script>
+                //script para abrir una ventan nueva al apretar el boton 5pq
+                function abrirEnNuevaVentana(url) {
+                    window.open(
+                        url,
+                        'nuevaVentana',
+                        'width=800,height=600,resizable=yes,scrollbars=yes,status=yes'
+                    );
+                }
+                // Sincroniza el valor de ambos recuadros
+                document.addEventListener("DOMContentLoaded", function () {
+                    const resumenOriginal = document.getElementById("{{ form.resumen.id_for_label }}");
+                    const resumenMirror = document.getElementById("resumen-mirror");
+            
+                    // Inicializa el segundo campo con el valor del primero al cargar la página
+                    resumenMirror.value = resumenOriginal.value;
+            
+                    // Sincroniza cuando cambias el contenido del recuadro original
+                    resumenOriginal.addEventListener("input", function () {
+                        resumenMirror.value = resumenOriginal.value;
+                    });
+            
+                    // Sincroniza cuando cambias el contenido del recuadro espejo
+                    resumenMirror.addEventListener("input", function () {
+                        resumenOriginal.value = resumenMirror.value;
+                    });
+                });
+            </script>
+        </div>
+
+
+
+        <!-- Sección Paso 4: Contramedidas y Seguimiento -->
+        <div id="paso4-section" class="recuadro-paso mt-4" style="border: 1px solid #00C851;">
+            <div class="paso-header" style="background-color: #00C851; color: white; padding: 10px 15px; border-radius: 5px;">
+                <h2 class="collapsible" style="cursor: pointer; margin: 0;" onclick="toggleVisibility('contenido-paso4')">
+                    <span style="margin-right: 10px;">&#x25BC;</span> Paso 4: Contramedidas y Seguimiento
+                </h2>
+            </div>
+            <div id="contenido-paso4">
+                <div><h1></h1></div>
+                
+                <button type="button" id="addAccionPreventiva" class="btn btn-primary mt-2">Agregar Acción Preventiva</button>  
+                <!-- Contenedor de la tabla centrado -->
+                <div class="custom-table-container">
+                    <table id="AccionesTable" class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th colspan="5">ACCIONES (CONTRAMEDIDAS Y SEGUIMIENTO)</th>
+                                <th colspan="2">VALIDACIÓN DE LA ACCIÓN</th>
+                            </tr>
+                            <tr>
+                                <th>ACCIÓN PREVENTIVA</th>
+                                <th>RESPONSABLE</th>
+                                <th>FECHA INICIO</th>
+                                <th>FECHA COMPROMISO</th>
+                                <th>ESTADO</th>
+                                <th>FECHA CIERRE</th>
+                                <th>CERRAR</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr id="accionesPRE-row">
+                                <td>{{ form.Accion_Preventiva }}</td>
+                                <td>
+                                    <select id="Responsable2" name="Responsable2" class="select2">
+                                        {% for miembro in opciones_miembros %}
+                                            <option value="{{ miembro.id }}" data-email="{{ miembro.email }}" {% if miembro.id in form.Responsable2.value %}selected{% endif %}>
+                                                {{ miembro.nombre }}
+                                            </option>
+                                        {% endfor %}
+                                    </select>
+                                </td>
+                                <td>
+                                    <input type="date" id="Fecha_inicio2" name="Fecha_inicio2" class="form-control" value="{{ form.Fecha_inicio2.value|date:'Y-m-d' }}">
+                                </td>
+                                <td>
+                                    <input type="date" id="Fecha_compromiso2" name="Fecha_compromiso2" class="form-control" value="{{ form.Fecha_compromiso2.value|date:'Y-m-d' }}">
+                                </td>
+                                <td>
+                                    <input type="text" id="estado-{{ accion.id }}" name="estado" value="{{ form.estado.value }}" class="form-control readonly">
+                                </td>                                              
+                                <td>
+                                    <input type="date" id="Fecha_cierre_paso4" name="Fecha_cierre_paso4" class="form-control" value="{{ form.Fecha_cierre_paso4.value|date:'Y-m-d' }}">
+                                </td>
+                                <td>
+                                    <button type="button" class="cerrar-btn" onclick="cerrarAccion('estado-{{ accion.id }}', {{ accion.id }})">
+                                        &#10004;
+                                    </button>
+                                </td>                        
+                            </tr>
+        
+
+                            <tr id="accionesPRE-row2" style="display: none;">
+                                <td>{{ form.Accion_Preventiva_2 }}</td>
+                                <td>
+                                    <select id="Responsable2_2" name="Responsable2_2" class="select2">
+                                        {% for miembro in opciones_miembros %}
+                                            <option value="{{ miembro.id }}" data-email="{{ miembro.email }}" {% if miembro.id in form.Responsable2_2.value %}selected{% endif %}>
+                                                {{ miembro.nombre }}
+                                            </option>
+                                        {% endfor %}
+                                    </select>
+                                </td>
+                                <td>
+                                    <input type="date" id="Fecha_inicio2_2" name="Fecha_inicio2_2" class="form-control" value="{{ form.Fecha_inicio2_2.value|date:'Y-m-d' }}">
+                                </td>
+                                <td>
+                                    <input type="date" id="Fecha_compromiso2_2" name="Fecha_compromiso2_2" class="form-control" value="{{ form.Fecha_compromiso2_2.value|date:'Y-m-d' }}">
+                                </td>
+                                <td>
+                                    <input type="text" id="estado_2-{{ accion.id }}" name="estado_2" value="{{ form.estado_2.value }}" class="form-control readonly">
+                                </td>                                              
+                                <td>
+                                    <input type="date" id="Fecha_cierre_paso4_2" name="Fecha_cierre_paso4_2" class="form-control" value="{{ form.Fecha_cierre_paso4_2.value|date:'Y-m-d' }}">
+                                </td>
+                                <td>
+                                    <button type="button" class="cerrar-btn" onclick="cerrarAccion('estado_2-{{ accion.id }}', {{ accion.id }})">
+                                        &#10004;
+                                    </button>
+                                </td> 
+                            </tr>
+
+
+                            <tr id="accionesPRE-row3" style="display: none;">
+                                <td>{{ form.Accion_Preventiva_3 }}</td>
+                                <td>
+                                    <select id="Responsable2_3" name="Responsable2_3" class="select2">
+                                        {% for miembro in opciones_miembros %}
+                                            <option value="{{ miembro.id }}" data-email="{{ miembro.email }}" {% if miembro.id in form.Responsable2_3.value %}selected{% endif %}>
+                                                {{ miembro.nombre }}
+                                            </option>
+                                        {% endfor %}
+                                    </select>
+                                </td>
+                                <td>
+                                    <input type="date" id="Fecha_inicio2_3" name="Fecha_inicio2_3" class="form-control" value="{{ form.Fecha_inicio2_3.value|date:'Y-m-d' }}">
+                                </td>
+                                <td>
+                                    <input type="date" id="Fecha_compromiso2_3" name="Fecha_compromiso2_3" class="form-control" value="{{ form.Fecha_compromiso2_3.value|date:'Y-m-d' }}">
+                                </td>
+                                <td>
+                                    <input type="text" id="estado_3-{{ accion.id }}" name="estado_3" value="{{ form.estado_3.value }}" class="form-control readonly">
+                                </td>                                              
+                                <td>
+                                    <input type="date" id="Fecha_cierre_paso4_3" name="Fecha_cierre_paso4_3" class="form-control" value="{{ form.Fecha_cierre_paso4_3.value|date:'Y-m-d' }}">
+                                </td>
+                                <td>
+                                    <button type="button" class="cerrar-btn" onclick="cerrarAccion('estado_3-{{ accion.id }}', {{ accion.id }})">
+                                        &#10004;
+                                    </button>
+                                </td> 
+                            </tr>
+
+
+                            <tr id="accionesPRE-row4" style="display: none;">
+                                <td>{{ form.Accion_Preventiva_4 }}</td>
+                                <td>
+                                    <select id="Responsable2_4" name="Responsable2_4" class="select2">
+                                        {% for miembro in opciones_miembros %}
+                                            <option value="{{ miembro.id }}" data-email="{{ miembro.email }}" {% if miembro.id in form.Responsable2_4.value %}selected{% endif %}>
+                                                {{ miembro.nombre }}
+                                            </option>
+                                        {% endfor %}
+                                    </select>
+                                </td>
+                                <td>
+                                    <input type="date" id="Fecha_inicio2_4" name="Fecha_inicio2_4" class="form-control" value="{{ form.Fecha_inicio2_4.value|date:'Y-m-d' }}">
+                                </td>
+                                <td>
+                                    <input type="date" id="Fecha_compromiso2_4" name="Fecha_compromiso2_4" class="form-control" value="{{ form.Fecha_compromiso2_4.value|date:'Y-m-d' }}">
+                                </td>
+                                <td>
+                                    <input type="text" id="estado_4-{{ accion.id }}" name="estado_4" value="{{ form.estado_4.value }}" class="form-control readonly">
+                                </td>                                              
+                                <td>
+                                    <input type="date" id="Fecha_cierre_paso4_4" name="Fecha_cierre_paso4_4" class="form-control" value="{{ form.Fecha_cierre_paso4_4.value|date:'Y-m-d' }}">
+                                </td>
+                                <td>
+                                    <button type="button" class="cerrar-btn" onclick="cerrarAccion('estado_4-{{ accion.id }}', {{ accion.id }})">
+                                        &#10004;
+                                    </button>
+                                </td> 
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <style>
+                    .readonly {
+                        background-color: #e9ecef; /* Color de fondo de campo deshabilitado */
+                        pointer-events: none;      /* Evita la edición */
+                    }
+                </style>
+                <script>
+                    function cerrarAccion(estadoId, accionId) {
+                        // Cambiar el estado a "Cerrada" en el HTML
+                        const estadoField = document.getElementById(estadoId);
+                        if (estadoField) {
+                            estadoField.value = "Cerrada";
+                        } else {
+                            console.error("Campo de estado no encontrado", estadoId);
+                            return;
+                        }
+                    
+                        // Realizar una petición AJAX para actualizar el estado en el servidor
+                        fetch(`/actualizar-estado/${accionId}/`, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRFToken': getCSRFToken()  // Asegúrate de que el CSRF token esté disponible
+                            },
+                            body: JSON.stringify({ estado: "Cerrada" })
+                        })
+                        .then(response => {
+                            if (response.ok) {
+                                console.log("Estado actualizado exitosamente en la base de datos");
+                                return response.json();  // Convertir a JSON
+                            } else {
+                                console.error("Error al actualizar el estado en el servidor");
+                            }
+                        })
+                        .then(data => {
+                            if (data.success) {
+                                console.log("Respuesta del servidor:", data);
+                            }
+                        })
+                        .catch(error => console.error("Error de red:", error));
+                    }
+                    function actualizarEstadoYEnviar() {
+                        // Selecciona todos los campos de estado
+                        const estadoElements = document.querySelectorAll('input[name="estado"]');
+                        estadoElements.forEach(element => {
+                            if (element.value === "Cerrada") {
+                                element.classList.remove('readonly');  // Asegura que el campo esté habilitado visualmente si es necesario
+                            }
+                        });
+                    
+                        // Enviar el formulario
+                        document.getElementById("form").submit();
+                    }                                  
+                </script>
+            </div>
+            <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    let rowCountCorrectivas = 1;
+                    let rowCountPreventivas = 1;
+                    const maxRows = 4;
+
+                    // Función para mostrar todas las filas hasta la última que tenga datos en "Acciones Preventivas"
+                    function mostrarFilasPreventivasHastaLaUltima() {
+                        for (let i = maxRows; i >= 1; i--) {
+                            const accionInput = document.getElementById(`id_Accion_Preventiva_${i}`);
+                            if (accionInput && accionInput.value.trim() !== "") {
+                                for (let j = 1; j <= i; j++) {
+                                    const fila = document.getElementById(`accionesPRE-row${j}`);
+                                    if (fila) {
+                                        fila.style.display = '';  // Mostrar la fila
+                                    }
+                                }
+                                rowCountPreventivas = i;
+                                break;
+                            }
+                        }
+                    }
+
+                    mostrarFilasPreventivasHastaLaUltima();
+
+                    document.getElementById('addAccionPreventiva').addEventListener('click', function() {
+                        if (rowCountPreventivas < maxRows) {
+                            rowCountPreventivas++;
+                            const nextRow = document.getElementById(`accionesPRE-row${rowCountPreventivas}`);
+                            if (nextRow) {
+                                nextRow.style.display = '';  // Mostrar la siguiente fila oculta
+                            }
+                
+                            if (rowCountPreventivas >= maxRows) {
+                                this.style.display = 'none';
+                            }
+                        }
+                    });
+                });
+            </script>
+        </div>
+
+
+
+
+
+        <!-- Sección Paso 5: Estandarización y Expansión -->
+        <div id="paso5-section" class="recuadro-paso mt-4" style="border: 1px solid #D86B20;">
+            <div class="paso-header" style="background-color: #D86B20; color: white; padding: 10px 15px; border-radius: 5px;">
+                <h2 class="collapsible" style="cursor: pointer; margin: 0;" onclick="toggleVisibility('contenido-paso5')">
+                    <span style="margin-right: 10px;">&#x25BC;</span> Paso 5: Estandarización y Expansión
+                </h2>
+            </div>
+            <br>
+            <div id="contenido-paso5">
+                <!-- Bloque 1: Estandarización -->
+                <div class="sub-section" style="margin-bottom: 20px;">
+                    <div class="sub-header" style="background-color: #D86B20; color: white; padding: 10px 15px; border-radius: 5px;">
+                        <h3 style="margin: 0;">Estandarización</h3>
+                    </div>
+                    <div class="sub-content" style="padding: 10px; border: 1px solid #D86B20; border-radius: 5px;">
+                        <!-- Botón para agregar filas en Estandarización -->
+                        <button type="button" id="addEstandarizacion" class="btn btn-primary mt-2" style="margin-bottom: 8px;">Agregar Acción de Estandarización</button>
+                        <div class="form-row" style="display: flex; justify-content: center;">
+                            <table id="AccionesTableEstandarizacion" class="acciones-table">
+                                <thead>
+                                    <tr>
+                                        <th>ACCIÓN DE ESTANDARIZACIÓN</th>
+                                        <th>RESPONSABLE</th>
+                                        <th>FECHA COMPROMISO</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- IDs de filas corregidos -->
+                                    <tr id="estandarizacion-row1">
+                                        <td>{{ form.Estandarizacion }}</td>
+                                        <td>
+                                            <select id="Responsable3" name="Responsable3" class="select2">
+                                                {% for miembro in opciones_miembros %}
+                                                    <option value="{{ miembro.id }}" data-email="{{ miembro.email }}" {% if miembro.id in form.Responsable3.value %}selected{% endif %}>
+                                                        {{ miembro.nombre }}
+                                                    </option>
+                                                {% endfor %}
+                                            </select>
+                                        </td>
+                                        <td>
+                                            <input type="date" id="Fecha_compromiso3" name="Fecha_compromiso3" class="form-control" value="{{ form.Fecha_compromiso3.value|date:'Y-m-d' }}">
+                                        </td>
+                                    </tr>
+
+                                    <tr id="estandarizacion-row2" style="display: none;">
+                                        <td>{{ form.Estandarizacion_2 }}</td>
+                                        <td>
+                                            <select id="Responsable3_2" name="Responsable3_2" class="select2">
+                                                {% for miembro in opciones_miembros %}
+                                                    <option value="{{ miembro.id }}" data-email="{{ miembro.email }}" {% if miembro.id in form.Responsable3_2.value %}selected{% endif %}>
+                                                        {{ miembro.nombre }}
+                                                    </option>
+                                                {% endfor %}
+                                            </select>
+                                        </td>
+                                        <td>
+                                            <input type="date" id="Fecha_compromiso3_2" name="Fecha_compromiso3_2" class="form-control" value="{{ form.Fecha_compromiso3_2.value|date:'Y-m-d' }}">
+                                        </td>
+                                    </tr>
+
+                                    <tr id="estandarizacion-row3" style="display: none;">
+                                        <td>{{ form.Estandarizacion_3 }}</td>
+                                        <td>
+                                            <select id="Responsable3_3" name="Responsable3_3" class="select2">
+                                                {% for miembro in opciones_miembros %}
+                                                    <option value="{{ miembro.id }}" data-email="{{ miembro.email }}" {% if miembro.id in form.Responsable3_3.value %}selected{% endif %}>
+                                                        {{ miembro.nombre }}
+                                                    </option>
+                                                {% endfor %}
+                                            </select>
+                                        </td>
+                                        <td>
+                                            <input type="date" id="Fecha_compromiso3_3" name="Fecha_compromiso3_3" class="form-control" value="{{ form.Fecha_compromiso3_3.value|date:'Y-m-d' }}">
+                                        </td>
+                                    </tr>
+
+                                    <tr id="estandarizacion-row4" style="display: none;">
+                                        <td>{{ form.Estandarizacion_4 }}</td>
+                                        <td>
+                                            <select id="Responsable3_4" name="Responsable3_4" class="select2">
+                                                {% for miembro in opciones_miembros %}
+                                                    <option value="{{ miembro.id }}" data-email="{{ miembro.email }}" {% if miembro.id in form.Responsable3_4.value %}selected{% endif %}>
+                                                        {{ miembro.nombre }}
+                                                    </option>
+                                                {% endfor %}
+                                            </select>
+                                        </td>
+                                        <td>
+                                            <input type="date" id="Fecha_compromiso3_4" name="Fecha_compromiso3_4" class="form-control" value="{{ form.Fecha_compromiso3_4.value|date:'Y-m-d' }}">
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bloque 2: Expansión -->
+                <div class="sub-section" style="margin-bottom: 20px;">
+                    <div class="sub-header" style="background-color: #D86B20; color: white; padding: 10px 15px; border-radius: 5px;">
+                        <h3 style="margin: 0;">Expansión</h3>
+                    </div>
+                    <div class="sub-content" style="padding: 10px; border: 1px solid #D86B20; border-radius: 5px;">
+                        <!-- Botón para agregar filas en Expansión -->
+                        <button type="button" id="addExpansion" class="btn btn-primary mt-2" style="margin-bottom: 8px;">Agregar Acción de Expansión</button>
+                        <div class="form-row" style="display: flex; justify-content: center;">
+                            <table id="AccionesTableExpansion" class="acciones-table">
+                                <thead>
+                                    <tr>
+                                        <th>ACCIÓN DE EXPANSIÓN</th>
+                                        <th>RESPONSABLE</th>
+                                        <th>FECHA COMPROMISO</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr id="expansion-row1">
+                                        <td>{{ form.Expansion }}</td>
+                                        <td>
+                                            <select id="Responsable4" name="Responsable4" class="select2">
+                                                {% for miembro in opciones_miembros %}
+                                                    <option value="{{ miembro.id }}" data-email="{{ miembro.email }}" {% if miembro.id in form.Responsable4.value %}selected{% endif %}>
+                                                        {{ miembro.nombre }}
+                                                    </option>
+                                                {% endfor %}
+                                            </select>
+                                        </td>
+                                        <td>
+                                            <input type="date" id="Fecha_compromiso4" name="Fecha_compromiso4" class="form-control" value="{{ form.Fecha_compromiso4.value|date:'Y-m-d' }}">
+                                        </td>
+                                    </tr>
+
+                                    <tr id="expansion-row2" style="display: none;">
+                                        <td>{{ form.Expansion_2 }}</td>
+                                        <td>
+                                            <select id="Responsable4_2" name="Responsable4_2" class="select2">
+                                                {% for miembro in opciones_miembros %}
+                                                    <option value="{{ miembro.id }}" data-email="{{ miembro.email }}" {% if miembro.id in form.Responsable4_2.value %}selected{% endif %}>
+                                                        {{ miembro.nombre }}
+                                                    </option>
+                                                {% endfor %}
+                                            </select>
+                                        </td>
+                                        <td>
+                                            <input type="date" id="Fecha_compromiso4_2" name="Fecha_compromiso4_2" class="form-control" value="{{ form.Fecha_compromiso4_2.value|date:'Y-m-d' }}">
+                                        </td>
+                                    </tr>
+
+                                    <tr id="expansion-row3" style="display: none;">
+                                        <td>{{ form.Expansion_3 }}</td>
+                                        <td>
+                                            <select id="Responsable4_3" name="Responsable4_3" class="select2">
+                                                {% for miembro in opciones_miembros %}
+                                                    <option value="{{ miembro.id }}" data-email="{{ miembro.email }}" {% if miembro.id in form.Responsable4_3.value %}selected{% endif %}>
+                                                        {{ miembro.nombre }}
+                                                    </option>
+                                                {% endfor %}
+                                            </select>
+                                        </td>
+                                        <td>
+                                            <input type="date" id="Fecha_compromiso4_3" name="Fecha_compromiso4_3" class="form-control" value="{{ form.Fecha_compromiso4_3.value|date:'Y-m-d' }}">
+                                        </td>
+                                    </tr>
+
+                                    <tr id="expansion-row4" style="display: none;">
+                                        <td>{{ form.Expansion_4 }}</td>
+                                        <td>
+                                            <select id="Responsable4_4" name="Responsable4_4" class="select2">
+                                                {% for miembro in opciones_miembros %}
+                                                    <option value="{{ miembro.id }}" data-email="{{ miembro.email }}" {% if miembro.id in form.Responsable4_4.value %}selected{% endif %}>
+                                                        {{ miembro.nombre }}
+                                                    </option>
+                                                {% endfor %}
+                                            </select>
+                                        </td>
+                                        <td>
+                                            <input type="date" id="Fecha_compromiso4_4" name="Fecha_compromiso4_4" class="form-control" value="{{ form.Fecha_compromiso4_4.value|date:'Y-m-d' }}">
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bloque 3: Expansión a... -->
+                <div class="sub-section" style="margin-bottom: 20px;">
+                    <div class="sub-header" style="background-color: #D86B20; color: white; padding: 10px 15px; border-radius: 5px;">
+                        <h3 style="margin: 0;">Expansión a...</h3>
+                    </div>
+                    <div class="sub-content" style="padding: 10px; border: 1px solid #D86B20; border-radius: 5px;">
+                    
+                        <div class="form-group">
+                            <label for="areas_aplicacion">¿A qué áreas podría aplicar la mejora realizada?</label>
+                            {{ form.areas_aplicacion }}
+                        </div>  
+                    </div>  
+                </div>
+            
+                <style>
+                    /* Estilos específicos para las tablas con la clase .acciones-table */
+                    .acciones-table {
+                        width: 95%;
+                        border-collapse: collapse;
+                        font-family: Arial, sans-serif;
+                        margin: 0 auto; /* Centra la tabla */
+                    }
+                    .acciones-table th, .acciones-table td {
+                        border: 1px solid #ccc; /* Borde gris claro */
+                        padding: 10px;
+                        text-align: left;
+                    }
+                    .acciones-table th {
+                        background-color: #f2f2f2; /* Fondo gris suave para los encabezados */
+                        font-weight: bold; /* Texto en negrita para los encabezados */
+                    }
+                    .acciones-table tbody tr:nth-child(even) {
+                        background-color: #fafafa; /* Color de fondo para filas alternas */
+                    }
+                </style>
+                
+
+                <script>
+                    document.addEventListener('DOMContentLoaded', function() {
+                        let rowCountEstandarizacion = 1;
+                        let rowCountExpansion = 1;
+                        const maxRows = 4;
+                
+                        // Función para mostrar filas con datos en Estandarización
+                        function mostrarFilasConDatosEstandarizacion() {
+                            for (let i = 1; i <= maxRows; i++) {
+                                const estandarizacionInput = document.querySelector(`#estandarizacion-row${i} [name^='Estandarizacion']`);
+                
+                                if (estandarizacionInput && estandarizacionInput.value.trim() !== '') {
+                                    document.getElementById(`estandarizacion-row${i}`).style.display = ''; // Mostrar fila con datos
+                                    rowCountEstandarizacion = i; // Actualizar el contador de filas visibles
+                                }
+                            }
+                        }
+                
+                        // Función para mostrar filas con datos en Expansión
+                        function mostrarFilasConDatosExpansion() {
+                            for (let i = 1; i <= maxRows; i++) {
+                                const expansionInput = document.querySelector(`#expansion-row${i} [name^='Expansion']`);
+                
+                                if (expansionInput && expansionInput.value.trim() !== '') {
+                                    document.getElementById(`expansion-row${i}`).style.display = ''; // Mostrar fila con datos
+                                    rowCountExpansion = i; // Actualizar el contador de filas visibles
+                                }
+                            }
+                        }
+                
+                        // Evento para agregar más filas en Estandarización
+                        document.getElementById('addEstandarizacion').addEventListener('click', function() {
+                            if (rowCountEstandarizacion < maxRows) {
+                                rowCountEstandarizacion++;
+                                document.getElementById(`estandarizacion-row${rowCountEstandarizacion}`).style.display = '';
+                                if (rowCountEstandarizacion >= maxRows) {
+                                    this.style.display = 'none'; // Ocultar el botón cuando se alcance el máximo
+                                }
+                            }
+                        });
+                
+                        // Evento para agregar más filas en Expansión
+                        document.getElementById('addExpansion').addEventListener('click', function() {
+                            if (rowCountExpansion < maxRows) {
+                                rowCountExpansion++;
+                                document.getElementById(`expansion-row${rowCountExpansion}`).style.display = '';
+                                if (rowCountExpansion >= maxRows) {
+                                    this.style.display = 'none'; // Ocultar el botón cuando se alcance el máximo
+                                }
+                            }
+                        });
+                
+                        // Mostrar filas con datos al cargar la página
+                        mostrarFilasConDatosEstandarizacion();
+                        mostrarFilasConDatosExpansion();
+                
+                        // Ocultar botón si se alcanzó el máximo de filas
+                        if (rowCountEstandarizacion >= maxRows) {
+                            document.getElementById('addEstandarizacion').style.display = 'none';
+                        }
+                
+                        if (rowCountExpansion >= maxRows) {
+                            document.getElementById('addExpansion').style.display = 'none';
+                        }
+                    });
+                </script>
+            </div>
+        </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -1390,28 +1400,25 @@
 
     });
 
-
-    function toggleVisibility(id) {
-    var content = document.getElementById(id);
+    function toggleVisibility(contentId) {
+        var content = document.getElementById(contentId);
+        var icon = content.previousElementSibling.querySelector('.toggle-icon'); // Selecciona el span de la flecha
     
-    // Asegurarse de que el elemento existe antes de modificarlo
-    if (content) {
-        var icon = content.previousElementSibling.querySelector('span');
-        if (content.style.display === "none") {
-            content.style.display = "block";
+        // Cambia el display del contenido y ajusta la flecha
+        if (content.style.display === "none" || content.style.display === "") {
+            content.style.display = "block";  // Muestra el contenido
             if (icon) {
-                icon.innerHTML = "&#x25BC;";  // Cambia el ícono a la flecha hacia abajo
+                icon.innerHTML = "&#x25BC;";  // Flecha hacia abajo
             }
         } else {
-            content.style.display = "none";
+            content.style.display = "none";   // Oculta el contenido
             if (icon) {
-                icon.innerHTML = "&#x25B6;";  // Cambia el ícono a la flecha hacia la derecha
+                icon.innerHTML = "&#x25B6;";  // Flecha hacia la derecha
             }
         }
-    } else {
-        console.error("Elemento no encontrado: " + id);
     }
-}
+    
+
 
     // Por defecto, hacer que el contenido esté colapsado al cargar la página
     document.addEventListener("DOMContentLoaded", function() {
@@ -1420,6 +1427,7 @@
         toggleVisibility('contenido-paso3');
         toggleVisibility('contenido-paso4');
         toggleVisibility('contenido-paso5');
+        toggleVisibility('contenido-paso6');
     });
 
 

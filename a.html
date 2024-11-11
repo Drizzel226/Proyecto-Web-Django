@@ -1,0 +1,185 @@
+<!-- Sección Paso 6?:Antes y Después -->
+<div id="paso5-section" class="recuadro-paso mt-4" style="border: 1px solid #D86B20;">
+    <div class="paso-header" style="background-color: #D86B20; color: white; padding: 10px 15px; border-radius: 5px;">
+        <h2 class="collapsible" style="cursor: pointer; margin: 0;" onclick="toggleVisibility('contenido-paso5')">
+            <span style="margin-right: 10px;">&#x25BC;</span> Paso 5: Estandarización y Expansión
+        </h2>
+    </div>
+    <div><h1></h1></div>
+    <div id="contenido-paso5">
+        <!-- Bloque 1: Estandarización -->
+        <div class="sub-section" style="margin-bottom: 20px;">
+            <div class="sub-header" style="background-color: #D86B20; color: white; padding: 10px 15px; border-radius: 5px;">
+                <h3 style="margin: 0;">Estandarización</h3>
+        </div>
+            <div class="sub-content" style="padding: 10px; border: 1px solid #D86B20; border-radius: 5px;">
+                <!-- Botón para agregar filas en Estandarización -->
+                <button type="button" id="addEstandarizacion" class="btn btn-primary mt-2" style="margin-bottom: 8px;">Agregar Acción de Estandarización</button>
+                <div class="form-row" style="display: flex; justify-content: center;">
+                    <table id="AccionesTableEstandarizacion" class="acciones-table">
+                        <thead>
+                            <tr>
+                                <th>ACCIÓN DE ESTANDARIZACIÓN</th>
+                                <th>RESPONSABLE</th>
+                                <th>FECHA COMPROMISO</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- IDs de filas corregidos -->
+                            <tr id="estandarizacion-row1">
+                                <td>{{ form.Estandarizacion }}</td>
+                                <td>
+                                    <select id="Responsable3" name="Responsable3" class="select2">
+                                        {% for miembro in opciones_miembros %}
+                                            <option value="{{ miembro.id }}" data-email="{{ miembro.email }}" {% if miembro.id in form.Responsable3.value %}selected{% endif %}>
+                                                {{ miembro.nombre }}
+                                            </option>
+                                        {% endfor %}
+                                    </select>
+                                </td>
+                                <td>
+                                    <input type="date" id="Fecha_compromiso3" name="Fecha_compromiso3" class="form-control" value="{{ form.Fecha_compromiso3.value|date:'Y-m-d' }}">
+                                </td>
+                            </tr>
+
+                            <tr id="estandarizacion-row2" style="display: none;">
+                                <td>{{ form.Estandarizacion_2 }}</td>
+                                <td>
+                                    <select id="Responsable3_2" name="Responsable3_2" class="select2">
+                                        {% for miembro in opciones_miembros %}
+                                            <option value="{{ miembro.id }}" data-email="{{ miembro.email }}" {% if miembro.id in form.Responsable3_2.value %}selected{% endif %}>
+                                                {{ miembro.nombre }}
+                                            </option>
+                                        {% endfor %}
+                                    </select>
+                                </td>
+                                <td>
+                                    <input type="date" id="Fecha_compromiso3_2" name="Fecha_compromiso3_2" class="form-control" value="{{ form.Fecha_compromiso3_2.value|date:'Y-m-d' }}">
+                                </td>
+                            </tr>
+
+                            <tr id="estandarizacion-row3" style="display: none;">
+                                <td>{{ form.Estandarizacion_3 }}</td>
+                                <td>
+                                    <select id="Responsable3_3" name="Responsable3_3" class="select2">
+                                        {% for miembro in opciones_miembros %}
+                                            <option value="{{ miembro.id }}" data-email="{{ miembro.email }}" {% if miembro.id in form.Responsable3_3.value %}selected{% endif %}>
+                                                {{ miembro.nombre }}
+                                            </option>
+                                        {% endfor %}
+                                    </select>
+                                </td>
+                                <td>
+                                    <input type="date" id="Fecha_compromiso3_3" name="Fecha_compromiso3_3" class="form-control" value="{{ form.Fecha_compromiso3_3.value|date:'Y-m-d' }}">
+                                </td>
+                            </tr>
+
+                            <tr id="estandarizacion-row4" style="display: none;">
+                                <td>{{ form.Estandarizacion_4 }}</td>
+                                <td>
+                                    <select id="Responsable3_4" name="Responsable3_4" class="select2">
+                                        {% for miembro in opciones_miembros %}
+                                            <option value="{{ miembro.id }}" data-email="{{ miembro.email }}" {% if miembro.id in form.Responsable3_4.value %}selected{% endif %}>
+                                                {{ miembro.nombre }}
+                                            </option>
+                                        {% endfor %}
+                                    </select>
+                                </td>
+                                <td>
+                                    <input type="date" id="Fecha_compromiso3_4" name="Fecha_compromiso3_4" class="form-control" value="{{ form.Fecha_compromiso3_4.value|date:'Y-m-d' }}">
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bloque 2: Expansión -->
+        <div class="sub-section" style="margin-bottom: 20px;">
+            <div class="sub-header" style="background-color: #D86B20; color: white; padding: 10px 15px; border-radius: 5px;">
+                <h3 style="margin: 0;">Expansión</h3>
+            </div>
+            <div class="sub-content" style="padding: 10px; border: 1px solid #D86B20; border-radius: 5px;">
+                <!-- Botón para agregar filas en Expansión -->
+                <button type="button" id="addExpansion" class="btn btn-primary mt-2" style="margin-bottom: 8px;">Agregar Acción de Expansión</button>
+                <div class="form-row" style="display: flex; justify-content: center;">
+                    <table id="AccionesTableExpansion" class="acciones-table">
+                        <thead>
+                            <tr>
+                                <th>ACCIÓN DE EXPANSIÓN</th>
+                                <th>RESPONSABLE</th>
+                                <th>FECHA COMPROMISO</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr id="expansion-row1">
+                                <td>{{ form.Expansion }}</td>
+                                <td>
+                                    <select id="Responsable4" name="Responsable4" class="select2">
+                                        {% for miembro in opciones_miembros %}
+                                            <option value="{{ miembro.id }}" data-email="{{ miembro.email }}" {% if miembro.id in form.Responsable4.value %}selected{% endif %}>
+                                                {{ miembro.nombre }}
+                                            </option>
+                                        {% endfor %}
+                                    </select>
+                                </td>
+                                <td>
+                                    <input type="date" id="Fecha_compromiso4" name="Fecha_compromiso4" class="form-control" value="{{ form.Fecha_compromiso4.value|date:'Y-m-d' }}">
+                                </td>
+                            </tr>
+
+                            <tr id="expansion-row2" style="display: none;">
+                                <td>{{ form.Expansion_2 }}</td>
+                                <td>
+                                    <select id="Responsable4_2" name="Responsable4_2" class="select2">
+                                        {% for miembro in opciones_miembros %}
+                                            <option value="{{ miembro.id }}" data-email="{{ miembro.email }}" {% if miembro.id in form.Responsable4_2.value %}selected{% endif %}>
+                                                {{ miembro.nombre }}
+                                            </option>
+                                        {% endfor %}
+                                    </select>
+                                </td>
+                                <td>
+                                    <input type="date" id="Fecha_compromiso4_2" name="Fecha_compromiso4_2" class="form-control" value="{{ form.Fecha_compromiso4_2.value|date:'Y-m-d' }}">
+                                </td>
+                            </tr>
+
+                            <tr id="expansion-row3" style="display: none;">
+                                <td>{{ form.Expansion_3 }}</td>
+                                <td>
+                                    <select id="Responsable4_3" name="Responsable4_3" class="select2">
+                                        {% for miembro in opciones_miembros %}
+                                            <option value="{{ miembro.id }}" data-email="{{ miembro.email }}" {% if miembro.id in form.Responsable4_3.value %}selected{% endif %}>
+                                                {{ miembro.nombre }}
+                                            </option>
+                                        {% endfor %}
+                                    </select>
+                                </td>
+                                <td>
+                                    <input type="date" id="Fecha_compromiso4_3" name="Fecha_compromiso4_3" class="form-control" value="{{ form.Fecha_compromiso4_3.value|date:'Y-m-d' }}">
+                                </td>
+                            </tr>
+
+                            <tr id="expansion-row4" style="display: none;">
+                                <td>{{ form.Expansion_4 }}</td>
+                                <td>
+                                    <select id="Responsable4_4" name="Responsable4_4" class="select2">
+                                        {% for miembro in opciones_miembros %}
+                                            <option value="{{ miembro.id }}" data-email="{{ miembro.email }}" {% if miembro.id in form.Responsable4_4.value %}selected{% endif %}>
+                                                {{ miembro.nombre }}
+                                            </option>
+                                        {% endfor %}
+                                    </select>
+                                </td>
+                                <td>
+                                    <input type="date" id="Fecha_compromiso4_4" name="Fecha_compromiso4_4" class="form-control" value="{{ form.Fecha_compromiso4_4.value|date:'Y-m-d' }}">
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
