@@ -227,3 +227,87 @@ def actualizar_estado(request, accion_id):
     else:
         return JsonResponse({"success": False, "error": "Método no permitido"}, status=405)
 
+
+
+
+
+
+
+from django.shortcuts import get_object_or_404, redirect, render
+from django.contrib import messages
+from .models import Miniproyecto, ImagenFuncionamiento, ImagenAntes, ImagenDespues
+from .forms import MiniproyectoForm
+from porque.models import Porque
+
+def miniproyectos_vista(request, pk=None):
+    # Obtener la instancia de Miniproyecto
+    miniproyecto_instance = get_object_or_404(Miniproyecto, pk=pk) if pk else None
+
+    # Manejo del formulario en método POST
+    if request.method == 'POST':
+        puntaje_total = request.POST.get('puntaje_total', '0')
+        try:
+            puntaje_total = int(puntaje_total)
+        except ValueError:
+            puntaje_total = 0
+
+        if miniproyecto_instance:
+            miniproyecto_instance.puntaje = puntaje_total
+            miniproyecto_instance.save()
+            messages.success(request, f'Formulario guardado exitosamente con el puntaje: {miniproyecto_instance.puntaje}')
+            return redirect('miniproyecto_vista', pk=miniproyecto_instance.pk)
+        else:
+            messages.error(request, 'La instancia no existe.')
+    else:
+        # Cargar el formulario de Miniproyecto
+        form = MiniproyectoForm(instance=miniproyecto_instance)
+
+    # Preparar las preguntas de evaluación
+    preguntas = [
+        {'paso': 'Paso 0', 'pregunta': ' Se indica el Pilar + Indicador (KPI) / Disparador asociado (KAI)'},
+        {'paso': 'PASO 0', 'pregunta': 'Se indica el impacto (pérdida)'},
+        {'paso': 'PASO 0', 'pregunta': 'Se especifican los campos mandatorios (fecha, área subárea, integrantes, etc.)'},
+        {'paso': 'PASO 1', 'pregunta': 'Se describe correctamente el problema: Qué, Cómo, Cuándo,  Dónde, Quién'},
+        {'paso': 'PASO 1', 'pregunta': 'El problema describe correctamente la falla funcional o defecto (lo que es evidente a la vista y que genera la desviación)'},
+        {'paso': 'PASO 2', 'pregunta': 'Se describen correctamente los modos de falla / defecto (puntos de partida del análisis 5 PQ)'},
+        {'paso': 'PASO 3', 'pregunta': 'Se encuentra definida la causa raíz del problema planteado'},
+        {'paso': 'PASO 3', 'pregunta': 'Se ha definido la causa dentro de las 5M (Máquina, Método, Hombre, Materiales, Medio Ambiente)'},
+        {'paso': 'PASO 4', 'pregunta': 'Se indican medidas correctivas / Se indican medidas preventivas'},
+        {'paso': 'PASO 4', 'pregunta': 'Se indican responsables en cada caso / Se indican fechas de compromiso'},
+        {'paso': 'PASO 4', 'pregunta': 'Se cumplen fechas de cierre?'},
+        {'paso': 'PASO 5', 'pregunta': '¿Se genera algún nuevo estándar tras este análisis?'},
+    ]
+
+    # Configurar opciones de calificación
+    ratings = [
+        (1, 'Muy insatisfecho'),
+        (2, 'Insatisfecho'),
+        (3, 'Neutral'),
+        (4, 'Satisfecho'),
+        (5, 'Muy Satisfecho')
+    ]
+
+    # Consultar "5 Porqués" asociados al Miniproyecto
+    porques = Porque.objects.filter(miniproyecto=miniproyecto_instance) if miniproyecto_instance else []
+
+    # Obtener imágenes relacionadas para cada sección
+    imagenes_funcionamiento = ImagenFuncionamiento.objects.filter(miniproyecto=miniproyecto_instance)
+    imagenes_antes = ImagenAntes.objects.filter(miniproyecto=miniproyecto_instance)
+    imagenes_despues = ImagenDespues.objects.filter(miniproyecto=miniproyecto_instance)
+
+    # Contexto para el template
+    context = {
+        'form': form,
+        'modo_vista': True,
+        'miniproyecto_instance': miniproyecto_instance,
+        'preguntas': preguntas,
+        'ratings': ratings,
+        'porques': porques,
+        'imagenes_funcionamiento': imagenes_funcionamiento,
+        'imagenes_antes': imagenes_antes,
+        'imagenes_despues': imagenes_despues,
+        'imagenes': ImagenMiniproyecto.objects.filter(miniproyecto=miniproyecto_instance),
+
+    }
+
+    return render(request, 'MiniProyecto/miniproyectos_vista.html', context)
