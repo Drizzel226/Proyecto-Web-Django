@@ -1523,6 +1523,224 @@
 
 
 
+<form method="post" action="{% url 'miniproyecto_vista' pk=miniproyecto_instance.pk %}" id="form-evaluacion">
+    {% csrf_token %}
+    
+    <div class="evaluation-box floating-box">
+        <h2>Evaluación de MiniProyecto</h2>
+        <div id="evaluation-content">
+            <h3 id="current-step"></h3>
+            <p id="current-question"></p>
+            <div id="score-options" class="rating-container">
+                {% for value, label in ratings %}
+                    <label class="rating-button">
+                        <input type="radio" name="score" value="{{ value }}">
+                        <span class="button-face">{{ value }}</span>
+                        <span class="button-label">{{ label }}</span>
+                    </label>
+                {% endfor %}
+            </div>
+            
+            <div class="navigation-buttons">
+                <button id="prev-question" class="btn btn-secondary" disabled>&larr; Anterior</button>
+                <button id="next-question" class="btn btn-secondary">Siguiente &rarr;</button>
+            </div>
+            <h4>Total Puntaje: <span id="total-puntaje">0</span></h4>
+            <input type="hidden" name="puntaje_total" id="puntaje-total-input">
+        </div>
+
+        <!-- Botón para enviar el formulario -->
+        <button type="submit" class="btn btn-primary">Guardar Puntaje</button>
+    </div>
+</form>
+
+<style>
+    .floating-box {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        width: 400px;
+        max-height: 600px;
+        padding: 20px;
+        background-color: #f1f1f1;
+        border: 1px solid #ccc;
+        box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+        z-index: 1000;
+        border-radius: 8px;
+        overflow-y: auto; /* Permite scroll si el contenido es extenso */
+    }
+
+    .rating-container {
+        display: flex;
+        justify-content: center; /* Cambiado de space-between a center */
+        margin-top: 20px;
+        gap: 20px; /* Aumentado de 10px a 20px para más espacio entre botones */
+        text-align: center; /* Asegura que todo el contenido esté centrado */
+    }
+    
+    .rating-button {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 70px; /* Ancho fijo para cada botón */
+        cursor: pointer;
+    }
+    
+    .button-face {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: #e0e0e0;
+        color: #333;
+        font-weight: bold;
+        margin: 0 auto; /* Centra el círculo horizontalmente */
+        transition: background-color 0.3s ease, color 0.3s ease;
+    }
+    
+    .button-label {
+        margin-top: 8px;
+        font-size: 14px;
+        text-align: center;
+        width: 100%; /* Asegura que el texto use todo el ancho disponible */
+    }
+    .rating-button input {
+        display: none;
+    }
+    .button-face {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: #e0e0e0;
+        color: #333;
+        font-weight: bold;
+        transition: background-color 0.3s ease, color 0.3s ease;
+    }
+    .rating-button:hover .button-face {
+        background-color: #d0d0d0;
+    }
+    .rating-button input:checked + .button-face {
+        background-color: #4CAF50;
+        color: white;
+    }
+    .button-label {
+        margin-top: 8px;
+        font-size: 14px;
+        text-align: center;
+    }
+
+    .navigation-buttons {
+        display: flex;
+        justify-content: space-between;
+        gap: 10px;
+        margin-top: 20px;
+    }
+
+    .btn {
+        padding: 10px;
+        border-radius: 5px;
+    }
+    .btn-secondary {
+        background-color: #6c757d;
+        color: #fff;
+        border: none;
+        cursor: pointer;
+    }
+    .btn-secondary:disabled {
+        background-color: #ddd;
+        cursor: not-allowed;
+    }
+    .btn-primary {
+        background-color: #4CAF50;
+        color: #fff;
+        border: none;
+        cursor: pointer;
+        width: 100%;
+        margin-top: 15px;
+    }
+</style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const preguntas = {{ preguntas|safe }};
+        let currentIndex = 0;
+        const puntajes = {};
+        const currentStepElement = document.getElementById('current-step');
+        const currentQuestionElement = document.getElementById('current-question');
+        const scoreOptions = document.querySelectorAll('input[name="score"]');
+        const totalPuntajeElement = document.getElementById('total-puntaje');
+        const puntajeTotalInput = document.getElementById('puntaje-total-input');
+        const nextButton = document.getElementById('next-question');
+        const prevButton = document.getElementById('prev-question');
+
+        function mostrarPregunta() {
+            const { paso, pregunta } = preguntas[currentIndex];
+            currentStepElement.textContent = paso;
+            currentQuestionElement.textContent = pregunta;
+
+            scoreOptions.forEach(option => {
+                option.checked = puntajes[currentIndex] === parseInt(option.value);
+            });
+
+            nextButton.style.display = currentIndex === preguntas.length - 1 ? 'none' : 'inline-block';
+            prevButton.disabled = currentIndex === 0;
+        }
+
+        function actualizarPuntaje() {
+            const selectedOption = document.querySelector('input[name="score"]:checked');
+            if (selectedOption) {
+                puntajes[currentIndex] = parseInt(selectedOption.value);
+                actualizarTotal();
+            }
+        }
+
+        function actualizarTotal() {
+            const total = Object.values(puntajes).reduce((sum, score) => sum + score, 0);
+            totalPuntajeElement.textContent = total;
+            puntajeTotalInput.value = total;
+        }
+
+        scoreOptions.forEach(option => {
+            option.addEventListener('change', actualizarPuntaje);
+        });
+
+        nextButton.addEventListener('click', function(event) {
+            event.preventDefault();
+            actualizarPuntaje();
+
+            if (currentIndex < preguntas.length - 1) {
+                currentIndex++;
+                mostrarPregunta();
+            }
+        });
+
+        prevButton.addEventListener('click', function(event) {
+            event.preventDefault();
+
+            if (currentIndex > 0) {
+                currentIndex--;
+                mostrarPregunta();
+            }
+        });
+
+        mostrarPregunta();
+    });
+</script>
+
+
+
+
+
+
+
+
+
+
 
 <!-- Incluir Select2 y jQuery -->
 <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
@@ -1628,32 +1846,6 @@
 
 
 
-    document.getElementById("togglePorque6").addEventListener("click", function() {
-        var porque6Header = document.getElementById("porque6-header");
-        var porque6Validacion = document.getElementById("porque6-validacion");
-        var porque6Cells = document.querySelectorAll(".porque6-cell, .porque6-validacion-cell");
-        var bloqueExtra = document.getElementById("bloque-extra");
-
-        if (porque6Header.style.display === "none") {
-            porque6Header.style.display = "table-cell";
-            porque6Validacion.style.display = "table-cell";
-            porque6Cells.forEach(cell => cell.style.display = "table-cell");
-            bloqueExtra.style.display = "block";
-            this.textContent = "Ocultar ¿POR QUÉ? (6)";
-        } else {
-            porque6Header.style.display = "none";
-            porque6Validacion.style.display = "none";
-            porque6Cells.forEach(cell => cell.style.display = "none");
-            bloqueExtra.style.display = "none";
-            this.textContent = "Agregar ¿POR QUÉ? (6)";
-        }
-    });
-
-
-    // Por defecto, hacer que el contenido esté colapsado al cargar la página
-    document.addEventListener("DOMContentLoaded", function() {
-        toggleVisibility('contenido-paso3');
-    });
 
     function cambiarColor(celda) {
         if (celda.style.backgroundColor === 'white' || celda.style.backgroundColor === '') {
@@ -1664,8 +1856,6 @@
             celda.style.backgroundColor = 'white';  // Blanco para no validado
         }
     }
-
-
 
 </script> 
 

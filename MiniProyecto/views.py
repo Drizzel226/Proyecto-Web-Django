@@ -235,16 +235,15 @@ def actualizar_estado(request, accion_id):
 
 from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib import messages
-from .models import Miniproyecto, ImagenFuncionamiento, ImagenAntes, ImagenDespues
+from .models import Miniproyecto
 from .forms import MiniproyectoForm
-from porque.models import Porque
 
-def miniproyectos_vista(request, pk=None):
-    # Obtener la instancia de Miniproyecto
+def miniproyecto_vista(request, pk=None):
+    # Obtener la instancia de Miniproyecto, si existe
     miniproyecto_instance = get_object_or_404(Miniproyecto, pk=pk) if pk else None
 
-    # Manejo del formulario en método POST
     if request.method == 'POST':
+        # Procesar el puntaje total enviado
         puntaje_total = request.POST.get('puntaje_total', '0')
         try:
             puntaje_total = int(puntaje_total)
@@ -252,6 +251,7 @@ def miniproyectos_vista(request, pk=None):
             puntaje_total = 0
 
         if miniproyecto_instance:
+            # Guardar el puntaje en la instancia de Miniproyecto
             miniproyecto_instance.puntaje = puntaje_total
             miniproyecto_instance.save()
             messages.success(request, f'Formulario guardado exitosamente con el puntaje: {miniproyecto_instance.puntaje}')
@@ -259,26 +259,26 @@ def miniproyectos_vista(request, pk=None):
         else:
             messages.error(request, 'La instancia no existe.')
     else:
-        # Cargar el formulario de Miniproyecto
+        # Si el método es GET, cargar el formulario con la instancia de Miniproyecto
         form = MiniproyectoForm(instance=miniproyecto_instance)
 
     # Preparar las preguntas de evaluación
     preguntas = [
-        {'paso': 'Paso 0', 'pregunta': ' Se indica el Pilar + Indicador (KPI) / Disparador asociado (KAI)'},
-        {'paso': 'PASO 0', 'pregunta': 'Se indica el impacto (pérdida)'},
-        {'paso': 'PASO 0', 'pregunta': 'Se especifican los campos mandatorios (fecha, área subárea, integrantes, etc.)'},
-        {'paso': 'PASO 1', 'pregunta': 'Se describe correctamente el problema: Qué, Cómo, Cuándo,  Dónde, Quién'},
-        {'paso': 'PASO 1', 'pregunta': 'El problema describe correctamente la falla funcional o defecto (lo que es evidente a la vista y que genera la desviación)'},
-        {'paso': 'PASO 2', 'pregunta': 'Se describen correctamente los modos de falla / defecto (puntos de partida del análisis 5 PQ)'},
-        {'paso': 'PASO 3', 'pregunta': 'Se encuentra definida la causa raíz del problema planteado'},
-        {'paso': 'PASO 3', 'pregunta': 'Se ha definido la causa dentro de las 5M (Máquina, Método, Hombre, Materiales, Medio Ambiente)'},
-        {'paso': 'PASO 4', 'pregunta': 'Se indican medidas correctivas / Se indican medidas preventivas'},
-        {'paso': 'PASO 4', 'pregunta': 'Se indican responsables en cada caso / Se indican fechas de compromiso'},
-        {'paso': 'PASO 4', 'pregunta': 'Se cumplen fechas de cierre?'},
-        {'paso': 'PASO 5', 'pregunta': '¿Se genera algún nuevo estándar tras este análisis?'},
+        {'paso': 'Paso 0', 'pregunta': 'Se indica el Pilar + Indicador (KPI) / Disparador asociado (KAI)'},
+        {'paso': 'Paso 0', 'pregunta': 'Se indica el impacto (pérdida)'},
+        {'paso': 'Paso 0', 'pregunta': 'Se especifican los campos mandatorios (fecha, área subárea, integrantes, etc.)'},
+        {'paso': 'Paso 1', 'pregunta': 'Se describe correctamente el problema: Qué, Cómo, Cuándo, Dónde, Quién'},
+        {'paso': 'Paso 1', 'pregunta': 'El problema describe correctamente la falla funcional o defecto (lo que es evidente a la vista y que genera la desviación)'},
+        {'paso': 'Paso 2', 'pregunta': 'Se describen correctamente los modos de falla / defecto (puntos de partida del análisis 5 PQ)'},
+        {'paso': 'Paso 3', 'pregunta': 'Se encuentra definida la causa raíz del problema planteado'},
+        {'paso': 'Paso 3', 'pregunta': 'Se ha definido la causa dentro de las 5M (Máquina, Método, Hombre, Materiales, Medio Ambiente)'},
+        {'paso': 'Paso 4', 'pregunta': 'Se indican medidas correctivas / Se indican medidas preventivas'},
+        {'paso': 'Paso 4', 'pregunta': 'Se indican responsables en cada caso / Se indican fechas de compromiso'},
+        {'paso': 'Paso 4', 'pregunta': 'Se cumplen fechas de cierre?'},
+        {'paso': 'Paso 5', 'pregunta': '¿Se genera algún nuevo estándar tras este análisis?'},
     ]
 
-    # Configurar opciones de calificación
+    # Opciones de calificación
     ratings = [
         (1, 'Muy insatisfecho'),
         (2, 'Insatisfecho'),
@@ -307,7 +307,6 @@ def miniproyectos_vista(request, pk=None):
         'imagenes_antes': imagenes_antes,
         'imagenes_despues': imagenes_despues,
         'imagenes': ImagenMiniproyecto.objects.filter(miniproyecto=miniproyecto_instance),
-
     }
 
     return render(request, 'MiniProyecto/miniproyectos_vista.html', context)
