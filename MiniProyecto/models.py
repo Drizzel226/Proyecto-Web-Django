@@ -170,6 +170,20 @@ class ImagenMiniproyecto(models.Model):
 class ImagenFuncionamiento(models.Model):
     miniproyecto = models.ForeignKey(Miniproyecto, related_name='imagenes_funcionamiento', on_delete=models.CASCADE)
     imagen = models.ImageField(upload_to='imagenes_funcionamiento/')
-
+    
     def __str__(self):
-        return f"Imagen de funcionamiento para {self.miniproyecto.Nombre_MP}"
+        return f"Imagen Funcionamiento para {self.miniproyecto.Nombre_MP}"
+    
+class ImagenAntes(models.Model):
+    miniproyecto = models.ForeignKey(Miniproyecto, related_name='imagenes_antes', on_delete=models.CASCADE)
+    imagen = models.ImageField(upload_to='imagenes_antes/')
+    
+    def __str__(self):
+        return f"Imagen Antes para {self.miniproyecto.Nombre_MP}"
+
+class ImagenDespues(models.Model):
+    miniproyecto = models.ForeignKey(Miniproyecto, related_name='imagenes_despues', on_delete=models.CASCADE)
+    imagen = models.ImageField(upload_to='imagenes_despues/')
+    
+    def __str__(self):
+        return f"Imagen Después para {self.miniproyecto.Nombre_MP}"

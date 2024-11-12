@@ -215,7 +215,7 @@
         </div>
 
 
-        
+
         <!-- Sección Paso 1: Descripción del Problema (visible después del Paso 0) -->
         {% if mostrar_paso1 %}
         <div id="paso1-section" class="recuadro-paso mt-4" style="border: 1px solid #ff0000;">
@@ -438,31 +438,30 @@
                             {{ form.condicion_basica }}
                         </div>
                     </div>
+                    <!-- Campo imágenes_funcionamiento -->
+                    <div id="funcionamiento-section" style="margin-bottom: 20px;">
+                        <h2>Imágenes de Funcionamiento</h2>
+                        {{ form.imagenes_funcionamiento }}
+                        
+                        <!-- Contenedor de imágenes ya subidas para "Funcionamiento" -->
+                        <div id="imagenes-funcionamiento-container">
+                            {% for imagen in imagenes_funcionamiento %}
+                                <div class="image-preview-container" style="position: relative; display: inline-block; margin: 5px;">
+                                    <!-- Icono de eliminación -->
+                                    <span class="close-icon" onclick="removeImage('{{ imagen.id }}', 'funcionamiento')">✖</span>
+                                    
+                                    <!-- Imagen en tamaño pequeño -->
+                                    <img src="{{ imagen.imagen.url }}" alt="Imagen de Funcionamiento" class="small-image" onclick="openModal('{{ imagen.imagen.url }}')">
+                                </div>
+                            {% endfor %}
+                        </div>
 
-                    <!-- Campo para subir múltiples imágenes para Paso 2 -->
-                    <div class="form-group">
-                        <label>Imágenes de Funcionamiento:</label>
-                        <input type="file" name="imagen_funcionamiento_files" multiple class="form-control">
+                        <!-- Contenedor para previsualizar las nuevas imágenes seleccionadas -->
+                        <div id="preview-funcionamiento-container" class="form-row" style="display: flex; gap: 10px; flex-wrap: wrap; margin-top: 10px;"></div>
+
+                        <!-- Campo oculto para almacenar IDs de imágenes a eliminar -->
+                        <input type="hidden" id="delete_images_funcionamiento" name="delete_images_funcionamiento">
                     </div>
-
-                    <!-- Contenedor para mostrar las imágenes ya cargadas con opción de eliminar -->
-                    <div id="imagenes-funcionamiento-container" class="form-row">
-                        {% for imagen in imagenes_paso2 %}
-                            <div class="image-preview-container" style="position: relative; display: inline-block; margin: 5px;">
-                                <!-- Icono de eliminar -->
-                                <span class="close-icon" onclick="removeFuncionamientoImage('{{ imagen.id }}')">✖</span>
-                                
-                                <!-- Imagen en tamaño pequeño -->
-                                <img src="{{ imagen.imagen.url }}" alt="Imagen de Condición Básica" class="small-image" onclick="openModal('{{ imagen.imagen.url }}')">
-                            </div>
-                        {% endfor %}
-                    </div>
-
-                    <!-- Contenedor para previsualizar las nuevas imágenes seleccionadas -->
-                    <div id="preview-container-funcionamiento" class="form-row" style="display: flex; gap: 10px; flex-wrap: wrap; margin-top: 10px;"></div>
-
-                    <!-- Campo oculto para almacenar IDs de imágenes a eliminar -->
-                    <input type="hidden" id="delete_images_funcionamiento" name="delete_images_funcionamiento" value="">
                 </div>
             </div>
 
@@ -474,7 +473,6 @@
             </div>
 
             <style>
-                /* Icono de cierre */
                 .close-icon {
                     position: absolute;
                     top: 5px;
@@ -488,20 +486,18 @@
                     padding: 2px 5px;
                     z-index: 10;
                 }
-
-                /* Estilo para la imagen en tamaño pequeño */
+            
                 .small-image {
                     max-width: 100px;
                     max-height: 100px;
                     cursor: pointer;
                     border: 1px solid #ccc;
                     padding: 5px;
-                    object-fit: cover; /* Mantiene la imagen ajustada al contenedor */
+                    object-fit: cover;
                 }
-
-                /* Estilos del modal */
+            
                 .modal {
-                    display: none; /* Oculto por defecto */
+                    display: none;
                     position: fixed;
                     z-index: 1000;
                     padding-top: 60px;
@@ -512,14 +508,14 @@
                     overflow: auto;
                     background-color: rgba(0,0,0,0.9);
                 }
-
+            
                 .modal-content {
                     margin: auto;
                     display: block;
                     max-width: 80%;
                     max-height: 80%;
                 }
-
+            
                 .close {
                     position: absolute;
                     top: 15px;
@@ -530,39 +526,41 @@
                     cursor: pointer;
                 }
             </style>
+            
 
             <script>
-                function removeFuncionamientoImage(imageId) {
+                // Función para eliminar una imagen existente en el servidor
+                function removeImage(imageId, campo) {
                     // Oculta la imagen y el botón de eliminar
-                    const imageContainer = document.querySelector(`span[onclick="removeFuncionamientoImage('${imageId}')"]`).parentElement;
+                    const imageContainer = document.querySelector(`#preview-${campo}-container span[onclick="removeImage('${imageId}', '${campo}')"]`).parentElement;
                     imageContainer.style.display = "none";
-
+            
                     // Añadir el ID de la imagen al campo oculto para ser eliminada
-                    let deleteImagesField = document.getElementById("delete_images_funcionamiento");
+                    let deleteImagesField = document.getElementById(`delete_images_${campo}`);
                     deleteImagesField.value += imageId + ",";
                 }
                 
                 // Abre el modal y muestra la imagen en tamaño completo
                 function openModal(imageUrl) {
-                    var modal = document.getElementById("imageModal");
-                    var fullImage = document.getElementById("fullImage");
+                    const modal = document.getElementById("imageModal");
+                    const fullImage = document.getElementById("fullImage");
                     fullImage.src = imageUrl; // Asigna la fuente de imagen en tamaño completo
                     modal.style.display = "block";
                 }
-
+            
                 // Cierra el modal
                 function closeModal() {
                     document.getElementById("imageModal").style.display = "none";
                 }
-
-                // Previsualizar imágenes seleccionadas sin recargar la página
-                document.querySelector('input[type="file"][name="imagen_funcionamiento_files"]').addEventListener('change', function(event) {
-                    const previewContainer = document.getElementById("preview-container-funcionamiento");
+            
+                // Función para previsualizar imágenes seleccionadas
+                function previewImages(input, previewContainerId) {
+                    const previewContainer = document.getElementById(previewContainerId);
                     previewContainer.innerHTML = '';  // Limpiar previsualizaciones anteriores
-
-                    Array.from(event.target.files).forEach(file => {
+            
+                    Array.from(input.files).forEach(file => {
                         const reader = new FileReader();
-
+            
                         reader.onload = function(e) {
                             // Crear contenedor de previsualización
                             const imagePreview = document.createElement("div");
@@ -570,27 +568,50 @@
                             imagePreview.style.position = "relative";
                             imagePreview.style.display = "inline-block";
                             imagePreview.style.margin = "5px";
-
+            
                             // Agregar botón de eliminación
                             const closeIcon = document.createElement("span");
                             closeIcon.classList.add("close-icon");
                             closeIcon.innerHTML = "✖";
                             closeIcon.onclick = () => imagePreview.remove();  // Eliminar previsualización
-
+            
                             // Agregar imagen de previsualización
                             const img = document.createElement("img");
                             img.src = e.target.result;
                             img.classList.add("small-image");
-
+                            img.style.maxWidth = "100px";
+                            img.style.maxHeight = "100px";
+                            img.style.border = "1px solid #ccc";
+                            img.style.padding = "5px";
+                            img.style.objectFit = "cover";
+            
                             imagePreview.appendChild(closeIcon);
                             imagePreview.appendChild(img);
                             previewContainer.appendChild(imagePreview);
                         }
-
+            
                         reader.readAsDataURL(file);  // Leer archivo como URL de datos
                     });
+                }
+            
+                // Configuración de eventos 'change' para cada campo de imágenes
+                document.querySelector('input[name="imagenes"]').addEventListener('change', function() {
+                    previewImages(this, 'preview-container');
+                });
+            
+                document.querySelector('input[name="imagenes_funcionamiento"]').addEventListener('change', function() {
+                    previewImages(this, 'preview-funcionamiento-container');
+                });
+            
+                document.querySelector('input[name="imagenes_antes"]').addEventListener('change', function() {
+                    previewImages(this, 'preview-antes-container');
+                });
+            
+                document.querySelector('input[name="imagenes_despues"]').addEventListener('change', function() {
+                    previewImages(this, 'preview-despues-container');
                 });
             </script>
+            
         </div>
 
 
@@ -1310,7 +1331,7 @@
 
 
 
-        <!-- Sección Paso 6?:Antes y Después -->
+        <!-- Sección Paso 6: Antes y Después -->
         <div id="paso6-section" class="recuadro-paso mt-4" style="border: 1px solid #A9BCA6;">
             <div class="paso-header" style="background-color: #A9BCA6; color: white; padding: 10px 15px; border-radius: 5px;">
                 <h2 class="collapsible" style="cursor: pointer; margin: 0;" onclick="toggleVisibility('contenido-paso6')">
@@ -1320,62 +1341,203 @@
             
             <div id="contenido-paso6">
                 <div><h1></h1></div>
-
-                <!-- Bloque 1: Antes -->
+            
+                <!-- Bloque 1: Imágenes Antes -->
                 <div class="sub-section" style="margin-bottom: 20px;">
                     <div class="sub-header" style="background-color: #A9BCA6; color: white; padding: 10px 15px; border-radius: 5px;">
-                        <h3 style="margin: 0;">Antes</h3>
+                        <h3 style="margin: 0;">Imágenes Antes</h3>
                     </div>
                     <div class="sub-content" style="padding: 10px; border: 1px solid #A9BCA6; border-radius: 5px;">
-                        <div class="form-row" style="display: flex; justify-content: center;">
-                            
-
-                                
-
-
-
-                            
-                            
-
-
-
-
-                            
-
-
+                        {{ form.imagenes_antes }}
+            
+                        <!-- Contenedor de imágenes ya cargadas para "Antes" -->
+                        <div id="imagenes-antes-container">
+                            {% for imagen in imagenes_antes %}
+                                <div class="image-preview-container" style="position: relative; display: inline-block; margin: 5px;">
+                                    <!-- Icono de eliminación -->
+                                    <span class="close-icon" onclick="removeImage('{{ imagen.id }}', 'antes')">✖</span>
+                                    <img src="{{ imagen.imagen.url }}" alt="Imagen Antes" class="small-image" onclick="openModal('{{ imagen.imagen.url }}')">
+                                </div>
+                            {% endfor %}
                         </div>
+            
+                        <!-- Contenedor para previsualizar nuevas imágenes seleccionadas -->
+                        <div id="preview-antes-container" class="form-row" style="display: flex; gap: 10px; flex-wrap: wrap; margin-top: 10px;"></div>
+            
+                        <!-- Campo oculto para almacenar IDs de imágenes a eliminar -->
+                        <input type="hidden" id="delete_images_antes" name="delete_images_antes">
                     </div>
                 </div>
-
-                <!-- Bloque 2: Después -->
+            
+                <!-- Bloque 2: Imágenes Después -->
                 <div class="sub-section" style="margin-bottom: 20px;">
                     <div class="sub-header" style="background-color: #A9BCA6; color: white; padding: 10px 15px; border-radius: 5px;">
-                        <h3 style="margin: 0;">Después</h3>
+                        <h3 style="margin: 0;">Imágenes Después</h3>
                     </div>
                     <div class="sub-content" style="padding: 10px; border: 1px solid #A9BCA6; border-radius: 5px;">
-                        <div class="form-row" style="display: flex; justify-content: center;">
-                        
-
-
+                        {{ form.imagenes_despues }}
+            
+                        <!-- Contenedor de imágenes ya cargadas para "Después" -->
+                        <div id="imagenes-despues-container">
+                            {% for imagen in imagenes_despues %}
+                                <div class="image-preview-container" style="position: relative; display: inline-block; margin: 5px;">
+                                    <!-- Icono de eliminación -->
+                                    <span class="close-icon" onclick="removeImage('{{ imagen.id }}', 'despues')">✖</span>
+                                    <img src="{{ imagen.imagen.url }}" alt="Imagen Después" class="small-image" onclick="openModal('{{ imagen.imagen.url }}')">
+                                </div>
+                            {% endfor %}
                         </div>
+            
+                        <!-- Contenedor para previsualizar nuevas imágenes seleccionadas -->
+                        <div id="preview-despues-container" class="form-row" style="display: flex; gap: 10px; flex-wrap: wrap; margin-top: 10px;"></div>
+            
+                        <!-- Campo oculto para almacenar IDs de imágenes a eliminar -->
+                        <input type="hidden" id="delete_images_despues" name="delete_images_despues">
                     </div>
                 </div>
             </div>
+            
+            <!-- Modal para ver la imagen en tamaño completo -->
+            <div id="imageModal" class="modal" onclick="closeModal()">
+                <span class="close">&times;</span>
+                <img class="modal-content" id="fullImage">
+            </div>
+            
+
+            <style>
+                .close-icon {
+                    position: absolute;
+                    top: 5px;
+                    right: 5px;
+                    color: #ff0000;
+                    font-size: 20px;
+                    font-weight: bold;
+                    cursor: pointer;
+                    background-color: white;
+                    border-radius: 50%;
+                    padding: 2px 5px;
+                    z-index: 10;
+                }
+            
+                .small-image {
+                    max-width: 100px;
+                    max-height: 100px;
+                    cursor: pointer;
+                    border: 1px solid #ccc;
+                    padding: 5px;
+                    object-fit: cover;
+                }
+            
+                .modal {
+                    display: none;
+                    position: fixed;
+                    z-index: 1000;
+                    padding-top: 60px;
+                    left: 0;
+                    top: 0;
+                    width: 100%;
+                    height: 100%;
+                    overflow: auto;
+                    background-color: rgba(0,0,0,0.9);
+                }
+            
+                .modal-content {
+                    margin: auto;
+                    display: block;
+                    max-width: 80%;
+                    max-height: 80%;
+                }
+            
+                .close {
+                    position: absolute;
+                    top: 15px;
+                    right: 35px;
+                    color: #ffffff;
+                    font-size: 40px;
+                    font-weight: bold;
+                    cursor: pointer;
+                }
+            </style>
+            <script>
+                // Función para eliminar una imagen existente en el servidor
+                function removeImage(imageId, campo) {
+                    // Oculta la imagen y el botón de eliminar
+                    const imageContainer = document.querySelector(`#imagenes-${campo}-container span[onclick="removeImage('${imageId}', '${campo}')"]`).parentElement;
+                    imageContainer.style.display = "none";
+            
+                    // Añadir el ID de la imagen al campo oculto para ser eliminada
+                    let deleteImagesField = document.getElementById(`delete_images_${campo}`);
+                    deleteImagesField.value += imageId + ",";
+                }
+                
+                // Abre el modal y muestra la imagen en tamaño completo
+                function openModal(imageUrl) {
+                    const modal = document.getElementById("imageModal");
+                    const fullImage = document.getElementById("fullImage");
+                    fullImage.src = imageUrl; // Asigna la fuente de imagen en tamaño completo
+                    modal.style.display = "block";
+                }
+            
+                // Cierra el modal
+                function closeModal() {
+                    document.getElementById("imageModal").style.display = "none";
+                }
+            
+                // Función para previsualizar imágenes seleccionadas
+                function previewImages(input, previewContainerId) {
+                    const previewContainer = document.getElementById(previewContainerId);
+                    previewContainer.innerHTML = '';  // Limpiar previsualizaciones anteriores
+            
+                    Array.from(input.files).forEach(file => {
+                        const reader = new FileReader();
+            
+                        reader.onload = function(e) {
+                            // Crear contenedor de previsualización
+                            const imagePreview = document.createElement("div");
+                            imagePreview.classList.add("image-preview-container");
+                            imagePreview.style.position = "relative";
+                            imagePreview.style.display = "inline-block";
+                            imagePreview.style.margin = "5px";
+            
+                            // Agregar botón de eliminación para la previsualización
+                            const closeIcon = document.createElement("span");
+                            closeIcon.classList.add("close-icon");
+                            closeIcon.innerHTML = "✖";
+                            closeIcon.onclick = () => imagePreview.remove();  // Eliminar previsualización
+            
+                            // Agregar imagen de previsualización
+                            const img = document.createElement("img");
+                            img.src = e.target.result;
+                            img.classList.add("small-image");
+                            img.style.maxWidth = "100px";
+                            img.style.maxHeight = "100px";
+                            img.style.border = "1px solid #ccc";
+                            img.style.padding = "5px";
+                            img.style.objectFit = "cover";
+            
+                            imagePreview.appendChild(closeIcon);
+                            imagePreview.appendChild(img);
+                            previewContainer.appendChild(imagePreview);
+                        }
+            
+                        reader.readAsDataURL(file);  // Leer archivo como URL de datos
+                    });
+                }
+            
+                // Configuración de eventos 'change' para cada campo de imágenes
+                document.querySelector('input[name="imagenes_antes"]').addEventListener('change', function() {
+                    previewImages(this, 'preview-antes-container');
+                });
+            
+                document.querySelector('input[name="imagenes_despues"]').addEventListener('change', function() {
+                    previewImages(this, 'preview-despues-container');
+                });
+            </script>
+            
         </div>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+            
+            
 
         {% endif %} <!-- Este es el cierre del "if" que se abrió al principio -->
 

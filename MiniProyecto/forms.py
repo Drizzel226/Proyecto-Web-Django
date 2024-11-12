@@ -12,7 +12,9 @@ class MiniproyectoForm(forms.ModelForm):
         required=False,
         label="Imagenes Funcionamiento"
     )
-
+    imagenes_funcionamiento = forms.FileField(widget=forms.ClearableFileInput(attrs={'multiple': True}), required=False)
+    imagenes_antes = forms.FileField(widget=forms.ClearableFileInput(attrs={'multiple': True}), required=False)
+    imagenes_despues = forms.FileField(widget=forms.ClearableFileInput(attrs={'multiple': True}), required=False)
 
     class Meta:
         model = Miniproyecto

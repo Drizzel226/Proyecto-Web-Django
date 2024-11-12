@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from .forms import MiniproyectoForm
-from .models import Miniproyecto, MiembroEquipo, ImagenMiniproyecto, ImagenFuncionamiento
+from .models import Miniproyecto, MiembroEquipo, ImagenMiniproyecto, ImagenFuncionamiento, ImagenAntes, ImagenDespues
 from django.contrib import messages
 from django.utils.timezone import now
 from google.oauth2 import service_account
@@ -69,11 +69,6 @@ def miniproyecto_view(request, pk=None):
             # Guardar la instancia del formulario pero sin guardarla aún en la BD
             miniproyecto_instance = form.save(commit=False)
 
-            # Verificar si el usuario indicó eliminar la imagen de falla funcional (Paso 1)
-            if request.POST.get('delete_image') == 'true' and miniproyecto_instance.imagen_falla_funcional:
-                miniproyecto_instance.imagen_falla_funcional.delete(save=False)
-                miniproyecto_instance.imagen_falla_funcional = None
-
             # Obtener las áreas seleccionadas y almacenarlas como cadena separada por comas
             areas_seleccionadas = form.cleaned_data.get('areas_aplicacion')
             if areas_seleccionadas:
@@ -89,13 +84,26 @@ def miniproyecto_view(request, pk=None):
             # Guardar relaciones ManyToMany (miembros del equipo y responsables)
             form.save_m2m()
 
+
+
             # Guardar las nuevas imágenes subidas en Paso 1
             for image_file in request.FILES.getlist('imagenes'):
                 ImagenMiniproyecto.objects.create(miniproyecto=miniproyecto_instance, imagen=image_file)
 
-            # Guardar las nuevas imágenes subidas en Paso 2 (Funcionamiento)
-            for image_file in request.FILES.getlist('imagen_funcionamiento_files'):
+            for image_file in request.FILES.getlist('imagenes_funcionamiento'):
                 ImagenFuncionamiento.objects.create(miniproyecto=miniproyecto_instance, imagen=image_file)
+
+            for image_file in request.FILES.getlist('imagenes_antes'):
+                ImagenAntes.objects.create(miniproyecto=miniproyecto_instance, imagen=image_file)
+
+            for image_file in request.FILES.getlist('imagenes_despues'):
+                ImagenDespues.objects.create(miniproyecto=miniproyecto_instance, imagen=image_file)
+
+
+
+
+
+
 
             # Eliminar imágenes seleccionadas para ser eliminadas en Paso 1
             delete_images = request.POST.get("delete_images", "")
@@ -103,11 +111,18 @@ def miniproyecto_view(request, pk=None):
                 if image_id:
                     ImagenMiniproyecto.objects.filter(id=image_id).delete()
 
-            # Eliminar imágenes seleccionadas para ser eliminadas en Paso 2
-            delete_funcionamiento_images = request.POST.get("delete_funcionamiento_images", "")
-            for image_id in delete_funcionamiento_images.split(","):
+            for image_id in request.POST.get("delete_images_funcionamiento", "").split(","):
                 if image_id:
                     ImagenFuncionamiento.objects.filter(id=image_id).delete()
+
+            for image_id in request.POST.get("delete_images_antes", "").split(","):
+                if image_id:
+                    ImagenAntes.objects.filter(id=image_id).delete()
+
+            for image_id in request.POST.get("delete_images_despues", "").split(","):
+                if image_id:
+                    ImagenDespues.objects.filter(id=image_id).delete()
+
 
             # Si el formulario es nuevo, enviar el correo
             if es_nuevo:
@@ -166,10 +181,6 @@ def miniproyecto_view(request, pk=None):
     # Obtener todos los miembros del equipo desde la base de datos
     opciones_miembros = MiembroEquipo.objects.all()
 
-    # Obtener imágenes existentes para mostrar en la plantilla
-    imagenes_paso1 = ImagenMiniproyecto.objects.filter(miniproyecto=miniproyecto_instance) if miniproyecto_instance else []
-    imagenes_paso2 = ImagenFuncionamiento.objects.filter(miniproyecto=miniproyecto_instance) if miniproyecto_instance else []
-
     # Obtener los "5 Porqués" asociados al Miniproyecto
     porques = Porque.objects.filter(miniproyecto=miniproyecto_instance) if miniproyecto_instance else []
 
@@ -182,9 +193,10 @@ def miniproyecto_view(request, pk=None):
         'mostrar_paso1': mostrar_paso1,
         'subcategorias_datos': subcategorias_datos,
         'miniproyecto': miniproyecto_instance,
-        'imagenes_paso1': imagenes_paso1,
-        'imagenes_paso2': imagenes_paso2,
         'porques': porques,
+        'imagenes_funcionamiento': ImagenFuncionamiento.objects.filter(miniproyecto=miniproyecto_instance),
+        'imagenes_antes': ImagenAntes.objects.filter(miniproyecto=miniproyecto_instance),
+        'imagenes_despues': ImagenDespues.objects.filter(miniproyecto=miniproyecto_instance),
     }
 
     return render(request, 'MiniProyecto/miniproyectos.html', context)
