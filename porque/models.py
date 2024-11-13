@@ -546,6 +546,26 @@ class MiembroEquipo(models.Model):
         return self.nombre
 
 
+
+
+
+class ImagenFallaFun(models.Model):
+    porque = models.ForeignKey(Porque, related_name='Imagen_FallaFun', on_delete=models.CASCADE)
+    imagen = models.ImageField(upload_to='Imagen_FallaFun/')
+    
+    def __str__(self):
+        return f"Imagen Antes para {self.porque}"
+
+
+
+
+
+
+
+
+
+
+
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from .utils import exportar_miembros

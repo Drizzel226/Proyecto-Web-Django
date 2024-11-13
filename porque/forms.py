@@ -6,7 +6,7 @@ class PorqueForm(forms.ModelForm):
         queryset=MiembroEquipo.objects.all(),
         widget=forms.SelectMultiple(attrs={'class': 'form-control select2'})
     )
-
+    Imagen_FallaFun = forms.FileField(widget=forms.ClearableFileInput(attrs={'multiple': True}), required=False)
 
     class Meta:
         model = Porque

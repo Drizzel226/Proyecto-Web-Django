@@ -36,6 +36,8 @@
     <form method="post" class="analisis-5w-form" id="form" enctype="multipart/form-data">
         {% csrf_token %}
 
+
+        
 <!-- Sección Paso 0: Datos iniciales -->
 <div id="seccion1" class="recuadro-paso">
     <h2 class="text-primary">Paso 0: Datos Iniciales</h2>
@@ -190,6 +192,7 @@
 </div>
 
 
+
 <!-- Sección Paso 1: Descripción del Problema (visible después del Paso 0) -->
 {% if mostrar_paso1 %}
 <div id="paso1-section" class="recuadro-paso mt-4" style="border: 1px solid #ff0000;">
@@ -200,36 +203,36 @@
     </div>
     <div id="contenido-paso1">
         <div><h1></h1></div>
-        <div class="form-row">
-            <div class="form-group col-md-12">
+
+        <div class="form-row" style="display: flex; gap: 15px;">
+            <div class="form-group" style="flex: 1;">
                 {{ form.que_ocurre.label_tag }}
                 {{ form.que_ocurre }}
             </div>
-        </div>
-        <div class="form-row">
-            <div class="form-group col-md-12">
+            <div class="form-group" style="flex: 1;">
                 {{ form.como_ocurre.label_tag }}
                 {{ form.como_ocurre }}
             </div>
         </div>
-        <div class="form-row">
-            <div class="form-group col-md-12">
+
+        <div class="form-row" style="display: flex; gap: 15px;">
+            <div class="form-group" style="flex: 1;">
                 {{ form.donde_ocurre.label_tag }}
                 {{ form.donde_ocurre }}
             </div>
-        </div>
-        <div class="form-row">
-            <div class="form-group col-md-12">
+            <div class="form-group" style="flex: 1;">
                 {{ form.cuando_ocurre.label_tag }}
                 {{ form.cuando_ocurre }}
             </div>
         </div>
-        <div class="form-row">
-            <div class="form-group col-md-12">
+
+        <div class="form-row" style="display: flex; gap: 15px;">
+            <div class="form-group" style="flex: 1;">
                 {{ form.quien_presente.label_tag }}
                 {{ form.quien_presente }}
             </div>
         </div>
+
 
         <!-- Señal antes de que ocurra el problema -->
         <h2 class="text-danger">Señal antes de que ocurra el problema</h2>
@@ -251,10 +254,184 @@
                 {{ form.falla_funcional.label_tag }}
                 {{ form.falla_funcional }}
             </div>
-            <div class="form-group col-md-6">
-                {{ form.imagen_falla_funcional.label_tag }}
-                {{ form.imagen_falla_funcional }}
-            </div>
+            
+                <!-- Campo para seleccionar y cargar nuevas imágenes -->
+                {{ form.Imagen_FallaFun }}
+                    
+                <!-- Contenedor de imágenes ya cargadas para "Antes" (Imágenes desde la base de datos) -->
+                <div id="imagenes-FallaFun-container">
+                    {% for imagen in Imagen_FallaFun %}
+                        <div class="image-preview-container" data-image-id="{{ imagen.id }}" style="position: relative; display: inline-block; margin: 5px;">
+                            <!-- Icono de eliminación -->
+                            <span class="close-icon" onclick="removeImage('{{ imagen.id }}', 'FallaFun')">✖</span>
+                            <!-- Imagen en miniatura, clic para ver en modal -->
+                            <img src="{{ imagen.imagen.url }}" alt="Imagen Falla Funcional" class="small-image" onclick="openModal('{{ imagen.imagen.url }}')">
+                        </div>
+                    {% endfor %}
+                </div>                
+
+                <!-- Contenedor para previsualizar nuevas imágenes seleccionadas (Imágenes que aún no están en la base de datos) -->
+                <div id="preview-antes-container" class="form-row" style="display: flex; gap: 10px; flex-wrap: wrap; margin-top: 10px;"></div>
+
+                <!-- Campo oculto para almacenar IDs de imágenes a eliminar -->
+                <input type="hidden" id="delete_images_FallaFun" name="delete_images_FallaFun">
+
+                <!-- Contenedor del Modal para ver la imagen en tamaño completo -->
+                <div id="imageModal" class="modal" onclick="closeModal()">
+                    <span class="close" onclick="closeModal()">✖</span>
+                    <img class="modal-content" id="fullImage">
+                </div>
+
+                <!-- Estilos CSS -->
+                <style>
+                    .close-icon {
+                        position: absolute;
+                        top: 5px;
+                        right: 5px;
+                        color: #ff0000;
+                        font-size: 20px;
+                        font-weight: bold;
+                        cursor: pointer;
+                        background-color: white;
+                        border-radius: 50%;
+                        padding: 2px 5px;
+                        z-index: 10;
+                    }
+
+                    .small-image {
+                        max-width: 100px;
+                        max-height: 100px;
+                        cursor: pointer;
+                        border: 1px solid #ccc;
+                        padding: 5px;
+                        object-fit: cover;
+                    }
+
+                    .modal {
+                        display: none;
+                        position: fixed;
+                        z-index: 1000;
+                        padding-top: 60px;
+                        left: 0;
+                        top: 0;
+                        width: 100%;
+                        height: 100%;
+                        overflow: auto;
+                        background-color: rgba(0,0,0,0.9);
+                    }
+
+                    .modal-content {
+                        margin: auto;
+                        display: block;
+                        max-width: 80%;
+                        max-height: 80%;
+                    }
+
+                    .close {
+                        position: absolute;
+                        top: 15px;
+                        right: 35px;
+                        color: #ffffff;
+                        font-size: 40px;
+                        font-weight: bold;
+                        cursor: pointer;
+                    }
+                </style>
+
+                <!-- JavaScript -->
+                <script>
+                    // Función para eliminar una imagen existente en el servidor
+                    function removeImage(imageId, campo) {
+                        const imageContainer = document.querySelector(`#imagenes-${campo}-container .image-preview-container[data-image-id="${imageId}"]`);
+                        if (imageContainer) {
+                            imageContainer.style.display = "none";
+                            let deleteImagesField = document.getElementById(`delete_images_${campo}`);
+                            deleteImagesField.value += imageId + ",";
+                        }
+                    }
+
+                    // Abre el modal y muestra la imagen en tamaño completo
+                    function openModal(imageUrl) {
+                        const modal = document.getElementById("imageModal");
+                        const fullImage = document.getElementById("fullImage");
+                        fullImage.src = imageUrl;
+                        modal.style.display = "block";
+                    }
+
+                    // Cierra el modal
+                    function closeModal() {
+                        document.getElementById("imageModal").style.display = "none";
+                    }
+
+                    // Función para previsualizar imágenes seleccionadas y permitir su eliminación
+                    function previewImages(input, previewContainerId) {
+                        const previewContainer = document.getElementById(previewContainerId);
+                        previewContainer.innerHTML = '';  // Limpiar previsualizaciones anteriores
+
+                        // Crear una copia de los archivos seleccionados en una lista para manipularla
+                        let files = Array.from(input.files);
+                        
+                        // Mapear archivos con identificadores únicos
+                        files = files.map((file, index) => ({
+                            id: `file_${Date.now()}_${index}`,  // Genera un ID único basado en el tiempo y el índice
+                            file: file
+                        }));
+
+                        files.forEach(fileObj => {
+                            const reader = new FileReader();
+
+                            reader.onload = function(e) {
+                                // Crear contenedor de previsualización
+                                const imagePreview = document.createElement("div");
+                                imagePreview.classList.add("image-preview-container");
+                                imagePreview.style.position = "relative";
+                                imagePreview.style.display = "inline-block";
+                                imagePreview.style.margin = "5px";
+
+                                // Agregar botón de eliminación para la previsualización
+                                const closeIcon = document.createElement("span");
+                                closeIcon.classList.add("close-icon");
+                                closeIcon.innerHTML = "✖";
+                                closeIcon.onclick = () => {
+                                    imagePreview.remove();
+                                    files = files.filter(f => f.id !== fileObj.id);  // Eliminar el archivo de la lista usando el ID único
+                                    resetFileInput(input, files.map(f => f.file));  // Actualizar el campo de selección
+                                };
+
+                                // Agregar imagen de previsualización
+                                const img = document.createElement("img");
+                                img.src = e.target.result;
+                                img.classList.add("small-image");
+                                img.style.maxWidth = "100px";
+                                img.style.maxHeight = "100px";
+                                img.style.border = "1px solid #ccc";
+                                img.style.padding = "5px";
+                                img.style.objectFit = "cover";
+                                img.onclick = () => openModal(e.target.result);  // Agrega onclick para abrir el modal
+
+                                imagePreview.appendChild(closeIcon);
+                                imagePreview.appendChild(img);
+                                previewContainer.appendChild(imagePreview);
+                            };
+
+                            reader.readAsDataURL(fileObj.file);  // Leer archivo como URL de datos
+                        });
+                    }
+
+                    // Función para reiniciar el campo de selección de archivos
+                    function resetFileInput(input, files) {
+                        const dataTransfer = new DataTransfer();
+                        files.forEach(file => dataTransfer.items.add(file));
+                        input.files = dataTransfer.files;
+                    }
+
+                    // Configuración de eventos 'change' para cada campo de imágenes
+                    document.querySelector('input[name="Imagen_FallaFun"]').addEventListener('change', function() {
+                        previewImages(this, 'preview-antes-container');
+                    });
+                </script>
+
+            
         </div>
     </div>
 </div>
@@ -848,25 +1025,30 @@
         <div class="sub-section" style="margin-bottom: 20px;">
             <div><h1></h1></div>
             <style>
-                /* Estilos específicos para #AccionesTable */
-                #AccionesTable {
-                    width: 90%;
+                /* Estilos específicos para la tabla en #paso4-section */
+                #paso4-section #AccionesTable {
+                    width: 97%;
                     border-collapse: collapse;
                     font-family: Arial, sans-serif;
                     margin: 0 auto; /* Centra la tabla */
                 }
-                #AccionesTable th, #AccionesTable td {
+
+                #paso4-section #AccionesTable th, 
+                #paso4-section #AccionesTable td {
                     border: 1px solid #ccc; /* Borde gris claro */
                     padding: 10px;
                     text-align: left;
                 }
-                #AccionesTable th {
+
+                #paso4-section #AccionesTable th {
                     background-color: #f2f2f2; /* Fondo gris suave para los encabezados */
                     font-weight: bold; /* Texto en negrita para los encabezados */
                 }
-                #AccionesTable tbody tr:nth-child(even) {
+
+                #paso4-section #AccionesTable tbody tr:nth-child(even) {
                     background-color: #fafafa; /* Color de fondo para filas alternas */
                 }
+
             </style>
             <!-- Subcategoría Acciones Correctivas -->
             <div class="sub-header" style="background-color: #00C851; color: white; padding: 10px 15px; border-radius: 5px;">
@@ -874,7 +1056,7 @@
             </div>
             
             <div class="sub-content" style="padding: 10px; border: 1px solid #00C851; border-radius: 5px;">
-                <button type="button" id="addAccionCorrectiva" class="btn btn-primary mt-2" style="margin-left: 50px; margin-bottom: 8px;">Agregar Acción Correctiva</button>
+                <button type="button" id="addAccionCorrectiva" class="btn btn-primary mt-2" style="margin-left: 6px; margin-bottom: 8px;">Agregar Acción Correctiva</button>
                 <div class="form-row">
                     <table id="AccionesTable">
                         <tr>
@@ -960,7 +1142,7 @@
             </div>
             
             <div class="sub-content" style="padding: 10px; border: 1px solid #00C851; border-radius: 5px;">
-                <button type="button" id="addAccionPreventiva" class="btn btn-primary mt-2" style="margin-left: 50px; margin-bottom: 8px;">Agregar Acción Preventiva</button>
+                <button type="button" id="addAccionPreventiva" class="btn btn-primary mt-2" style="margin-left: 6px; margin-bottom: 8px;">Agregar Acción Preventiva</button>
 
                 
                 <!-- Contenedor de la tabla centrado -->
@@ -1068,16 +1250,40 @@
                     </table>
                 </div>
             </div>
-            <br>
-            <!-- Ícono con popover que mostrará la imagen -->
-            <div class="popover-container">
-                <i class="fas fa-question-circle"></i>
-                <div class="popover-content">
-                    <img src="{% static 'images/Referencia.png' %}" alt="Descripción de la imagen">
-                </div>
+        </div>
+        <!-- Ícono con popover que mostrará la imagen -->
+        <div class="popover-container">
+            <i class="fas fa-question-circle"></i>
+            <div class="popover-content">
+                <img src="{% static 'images/Referencia.png' %}" alt="Descripción de la imagen">
             </div>
         </div>
     </div>
+    <style>
+        /* Ajusta el tamaño del contenedor para que solo ocupe el espacio del ícono */
+        .popover-container {
+            display: inline-block;
+            position: relative;
+        }
+
+        /* Oculta el popover por defecto */
+        .popover-container .popover-content {
+            display: none;
+            position: absolute;
+            background-color: white;
+            border: 1px solid #ccc;
+            padding: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            z-index: 10;
+            top: 20px; /* Ajusta para la posición deseada */
+            left: -10px; /* Ajusta para la posición deseada */
+        }
+
+        /* Muestra el popover solo cuando el cursor está sobre el ícono */
+        .popover-container:hover .popover-content {
+            display: block;
+        }
+    </style>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             let rowCountCorrectivas = 1;
@@ -1163,17 +1369,42 @@
 
 
 
-
-
-        <!-- Sección Paso 5: Estandarización y Expansión -->
+<!-- Sección Paso 5: Estandarización y Expansión -->
 <div id="paso5-section" class="recuadro-paso mt-4" style="border: 1px solid #D86B20;">
     <div class="paso-header" style="background-color: #D86B20; color: white; padding: 10px 15px; border-radius: 5px;">
         <h2 class="collapsible" style="cursor: pointer; margin: 0;" onclick="toggleVisibility('contenido-paso5')">
             <span style="margin-right: 10px;">&#x25BC;</span> Paso 5: Estandarización y Expansión
         </h2>
     </div>
-    <div><h1></h1></div>
+    
     <div id="contenido-paso5">
+        <div><h1></h1></div>
+        <style>
+            /* Estilos específicos para la tabla en #paso5-section */
+            #paso5-section #AccionesTable {
+                width: 97%;
+                border-collapse: collapse;
+                font-family: Arial, sans-serif;
+                margin: 0 auto; /* Centra la tabla */
+            }
+
+            #paso5-section #AccionesTable th, 
+            #paso5-section #AccionesTable td {
+                border: 1px solid #ccc; /* Borde gris claro */
+                padding: 10px;
+                text-align: left;
+            }
+
+            #paso5-section #AccionesTable th {
+                background-color: #f2f2f2; /* Fondo gris suave para los encabezados */
+                font-weight: bold; /* Texto en negrita para los encabezados */
+            }
+
+            #paso5-section #AccionesTable tbody tr:nth-child(even) {
+                background-color: #fafafa; /* Color de fondo para filas alternas */
+            }
+
+        </style>
         <!-- Bloque 1: Estandarización -->
         <div class="sub-section" style="margin-bottom: 20px;">
             <div class="sub-header" style="background-color: #D86B20; color: white; padding: 10px 15px; border-radius: 5px;">
@@ -1181,7 +1412,7 @@
             </div>
             <div class="sub-content" style="padding: 10px; border: 1px solid #D86B20; border-radius: 5px;">
                 <!-- Botón para agregar filas en Estandarización -->
-                <button type="button" id="addEstandarizacion" class="btn btn-primary mt-2" style="margin-left: 50px; margin-bottom: 8px;">Agregar Acción de Estandarización</button>
+                <button type="button" id="addEstandarizacion" class="btn btn-primary mt-2" style="margin-left: 6px; margin-bottom: 8px;">Agregar Acción de Estandarización</button>
                 <div class="form-row" style="display: flex; justify-content: center;">
                     <table id="AccionesTable" >
                         <thead>
@@ -1269,7 +1500,7 @@
             </div>
             <div class="sub-content" style="padding: 10px; border: 1px solid #D86B20; border-radius: 5px;">
                 <!-- Botón para agregar filas en Expansión -->
-                <button type="button" id="addExpansion" class="btn btn-primary mt-2" style="margin-left: 50px; margin-bottom: 8px;">Agregar Acción de Expansión</button>
+                <button type="button" id="addExpansion" class="btn btn-primary mt-2" style="margin-left: 6px; margin-bottom: 8px;">Agregar Acción de Expansión</button>
                 <div class="form-row" style="display: flex; justify-content: center;">
                     <table id="AccionesTable">
                         <thead>
@@ -1354,7 +1585,7 @@
             <div class="sub-header" style="background-color: #D86B20; color: white; padding: 10px 15px; border-radius: 5px;">
                 <h3 style="margin: 0;">Expansión a...</h3>
             </div>
-
+            <div><h1></h1></div>
             <div class="form-group">
                 <label for="areas_aplicacion">¿A qué áreas podría aplicar la mejora realizada?</label>
                 {{ form.areas_aplicacion }}
