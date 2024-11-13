@@ -8,8 +8,8 @@ from MiniProyecto.models import Miniproyecto
 from .models import VisuMiniModel
 from visu5.models import Roles
 
-# Función para calcular el porcentaje con base en la fecha de inicio
-def calcula_porcentaje(fecha_inicio):
+# Función para calcular el porcentaje de "On Time" basado en días transcurridos
+def calcula_ot(fecha_inicio):
     hoy = date.today()
     dias_transcurridos = (hoy - fecha_inicio).days
 
@@ -24,9 +24,19 @@ def calcula_porcentaje(fecha_inicio):
     else:
         return 0  # Para días mayores a 10 o negativos
 
+# Función para calcular el porcentaje de UPS basado en el puntaje
+def calcular_ups(puntaje_obtenido, puntaje_total):
+    if puntaje_total <= 0:  # Evita división por cero o valores no válidos
+        return 0
+    return round((puntaje_obtenido / puntaje_total) * 100, 2)
+
+# Función para calcular el porcentaje OTIF como el promedio de OT y UPS
+def calcular_otif(ot, ups):
+    return round((ot + ups) / 2, 2)
+
 # Vista principal para mostrar los datos de "Visualización Mini Proyecto"
 def visuMini(request):
-    numero_de_preguntas = 12  # Define aquí el número de preguntas
+    numero_de_preguntas = 12  # Define el número de preguntas para el cálculo de puntaje
     puntaje_maximo_por_pregunta = 5
     puntaje_total = numero_de_preguntas * puntaje_maximo_por_pregunta
 
@@ -41,7 +51,7 @@ def visuMini(request):
             if accion_preventiva_completa:
                 dato.paso_4 = True
                 # Calcular "OT" como porcentaje solo si `paso_4` es True
-                dato.ot = f"{calcula_porcentaje(dato.fecha_inicio)}%"
+                dato.ot = calcula_ot(dato.fecha_inicio)
 
                 # Calcular `dias` solo si `paso_4` es True y `dias` es None
                 if dato.fecha_inicio and visualizacion.dias is None:
@@ -50,21 +60,25 @@ def visuMini(request):
                     visualizacion.save()  # Guardar el valor de `dias` en la base de datos
             else:
                 dato.paso_4 = False
-                dato.ot = ""  # Vacío cuando 'paso_4' es False
+                dato.ot = 0  # Establecer a 0 cuando 'paso_4' es False
                 visualizacion.dias = None  # Limpiar `dias` si `paso_4` es False
                 visualizacion.save()
 
-            dato.porcentaje = visualizacion.porcentaje
             dato.dias = visualizacion.dias  # Asigna el valor de `dias` de visualizacion a `dato`
+            
+            # Calcular el porcentaje UPS y asignarlo al dato
+            puntaje_obtenido = dato.puntaje if dato.puntaje is not None else 0
+            dato.ups = calcular_ups(puntaje_obtenido, puntaje_total)
+
+            # Calcular el porcentaje OTIF como el promedio de OT y UPS
+            dato.otif = calcular_otif(dato.ot, dato.ups)
+
         else:
             dato.paso_4 = False
-            dato.ot = ""
-            dato.porcentaje = 0 
-            dato.dias = ""  
-
-        puntaje_obtenido = dato.puntaje if dato.puntaje is not None else 0
-        dato.puntaje = round((puntaje_obtenido / puntaje_total) * 100, 2) if puntaje_total > 0 else 0
-        dato.promedio_puntaje_porcentaje = round((dato.puntaje + dato.porcentaje) / 2, 2)
+            dato.ot = 0
+            dato.dias = ""
+            dato.ups = 0 
+            dato.otif = 0 
 
     # Verificar si el usuario autenticado es un auditor
     miembro = Roles.objects.filter(email=request.user.email).first()
@@ -98,7 +112,7 @@ def actualizar_checkbox(request):
                 # Calcular `dias` solo una vez en base a fecha_inicio
                 if visualizacion.dias is None:  # Solo calcula si `dias` es None
                     visualizacion.dias = (date.today() - fecha_inicio).days
-                visualizacion.porcentaje = calcula_porcentaje(fecha_inicio)
+                visualizacion.porcentaje = calcula_ot(fecha_inicio)
             elif not estado:
                 # Resetear `paso_4`, `porcentaje` y `dias` si se desmarca el checkbox
                 visualizacion.paso_4 = False

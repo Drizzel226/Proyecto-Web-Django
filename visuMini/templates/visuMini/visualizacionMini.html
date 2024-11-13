@@ -70,15 +70,15 @@
                 <td>
                     <input type="checkbox" name="checkbox_{{ dato.id }}" value="True" {% if dato.paso_4 %}checked{% endif %} disabled>
                 </td>                
-                <td>{{ dato.ot|default_if_none:"-" }}</td>
-                <td>{{ dato.dias|default_if_none:"-" }}</td>
+                <td>{{ dato.ot }}%</td>
+                <td>{{ dato.dias }}</td>
                 {% if es_auditor %}
                     <td>
-                        <a href="{% url 'porque_vista' pk=dato.pk %}" class="btn-verde">Auditar</a>
+                        <a href="{% url 'miniproyecto_vista' pk=dato.pk %}" class="btn-verde">Auditar</a>
                     </td>
                 {% endif %}
-                <td>{{ dato.puntaje|default_if_none:"-" }}%</td>    
-                <td>{{ dato.promedio_puntaje_porcentaje|default_if_none:"-" }}%</td>  
+                <td>{{ dato.ups }}%</td>    
+                <td>{{ dato.otif }}%</td>
             </tr>
             {% endfor %}
         </tbody>
