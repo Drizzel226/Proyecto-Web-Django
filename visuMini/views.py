@@ -46,9 +46,10 @@ def visuMini(request):
     for dato in datos:
         visualizacion = visualizaciones.filter(MiniProyecto_id=dato.id).first()
         if visualizacion:
-            # Condición para marcar 'paso_4' automáticamente
-            accion_preventiva_completa = dato.Accion_Preventiva and dato.Fecha_compromiso2
-            if accion_preventiva_completa:
+            # Condición para marcar 'paso_' automáticamente
+            Estandarizacion_completa = dato.Estandarizacion and dato.Fecha_compromiso3
+            Expansion_completa = dato.Expansion and dato.Fecha_compromiso4
+            if Estandarizacion_completa or Expansion_completa:
                 dato.paso_4 = True
                 # Calcular "OT" como porcentaje solo si `paso_4` es True
                 dato.ot = calcula_ot(dato.fecha_inicio)

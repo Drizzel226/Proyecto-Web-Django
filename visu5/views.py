@@ -35,7 +35,7 @@ def calcular_otif(ot, ups):
 
 # Vista principal para mostrar los datos de "Visualización 5 Por qué"
 def visu(request):
-    numero_de_preguntas = 12  # Define aquí el número de preguntas
+    numero_de_preguntas = 11  # Define aquí el número de preguntas
     puntaje_maximo_por_pregunta = 5
     puntaje_total = numero_de_preguntas * puntaje_maximo_por_pregunta
 
@@ -45,10 +45,10 @@ def visu(request):
     for dato in datos:
         visualizacion = visualizaciones.filter(porque_id=dato.id).first()
         if visualizacion:
-            # Condición para marcar 'paso_4' automáticamente
-            accion_correctiva_completa = dato.Accion_correctiva and dato.Fecha_compromiso1
-            accion_preventiva_completa = dato.Accion_Preventiva and dato.Fecha_compromiso2
-            if accion_correctiva_completa or accion_preventiva_completa:
+            # Condición para marcar 'paso_5' automáticamente
+            Estandarizacion_completa = dato.Estandarizacion and dato.Fecha_compromiso3
+            Expansion_completa = dato.Expansion and dato.Fecha_compromiso4
+            if Estandarizacion_completa or Expansion_completa:
                 dato.paso_4 = True
                 # Calcular "OT" como porcentaje solo si `paso_4` es True
                 dato.ot = calcular_ot(dato.fecha_inicio)
