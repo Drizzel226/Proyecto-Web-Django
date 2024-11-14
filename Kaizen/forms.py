@@ -1,5 +1,5 @@
 from django import forms
-from .models import Kaizen, MiembroEquipo, ImagenKaizen
+from .models import Kaizen, MiembroEquipo
 
 class KaizenForm(forms.ModelForm):
     miembros_equipo = forms.ModelMultipleChoiceField(
@@ -20,8 +20,8 @@ class KaizenForm(forms.ModelForm):
         model = Kaizen
         fields = [
             # Paso 0
-            'Nombre_MP', 'costo', 'ahorro', 'categoria', 'subcategoria', 'area', 'subarea', 'maquina', 'miembros_equipo',
-            'pilar', 'impacto', 'kpi_iceo', 'kpi_secundario', 'fecha_cierre',
+            'Nombre_Kaizen', 'ahorro', 'categoria', 'subcategoria', 'area', 'subarea', 'maquina', 'miembros_equipo',
+            'lider', 'pilar', 'meta', 'kpi_iceo', 'kpi_secundario','valor_inicial','valor_propuesto_final','valor_real_final', 'fecha_cierre',
 
             # Paso 1
             'que_ocurre', 'donde_ocurre', 'cuando_ocurre', 'quien_intervino', 'como_ocurre',
@@ -72,9 +72,12 @@ class KaizenForm(forms.ModelForm):
             'subarea': forms.TextInput(attrs={'class': 'form-control'}),
             'maquina': forms.TextInput(attrs={'class': 'form-control'}),
             'pilar': forms.TextInput(attrs={'class': 'form-control'}),
-            'impacto': forms.Textarea(attrs={'class': 'form-control'}),
+            'meta': forms.Textarea(attrs={'class': 'form-control'}),
             'kpi_iceo': forms.TextInput(attrs={'class': 'form-control'}),
             'kpi_secundario': forms.TextInput(attrs={'class': 'form-control'}),
+            'valor_inicial': forms.TextInput(attrs={'class': 'form-control'}),
+            'valor_propuesto_final': forms.TextInput(attrs={'class': 'form-control'}),
+            'valor_real_final': forms.TextInput(attrs={'class': 'form-control'}),
             'fecha_cierre': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
 
             # Paso 1

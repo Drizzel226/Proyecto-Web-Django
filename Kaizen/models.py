@@ -3,8 +3,7 @@ from django.db import models
 
 class Kaizen(models.Model):
     # Campos existentes
-    Nombre_MP = models.TextField(max_length=100, blank=True, null=True)
-    costo = models.DecimalField(max_digits=12, decimal_places=0, blank=True, null=True, default="0")
+    Nombre_Kaizen = models.TextField(max_length=100, blank=True, null=True)
     ahorro = models.DecimalField(max_digits=12, decimal_places=0, blank=True, null=True, default="0")
     categoria = models.CharField(max_length=100, blank=True, null=True)
     subcategoria = models.CharField(max_length=100, blank=True, null=True)
@@ -12,10 +11,14 @@ class Kaizen(models.Model):
     subarea = models.CharField(max_length=100, blank=True, null=True)
     maquina = models.CharField(max_length=100, blank=True, null=True)
     miembros_equipo = models.ManyToManyField('MiembroEquipo')
+    lider = models.ManyToManyField('MiembroEquipo', related_name="lider", blank=True)
     pilar = models.CharField(max_length=100, blank=True, null=True)
-    impacto = models.TextField(blank=True, null=True)
+    meta = models.TextField(blank=True, null=True)
     kpi_iceo = models.CharField(max_length=100, blank=True, null=True)
     kpi_secundario = models.CharField(max_length=100, blank=True, null=True)
+    valor_inicial = models.CharField(max_length=100, blank=True, null=True)
+    valor_propuesto_final = models.CharField(max_length=100, blank=True, null=True)
+    valor_real_final = models.CharField(max_length=100, blank=True, null=True)
     fecha_inicio = models.DateField(auto_now_add=True, blank=True, null=True)
     fecha_cierre = models.DateField(blank=True, null=True)
 

@@ -42,49 +42,14 @@
 
             <div class="form-row">
                 <div class="form-group col-md-6">
-                    <label for="Nombre_MP">Nombre Miniproyecto</label>
-                    <input type="text" id="Nombre_MP" name="Nombre_MP" class="form-control" 
-                        value="{{ form.Nombre_MP.value|default_if_none:'' }}" 
+                    <label for="Nombre_Kaizen">Nombre Kaizen</label>
+                    <input type="text" id="Nombre_Kaizen" name="Nombre_Kaizen" class="form-control" 
+                        value="{{ form.Nombre_Kaizen.value|default_if_none:'' }}" 
                         placeholder="">
                 </div>
             </div>
 
-            <div class="form-row">
-                <div class="form-group col-md-6">
-                    <label for="costo">Costo [$]</label>
-                    <input type="text" id="costo" name="costo" class="form-control" 
-                        value="{{ form.costo.value|default_if_none:'' }}" 
-                        placeholder="">
-                </div>
-
-                <div class="form-group col-md-6">
-                    <label for="ahorro">Ahorro [$]</label>
-                    <input type="text" id="ahorro" name="ahorro" class="form-control" 
-                        value="{{ form.ahorro.value|default_if_none:'' }}" 
-                        placeholder="">
-                </div>
-
-            </div>
-            
-            <div class="form-row">
-                <div class="form-group col-md-6">
-                    <label for="categoria">Categoría</label>
-                    <input type="text" id="categoria" name="categoria" class="form-control" readonly value="{{ form.categoria.value|default_if_none:'' }}">
-                </div>
-
-                <div class="form-group col-md-6">
-                    <label for="subcategoria">Subcategoría</label>
-                    <select id="subcategoria" name="subcategoria" class="form-control">
-                        <option value="">Seleccione una subcategoría</option>
-                        {% for subcategoria in subcategorias_datos %}
-                            <option value="{{ subcategoria.subcategoria }}" {% if form.subcategoria.value == subcategoria.subcategoria %}selected{% endif %}>
-                                {{ subcategoria.subcategoria }}
-                            </option>
-                        {% endfor %}
-                    </select>
-                                                        
-                </div>
-            </div>
+            <h1>Lugar</h1>
 
             <div class="form-row">
                 <div class="form-group col-md-6">
@@ -106,9 +71,7 @@
                         {% endfor %}
                     </select>
                 </div>
-            </div>
 
-            <div class="form-row">
                 <div class="form-group col-md-6">
                     <label for="maquina">Máquina</label>
                     <select id="maquina" name="maquina" class="form-control">
@@ -118,7 +81,24 @@
                         {% endfor %}
                     </select>
                 </div>
+            </div>
 
+            
+                
+
+            <h1>Equipo</h1>
+
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="lider">Líder del Proyecto</label> <!-- Agrega el label aquí -->
+                    <select id="lider" name="lider" class="select2">
+                        {% for miembro in opciones_miembros %}
+                            <option value="{{ miembro.id }}" data-email="{{ miembro.email }}" {% if miembro.id in form.lider.value %}selected{% endif %}>
+                                {{ miembro.nombre }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
                 <div class="form-group col-md-6">
                     <label for="miembros_equipo">Miembros del equipo</label>
                     <select id="miembros_equipo" name="miembros_equipo" class="form-control select2" multiple>
@@ -130,6 +110,30 @@
                     </select>
                 </div>
             </div>
+            
+            
+            
+
+            <h1>Indicador</h1>
+
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="subcategoria">Subcategoría</label>
+                    <select id="subcategoria" name="subcategoria" class="form-control">
+                        <option value="">Seleccione una subcategoría</option>
+                        {% for subcategoria in subcategorias_datos %}
+                            <option value="{{ subcategoria.subcategoria }}" {% if form.subcategoria.value == subcategoria.subcategoria %}selected{% endif %}>
+                                {{ subcategoria.subcategoria }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="form-group col-md-6">
+                    <label for="categoria">Categoría</label>
+                    <input type="text" id="categoria" name="categoria" class="form-control" readonly value="{{ form.categoria.value|default_if_none:'' }}">
+                </div>
+            </div>
 
             <div class="form-row">
                 <div class="form-group col-md-6">
@@ -138,17 +142,18 @@
                 </div>
 
                 <div class="form-group col-md-6">
-                    <label for="impacto">Impacto</label>
-                    <input type="text" id="impacto" name="impacto" class="form-control" 
-                        value="{{ form.impacto.value|default_if_none:'' }}" 
-                        placeholder="Ej: Minutos, Opi, rendimiento...">
+                    <label for="kpi_iceo">KPI ICEO</label>
+                    <input type="text" id="kpi_iceo" name="kpi_iceo" class="form-control" readonly value="{{ form.kpi_iceo.value|default_if_none:''}}">
                 </div>
             </div>
 
             <div class="form-row">
+                
                 <div class="form-group col-md-6">
-                    <label for="kpi_iceo">KPI ICEO</label>
-                    <input type="text" id="kpi_iceo" name="kpi_iceo" class="form-control" readonly value="{{ form.kpi_iceo.value|default_if_none:''}}">
+                    <label for="meta">Meta</label>
+                    <input type="text" id="meta" name="meta" class="form-control" 
+                        value="{{ form.meta.value|default_if_none:'' }}" 
+                        placeholder="Ej: Aumentar MTBA a 25">
                 </div>
 
                 <div class="form-group col-md-6">
@@ -161,6 +166,44 @@
                     </select>
                 </div>
             </div>
+
+
+
+            <h1>Impacto</h1>
+
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="valor_inicial">Valor KPI inicial</label>
+                    <input type="text" id="valor_inicial" name="valor_inicial" class="form-control" 
+                        value="{{ form.valor_inicial.value|default_if_none:'' }}" 
+                        placeholder="">
+                </div>
+
+                <div class="form-group col-md-6">
+                    <label for="mevalor_propuesto_finalta">Valor KPI propuesto</label>
+                    <input type="text" id="valor_propuesto_final" name="valor_propuesto_final" class="form-control" 
+                        value="{{ form.valor_propuesto_final.value|default_if_none:'' }}" 
+                        placeholder="">
+                </div>
+
+                <div class="form-group col-md-6">
+                    <label for="valor_real_final">Valor KPI real final</label>
+                    <input type="text" id="valor_real_final" name="valor_real_final" class="form-control" 
+                        value="{{ form.valor_real_final.value|default_if_none:'' }}" 
+                        placeholder="">
+                </div>
+
+                <div class="form-group col-md-6">
+                    <label for="ahorro">Ahorro [$]</label>
+                    <input type="text" id="ahorro" name="ahorro" class="form-control" 
+                        value="{{ form.ahorro.value|default_if_none:'' }}" 
+                        placeholder="">
+                </div>
+
+            </div>
+
+
+            <h1>Fechas</h1>
 
             <div class="form-row">
                 {% if not form.instance.pk %}
@@ -216,8 +259,22 @@
 
 
 
-        <!-- Sección Paso 1: Descripción del Problema (visible después del Paso 0) -->
+        <!-- Sección Analisis: (visible después del Paso 0) -->
         {% if mostrar_paso1 %}
+        <div id="analisis-section" class="recuadro-paso mt-4" style="border: 1px solid #006400;">
+            <div class="paso-header" style="background-color: #006400; color: white; padding: 10px 15px; border-radius: 5px;">
+                <h2 class="collapsible" style="cursor: pointer; margin: 0;" onclick="toggleVisibility('contenido-analisis')">
+                    <span style="margin-right: 10px;">&#x25BC;</span> Analisis
+                </h2>
+            </div>
+            <div id="contenido-analisis">
+                <!-- agregar codigo aqui -->
+            </div>
+        </div>
+
+
+
+        <!-- Sección Paso 1: Descripción del Problema (visible después del Paso 0) -->
         <div id="paso1-section" class="recuadro-paso mt-4" style="border: 1px solid #ff0000;">
             <div class="paso-header" style="background-color: #ff0000; color: white; padding: 10px 15px; border-radius: 5px;">
                 <h2 class="collapsible" style="cursor: pointer; margin: 0;" onclick="toggleVisibility('contenido-paso1')">
@@ -1572,6 +1629,7 @@
 
     // Por defecto, hacer que el contenido esté colapsado al cargar la página
     document.addEventListener("DOMContentLoaded", function() {
+        toggleVisibility('contenido-analisis');
         toggleVisibility('contenido-paso1');
         toggleVisibility('contenido-paso2');
         toggleVisibility('contenido-paso3');

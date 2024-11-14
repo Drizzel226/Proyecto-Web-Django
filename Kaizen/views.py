@@ -127,8 +127,9 @@ def Kaizen_view(request, pk=None):
             # Si el formulario es nuevo, enviar el correo
             if es_nuevo:
                 emails = [miembro.email for miembro in Kaizen_instance.miembros_equipo.all()]
-                categoria = Kaizen_instance.categoria
+                nombre = Kaizen_instance.Nombre_Kaizen
                 id_analisis = Kaizen_instance.id
+                categoria = Kaizen_instance.categoria
                 subcategoria = Kaizen_instance.subcategoria
                 area = Kaizen_instance.area
                 subarea = Kaizen_instance.subarea
@@ -136,6 +137,7 @@ def Kaizen_view(request, pk=None):
                 Has sido asignado a un nuevo proyecto de análisis "Kaizen".
 
                 Detalles:
+                - Nombre Kaizen: {nombre}
                 - ID del Análisis: {id_analisis}
                 - Categoría: {categoria}
                 - Subcategoría: {subcategoria}
