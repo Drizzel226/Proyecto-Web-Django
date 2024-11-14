@@ -557,7 +557,12 @@ class ImagenFallaFun(models.Model):
         return f"Imagen Antes para {self.porque}"
 
 
-
+class ImagenFuncionamiento(models.Model):
+    porque = models.ForeignKey(Porque, related_name='Imagen_Funcionamiento', on_delete=models.CASCADE)
+    imagen = models.ImageField(upload_to='Imagen_Funcionamiento/')
+    
+    def __str__(self):
+        return f"Imagen Antes para {self.porque}"
 
 
 

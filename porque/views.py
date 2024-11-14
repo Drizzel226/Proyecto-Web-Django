@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from .forms import PorqueForm
-from .models import Porque, MiembroEquipo, ImagenFallaFun
+from .models import Porque, MiembroEquipo, ImagenFallaFun, ImagenFuncionamiento
 from django.contrib import messages
 from django.utils.timezone import now
 from google.oauth2 import service_account
@@ -86,12 +86,18 @@ def porque_view(request, pk=None):
 
             for image_file in request.FILES.getlist('Imagen_FallaFun'):
                 ImagenFallaFun.objects.create(porque=porque_instance, imagen=image_file)
+            for image_file in request.FILES.getlist('Imagen_Funcionamiento'):
+                ImagenFuncionamiento.objects.create(porque=porque_instance, imagen=image_file)
 
 
 
             for image_id in request.POST.get("delete_images_FallaFun", "").split(","):
                 if image_id:
                     ImagenFallaFun.objects.filter(id=image_id).delete()
+            for image_id in request.POST.get("delete_images_Funcionamiento", "").split(","):
+                if image_id:
+                    ImagenFuncionamiento.objects.filter(id=image_id).delete()
+            
 
             # Si el formulario es nuevo, enviar el correo
             if es_nuevo:
@@ -167,6 +173,7 @@ def porque_view(request, pk=None):
         'mostrar_paso1': mostrar_paso1,
         'subcategorias_datos': subcategorias_datos,
         'Imagen_FallaFun': ImagenFallaFun.objects.filter(porque=porque_instance),
+        'Imagen_Funcionamiento': ImagenFuncionamiento.objects.filter(porque=porque_instance),
     }
 
     return render(request, 'porque/porque.html', context)

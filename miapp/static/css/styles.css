@@ -634,49 +634,6 @@ tbody tr:hover {
     background-color: #f5f5f5; /* Cambio de color al pasar el ratón sobre una fila */
 }
 
-/* POPOVER */
-.popover-container {
-    position: relative;
-    display: inline-block;
-    cursor: pointer;
-    text-align: center; /* Centra el ícono */
-}
-
-.popover-content {
-    visibility: hidden;
-    width: auto;
-    max-width: 2000px;  /* Aumenta el tamaño máximo del popover */
-    background-color: #fff;
-    color: #000;
-    text-align: center;
-    border-radius: 5px;
-    padding: 15px;  /* Aumenta el relleno para un mejor diseño */
-    position: absolute;
-    z-index: 1;
-    bottom: 125%;
-    left: 50%;
-    margin-left: -600px;  /* Centra el popover basado en el nuevo ancho */
-    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
-}
-
-.popover-container:hover .popover-content {
-    visibility: visible;
-    opacity: 1;
-    transition: visibility 0s, opacity 0.3s ease-in-out;
-}
-
-.popover-content img {
-    max-width: 100%;  /* Asegúrate de que la imagen se ajuste al tamaño del popover */
-    height: auto;
-    max-height: 600px;  /* Limita la altura máxima si es necesario */
-}
-
-/* Alinea el contenedor y lo centra */
-.popover-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
 .pagination {
     display: flex;
     justify-content: center;
