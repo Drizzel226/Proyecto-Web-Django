@@ -269,3 +269,31 @@ def asociar_porque_existente(request, miniproyecto_id):
         'miniproyecto': miniproyecto,
         'porques_no_asociados': porques_no_asociados,
     })
+
+
+# porque/views.py
+from django.shortcuts import render, redirect, get_object_or_404
+from .models import Porque
+from Kaizen.models import Kaizen  # Importa el modelo Kaizen
+from django.contrib import messages
+
+def asociar_porque_existentek(request, kaizen_id):
+    kaizen = get_object_or_404(Kaizen, id=kaizen_id)  # Obtener el objeto Kaizen
+    if request.method == 'POST':
+        porque_id = request.POST.get('porque_id')
+        if porque_id:
+            porque = get_object_or_404(Porque, id=porque_id)
+            porque.kaizen = kaizen  # Asociar el "5 Porqué" al Kaizen
+            porque.save()
+            messages.success(request, '5 Porqué asociado correctamente.')
+            return redirect('kaizen_detail', pk=kaizen_id)  # Redirigir de vuelta al Kaizen
+        else:
+            messages.error(request, 'Por favor selecciona un "5 Porqué" válido.')
+    else:
+        porques_no_asociados = Porque.objects.filter(kaizen__isnull=True)  # Obtener solo los "5 Porqués" sin asociación
+
+    return render(request, 'porque/asociar_porque_existentek.html', {
+        'kaizen': kaizen,
+        'porques_no_asociados': porques_no_asociados,
+    }) 
+
