@@ -22,6 +22,14 @@ class Kaizen(models.Model):
     fecha_inicio = models.DateField(auto_now_add=True, blank=True, null=True)
     fecha_cierre = models.DateField(blank=True, null=True)
 
+    # Deployment de Perdida y Objetivo SMART
+    especifico = models.TextField(blank=True, null=True)
+    medible = models.TextField(blank=True, null=True)
+    alcanzable = models.TextField(blank=True, null=True)
+    realista = models.TextField(blank=True, null=True)
+    tiempo = models.TextField(blank=True, null=True)
+
+
     # Paso 1
     que_ocurre = models.TextField("¿Qué ocurre? ¿En qué parte de la máquina o material se visualiza el problema?", blank=True, null=True)
     donde_ocurre = models.TextField("¿Dónde ocurre? Producto, equipo, zona de la máquina, etc.", blank=True, null=True)

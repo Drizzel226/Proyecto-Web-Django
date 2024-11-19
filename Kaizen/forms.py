@@ -23,6 +23,9 @@ class KaizenForm(forms.ModelForm):
             'Nombre_Kaizen', 'ahorro', 'categoria', 'subcategoria', 'area', 'subarea', 'maquina', 'miembros_equipo',
             'lider', 'pilar', 'meta', 'kpi_iceo', 'kpi_secundario','valor_inicial','valor_propuesto_final','valor_real_final', 'fecha_cierre',
 
+            #Deployment de Perdida y Objetivo SMART
+            'especifico', 'medible', 'alcanzable', 'realista', 'tiempo',
+
             # Paso 1
             'que_ocurre', 'donde_ocurre', 'cuando_ocurre', 'quien_intervino', 'como_ocurre',
              'perdida', 'resumen', 'imagen_falla_funcional',
@@ -79,6 +82,14 @@ class KaizenForm(forms.ModelForm):
             'valor_propuesto_final': forms.TextInput(attrs={'class': 'form-control'}),
             'valor_real_final': forms.TextInput(attrs={'class': 'form-control'}),
             'fecha_cierre': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
+
+            # Deployment de Perdida y Objetivo SMART
+
+            'especifico': forms.Textarea(attrs={'class': 'form-control'}),
+            'medible': forms.Textarea(attrs={'class': 'form-control'}),
+            'alcanzable': forms.Textarea(attrs={'class': 'form-control'}),
+            'realista': forms.Textarea(attrs={'class': 'form-control'}),
+            'tiempo': forms.Textarea(attrs={'class': 'form-control'}),
 
             # Paso 1
             'que_ocurre': forms.Textarea(attrs={'class': 'form-control'}),
