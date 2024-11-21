@@ -188,16 +188,10 @@ class ImagenFuncionamiento(models.Model):
     def __str__(self):
         return f"Imagen Funcionamiento para {self.kaizen}"
     
-class ImagenAntes(models.Model):
-    kaizen = models.ForeignKey(Kaizen, related_name='imagenes_antes', on_delete=models.CASCADE)
-    imagen = models.ImageField(upload_to='imagenes_antes/')
+    
+class ImagenDeploy(models.Model):
+    kaizen = models.ForeignKey(Kaizen, related_name='imagenes_deploy', on_delete=models.CASCADE)
+    imagen = models.ImageField(upload_to='imagenes_deploy/')
     
     def __str__(self):
-        return f"Imagen Antes para {self.kaizen}"
-
-class ImagenDespues(models.Model):
-    kaizen = models.ForeignKey(Kaizen, related_name='imagenes_despues', on_delete=models.CASCADE)
-    imagen = models.ImageField(upload_to='imagenes_despues/')
-    
-    def __str__(self):
-        return f"Imagen Después para {self.kaizen}"
+        return f"Imagen Deploy para {self.kaizen}"
