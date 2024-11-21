@@ -24,7 +24,7 @@ class KaizenForm(forms.ModelForm):
             'lider', 'pilar', 'meta', 'kpi_iceo', 'kpi_secundario','valor_inicial','valor_propuesto_final','valor_real_final', 'fecha_cierre',
 
             #Deployment de Perdida y Objetivo SMART
-            'especifico', 'medible', 'alcanzable', 'realista', 'tiempo',
+            'Deployment','especifico', 'medible', 'alcanzable', 'realista', 'tiempo',
 
             # Paso 1
             'que_ocurre', 'donde_ocurre', 'cuando_ocurre', 'quien_intervino', 'como_ocurre',
@@ -85,6 +85,7 @@ class KaizenForm(forms.ModelForm):
 
             # Deployment de Perdida y Objetivo SMART
 
+            'Deployment': forms.Textarea(attrs={'class': 'form-control'}),
             'especifico': forms.Textarea(attrs={'class': 'form-control'}),
             'medible': forms.Textarea(attrs={'class': 'form-control'}),
             'alcanzable': forms.Textarea(attrs={'class': 'form-control'}),

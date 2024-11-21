@@ -269,13 +269,14 @@
                     </h2>
                 </div>
                 <div id="contenido-analisis" style="padding: 15px;">
-                    
-                    <div class="form-row" style="display: flex; gap: 15px; margin-top: 20px;">
+                    <div class="form-row" style="display: flex; gap: 15px;">
                         <div class="form-group" style="flex: 1;">
-                            <label for="resumen-mirror">Resumen del problema:</label>
-                            <textarea id="resumen-mirror" class="form-control">{{ form.resumen.value }}</textarea>
+                            {{ form.Deployment.label_tag }}
+                            {{ form.Deployment }}
                         </div>
+                    
                     </div>
+                    
 
                     <div class="sub-section" style="margin-bottom: 20px;">
                         <div class="sub-header" style="background-color: #a0b19d; color: white; padding: 10px 15px; border-radius: 5px;">
@@ -350,19 +351,7 @@
                                     #SmartTable tr:hover {
                                         background-color: #f1f1f1;
                                     }
-                                
-                                    /* Ajusta el ancho de las cajas de texto */
-                                    textarea, .form-control {
-                                        width: 80%; /* Cambia el ancho al 80% del contenedor */
-                                        padding: 2px; /* Reduce el espacio interno */
-                                        margin: 0 auto; /* Centra la caja dentro de la celda */
-                                        font-size: 12px; /* Reduce el tamaño de texto */
-                                        height: 5px; /* Ajusta la altura */
-                                        resize: none; /* Evita que se pueda redimensionar manualmente */
-                                    }
-                                    
                                 </style>
-                                
                             </div>
                         </div>
                     </div>

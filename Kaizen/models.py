@@ -23,6 +23,7 @@ class Kaizen(models.Model):
     fecha_cierre = models.DateField(blank=True, null=True)
 
     # Deployment de Perdida y Objetivo SMART
+    Deployment = models.TextField("Deployment de perdidas", blank=True, null=True)
     especifico = models.TextField(blank=True, null=True)
     medible = models.TextField(blank=True, null=True)
     alcanzable = models.TextField(blank=True, null=True)
