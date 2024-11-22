@@ -34,6 +34,23 @@ class Kaizen(models.Model):
     # Paso 1
     descripcion = models.TextField("Descripción del problema", blank=True, null=True)
     imagen_falla_funcional = models.ImageField(upload_to='imagenes_fallas/', null=True, blank=True)
+    
+    RESPUESTA_CHOICES = [
+        ('visual', 'Visual'),
+        ('unificado', 'Unificar'),
+        ('5W & H', '5W & H'),
+        ('otros, especificar', 'Otros, especifico'),
+    ]
+
+    seleccion = models.CharField(
+        "Selección:",
+        max_length=20,
+        choices=RESPUESTA_CHOICES,
+        default='no_aplica',
+        blank=False,
+        null=True
+    )
+
 
     # Paso 2
     condicion_basica = models.TextField("¿Existe un estándar (procedimiento/instructivo/formato definido)?, ¿Es conocido por todos, existe un entrenamiento (Registro de capacitación/LUP) ?¿Cumple mantenciones preventivas?", blank=True, null=True)

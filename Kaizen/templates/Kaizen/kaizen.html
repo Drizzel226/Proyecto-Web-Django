@@ -555,12 +555,26 @@
                 <div><h1></h1></div>
 
                 
-                <div class="form-row" style="display: flex; gap: 15px;">
+                <div class="custom-form-layout" style="display: flex; gap: 20px;">
+                    <!-- Sección de Descripción -->
                     <div class="form-group" style="flex: 1;">
-                        {{ form.descripcion.label_tag }}
+                        <label>{{ form.descripcion.label_tag }}</label>
                         {{ form.descripcion }}
                     </div>
+                    <!-- Sección de Selección -->
+                    <div class="form-selection" style="flex: 0.2;">
+                        <label>{{ form.seleccion.label }}</label>
+                        <div class="d-inline-block">
+                            {{ form.seleccion }}
+                        </div>
+                    </div>
                 </div>
+                
+                <style>
+                    
+                    
+                </style>
+
                 
                 <!-- Campo para seleccionar y cargar nuevas imágenes -->
                 {{ form.imagenes_descripcion }}
@@ -589,9 +603,6 @@
                     <img class="modal-content" id="fullImage">
                 </div>
 
-                <script>
-                    
-                </script>
 
             </div>
         </div>

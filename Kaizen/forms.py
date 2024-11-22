@@ -21,7 +21,7 @@ class KaizenForm(forms.ModelForm):
             'Deployment','especifico', 'medible', 'alcanzable', 'realista', 'tiempo',
 
             # Paso 1
-            'descripcion', 'imagen_falla_funcional',
+            'descripcion', 'seleccion', 'imagen_falla_funcional',
 
             # Paso 2
             'condicion_basica', 'imagen_funcionamiento', 
@@ -87,6 +87,7 @@ class KaizenForm(forms.ModelForm):
 
             # Paso 1
             'descripcion': forms.Textarea(attrs={'class': 'form-control'}),
+            'seleccion': forms.RadioSelect(),
             
 
             # Paso 2
