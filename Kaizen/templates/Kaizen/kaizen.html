@@ -282,7 +282,7 @@
 
                     <!-- Campo para seleccionar y cargar nuevas imágenes -->
                     {{ form.imagenes_deploy }}
-                        
+                                            
                     <!-- Contenedor de imágenes ya cargadas para "Antes" (Imágenes desde la base de datos) -->
                     <div id="imagenes-deploy-container">
                         {% for imagen in imagenes_deploy %}
@@ -296,7 +296,7 @@
                     </div>                
 
                     <!-- Contenedor para previsualizar nuevas imágenes seleccionadas (Imágenes que aún no están en la base de datos) -->
-                    <div id="preview-antes-container" class="form-row" style="display: flex; gap: 10px; flex-wrap: wrap; margin-top: 10px;"></div>
+                    <div id="preview-deploy-container" class="form-row" style="display: flex; gap: 10px; flex-wrap: wrap; margin-top: 10px;"></div>
 
                     <!-- Campo oculto para almacenar IDs de imágenes a eliminar -->
                     <input type="hidden" id="delete_images_deploy" name="delete_images_deploy">
@@ -324,8 +324,8 @@
                         }
 
                         .small-image {
-                            max-width: 100px;
-                            max-height: 100px;
+                            max-width: 250px;
+                            max-height: 250px;
                             cursor: pointer;
                             border: 1px solid #ccc;
                             padding: 5px;
@@ -363,8 +363,25 @@
                         }
                     </style>
 
-                    <!-- JavaScript -->
                     <script>
+                        document.addEventListener('DOMContentLoaded', () => {
+                            // Configuración de eventos 'change' para cada campo de imágenes
+                            const imageFields = [
+                                { inputName: 'imagenes_deploy', previewContainerId: 'preview-deploy-container' },
+                                { inputName: 'imagenes_descripcion', previewContainerId: 'preview-descripcion-container' },
+                                { inputName: 'imagenes_funcionamiento', previewContainerId: 'preview-antes-container' }
+                            ];
+                    
+                            imageFields.forEach(({ inputName, previewContainerId }) => {
+                                const inputField = document.querySelector(`input[name="${inputName}"]`);
+                                if (inputField) {
+                                    inputField.addEventListener('change', function () {
+                                        previewImages(this, previewContainerId);
+                                    });
+                                }
+                            });
+                        });
+                    
                         // Función para eliminar una imagen existente en el servidor
                         function removeImage(imageId, campo) {
                             const imageContainer = document.querySelector(`#imagenes-${campo}-container .image-preview-container[data-image-id="${imageId}"]`);
@@ -374,7 +391,7 @@
                                 deleteImagesField.value += imageId + ",";
                             }
                         }
-
+                    
                         // Abre el modal y muestra la imagen en tamaño completo
                         function openModal(imageUrl) {
                             const modal = document.getElementById("imageModal");
@@ -382,101 +399,64 @@
                             fullImage.src = imageUrl;
                             modal.style.display = "block";
                         }
-
+                    
                         // Cierra el modal
                         function closeModal() {
                             document.getElementById("imageModal").style.display = "none";
                         }
-
+                    
                         // Función para previsualizar imágenes seleccionadas y permitir su eliminación
                         function previewImages(input, previewContainerId) {
                             const previewContainer = document.getElementById(previewContainerId);
-                            previewContainer.innerHTML = '';  // Limpiar previsualizaciones anteriores
-
-                            // Crear una copia de los archivos seleccionados en una lista para manipularla
+                            previewContainer.innerHTML = ''; // Limpiar previsualizaciones anteriores
+                    
                             let files = Array.from(input.files);
-                            
-                            // Mapear archivos con identificadores únicos
+                    
                             files = files.map((file, index) => ({
-                                id: `file_${Date.now()}_${index}`,  // Genera un ID único basado en el tiempo y el índice
+                                id: `file_${Date.now()}_${index}`, // Genera un ID único basado en el tiempo y el índice
                                 file: file
                             }));
-
+                    
                             files.forEach(fileObj => {
                                 const reader = new FileReader();
-
-                                reader.onload = function(e) {
-                                    // Crear contenedor de previsualización
+                    
+                                reader.onload = function (e) {
                                     const imagePreview = document.createElement("div");
                                     imagePreview.classList.add("image-preview-container");
                                     imagePreview.style.position = "relative";
                                     imagePreview.style.display = "inline-block";
                                     imagePreview.style.margin = "5px";
-
-                                    // Agregar botón de eliminación para la previsualización
+                    
                                     const closeIcon = document.createElement("span");
                                     closeIcon.classList.add("close-icon");
                                     closeIcon.innerHTML = "✖";
                                     closeIcon.onclick = () => {
                                         imagePreview.remove();
-                                        files = files.filter(f => f.id !== fileObj.id);  // Eliminar el archivo de la lista usando el ID único
-                                        resetFileInput(input, files.map(f => f.file));  // Actualizar el campo de selección
+                                        files = files.filter(f => f.id !== fileObj.id); // Eliminar el archivo de la lista usando el ID único
+                                        resetFileInput(input, files.map(f => f.file)); // Actualizar el campo de selección
                                     };
-
-                                    // Agregar imagen de previsualización
+                    
                                     const img = document.createElement("img");
                                     img.src = e.target.result;
                                     img.classList.add("small-image");
-                                    img.style.maxWidth = "100px";
-                                    img.style.maxHeight = "100px";
-                                    img.style.border = "1px solid #ccc";
-                                    img.style.padding = "5px";
-                                    img.style.objectFit = "cover";
-                                    img.onclick = () => openModal(e.target.result);  // Agrega onclick para abrir el modal
-
+                                    img.onclick = () => openModal(e.target.result);
+                    
                                     imagePreview.appendChild(closeIcon);
                                     imagePreview.appendChild(img);
                                     previewContainer.appendChild(imagePreview);
                                 };
-
-                                reader.readAsDataURL(fileObj.file);  // Leer archivo como URL de datos
+                    
+                                reader.readAsDataURL(fileObj.file); // Leer archivo como URL de datos
                             });
                         }
-
+                    
                         // Función para reiniciar el campo de selección de archivos
                         function resetFileInput(input, files) {
                             const dataTransfer = new DataTransfer();
                             files.forEach(file => dataTransfer.items.add(file));
                             input.files = dataTransfer.files;
                         }
-
-                        // Configuración de eventos 'change' para cada campo de imágenes
-                        document.querySelector('input[name="imagenes_deploy"]').addEventListener('change', function() {
-                            previewImages(this, 'preview-antes-container');
-                        });
-                         // Configuración de eventos 'change' para cada campo de imágenes
-                         document.querySelector('input[name="imagenes_funcionamiento"]').addEventListener('change', function() {
-                            previewImages(this, 'preview-antes-container');
-                        });
-                        // Configuración de eventos 'change' para cada campo de imágenes
-                        document.querySelector('input[name="imagenes"]').addEventListener('change', function() {
-                            previewImages(this, 'preview-antes-container');
-                        });
-                        
                     </script>
-
-
-
-
-
-
-
-
-
-
-
-
-
                     <div class="sub-section" style="margin-bottom: 20px;">
                         <div class="sub-header" style="background-color: #a0b19d; color: white; padding: 10px 15px; border-radius: 5px;">
                             <h3 style="margin: 0;">Objetivo Smart</h3>
@@ -571,80 +551,49 @@
                     <span style="margin-right: 10px;">&#x25BC;</span> Paso 1: Descripción del Problema
                 </h2>
             </div>
-                <div id="contenido-paso1">
-                    <div><h1></h1></div>
+            <div id="contenido-paso1">
+                <div><h1></h1></div>
 
-                    <div class="form-row" style="display: flex; gap: 15px;">
-                        <div class="form-group" style="flex: 1;">
-                            {{ form.que_ocurre.label_tag }}
-                            {{ form.que_ocurre }}
-                        </div>
-                        <div class="form-group" style="flex: 1;">
-                            {{ form.donde_ocurre.label_tag }}
-                            {{ form.donde_ocurre }}
-                        </div>
+                
+                <div class="form-row" style="display: flex; gap: 15px;">
+                    <div class="form-group" style="flex: 1;">
+                        {{ form.descripcion.label_tag }}
+                        {{ form.descripcion }}
                     </div>
-
-                    <div class="form-row" style="display: flex; gap: 15px;">
-                        <div class="form-group" style="flex: 1;">
-                            {{ form.cuando_ocurre.label_tag }}
-                            {{ form.cuando_ocurre }}
+                </div>
+                
+                <!-- Campo para seleccionar y cargar nuevas imágenes -->
+                {{ form.imagenes_descripcion }}
+                                        
+                <!-- Contenedor de imágenes ya cargadas para "Antes" (Imágenes desde la base de datos) -->
+                <div id="imagenes-descripcion-container">
+                    {% for imagen in imagenes_descripcion %}
+                        <div class="image-preview-container" data-image-id="{{ imagen.id }}" style="position: relative; display: inline-block; margin: 5px;">
+                            <!-- Icono de eliminación -->
+                            <span class="close-icon" onclick="removeImage('{{ imagen.id }}', 'descripcion')">✖</span>
+                            <!-- Imagen en miniatura, clic para ver en modal -->
+                            <img src="{{ imagen.imagen.url }}" alt="Imagen Descripcion" class="small-image" onclick="openModal('{{ imagen.imagen.url }}')">
                         </div>
-                        <div class="form-group" style="flex: 1;">
-                            {{ form.quien_intervino.label_tag }}
-                            {{ form.quien_intervino }}
-                        </div>
-                    </div>
+                    {% endfor %}
+                </div>                
 
-                    <div class="form-row" style="display: flex; gap: 15px;">
-                        <div class="form-group" style="flex: 1;">
-                            {{ form.como_ocurre.label_tag }}
-                            {{ form.como_ocurre }}
-                        </div>
-                        <div class="form-group" style="flex: 1;">
-                            {{ form.perdida.label_tag }}
-                            {{ form.perdida }}
-                        </div>
-                    </div>
+                <!-- Contenedor para previsualizar nuevas imágenes seleccionadas -->
+                <div id="preview-descripcion-container" class="form-row" style="display: flex; gap: 10px; flex-wrap: wrap; margin-top: 10px;"></div>
 
-                    <div class="form-row" style="display: flex; gap: 15px;">
-                        <div class="form-group" style="flex: 1;">
-                            {{ form.resumen.label_tag }}
-                            {{ form.resumen }}
-                        </div>
-                    </div>
+                <!-- Campo oculto para almacenar IDs de imágenes a eliminar -->
+                <input type="hidden" id="delete_images_descripcion" name="delete_images_descripcion">
 
-                    <!-- Campo para subir múltiples imágenes -->
-                    <div class="form-group">
-                        {{ form.imagenes.label_tag }}
-                        {{ form.imagenes }}
-                    </div>
-
-                    <!-- Contenedor para mostrar las imágenes ya cargadas con opción de eliminar -->
-                    <div id="imagenes-container" class="form-row">
-                        {% for imagen in miniproyecto.imagenes.all %}
-                            <div class="image-preview-container" style="position: relative; display: inline-block; margin: 5px;">
-                                <!-- Icono de eliminar -->
-                                <span class="close-icon" onclick="removeImage('{{ imagen.id }}')">✖</span>
-                                
-                                <!-- Imagen en tamaño pequeño -->
-                                <img src="{{ imagen.imagen.url }}" alt="Imagen de Miniproyecto" class="small-image" onclick="openModal('{{ imagen.imagen.url }}')">
-                            </div>
-                        {% endfor %}
-                    </div>
-
-                    <!-- Contenedor para previsualizar las nuevas imágenes seleccionadas -->
-                    <div id="preview-container" class="form-row" style="display: flex; gap: 10px; flex-wrap: wrap; margin-top: 10px;"></div>
-
-                    <!-- Campo oculto para almacenar IDs de imágenes a eliminar -->
-                    <input type="hidden" id="delete_images" name="delete_images" value="">
+                <!-- Contenedor del Modal para ver la imagen en tamaño completo -->
+                <div id="imageModal" class="modal" onclick="closeModal()">
+                    <span class="close" onclick="closeModal()">✖</span>
+                    <img class="modal-content" id="fullImage">
                 </div>
 
-                <!-- Modal para ver la imagen en tamaño completo -->
-                <div id="imageModal" class="modal" onclick="closeModal()">
-                    <span class="close">&times;</span>
-                    <img class="modal-content" id="fullImage">
-                </div>    
+                <script>
+                    
+                </script>
+
+            </div>
         </div>
                 
 

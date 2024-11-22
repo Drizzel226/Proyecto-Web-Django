@@ -6,14 +6,9 @@ class KaizenForm(forms.ModelForm):
         queryset=MiembroEquipo.objects.all(),
         widget=forms.SelectMultiple(attrs={'class': 'form-control select2'})
     )
-    imagenes = forms.FileField(widget=forms.ClearableFileInput(attrs={'multiple': True}), required=False)
-    imagen_funcionamiento_files = forms.FileField(
-        widget=forms.ClearableFileInput(attrs={'multiple': True}),
-        required=False,
-        label="Imagenes Funcionamiento"
-    )
-    imagenes_funcionamiento = forms.FileField(widget=forms.ClearableFileInput(attrs={'multiple': True}), required=False)
+    genes_funcionamiento = forms.FileField(widget=forms.ClearableFileInput(attrs={'multiple': True}), required=False)
     imagenes_deploy = forms.FileField(widget=forms.ClearableFileInput(attrs={'multiple': True}), required=False)
+    imagenes_descripcion = forms.FileField(widget=forms.ClearableFileInput(attrs={'multiple': True}), required=False)
 
     class Meta:
         model = Kaizen
@@ -26,8 +21,7 @@ class KaizenForm(forms.ModelForm):
             'Deployment','especifico', 'medible', 'alcanzable', 'realista', 'tiempo',
 
             # Paso 1
-            'que_ocurre', 'donde_ocurre', 'cuando_ocurre', 'quien_intervino', 'como_ocurre',
-             'perdida', 'resumen', 'imagen_falla_funcional',
+            'descripcion', 'imagen_falla_funcional',
 
             # Paso 2
             'condicion_basica', 'imagen_funcionamiento', 
@@ -92,14 +86,8 @@ class KaizenForm(forms.ModelForm):
             'tiempo': forms.Textarea(attrs={'class': 'form-control'}),
 
             # Paso 1
-            'que_ocurre': forms.Textarea(attrs={'class': 'form-control'}),
-            'donde_ocurre': forms.Textarea(attrs={'class': 'form-control'}),
-            'como_ocurre': forms.Textarea(attrs={'class': 'form-control'}),
-            'cuando_ocurre': forms.Textarea(attrs={'class': 'form-control'}),
-            'quien_intervino': forms.Textarea(attrs={'class': 'form-control'}),
-            'perdida': forms.Textarea(attrs={'class': 'form-control'}),
-            'resumen': forms.Textarea(attrs={'class': 'form-control'}),
-            'imagen_falla_funcional': forms.ClearableFileInput(attrs={'class': 'form-control'}),
+            'descripcion': forms.Textarea(attrs={'class': 'form-control'}),
+            
 
             # Paso 2
             'condicion_basica': forms.Textarea(attrs={'class': 'form-control'}),

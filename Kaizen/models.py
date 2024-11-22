@@ -32,13 +32,7 @@ class Kaizen(models.Model):
 
 
     # Paso 1
-    que_ocurre = models.TextField("¿Qué ocurre? ¿En qué parte de la máquina o material se visualiza el problema?", blank=True, null=True)
-    donde_ocurre = models.TextField("¿Dónde ocurre? Producto, equipo, zona de la máquina, etc.", blank=True, null=True)
-    como_ocurre = models.TextField("¿Cómo ocurre? Describir desde el punto de vista físico el mecanismo de acción visibilizado en el momento.", blank=True, null=True)
-    cuando_ocurre = models.TextField("¿Cuándo ocurrió? Producción, arranque, saneado, cambio de formato, mantención, etc.", blank=True, null=True)
-    quien_intervino = models.TextField("¿Quién pudo influir o interviene?", blank=True, null=True)
-    perdida = models.TextField("¿Cuánto es la pérdida asociada? (horas, kilos, cajas, botellas, dinero, etc)", blank=True, null=True)
-    resumen = models.TextField("Resumen del problema", blank=True, null=True)
+    descripcion = models.TextField("Descripción del problema", blank=True, null=True)
     imagen_falla_funcional = models.ImageField(upload_to='imagenes_fallas/', null=True, blank=True)
 
     # Paso 2
@@ -174,12 +168,21 @@ def actualizar_google_sheets(sender, instance, **kwargs):
 
 from django.db import models
 
-class ImagenKaizen(models.Model):
-    kaizen = models.ForeignKey(Kaizen, related_name='imagenes', on_delete=models.CASCADE)
-    imagen = models.ImageField(upload_to='imagenes_Kaizen/')
 
+class ImagenDeploy(models.Model):
+    kaizen = models.ForeignKey(Kaizen, related_name='imagenes_deploy', on_delete=models.CASCADE)
+    imagen = models.ImageField(upload_to='imagenes_deploy/')
+    
     def __str__(self):
-        return f"Imagen para {self.kaizen}"
+        return f"Imagen Deploy para {self.kaizen}"
+    
+class ImagenDescripcion(models.Model):
+    kaizen = models.ForeignKey(Kaizen, related_name='imagenes_descripcion', on_delete=models.CASCADE)
+    imagen = models.ImageField(upload_to='imagenes_descripcion/')
+    
+    def __str__(self):
+        return f"Imagen Deploy para {self.kaizen}"
+
     
 class ImagenFuncionamiento(models.Model):
     kaizen = models.ForeignKey(Kaizen, related_name='imagenes_funcionamiento', on_delete=models.CASCADE)
@@ -189,9 +192,3 @@ class ImagenFuncionamiento(models.Model):
         return f"Imagen Funcionamiento para {self.kaizen}"
     
     
-class ImagenDeploy(models.Model):
-    kaizen = models.ForeignKey(Kaizen, related_name='imagenes_deploy', on_delete=models.CASCADE)
-    imagen = models.ImageField(upload_to='imagenes_deploy/')
-    
-    def __str__(self):
-        return f"Imagen Deploy para {self.kaizen}"

@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from .forms import KaizenForm
-from .models import Kaizen, MiembroEquipo, ImagenKaizen, ImagenFuncionamiento, ImagenDeploy
+from .models import Kaizen, MiembroEquipo, ImagenFuncionamiento, ImagenDeploy, ImagenDescripcion
 from django.contrib import messages
 from django.utils.timezone import now
 from google.oauth2 import service_account
@@ -87,14 +87,19 @@ def Kaizen_view(request, pk=None):
 
 
             # Guardar las nuevas imágenes subidas en Paso 1
-            for image_file in request.FILES.getlist('imagenes'):
-                ImagenKaizen.objects.create(kaizen=Kaizen_instance, imagen=image_file)
+            for image_file in request.FILES.getlist('imagenes_deploy'):
+                ImagenDeploy.objects.create(kaizen=Kaizen_instance, imagen=image_file)
+
+            for image_file in request.FILES.getlist('imagenes_descripcion'):
+                ImagenDescripcion.objects.create(kaizen=Kaizen_instance, imagen=image_file)
 
             for image_file in request.FILES.getlist('imagenes_funcionamiento'):
                 ImagenFuncionamiento.objects.create(kaizen=Kaizen_instance, imagen=image_file)
 
-            for image_file in request.FILES.getlist('imagenes_deploy'):
-                ImagenDeploy.objects.create(kaizen=Kaizen_instance, imagen=image_file)
+
+
+
+            
 
 
 
@@ -103,19 +108,20 @@ def Kaizen_view(request, pk=None):
 
 
             # Eliminar imágenes seleccionadas para ser eliminadas en Paso 1
-            delete_images = request.POST.get("delete_images", "")
-            for image_id in delete_images.split(","):
-                if image_id:
-                    ImagenKaizen.objects.filter(id=image_id).delete()
+            for image_id in request.POST.get("delete_images_deploy", "").split(","):
+                            if image_id:
+                                ImagenDeploy.objects.filter(id=image_id).delete()
+                        
+            for image_id in request.POST.get("delete_images_descripcion", "").split(","):
+                            if image_id:
+                                ImagenDescripcion.objects.filter(id=image_id).delete()
+
 
             for image_id in request.POST.get("delete_images_funcionamiento", "").split(","):
                 if image_id:
                     ImagenFuncionamiento.objects.filter(id=image_id).delete()
 
-            for image_id in request.POST.get("delete_images_deploy", "").split(","):
-                if image_id:
-                    ImagenDeploy.objects.filter(id=image_id).delete()
-
+            
 
             # Si el formulario es nuevo, enviar el correo
             if es_nuevo:
@@ -194,6 +200,7 @@ def Kaizen_view(request, pk=None):
         'porques': porques,
         'imagenes_funcionamiento': ImagenFuncionamiento.objects.filter(kaizen=Kaizen_instance),
         'imagenes_deploy': ImagenDeploy.objects.filter(kaizen=Kaizen_instance),
+        'imagenes_descripcion': ImagenDescripcion.objects.filter(kaizen=Kaizen_instance),
     }
 
     return render(request, 'Kaizen/kaizen.html', context)
