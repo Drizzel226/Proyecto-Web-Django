@@ -76,21 +76,7 @@ class Kaizen(models.Model):
 
     # PASO 3
 
-    ISHIKAWA = models.CharField(
-        max_length=100,
-        choices=[
-            ('Máquina', 'Máquina'),
-            ('Método', 'Método'),
-            ('Medio Ambiente', 'Medio Ambiente'),
-            ('Material', 'Material'),
-            ('Medición', 'Medición'),
-            ('Mano de Obra', 'Mano de Obra'),
-  
-        ],
-        verbose_name="Escoja una de las 6 M",   
-        blank=True, null=True,
-        
-    )
+    
     desarrollo = models.TextField("Identificar posibles causas basados en el(los) modo(s) de falla(s) -> definir la hipótesis y verificar -> ligar la(s) causa(s) raíz con las 6M's", blank=True, null=True)
 
     modo_falla_paso3 = models.TextField("Modo de Falla", blank=True, null=True)
@@ -299,26 +285,63 @@ class Kaizen(models.Model):
     
     # PASO 4
 
+    
+    seleccion_paso4 = models.CharField(
+        "Selección:",
+        max_length=30,
+        choices=[
+                ('moc', 'MOC'),
+                ('otros, especificar', 'Otros, especificar'),
+            ],
+        default='no_aplica',
+        blank=False,
+        null=True
+    )
+
 
     Accion_Preventiva = models.TextField(blank=True, null=True)
     Accion_Preventiva_2 = models.TextField(blank=True, null=True)
     Accion_Preventiva_3 = models.TextField(blank=True, null=True)
     Accion_Preventiva_4 = models.TextField(blank=True, null=True)
+    Accion_Preventiva_5 = models.TextField(blank=True, null=True)
+    Accion_Preventiva_6 = models.TextField(blank=True, null=True)
+    Accion_Preventiva_7 = models.TextField(blank=True, null=True)
+    Accion_Preventiva_8 = models.TextField(blank=True, null=True)
+    Accion_Preventiva_9 = models.TextField(blank=True, null=True)
+    Accion_Preventiva_10 = models.TextField(blank=True, null=True)
 
     Responsable2 = models.ManyToManyField('MiembroEquipo', related_name="responsable2", blank=True)
     Responsable2_2 = models.ManyToManyField('MiembroEquipo', related_name="responsable2_2", blank=True)
     Responsable2_3 = models.ManyToManyField('MiembroEquipo', related_name="responsable2_3", blank=True)
     Responsable2_4 = models.ManyToManyField('MiembroEquipo', related_name="responsable2_4", blank=True)
+    Responsable2_5 = models.ManyToManyField('MiembroEquipo', related_name="responsable2_5", blank=True)
+    Responsable2_6 = models.ManyToManyField('MiembroEquipo', related_name="responsable2_6", blank=True)
+    Responsable2_7 = models.ManyToManyField('MiembroEquipo', related_name="responsable2_7", blank=True)
+    Responsable2_8 = models.ManyToManyField('MiembroEquipo', related_name="responsable2_8", blank=True)
+    Responsable2_9 = models.ManyToManyField('MiembroEquipo', related_name="responsable2_9", blank=True)
+    Responsable2_10 = models.ManyToManyField('MiembroEquipo', related_name="responsable2_10", blank=True)
 
     Fecha_inicio2 = models.DateField(blank=True, null=True)
     Fecha_inicio2_2 = models.DateField(blank=True, null=True)
     Fecha_inicio2_3 = models.DateField(blank=True, null=True)
     Fecha_inicio2_4 = models.DateField(blank=True, null=True)
+    Fecha_inicio2_5 = models.DateField(blank=True, null=True)
+    Fecha_inicio2_6 = models.DateField(blank=True, null=True)
+    Fecha_inicio2_7 = models.DateField(blank=True, null=True)
+    Fecha_inicio2_8 = models.DateField(blank=True, null=True)
+    Fecha_inicio2_9 = models.DateField(blank=True, null=True)
+    Fecha_inicio2_10 = models.DateField(blank=True, null=True)
 
     Fecha_compromiso2 = models.DateField(blank=True, null=True)
     Fecha_compromiso2_2 = models.DateField(blank=True, null=True)
     Fecha_compromiso2_3 = models.DateField(blank=True, null=True)
     Fecha_compromiso2_4 = models.DateField(blank=True, null=True)
+    Fecha_compromiso2_5 = models.DateField(blank=True, null=True)
+    Fecha_compromiso2_6 = models.DateField(blank=True, null=True)
+    Fecha_compromiso2_7 = models.DateField(blank=True, null=True)
+    Fecha_compromiso2_8 = models.DateField(blank=True, null=True)
+    Fecha_compromiso2_9 = models.DateField(blank=True, null=True)
+    Fecha_compromiso2_10 = models.DateField(blank=True, null=True)
 
     ESTADO_OPCIONES = [
     ('Pendiente', 'Pendiente'),
@@ -328,16 +351,44 @@ class Kaizen(models.Model):
     estado_2 = models.CharField(max_length=10, choices=ESTADO_OPCIONES, default='Pendiente')
     estado_3 = models.CharField(max_length=10, choices=ESTADO_OPCIONES, default='Pendiente')
     estado_4 = models.CharField(max_length=10, choices=ESTADO_OPCIONES, default='Pendiente')
+    estado_5 = models.CharField(max_length=10, choices=ESTADO_OPCIONES, default='Pendiente')
+    estado_6 = models.CharField(max_length=10, choices=ESTADO_OPCIONES, default='Pendiente')
+    estado_7 = models.CharField(max_length=10, choices=ESTADO_OPCIONES, default='Pendiente')
+    estado_8 = models.CharField(max_length=10, choices=ESTADO_OPCIONES, default='Pendiente')
+    estado_9 = models.CharField(max_length=10, choices=ESTADO_OPCIONES, default='Pendiente')
+    estado_10 = models.CharField(max_length=10, choices=ESTADO_OPCIONES, default='Pendiente')
 
     Fecha_cierre_paso4 = models.DateField(blank=True, null=True)
     Fecha_cierre_paso4_2 = models.DateField(blank=True, null=True)
     Fecha_cierre_paso4_3 = models.DateField(blank=True, null=True)
     Fecha_cierre_paso4_4 = models.DateField(blank=True, null=True)
+    Fecha_cierre_paso4_5 = models.DateField(blank=True, null=True)
+    Fecha_cierre_paso4_6 = models.DateField(blank=True, null=True)
+    Fecha_cierre_paso4_7 = models.DateField(blank=True, null=True)
+    Fecha_cierre_paso4_8 = models.DateField(blank=True, null=True)
+    Fecha_cierre_paso4_9 = models.DateField(blank=True, null=True)
+    Fecha_cierre_paso4_10 = models.DateField(blank=True, null=True)
     
 
 
 
     # PASO 5
+
+    seleccion_paso5 = models.CharField(
+        "Selección:",
+        max_length=30,
+        choices=[
+                ('estándar nuevo LUP', 'Estándar nuevo LUP'),
+                ('poka yoke', 'Poka Yoke'),
+                ('gestión visual', 'Gestión Visual'),
+                ('disparador', 'Disparador'),
+            ],
+        default='no_aplica',
+        blank=False,
+        null=True
+    )
+
+    estandarizacion_TA = models.TextField("Estandarización de perdidas", blank=True, null=True)
 
     Estandarizacion = models.TextField(blank=True, null=True)
     Responsable3 = models.ManyToManyField('MiembroEquipo', related_name="responsable3", blank=True)
@@ -355,6 +406,9 @@ class Kaizen(models.Model):
     Responsable3_4 = models.ManyToManyField('MiembroEquipo', related_name="responsable3_4", blank=True)
     Fecha_compromiso3_4 = models.DateField(blank=True, null=True)
 
+
+
+    expansion_TA = models.TextField("Expansión de perdidas", blank=True, null=True)
 
     Expansion = models.TextField(blank=True, null=True)
     Responsable4 = models.ManyToManyField('MiembroEquipo', related_name="responsable4", blank=True)
@@ -417,7 +471,13 @@ class ImagenDescripcion(models.Model):
     
     def __str__(self):
         return f"Imagen Deploy para {self.kaizen}"
-
+    
+class ImagenDefinir(models.Model):
+    kaizen = models.ForeignKey(Kaizen, related_name='imagenes_definir', on_delete=models.CASCADE)
+    imagen = models.ImageField(upload_to='imagenes_definir/')
+    
+    def __str__(self):
+        return f"Imagen Definir para {self.kaizen}"
     
 
     

@@ -9,6 +9,7 @@ class KaizenForm(forms.ModelForm):
     genes_funcionamiento = forms.FileField(widget=forms.ClearableFileInput(attrs={'multiple': True}), required=False)
     imagenes_deploy = forms.FileField(widget=forms.ClearableFileInput(attrs={'multiple': True}), required=False)
     imagenes_descripcion = forms.FileField(widget=forms.ClearableFileInput(attrs={'multiple': True}), required=False)
+    imagenes_definir = forms.FileField(widget=forms.ClearableFileInput(attrs={'multiple': True}), required=False)
 
     class Meta:
         model = Kaizen
@@ -28,7 +29,7 @@ class KaizenForm(forms.ModelForm):
 
 
             # Paso 3
-            'ISHIKAWA',
+            
             'desarrollo',
 
             'modo_falla_paso3',
@@ -123,6 +124,7 @@ class KaizenForm(forms.ModelForm):
         
 
             # PASO 4
+            'seleccion_paso4',
 
             'Accion_Preventiva', 'Responsable2', 'Fecha_inicio2', 'Fecha_compromiso2',  'estado',
             'Fecha_cierre_paso4', 
@@ -135,14 +137,26 @@ class KaizenForm(forms.ModelForm):
 
             'Accion_Preventiva_4', 'Responsable2_4', 'Fecha_inicio2_4', 'Fecha_compromiso2_4', 'estado_4',
             'Fecha_cierre_paso4_4', 
+
+            'Accion_Preventiva_5', 'Responsable2_5', 'Fecha_inicio2_5', 'Fecha_compromiso2_5', 'estado_5', 'Fecha_cierre_paso4_5',
+            'Accion_Preventiva_6', 'Responsable2_6', 'Fecha_inicio2_6', 'Fecha_compromiso2_6', 'estado_6', 'Fecha_cierre_paso4_6',
+            'Accion_Preventiva_7', 'Responsable2_7', 'Fecha_inicio2_7', 'Fecha_compromiso2_7', 'estado_7', 'Fecha_cierre_paso4_7',
+            'Accion_Preventiva_8', 'Responsable2_8', 'Fecha_inicio2_8', 'Fecha_compromiso2_8', 'estado_8', 'Fecha_cierre_paso4_8',
+            'Accion_Preventiva_9', 'Responsable2_9', 'Fecha_inicio2_9', 'Fecha_compromiso2_9', 'estado_9', 'Fecha_cierre_paso4_9',
+            'Accion_Preventiva_10', 'Responsable2_10', 'Fecha_inicio2_10', 'Fecha_compromiso2_10', 'estado_10', 'Fecha_cierre_paso4_10',
+
             
             #PASO 5
+            'seleccion_paso5',
 
+            'estandarizacion_TA',
             'Estandarizacion', 'Responsable3', 'Fecha_compromiso3',
             'Estandarizacion_2', 'Responsable3_2', 'Fecha_compromiso3_2',
             'Estandarizacion_3', 'Responsable3_3', 'Fecha_compromiso3_3',
             'Estandarizacion_4', 'Responsable3_4', 'Fecha_compromiso3_4',
 
+
+            'expansion_TA',
             'Expansion', 'Responsable4', 'Fecha_compromiso4',
             'Expansion_2', 'Responsable4_2', 'Fecha_compromiso4_2',
             'Expansion_3', 'Responsable4_3', 'Fecha_compromiso4_3',
@@ -187,7 +201,6 @@ class KaizenForm(forms.ModelForm):
 
             # Paso 3
 
-            'ISHIKAWA': forms.Select(attrs={'class': 'form-control'}),
             'desarrollo': forms.Textarea(attrs={'class': 'form-control'}),
 
             'modo_falla_paso3': forms.Textarea(attrs={'class': 'form-control'}),
@@ -347,28 +360,57 @@ class KaizenForm(forms.ModelForm):
 
             # Paso 4
 
+            'seleccion_paso4': forms.RadioSelect(),
+
             'Accion_Preventiva': forms.Textarea(attrs={'class': 'accion-correctiva'}),
             'Accion_Preventiva_2': forms.Textarea(attrs={'class': 'accion-correctiva'}),
             'Accion_Preventiva_3': forms.Textarea(attrs={'class': 'accion-correctiva'}),
             'Accion_Preventiva_4': forms.Textarea(attrs={'class': 'accion-correctiva'}),
+            'Accion_Preventiva_5': forms.Textarea(attrs={'class': 'accion-correctiva'}),
+            'Accion_Preventiva_6': forms.Textarea(attrs={'class': 'accion-correctiva'}),
+            'Accion_Preventiva_7': forms.Textarea(attrs={'class': 'accion-correctiva'}),
+            'Accion_Preventiva_8': forms.Textarea(attrs={'class': 'accion-correctiva'}),
+            'Accion_Preventiva_9': forms.Textarea(attrs={'class': 'accion-correctiva'}),
+            'Accion_Preventiva_10': forms.Textarea(attrs={'class': 'accion-correctiva'}),
 
             'Fecha_inicio2': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
             'Fecha_inicio2_2': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
             'Fecha_inicio2_3': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
             'Fecha_inicio2_4': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
+            'Fecha_inicio2_5': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
+            'Fecha_inicio2_6': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
+            'Fecha_inicio2_7': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
+            'Fecha_inicio2_8': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
+            'Fecha_inicio2_9': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
+            'Fecha_inicio2_10': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
 
             'Fecha_compromiso2': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
             'Fecha_compromiso2_2': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
             'Fecha_compromiso2_3': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
             'Fecha_compromiso2_4': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
+            'Fecha_compromiso2_5': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
+            'Fecha_compromiso2_6': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
+            'Fecha_compromiso2_7': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
+            'Fecha_compromiso2_8': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
+            'Fecha_compromiso2_9': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
+            'Fecha_compromiso2_10': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
 
             'Fecha_cierre_paso4': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
             'Fecha_cierre_paso4_2': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
             'Fecha_cierre_paso4_3': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
             'Fecha_cierre_paso4_4': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
+            'Fecha_cierre_paso4_5': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
+            'Fecha_cierre_paso4_6': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
+            'Fecha_cierre_paso4_7': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
+            'Fecha_cierre_paso4_8': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
+            'Fecha_cierre_paso4_9': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
+            'Fecha_cierre_paso4_10': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
 
 
     # Paso 5
+            'seleccion_paso5': forms.RadioSelect(),
+
+            'estandarizacion_TA': forms.Textarea(attrs={'class': 'form-control'}),
 
             'Estandarizacion': forms.Textarea(attrs={'class': 'accion-correctiva'}), 
             'Fecha_compromiso3': forms.DateInput(format='%d-%m-%Y', attrs={'class': 'form-control', 'type': 'date'}),
@@ -383,6 +425,8 @@ class KaizenForm(forms.ModelForm):
             'Fecha_compromiso3_4': forms.DateInput(format='%d-%m-%Y', attrs={'class': 'form-control', 'type': 'date'}),
 
 
+
+            'expansion_TA': forms.Textarea(attrs={'class': 'form-control'}),
 
             'Expansion': forms.Textarea(attrs={'class': 'accion-correctiva'}), 
             'Fecha_compromiso4': forms.DateInput(format='%d-%m-%Y', attrs={'class': 'form-control', 'type': 'date'}),
