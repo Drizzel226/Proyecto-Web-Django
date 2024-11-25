@@ -470,7 +470,7 @@ class ImagenDescripcion(models.Model):
     imagen = models.ImageField(upload_to='imagenes_descripcion/')
     
     def __str__(self):
-        return f"Imagen Deploy para {self.kaizen}"
+        return f"Imagen Descripcion para {self.kaizen}"
     
 class ImagenDefinir(models.Model):
     kaizen = models.ForeignKey(Kaizen, related_name='imagenes_definir', on_delete=models.CASCADE)
@@ -478,7 +478,20 @@ class ImagenDefinir(models.Model):
     
     def __str__(self):
         return f"Imagen Definir para {self.kaizen}"
+
+class ImagenEstandar(models.Model):
+    kaizen = models.ForeignKey(Kaizen, related_name='imagenes_estandar', on_delete=models.CASCADE)
+    imagen = models.ImageField(upload_to='imagenes_estandar/')
     
+    def __str__(self):
+        return f"Imagen Estandar para {self.kaizen}"
+    
+class ImagenExpansion(models.Model):
+    kaizen = models.ForeignKey(Kaizen, related_name='imagenes_expansion', on_delete=models.CASCADE)
+    imagen = models.ImageField(upload_to='imagenes_expansion/')
+    
+    def __str__(self):
+        return f"Imagen Expansion para {self.kaizen}"
 
     
     

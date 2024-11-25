@@ -381,7 +381,9 @@
                             const imageFields = [
                                 { inputName: 'imagenes_deploy', previewContainerId: 'preview-deploy-container' },
                                 { inputName: 'imagenes_descripcion', previewContainerId: 'preview-descripcion-container' },
-                                { inputName: 'imagenes_definir', previewContainerId: 'preview-definir-container' }
+                                { inputName: 'imagenes_definir', previewContainerId: 'preview-definir-container' },
+                                { inputName: 'imagenes_estandar', previewContainerId: 'preview-estandar-container' },
+                                { inputName: 'imagenes_expansion', previewContainerId: 'preview-expansion-container' },
                             ];
                     
                             imageFields.forEach(({ inputName, previewContainerId }) => {
@@ -1893,8 +1895,131 @@
                                 </tbody>
                             </table>
                         </div>
+                        <br>
+                        <!-- Campo para seleccionar y cargar nuevas imágenes -->
+                        {{ form.imagenes_estandar }}
+                                                
+                        <!-- Contenedor de imágenes ya cargadas para "Antes" (Imágenes desde la base de datos) -->
+                        <div id="imagenes-estandar-container">
+                            {% for imagen in imagenes_estandar %}
+                                <div class="image-preview-container" data-image-id="{{ imagen.id }}" style="position: relative; display: inline-block; margin: 5px;">
+                                    <!-- Icono de eliminación -->
+                                    <span class="close-icon" onclick="removeImage('{{ imagen.id }}', 'estandar')">✖</span>
+                                    <!-- Imagen en miniatura, clic para ver en modal -->
+                                    <img src="{{ imagen.imagen.url }}" alt="Imagen Estandar" class="small-image" onclick="openModal('{{ imagen.imagen.url }}')">
+                                </div>
+                            {% endfor %}
+                        </div>                
+
+                        <!-- Contenedor para previsualizar nuevas imágenes seleccionadas -->
+                        <div id="preview-estandar-container" class="form-row" style="display: flex; gap: 10px; flex-wrap: wrap; margin-top: 10px;"></div>
+
+                        <!-- Campo oculto para almacenar IDs de imágenes a eliminar -->
+                        <input type="hidden" id="delete_images_estandar" name="delete_images_estandar">
+
+                        <!-- Contenedor del Modal para ver la imagen en tamaño completo -->
+                        <div id="imageModal" class="modal" onclick="closeModal()">
+                            <span class="close" onclick="closeModal()">✖</span>
+                            <img class="modal-content" id="fullImage">
+                        </div>
                     </div>
                 </div>
+                <script>
+                    document.addEventListener('DOMContentLoaded', () => {
+                        // Configuración de eventos 'change' para cada campo de imágenes
+                        const imageFields = [
+                            { inputName: 'imagenes_deploy', previewContainerId: 'preview-deploy-container' },
+                            { inputName: 'imagenes_descripcion', previewContainerId: 'preview-descripcion-container' },
+                            { inputName: 'imagenes_definir', previewContainerId: 'preview-definir-container' }
+                            { inputName: 'imagenes_estandar', previewContainerId: 'preview-estandar-container' }
+                            { inputName: 'imagenes_expansion', previewContainerId: 'preview-expansion-container' }
+                        ];
+                
+                        imageFields.forEach(({ inputName, previewContainerId }) => {
+                            const inputField = document.querySelector(`input[name="${inputName}"]`);
+                            if (inputField) {
+                                inputField.addEventListener('change', function () {
+                                    previewImages(this, previewContainerId);
+                                });
+                            }
+                        });
+                    });
+                
+                    // Función para eliminar una imagen existente en el servidor
+                    function removeImage(imageId, campo) {
+                        const imageContainer = document.querySelector(`#imagenes-${campo}-container .image-preview-container[data-image-id="${imageId}"]`);
+                        if (imageContainer) {
+                            imageContainer.style.display = "none";
+                            let deleteImagesField = document.getElementById(`delete_images_${campo}`);
+                            deleteImagesField.value += imageId + ",";
+                        }
+                    }
+                
+                    // Abre el modal y muestra la imagen en tamaño completo
+                    function openModal(imageUrl) {
+                        const modal = document.getElementById("imageModal");
+                        const fullImage = document.getElementById("fullImage");
+                        fullImage.src = imageUrl;
+                        modal.style.display = "block";
+                    }
+                
+                    // Cierra el modal
+                    function closeModal() {
+                        document.getElementById("imageModal").style.display = "none";
+                    }
+                
+                    // Función para previsualizar imágenes seleccionadas y permitir su eliminación
+                    function previewImages(input, previewContainerId) {
+                        const previewContainer = document.getElementById(previewContainerId);
+                        previewContainer.innerHTML = ''; // Limpiar previsualizaciones anteriores
+                
+                        let files = Array.from(input.files);
+                
+                        files = files.map((file, index) => ({
+                            id: `file_${Date.now()}_${index}`, // Genera un ID único basado en el tiempo y el índice
+                            file: file
+                        }));
+                
+                        files.forEach(fileObj => {
+                            const reader = new FileReader();
+                
+                            reader.onload = function (e) {
+                                const imagePreview = document.createElement("div");
+                                imagePreview.classList.add("image-preview-container");
+                                imagePreview.style.position = "relative";
+                                imagePreview.style.display = "inline-block";
+                                imagePreview.style.margin = "5px";
+                
+                                const closeIcon = document.createElement("span");
+                                closeIcon.classList.add("close-icon");
+                                closeIcon.innerHTML = "✖";
+                                closeIcon.onclick = () => {
+                                    imagePreview.remove();
+                                    files = files.filter(f => f.id !== fileObj.id); // Eliminar el archivo de la lista usando el ID único
+                                    resetFileInput(input, files.map(f => f.file)); // Actualizar el campo de selección
+                                };
+                
+                                const img = document.createElement("img");
+                                img.src = e.target.result;
+                                img.classList.add("small-image");
+                                img.onclick = () => openModal(e.target.result);
+                
+                                imagePreview.appendChild(closeIcon);
+                                imagePreview.appendChild(img);
+                                previewContainer.appendChild(imagePreview);
+                            };
+                
+                            reader.readAsDataURL(fileObj.file); // Leer archivo como URL de datos
+                        });
+                    }
+                
+                    // Función para reiniciar el campo de selección de archivos
+                    function resetFileInput(input, files) {
+                        const dataTransfer = new DataTransfer();
+                        files.forEach(file => dataTransfer.items.add(file));
+                        input.files = dataTransfer.files;
+                    }
+                </script>
 
                 <!-- Bloque 2: Expansión -->
                 <div class="sub-section" style="margin-bottom: 20px;">
@@ -1987,6 +2112,33 @@
                                     </tr>
                                 </tbody>
                             </table>
+                        </div>
+                        <br>
+                        <!-- Campo para seleccionar y cargar nuevas imágenes -->
+                        {{ form.imagenes_expansion }}
+                                                
+                        <!-- Contenedor de imágenes ya cargadas para "Antes" (Imágenes desde la base de datos) -->
+                        <div id="imagenes-expansion-container">
+                            {% for imagen in imagenes_expansion %}
+                                <div class="image-preview-container" data-image-id="{{ imagen.id }}" style="position: relative; display: inline-block; margin: 5px;">
+                                    <!-- Icono de eliminación -->
+                                    <span class="close-icon" onclick="removeImage('{{ imagen.id }}', 'expansion')">✖</span>
+                                    <!-- Imagen en miniatura, clic para ver en modal -->
+                                    <img src="{{ imagen.imagen.url }}" alt="Imagen Expansion" class="small-image" onclick="openModal('{{ imagen.imagen.url }}')">
+                                </div>
+                            {% endfor %}
+                        </div>                
+
+                        <!-- Contenedor para previsualizar nuevas imágenes seleccionadas -->
+                        <div id="preview-expansion-container" class="form-row" style="display: flex; gap: 10px; flex-wrap: wrap; margin-top: 10px;"></div>
+
+                        <!-- Campo oculto para almacenar IDs de imágenes a eliminar -->
+                        <input type="hidden" id="delete_images_expansion" name="delete_images_expansion">
+
+                        <!-- Contenedor del Modal para ver la imagen en tamaño completo -->
+                        <div id="imageModal" class="modal" onclick="closeModal()">
+                            <span class="close" onclick="closeModal()">✖</span>
+                            <img class="modal-content" id="fullImage">
                         </div>
                     </div>
                 </div>

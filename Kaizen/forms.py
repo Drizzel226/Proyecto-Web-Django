@@ -10,6 +10,8 @@ class KaizenForm(forms.ModelForm):
     imagenes_deploy = forms.FileField(widget=forms.ClearableFileInput(attrs={'multiple': True}), required=False)
     imagenes_descripcion = forms.FileField(widget=forms.ClearableFileInput(attrs={'multiple': True}), required=False)
     imagenes_definir = forms.FileField(widget=forms.ClearableFileInput(attrs={'multiple': True}), required=False)
+    imagenes_estandar = forms.FileField(widget=forms.ClearableFileInput(attrs={'multiple': True}), required=False)
+    imagenes_expansion = forms.FileField(widget=forms.ClearableFileInput(attrs={'multiple': True}), required=False)
 
     class Meta:
         model = Kaizen

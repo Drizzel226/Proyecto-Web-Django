@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from .forms import KaizenForm
-from .models import Kaizen, MiembroEquipo, ImagenDeploy, ImagenDescripcion, ImagenDefinir
+from .models import Kaizen, MiembroEquipo, ImagenDeploy, ImagenDescripcion, ImagenDefinir, ImagenEstandar, ImagenExpansion
 from django.contrib import messages
 from django.utils.timezone import now
 from google.oauth2 import service_account
@@ -96,7 +96,11 @@ def Kaizen_view(request, pk=None):
             for image_file in request.FILES.getlist('imagenes_definir'):
                 ImagenDefinir.objects.create(kaizen=Kaizen_instance, imagen=image_file)
 
-
+            for image_file in request.FILES.getlist('imagenes_estandar'):
+                ImagenEstandar.objects.create(kaizen=Kaizen_instance, imagen=image_file)
+            
+            for image_file in request.FILES.getlist('imagenes_expansion'):
+                ImagenExpansion.objects.create(kaizen=Kaizen_instance, imagen=image_file)
             
 
 
@@ -117,6 +121,15 @@ def Kaizen_view(request, pk=None):
             for image_id in request.POST.get("delete_images_definir", "").split(","):
                             if image_id:
                                 ImagenDefinir.objects.filter(id=image_id).delete()
+                    
+            for image_id in request.POST.get("delete_images_estandar", "").split(","):
+                            if image_id:
+                                ImagenEstandar.objects.filter(id=image_id).delete()
+            
+            for image_id in request.POST.get("delete_images_expansion", "").split(","):
+                            if image_id:
+                                ImagenExpansion.objects.filter(id=image_id).delete()
+            
             
 
             # Si el formulario es nuevo, enviar el correo
@@ -197,6 +210,8 @@ def Kaizen_view(request, pk=None):
         'imagenes_deploy': ImagenDeploy.objects.filter(kaizen=Kaizen_instance),
         'imagenes_descripcion': ImagenDescripcion.objects.filter(kaizen=Kaizen_instance),
         'imagenes_definir': ImagenDefinir.objects.filter(kaizen=Kaizen_instance),
+        'imagenes_estandar': ImagenEstandar.objects.filter(kaizen=Kaizen_instance),
+        'imagenes_expansion': ImagenExpansion.objects.filter(kaizen=Kaizen_instance),
     }
 
     return render(request, 'Kaizen/kaizen.html', context)
