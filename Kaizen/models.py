@@ -49,10 +49,6 @@ class Kaizen(models.Model):
     accion = models.TextField(blank=True, null=True)
     observacion = models.TextField(blank=True, null=True)
     Respon = models.ManyToManyField('MiembroEquipo', related_name="respon", blank=True)
-    
-    
-    
-
     opciones_acciones = models.CharField(
         max_length=100,
         choices=acc,
@@ -64,16 +60,174 @@ class Kaizen(models.Model):
         choices=M6,
         blank=True, null=True
     )
-    
-
     FechaInicio_acciones = models.DateField(blank=True, null=True)
     FechaCompr = models.DateField(blank=True, null=True)
     estado_accion = models.CharField(max_length=10, choices=ESTADO_OPCIONES, default='Pendiente')
     FechaCierre_acciones = models.DateField(blank=True, null=True)
 
 
+    accion_2 = models.TextField(blank=True, null=True)
+    observacion_2 = models.TextField(blank=True, null=True)
+    Respon_2 = models.ManyToManyField('MiembroEquipo', related_name="respon_2", blank=True)
+    opciones_acciones_2 = models.CharField(
+        max_length=100,
+        choices=acc,
+        blank=True, null=True
+    )
+    ISHIKAWA_acciones_2 = models.CharField(
+        max_length=100,
+        choices=M6,
+        blank=True, null=True
+    )
+    FechaInicio_acciones_2 = models.DateField(blank=True, null=True)
+    FechaCompr_2 = models.DateField(blank=True, null=True)
+    estado_accion_2 = models.CharField(max_length=10, choices=ESTADO_OPCIONES, default='Pendiente')
+    FechaCierre_acciones_2 = models.DateField(blank=True, null=True)
 
+    accion_3 = models.TextField(blank=True, null=True)
+    accion_4 = models.TextField(blank=True, null=True)
+    accion_5 = models.TextField(blank=True, null=True)
+    accion_6 = models.TextField(blank=True, null=True)
+    accion_7 = models.TextField(blank=True, null=True)
+    accion_8 = models.TextField(blank=True, null=True)
+    accion_9 = models.TextField(blank=True, null=True)
+    accion_10 = models.TextField(blank=True, null=True)
 
+    observacion_3 = models.TextField(blank=True, null=True)
+    observacion_4 = models.TextField(blank=True, null=True)
+    observacion_5 = models.TextField(blank=True, null=True)
+    observacion_6 = models.TextField(blank=True, null=True)
+    observacion_7 = models.TextField(blank=True, null=True)
+    observacion_8 = models.TextField(blank=True, null=True)
+    observacion_9 = models.TextField(blank=True, null=True)
+    observacion_10 = models.TextField(blank=True, null=True)
+
+    Respon_3 = models.ManyToManyField('MiembroEquipo', related_name="respon_3", blank=True)
+    Respon_4 = models.ManyToManyField('MiembroEquipo', related_name="respon_4", blank=True)
+    Respon_5 = models.ManyToManyField('MiembroEquipo', related_name="respon_5", blank=True)
+    Respon_6 = models.ManyToManyField('MiembroEquipo', related_name="respon_6", blank=True)
+    Respon_7 = models.ManyToManyField('MiembroEquipo', related_name="respon_7", blank=True)
+    Respon_8 = models.ManyToManyField('MiembroEquipo', related_name="respon_8", blank=True)
+    Respon_9 = models.ManyToManyField('MiembroEquipo', related_name="respon_9", blank=True)
+    Respon_10 = models.ManyToManyField('MiembroEquipo', related_name="respon_10", blank=True)
+
+    opciones_acciones_3 = models.CharField(
+        max_length=100,
+        choices=acc,
+        blank=True, null=True
+    )
+    opciones_acciones_4 = models.CharField(
+        max_length=100,
+        choices=acc,
+        blank=True, null=True
+    )
+    opciones_acciones_5 = models.CharField(
+        max_length=100,
+        choices=acc,
+        blank=True, null=True
+    )
+    opciones_acciones_6 = models.CharField(
+        max_length=100,
+        choices=acc,
+        blank=True, null=True
+    )
+    opciones_acciones_7 = models.CharField(
+        max_length=100,
+        choices=acc,
+        blank=True, null=True
+    )
+    opciones_acciones_8 = models.CharField(
+        max_length=100,
+        choices=acc,
+        blank=True, null=True
+    )
+    opciones_acciones_9 = models.CharField(
+        max_length=100,
+        choices=acc,
+        blank=True, null=True
+    )
+    opciones_acciones_10 = models.CharField(
+        max_length=100,
+        choices=acc,
+        blank=True, null=True
+    )
+
+    ISHIKAWA_acciones_3 = models.CharField(
+        max_length=100,
+        choices=M6,
+        blank=True, null=True
+    )
+    ISHIKAWA_acciones_4 = models.CharField(
+        max_length=100,
+        choices=M6,
+        blank=True, null=True
+    )
+    ISHIKAWA_acciones_5 = models.CharField(
+        max_length=100,
+        choices=M6,
+        blank=True, null=True
+    )
+    ISHIKAWA_acciones_6 = models.CharField(
+        max_length=100,
+        choices=M6,
+        blank=True, null=True
+    )
+    ISHIKAWA_acciones_7 = models.CharField(
+        max_length=100,
+        choices=M6,
+        blank=True, null=True
+    )
+    ISHIKAWA_acciones_8 = models.CharField(
+        max_length=100,
+        choices=M6,
+        blank=True, null=True
+    )
+    ISHIKAWA_acciones_9 = models.CharField(
+        max_length=100,
+        choices=M6,
+        blank=True, null=True
+    )
+    ISHIKAWA_acciones_10 = models.CharField(
+        max_length=100,
+        choices=M6,
+        blank=True, null=True
+    )
+
+    FechaInicio_acciones_3 = models.DateField(blank=True, null=True)
+    FechaInicio_acciones_4 = models.DateField(blank=True, null=True)
+    FechaInicio_acciones_5 = models.DateField(blank=True, null=True)
+    FechaInicio_acciones_6 = models.DateField(blank=True, null=True)
+    FechaInicio_acciones_7 = models.DateField(blank=True, null=True)
+    FechaInicio_acciones_8 = models.DateField(blank=True, null=True)
+    FechaInicio_acciones_9 = models.DateField(blank=True, null=True)
+    FechaInicio_acciones_10 = models.DateField(blank=True, null=True)
+
+    FechaCompr_3 = models.DateField(blank=True, null=True)
+    FechaCompr_4 = models.DateField(blank=True, null=True)
+    FechaCompr_5 = models.DateField(blank=True, null=True)
+    FechaCompr_6 = models.DateField(blank=True, null=True)
+    FechaCompr_7 = models.DateField(blank=True, null=True)
+    FechaCompr_8 = models.DateField(blank=True, null=True)
+    FechaCompr_9 = models.DateField(blank=True, null=True)
+    FechaCompr_10 = models.DateField(blank=True, null=True)
+
+    estado_accion_3 = models.CharField(max_length=10, choices=ESTADO_OPCIONES, default='Pendiente')
+    estado_accion_4 = models.CharField(max_length=10, choices=ESTADO_OPCIONES, default='Pendiente')
+    estado_accion_5 = models.CharField(max_length=10, choices=ESTADO_OPCIONES, default='Pendiente')
+    estado_accion_6 = models.CharField(max_length=10, choices=ESTADO_OPCIONES, default='Pendiente')
+    estado_accion_7 = models.CharField(max_length=10, choices=ESTADO_OPCIONES, default='Pendiente')
+    estado_accion_8 = models.CharField(max_length=10, choices=ESTADO_OPCIONES, default='Pendiente')
+    estado_accion_9 = models.CharField(max_length=10, choices=ESTADO_OPCIONES, default='Pendiente')
+    estado_accion_10 = models.CharField(max_length=10, choices=ESTADO_OPCIONES, default='Pendiente')
+
+    FechaCierre_acciones_3 = models.DateField(blank=True, null=True)
+    FechaCierre_acciones_4 = models.DateField(blank=True, null=True)
+    FechaCierre_acciones_5 = models.DateField(blank=True, null=True)
+    FechaCierre_acciones_6 = models.DateField(blank=True, null=True)
+    FechaCierre_acciones_7 = models.DateField(blank=True, null=True)
+    FechaCierre_acciones_8 = models.DateField(blank=True, null=True)
+    FechaCierre_acciones_9 = models.DateField(blank=True, null=True)
+    FechaCierre_acciones_10 = models.DateField(blank=True, null=True)
 
 
 

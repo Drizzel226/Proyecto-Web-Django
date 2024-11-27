@@ -264,6 +264,8 @@
                     </h2>
                 </div>
                 <div id="contenido-tareas">
+                    <div><h1></h1></div>
+                    <button type="button" id="addAccionGeneral" class="btn btn-primary mt-2">Agregar Acción Generales</button>
                     <div id="ContenedorAccionesTable" style="overflow-x: auto;">
                         <table id="AccionesTable" class="table table-striped">
                             <thead>
@@ -313,6 +315,302 @@
                                         </button>
                                     </td>
                                 </tr>
+                                <tr id="accionesPRE-row-2" style="display: none;">
+                                    <td>{{ form.accion_2 }}</td>
+                                    <td>{{ form.observacion_2 }}</td>
+                                    <td>
+                                        <select id="Respon_2" name="Respon_2" class="select2">
+                                            {% for miembro in opciones_miembros %}
+                                            <option value="{{ miembro.id }}" data-email="{{ miembro.email }}" {% if miembro.id in form.Respon_2.value %}selected{% endif %}>
+                                                {{ miembro.nombre }}
+                                            </option>
+                                            {% endfor %}
+                                        </select>
+                                    </td>
+                                    <td>{{ form.opciones_acciones_2 }}</td>
+                                    <td>{{ form.ISHIKAWA_acciones_2 }}</td>
+                                    <td>
+                                        <input type="date" id="FechaInicio_acciones_2" name="FechaInicio_acciones_2" class="form-control" value="{{ form.FechaInicio_acciones_2.value|date:'Y-m-d' }}">
+                                    </td>
+                                    <td>
+                                        <input type="date" id="FechaCompr_2" name="FechaCompr_2" class="form-control" value="{{ form.FechaCompr_2.value|date:'Y-m-d' }}">
+                                    </td>
+                                    <td>
+                                        <input type="text" id="estado_accion_2-{{ accion.id }}" name="estado_accion_2" value="{{ form.estado_accion_2.value }}" class="form-control readonly">
+                                    </td>
+                                    <td>
+                                        <input type="date" id="FechaCierre_acciones_2-{{ accion.id }}" name="FechaCierre_acciones_2" class="form-control" value="{{ form.FechaCierre_acciones_2.value|date:'Y-m-d' }}">
+                                    </td>
+                                    <td>
+                                        <button type="button" class="cerrar-btn" onclick="cerrarAccion('estado_accion_2-{{ accion.id }}', 'FechaCierre_acciones_2-{{ accion.id }}', {{ accion.id }})">
+                                            &#10004;
+                                        </button>
+                                    </td>
+                                </tr>
+                                
+                                <tr id="accionesPRE-row-3" style="display: none;">
+                                    <td>{{ form.accion_3 }}</td>
+                                    <td>{{ form.observacion_3 }}</td>
+                                    <td>
+                                        <select id="Respon_3" name="Respon_3" class="select2">
+                                            {% for miembro in opciones_miembros %}
+                                            <option value="{{ miembro.id }}" data-email="{{ miembro.email }}" {% if miembro.id in form.Respon_3.value %}selected{% endif %}>
+                                                {{ miembro.nombre }}
+                                            </option>
+                                            {% endfor %}
+                                        </select>
+                                    </td>
+                                    <td>{{ form.opciones_acciones_3 }}</td>
+                                    <td>{{ form.ISHIKAWA_acciones_3 }}</td>
+                                    <td>
+                                        <input type="date" id="FechaInicio_acciones_3" name="FechaInicio_acciones_3" class="form-control" value="{{ form.FechaInicio_acciones_3.value|date:'Y-m-d' }}">
+                                    </td>
+                                    <td>
+                                        <input type="date" id="FechaCompr_3" name="FechaCompr_3" class="form-control" value="{{ form.FechaCompr_3.value|date:'Y-m-d' }}">
+                                    </td>
+                                    <td>
+                                        <input type="text" id="estado_accion_3-{{ accion.id }}" name="estado_accion_3" value="{{ form.estado_accion_3.value }}" class="form-control readonly">
+                                    </td>
+                                    <td>
+                                        <input type="date" id="FechaCierre_acciones_3-{{ accion.id }}" name="FechaCierre_acciones_3" class="form-control" value="{{ form.FechaCierre_acciones_3.value|date:'Y-m-d' }}">
+                                    </td>
+                                    <td>
+                                        <button type="button" class="cerrar-btn" onclick="cerrarAccion('estado_accion_3-{{ accion.id }}', 'FechaCierre_acciones_3-{{ accion.id }}', {{ accion.id }})">
+                                            &#10004;
+                                        </button>
+                                    </td>
+                                </tr>
+                                
+                                <tr id="accionesPRE-row-4" style="display: none;">
+                                    <td>{{ form.accion_4 }}</td>
+                                    <td>{{ form.observacion_4 }}</td>
+                                    <td>
+                                        <select id="Respon_4" name="Respon_4" class="select2">
+                                            {% for miembro in opciones_miembros %}
+                                            <option value="{{ miembro.id }}" data-email="{{ miembro.email }}" {% if miembro.id in form.Respon_4.value %}selected{% endif %}>
+                                                {{ miembro.nombre }}
+                                            </option>
+                                            {% endfor %}
+                                        </select>
+                                    </td>
+                                    <td>{{ form.opciones_acciones_4 }}</td>
+                                    <td>{{ form.ISHIKAWA_acciones_4 }}</td>
+                                    <td>
+                                        <input type="date" id="FechaInicio_acciones_4" name="FechaInicio_acciones_4" class="form-control" value="{{ form.FechaInicio_acciones_4.value|date:'Y-m-d' }}">
+                                    </td>
+                                    <td>
+                                        <input type="date" id="FechaCompr_4" name="FechaCompr_4" class="form-control" value="{{ form.FechaCompr_4.value|date:'Y-m-d' }}">
+                                    </td>
+                                    <td>
+                                        <input type="text" id="estado_accion_4-{{ accion.id }}" name="estado_accion_4" value="{{ form.estado_accion_4.value }}" class="form-control readonly">
+                                    </td>
+                                    <td>
+                                        <input type="date" id="FechaCierre_acciones_4-{{ accion.id }}" name="FechaCierre_acciones_4" class="form-control" value="{{ form.FechaCierre_acciones_4.value|date:'Y-m-d' }}">
+                                    </td>
+                                    <td>
+                                        <button type="button" class="cerrar-btn" onclick="cerrarAccion('estado_accion_4-{{ accion.id }}', 'FechaCierre_acciones_4-{{ accion.id }}', {{ accion.id }})">
+                                            &#10004;
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr id="accionesPRE-row-5" style="display: none;">
+                                    <td>{{ form.accion_5 }}</td>
+                                    <td>{{ form.observacion_5 }}</td>
+                                    <td>
+                                        <select id="Respon_5" name="Respon_5" class="select2">
+                                            {% for miembro in opciones_miembros %}
+                                            <option value="{{ miembro.id }}" data-email="{{ miembro.email }}" {% if miembro.id in form.Respon_5.value %}selected{% endif %}>
+                                                {{ miembro.nombre }}
+                                            </option>
+                                            {% endfor %}
+                                        </select>
+                                    </td>
+                                    <td>{{ form.opciones_acciones_5 }}</td>
+                                    <td>{{ form.ISHIKAWA_acciones_5 }}</td>
+                                    <td>
+                                        <input type="date" id="FechaInicio_acciones_5" name="FechaInicio_acciones_5" class="form-control" value="{{ form.FechaInicio_acciones_5.value|date:'Y-m-d' }}">
+                                    </td>
+                                    <td>
+                                        <input type="date" id="FechaCompr_5" name="FechaCompr_5" class="form-control" value="{{ form.FechaCompr_5.value|date:'Y-m-d' }}">
+                                    </td>
+                                    <td>
+                                        <input type="text" id="estado_accion_5-{{ accion.id }}" name="estado_accion_5" value="{{ form.estado_accion_5.value }}" class="form-control readonly">
+                                    </td>
+                                    <td>
+                                        <input type="date" id="FechaCierre_acciones_5-{{ accion.id }}" name="FechaCierre_acciones_5" class="form-control" value="{{ form.FechaCierre_acciones_5.value|date:'Y-m-d' }}">
+                                    </td>
+                                    <td>
+                                        <button type="button" class="cerrar-btn" onclick="cerrarAccion('estado_accion_5-{{ accion.id }}', 'FechaCierre_acciones_5-{{ accion.id }}', {{ accion.id }})">
+                                            &#10004;
+                                        </button>
+                                    </td>
+                                </tr>
+                                
+                                <tr id="accionesPRE-row-6" style="display: none;">
+                                    <td>{{ form.accion_6 }}</td>
+                                    <td>{{ form.observacion_6 }}</td>
+                                    <td>
+                                        <select id="Respon_6" name="Respon_6" class="select2">
+                                            {% for miembro in opciones_miembros %}
+                                            <option value="{{ miembro.id }}" data-email="{{ miembro.email }}" {% if miembro.id in form.Respon_6.value %}selected{% endif %}>
+                                                {{ miembro.nombre }}
+                                            </option>
+                                            {% endfor %}
+                                        </select>
+                                    </td>
+                                    <td>{{ form.opciones_acciones_6 }}</td>
+                                    <td>{{ form.ISHIKAWA_acciones_6 }}</td>
+                                    <td>
+                                        <input type="date" id="FechaInicio_acciones_6" name="FechaInicio_acciones_6" class="form-control" value="{{ form.FechaInicio_acciones_6.value|date:'Y-m-d' }}">
+                                    </td>
+                                    <td>
+                                        <input type="date" id="FechaCompr_6" name="FechaCompr_6" class="form-control" value="{{ form.FechaCompr_6.value|date:'Y-m-d' }}">
+                                    </td>
+                                    <td>
+                                        <input type="text" id="estado_accion_6-{{ accion.id }}" name="estado_accion_6" value="{{ form.estado_accion_6.value }}" class="form-control readonly">
+                                    </td>
+                                    <td>
+                                        <input type="date" id="FechaCierre_acciones_6-{{ accion.id }}" name="FechaCierre_acciones_6" class="form-control" value="{{ form.FechaCierre_acciones_6.value|date:'Y-m-d' }}">
+                                    </td>
+                                    <td>
+                                        <button type="button" class="cerrar-btn" onclick="cerrarAccion('estado_accion_6-{{ accion.id }}', 'FechaCierre_acciones_6-{{ accion.id }}', {{ accion.id }})">
+                                            &#10004;
+                                        </button>
+                                    </td>
+                                </tr>
+                                
+                                <tr id="accionesPRE-row-7" style="display: none;">
+                                    <td>{{ form.accion_7 }}</td>
+                                    <td>{{ form.observacion_7 }}</td>
+                                    <td>
+                                        <select id="Respon_7" name="Respon_7" class="select2">
+                                            {% for miembro in opciones_miembros %}
+                                            <option value="{{ miembro.id }}" data-email="{{ miembro.email }}" {% if miembro.id in form.Respon_7.value %}selected{% endif %}>
+                                                {{ miembro.nombre }}
+                                            </option>
+                                            {% endfor %}
+                                        </select>
+                                    </td>
+                                    <td>{{ form.opciones_acciones_7 }}</td>
+                                    <td>{{ form.ISHIKAWA_acciones_7 }}</td>
+                                    <td>
+                                        <input type="date" id="FechaInicio_acciones_7" name="FechaInicio_acciones_7" class="form-control" value="{{ form.FechaInicio_acciones_7.value|date:'Y-m-d' }}">
+                                    </td>
+                                    <td>
+                                        <input type="date" id="FechaCompr_7" name="FechaCompr_7" class="form-control" value="{{ form.FechaCompr_7.value|date:'Y-m-d' }}">
+                                    </td>
+                                    <td>
+                                        <input type="text" id="estado_accion_7-{{ accion.id }}" name="estado_accion_7" value="{{ form.estado_accion_7.value }}" class="form-control readonly">
+                                    </td>
+                                    <td>
+                                        <input type="date" id="FechaCierre_acciones_7-{{ accion.id }}" name="FechaCierre_acciones_7" class="form-control" value="{{ form.FechaCierre_acciones_7.value|date:'Y-m-d' }}">
+                                    </td>
+                                    <td>
+                                        <button type="button" class="cerrar-btn" onclick="cerrarAccion('estado_accion_7-{{ accion.id }}', 'FechaCierre_acciones_7-{{ accion.id }}', {{ accion.id }})">
+                                            &#10004;
+                                        </button>
+                                    </td>
+                                </tr>
+                                
+                                <tr id="accionesPRE-row-8" style="display: none;">
+                                    <td>{{ form.accion_8 }}</td>
+                                    <td>{{ form.observacion_8 }}</td>
+                                    <td>
+                                        <select id="Respon_8" name="Respon_8" class="select2">
+                                            {% for miembro in opciones_miembros %}
+                                            <option value="{{ miembro.id }}" data-email="{{ miembro.email }}" {% if miembro.id in form.Respon_8.value %}selected{% endif %}>
+                                                {{ miembro.nombre }}
+                                            </option>
+                                            {% endfor %}
+                                        </select>
+                                    </td>
+                                    <td>{{ form.opciones_acciones_8 }}</td>
+                                    <td>{{ form.ISHIKAWA_acciones_8 }}</td>
+                                    <td>
+                                        <input type="date" id="FechaInicio_acciones_8" name="FechaInicio_acciones_8" class="form-control" value="{{ form.FechaInicio_acciones_8.value|date:'Y-m-d' }}">
+                                    </td>
+                                    <td>
+                                        <input type="date" id="FechaCompr_8" name="FechaCompr_8" class="form-control" value="{{ form.FechaCompr_8.value|date:'Y-m-d' }}">
+                                    </td>
+                                    <td>
+                                        <input type="text" id="estado_accion_8-{{ accion.id }}" name="estado_accion_8" value="{{ form.estado_accion_8.value }}" class="form-control readonly">
+                                    </td>
+                                    <td>
+                                        <input type="date" id="FechaCierre_acciones_8-{{ accion.id }}" name="FechaCierre_acciones_8" class="form-control" value="{{ form.FechaCierre_acciones_8.value|date:'Y-m-d' }}">
+                                    </td>
+                                    <td>
+                                        <button type="button" class="cerrar-btn" onclick="cerrarAccion('estado_accion_8-{{ accion.id }}', 'FechaCierre_acciones_8-{{ accion.id }}', {{ accion.id }})">
+                                            &#10004;
+                                        </button>
+                                    </td>
+                                </tr>
+                                
+                                <tr id="accionesPRE-row-9" style="display: none;">
+                                    <td>{{ form.accion_9 }}</td>
+                                    <td>{{ form.observacion_9 }}</td>
+                                    <td>
+                                        <select id="Respon_9" name="Respon_9" class="select2">
+                                            {% for miembro in opciones_miembros %}
+                                            <option value="{{ miembro.id }}" data-email="{{ miembro.email }}" {% if miembro.id in form.Respon_9.value %}selected{% endif %}>
+                                                {{ miembro.nombre }}
+                                            </option>
+                                            {% endfor %}
+                                        </select>
+                                    </td>
+                                    <td>{{ form.opciones_acciones_9 }}</td>
+                                    <td>{{ form.ISHIKAWA_acciones_9 }}</td>
+                                    <td>
+                                        <input type="date" id="FechaInicio_acciones_9" name="FechaInicio_acciones_9" class="form-control" value="{{ form.FechaInicio_acciones_9.value|date:'Y-m-d' }}">
+                                    </td>
+                                    <td>
+                                        <input type="date" id="FechaCompr_9" name="FechaCompr_9" class="form-control" value="{{ form.FechaCompr_9.value|date:'Y-m-d' }}">
+                                    </td>
+                                    <td>
+                                        <input type="text" id="estado_accion_9-{{ accion.id }}" name="estado_accion_9" value="{{ form.estado_accion_9.value }}" class="form-control readonly">
+                                    </td>
+                                    <td>
+                                        <input type="date" id="FechaCierre_acciones_9-{{ accion.id }}" name="FechaCierre_acciones_9" class="form-control" value="{{ form.FechaCierre_acciones_9.value|date:'Y-m-d' }}">
+                                    </td>
+                                    <td>
+                                        <button type="button" class="cerrar-btn" onclick="cerrarAccion('estado_accion_9-{{ accion.id }}', 'FechaCierre_acciones_9-{{ accion.id }}', {{ accion.id }})">
+                                            &#10004;
+                                        </button>
+                                    </td>
+                                </tr>
+                                
+                                <tr id="accionesPRE-row-10" style="display: none;">
+                                    <td>{{ form.accion_10 }}</td>
+                                    <td>{{ form.observacion_10 }}</td>
+                                    <td>
+                                        <select id="Respon_10" name="Respon_10" class="select2">
+                                            {% for miembro in opciones_miembros %}
+                                            <option value="{{ miembro.id }}" data-email="{{ miembro.email }}" {% if miembro.id in form.Respon_10.value %}selected{% endif %}>
+                                                {{ miembro.nombre }}
+                                            </option>
+                                            {% endfor %}
+                                        </select>
+                                    </td>
+                                    <td>{{ form.opciones_acciones_10 }}</td>
+                                    <td>{{ form.ISHIKAWA_acciones_10 }}</td>
+                                    <td>
+                                        <input type="date" id="FechaInicio_acciones_10" name="FechaInicio_acciones_10" class="form-control" value="{{ form.FechaInicio_acciones_10.value|date:'Y-m-d' }}">
+                                    </td>
+                                    <td>
+                                        <input type="date" id="FechaCompr_10" name="FechaCompr_10" class="form-control" value="{{ form.FechaCompr_10.value|date:'Y-m-d' }}">
+                                    </td>
+                                    <td>
+                                        <input type="text" id="estado_accion_10-{{ accion.id }}" name="estado_accion_10" value="{{ form.estado_accion_10.value }}" class="form-control readonly">
+                                    </td>
+                                    <td>
+                                        <input type="date" id="FechaCierre_acciones_10-{{ accion.id }}" name="FechaCierre_acciones_10" class="form-control" value="{{ form.FechaCierre_acciones_10.value|date:'Y-m-d' }}">
+                                    </td>
+                                    <td>
+                                        <button type="button" class="cerrar-btn" onclick="cerrarAccion('estado_accion_10-{{ accion.id }}', 'FechaCierre_acciones_10-{{ accion.id }}', {{ accion.id }})">
+                                            &#10004;
+                                        </button>
+                                    </td>
+                                </tr>
+                                
                             </tbody>
                         </table>
                     </div>
@@ -365,6 +663,48 @@
                     </style>
                     
                     <script>
+
+                        document.addEventListener('DOMContentLoaded', function () {
+                            let rowCountGenerales = 1; // Comienza desde la primera fila
+                            const maxRowsGenerales = 10; // Máximo número de filas disponibles
+                        
+                            // Función para mostrar la siguiente fila oculta
+                            document.getElementById('addAccionGeneral').addEventListener('click', function () {
+                                if (rowCountGenerales < maxRowsGenerales) {
+                                    rowCountGenerales++; // Incrementa el contador de filas
+                                    const nextRow = document.getElementById(`accionesPRE-row-${rowCountGenerales}`);
+                                    if (nextRow) {
+                                        nextRow.style.display = ''; // Muestra la fila oculta
+                                    }
+                        
+                                    // Ocultar el botón si se alcanzan las filas máximas
+                                    if (rowCountGenerales >= maxRowsGenerales) {
+                                        this.style.display = 'none';
+                                    }
+                                }
+                            });
+                        
+                            // Muestra filas con datos al cargar la página
+                            function mostrarFilasConDatos() {
+                                for (let i = maxRowsGenerales; i >= 1; i--) {
+                                    const accionInput = document.getElementById(`id_accion_${i}`);
+                                    if (accionInput && accionInput.value.trim() !== "") {
+                                        for (let j = 1; j <= i; j++) {
+                                            const fila = document.getElementById(`accionesPRE-row-${j}`);
+                                            if (fila) {
+                                                fila.style.display = ''; // Muestra la fila
+                                            }
+                                        }
+                                        rowCountGenerales = i; // Actualiza el contador de filas visibles
+                                        break;
+                                    }
+                                }
+                            }
+                        
+                            // Ejecutar al cargar la página
+                            mostrarFilasConDatos();
+                        });
+                        
                         function cerrarAccion(estadoId, fechaCierreId, accionId) {
                             // Obtener el elemento del estado
                             const estadoInput = document.getElementById(estadoId);
@@ -1507,7 +1847,6 @@
                                 </td>                        
                             </tr>
         
-
                             <tr id="accionesPRE-row2" style="display: none;">
                                 <td>{{ form.Accion_Preventiva_2 }}</td>
                                 <td>
@@ -1537,7 +1876,6 @@
                                     </button>
                                 </td> 
                             </tr>
-
 
                             <tr id="accionesPRE-row3" style="display: none;">
                                 <td>{{ form.Accion_Preventiva_3 }}</td>
@@ -1569,7 +1907,6 @@
                                 </td> 
                             </tr>
 
-
                             <tr id="accionesPRE-row4" style="display: none;">
                                 <td>{{ form.Accion_Preventiva_4 }}</td>
                                 <td>
@@ -1600,7 +1937,6 @@
                                 </td> 
                             </tr>
 
-                            <!-- Row 5 -->
                             <tr id="accionesPRE-row5" style="display: none;">
                                 <td>{{ form.Accion_Preventiva_5 }}</td>
                                 <td>
