@@ -22,6 +22,56 @@ class Kaizen(models.Model):
     fecha_inicio = models.DateField(auto_now_add=True, blank=True, null=True)
     fecha_cierre = models.DateField(blank=True, null=True)
 
+    # Registor acciones generales
+
+    acc = [
+            ('accion imediata (correccion)', 'Acción imediata (corrección)'),
+            ('accion orientada causa raiz (correctiva)', 'Acción orientada causa raíz (correctiva)'),
+            ('accion preventiva', 'Acción preventiva'),
+  
+        ]
+    
+    M6 = [
+            ('Máquina', 'Máquina'),
+            ('Método', 'Método'),
+            ('Medio Ambiente', 'Medio Ambiente'),
+            ('Material', 'Material'),
+            ('Medición', 'Medición'),
+            ('Mano de Obra', 'Mano de Obra'),
+  
+        ]
+    
+    accion = models.TextField(blank=True, null=True)
+    observacion = models.TextField(blank=True, null=True)
+    Respon = models.ManyToManyField('MiembroEquipo', related_name="respon", blank=True)
+    
+    
+    
+
+    opciones_acciones = models.CharField(
+        max_length=100,
+        choices=acc,
+        blank=True, null=True
+    )
+    
+    ISHIKAWA_acciones = models.CharField(
+        max_length=100,
+        choices=M6,
+        blank=True, null=True
+    )
+    
+
+    FechaCompr = models.DateField(blank=True, null=True)
+    FechaCierre_acciones = models.DateField(blank=True, null=True)
+
+
+
+
+
+
+
+
+
     # Deployment de Perdida y Objetivo SMART
     Deployment = models.TextField("Deployment de perdidas", blank=True, null=True)
     especifico = models.TextField(blank=True, null=True)
@@ -231,15 +281,7 @@ class Kaizen(models.Model):
     Raiz_7 = models.TextField("Raíz", blank=True, null=True)
     Raiz_8 = models.TextField("Raíz", blank=True, null=True)
 
-    M6 = [
-            ('Máquina', 'Máquina'),
-            ('Método', 'Método'),
-            ('Medio Ambiente', 'Medio Ambiente'),
-            ('Material', 'Material'),
-            ('Medición', 'Medición'),
-            ('Mano de Obra', 'Mano de Obra'),
-  
-        ]
+    
 
     ISHIKAWA = models.CharField(
         max_length=100,

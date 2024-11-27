@@ -20,6 +20,10 @@ class KaizenForm(forms.ModelForm):
             'Nombre_Kaizen', 'ahorro', 'categoria', 'subcategoria', 'area', 'subarea', 'maquina', 'miembros_equipo',
             'lider', 'pilar', 'meta', 'kpi_iceo', 'kpi_secundario','valor_inicial','valor_propuesto_final','valor_real_final', 'fecha_cierre',
 
+            # Registor acciones generales
+            'accion', 'observacion', 'Respon', 'opciones_acciones', 'ISHIKAWA_acciones', 'FechaCompr', 'FechaCierre_acciones',
+
+
             #Deployment de Perdida y Objetivo SMART
             'Deployment','especifico', 'medible', 'alcanzable', 'realista', 'tiempo',
 
@@ -182,6 +186,17 @@ class KaizenForm(forms.ModelForm):
             'valor_real_final': forms.TextInput(attrs={'class': 'form-control'}),
             'fecha_cierre': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
 
+            # Registor acciones generales
+            #'Respon', 'ISHIKAWA_acciones', 'FechaCompr', 'FechaCierre_acciones',
+
+            'accion': forms.Textarea(attrs={'class': 'form-control'}),
+            'observacion': forms.Textarea(attrs={'class': 'form-control'}),
+
+            'opciones_acciones': forms.RadioSelect(),
+            'ISHIKAWA_acciones': forms.RadioSelect(),
+            'FechaCompr': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
+            'FechaCierre_acciones': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
+            
             # Deployment de Perdida y Objetivo SMART
 
             'Deployment': forms.Textarea(attrs={'class': 'form-control'}),
