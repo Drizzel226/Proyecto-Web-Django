@@ -41,6 +41,11 @@ class Kaizen(models.Model):
   
         ]
     
+    ESTADO_OPCIONES = [
+    ('Pendiente', 'Pendiente'),
+    ('Cerrada', 'Cerrada'),
+    ]
+    
     accion = models.TextField(blank=True, null=True)
     observacion = models.TextField(blank=True, null=True)
     Respon = models.ManyToManyField('MiembroEquipo', related_name="respon", blank=True)
@@ -61,7 +66,9 @@ class Kaizen(models.Model):
     )
     
 
+    FechaInicio_acciones = models.DateField(blank=True, null=True)
     FechaCompr = models.DateField(blank=True, null=True)
+    estado_accion = models.CharField(max_length=10, choices=ESTADO_OPCIONES, default='Pendiente')
     FechaCierre_acciones = models.DateField(blank=True, null=True)
 
 
@@ -385,10 +392,7 @@ class Kaizen(models.Model):
     Fecha_compromiso2_9 = models.DateField(blank=True, null=True)
     Fecha_compromiso2_10 = models.DateField(blank=True, null=True)
 
-    ESTADO_OPCIONES = [
-    ('Pendiente', 'Pendiente'),
-    ('Cerrada', 'Cerrada'),
-    ]
+    
     estado = models.CharField(max_length=10, choices=ESTADO_OPCIONES, default='Pendiente')
     estado_2 = models.CharField(max_length=10, choices=ESTADO_OPCIONES, default='Pendiente')
     estado_3 = models.CharField(max_length=10, choices=ESTADO_OPCIONES, default='Pendiente')
