@@ -244,6 +244,89 @@ def actualizar_estado(request, accion_id):
 
 
 
+from django.shortcuts import get_object_or_404, redirect, render
+from django.contrib import messages
+from .models import Kaizen
+from .forms import KaizenForm
+
+def kaizen_vista(request, pk=None):
+    # Obtener la instancia de Kaizen, si existe
+    kaizen_instance = get_object_or_404(Kaizen, pk=pk) if pk else None
+
+    if request.method == 'POST':
+        # Procesar el puntaje total enviado
+        puntaje_total = request.POST.get('puntaje_total', '0')
+        try:
+            puntaje_total = int(puntaje_total)
+        except ValueError:
+            puntaje_total = 0
+
+        if kaizen_instance:
+            # Guardar el puntaje en la instancia de Kaizen
+            kaizen_instance.puntaje = puntaje_total
+            kaizen_instance.save()
+            messages.success(request, f'Formulario guardado exitosamente con el puntaje: {kaizen_instance.puntaje}')
+            return redirect('kaizen_vista', pk=kaizen_instance.pk)
+        else:
+            messages.error(request, 'La instancia no existe.')
+    else:
+        # Si el método es GET, cargar el formulario con la instancia de Kaizen
+        form = KaizenForm(instance=kaizen_instance)
+
+    # Preparar las preguntas de evaluación
+    preguntas = [
+        {'paso': 'Paso 0', 'pregunta': 'Se indica el Pilar + Indicador (KPI) / Disparador asociado (KAI)'},
+        {'paso': 'Paso 0', 'pregunta': 'Se indica el impacto (pérdida)'},
+        {'paso': 'Paso 0', 'pregunta': 'Se especifican los campos mandatorios (fecha, área subárea, integrantes, etc.)'},
+        {'paso': 'Paso 1', 'pregunta': 'Se describe correctamente el problema: Qué, Cómo, Cuándo, Dónde, Quién'},
+        {'paso': 'Paso 1', 'pregunta': 'El problema describe correctamente la falla funcional o defecto (lo que es evidente a la vista y que genera la desviación)'},
+        {'paso': 'Paso 2', 'pregunta': 'Se describen correctamente los modos de falla / defecto (puntos de partida del análisis 5 PQ)'},
+        {'paso': 'Paso 3', 'pregunta': 'Se encuentra definida la causa raíz del problema planteado'},
+        {'paso': 'Paso 3', 'pregunta': 'Se ha definido la causa dentro de las 5M (Máquina, Método, Hombre, Materiales, Medio Ambiente)'},
+        {'paso': 'Paso 4', 'pregunta': 'Se indican medidas correctivas / Se indican medidas preventivas'},
+        {'paso': 'Paso 4', 'pregunta': 'Se indican responsables en cada caso / Se indican fechas de compromiso'},
+        {'paso': 'Paso 4', 'pregunta': 'Se cumplen fechas de cierre?'},
+        {'paso': 'Paso 5', 'pregunta': '¿Se genera algún nuevo estándar tras este análisis?'},
+    ]
+
+    # Opciones de calificación
+    ratings = [
+        (1, 'Muy insatisfecho'),
+        (2, 'Insatisfecho'),
+        (3, 'Neutral'),
+        (4, 'Satisfecho'),
+        (5, 'Muy Satisfecho')
+    ]
+
+    # Consultar "5 Porqués" asociados al Kaizen
+    porques = Porque.objects.filter(kaizen=kaizen_instance) if kaizen_instance else []
+
+    # Obtener imágenes relacionadas para cada sección
+    imagenes_deploy = ImagenDeploy.objects.filter(kaizen=kaizen_instance)
+    imagenes_descripcion = ImagenDescripcion.objects.filter(kaizen=kaizen_instance)
+    imagenes_definir = ImagenDefinir.objects.filter(kaizen=kaizen_instance)
+    imagenes_estandar = ImagenEstandar.objects.filter(kaizen=kaizen_instance)
+    imagenes_expansion = ImagenExpansion.objects.filter(kaizen=kaizen_instance)
+   
+
+    # Contexto para el template
+    context = {
+        'form': form,
+        'modo_vista': True,
+        'kaizen_instance': kaizen_instance,
+        'preguntas': preguntas,
+        'ratings': ratings,
+        'porques': porques,
+        'imagenes_deploy': imagenes_deploy,
+        'imagenes_descripcion': imagenes_descripcion,
+        'imagenes_definir': imagenes_definir,
+        'imagenes_estandar': imagenes_estandar,
+        'imagenes_expansion': imagenes_expansion,
+       
+        
+    }
+
+    return render(request, 'Kaizen/kaizen_vista.html', context)
 
 
 

@@ -74,7 +74,7 @@
                 <td>{{ dato.dias }}</td>
                 {% if es_auditor %}
                     <td>
-                        <a href="{% url 'miniproyecto_vista' pk=dato.pk %}" class="btn-verde">Auditar</a>
+                        <a href="{% url 'kaizen_vista' pk=dato.pk %}" class="btn-verde">Auditar</a>
                     </td>
                 {% endif %}
                 <td>{{ dato.ups }}%</td>    
