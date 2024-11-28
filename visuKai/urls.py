@@ -1,6 +1,10 @@
+# nombre_de_la_app/urls.py
 from django.urls import path
-from .views import mi_vista
+from . import views
+from .views import visuKai
 
 urlpatterns = [
-    path('visu/', mi_vista, name='visuKai'),  # Cambia el nombre aquí
+    path('visu/', views.visuKai, name='visuKai'),
+    path('actualizar-checkbox/', views.actualizar_checkbox, name='actualizar_checkbox'),
+
 ]
