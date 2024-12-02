@@ -1,7 +1,6 @@
 {% extends 'miapp/base.html' %}
 {% load static %}
 
-
 {% block content %}
 <div class="form-container">
 
@@ -18,31 +17,31 @@
     <form method="post" class="analisis-5w-form" id="form" enctype="multipart/form-data">
         {% csrf_token %}
             
-<div class="container mt-5">
-    <div class="card shadow-sm">
-        <div class="card-header bg-primary text-white">
-            <h2 class="mb-0">Asociar un "5 Por qué" Existente a {{ miniproyecto.Nombre_MP }}</h2>
-        </div>
-        <div class="card-body">
-            <form method="post">
-                {% csrf_token %}
-                <div class="form-group mb-4">
-                    <label for="porque_id" class="form-label">Selecciona un "5 Por qué" para asociar:</label>
-                    <select id="porque_id" name="porque_id" class="form-control">
-                        <option value="">-- Selecciona un "5 Porqué" --</option>
-                        {% for porque in porques_no_asociados %}
-                            <option value="{{ porque.id }}">
-                                ID: {{ porque.id }} - Categoría: {{ porque.categoria }} - Área: {{ porque.area }}
-                            </option>
-                        {% endfor %}
-                    </select>
+        <div class="container mt-5">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h2 class="mb-0">Asociar un "5 Por qué" Existente a {{ miniproyecto.Nombre_MP }}</h2>
                 </div>
-                <div class="d-flex justify-content-between">
-                    <button type="submit" class="btn btn-primary">Asociar</button>
-                    <a href="{% url 'miniproyectos' miniproyecto.id %}" class="btn btn-primary">Cancelar</a>
+                <div class="card-body">
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="form-group mb-4">
+                            <label for="porque_id" class="form-label">Selecciona un "5 Por qué" para asociar:</label>
+                            <select id="porque_id" name="porque_id" class="form-control">
+                                <option value="">-- Selecciona un "5 Porqué" --</option>
+                                {% for porque in porques_no_asociados %}
+                                    <option value="{{ porque.id }}">
+                                        ID: {{ porque.id }} - Categoría: {{ porque.categoria }} - Área: {{ porque.area }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <button type="submit" class="btn btn-primary">Asociar</button>
+                            <a href="{% url 'miniproyectos' miniproyecto.id %}" class="btn btn-primary">Cancelar</a>
+                        </div>
+                    </form>
                 </div>
-            </form>
+            </div>
         </div>
-    </div>
-</div>
 {% endblock %}

@@ -51,35 +51,36 @@ def Kaizen_view(request, pk=None):
     subcategorias_datos = obtener_subcategorias_y_datos()
 
     # Obtener la instancia de Kaizen si pk es proporcionado
-    Kaizen_instance = get_object_or_404(Kaizen, pk=pk) if pk else None
+    kaizen_instance = get_object_or_404(Kaizen, pk=pk) if pk else None
 
     if request.method == 'POST':
         # Procesar el formulario del Kaizen
-        form = KaizenForm(request.POST, request.FILES, instance=Kaizen_instance)
+        form = KaizenForm(request.POST, request.FILES, instance=kaizen_instance)
 
         # Verificar si hay "5 Porqués" para quitar
         porques_a_eliminar = request.POST.get('porques_a_eliminar')
         if porques_a_eliminar:
             porques_ids = porques_a_eliminar.split(',')
-            Porque.objects.filter(id__in=porques_ids, Kaizen=Kaizen_instance).update(Kaizen=None)
+            Porque.objects.filter(id__in=porques_ids, kaizen=kaizen_instance).update(kaizen=None)
+
 
         if form.is_valid():
-            es_nuevo = Kaizen_instance is None
+            es_nuevo = kaizen_instance is None
             
             # Guardar la instancia del formulario pero sin guardarla aún en la BD
-            Kaizen_instance = form.save(commit=False)
+            kaizen_instance = form.save(commit=False)
 
             # Obtener las áreas seleccionadas y almacenarlas como cadena separada por comas
             areas_seleccionadas = form.cleaned_data.get('areas_aplicacion')
             if areas_seleccionadas:
-                Kaizen_instance.areas_aplicacion = ','.join(areas_seleccionadas)
+                kaizen_instance.areas_aplicacion = ','.join(areas_seleccionadas)
 
             # Asignar la fecha de inicio si es la primera vez que se guarda
-            if not Kaizen_instance.fecha_inicio:
-                Kaizen_instance.fecha_inicio = now().date()
+            if not kaizen_instance.fecha_inicio:
+                kaizen_instance.fecha_inicio = now().date()
 
             # Guardar la instancia en la base de datos
-            Kaizen_instance.save()
+            kaizen_instance.save()
 
             # Guardar relaciones ManyToMany (miembros del equipo y responsables)
             form.save_m2m()
@@ -88,19 +89,19 @@ def Kaizen_view(request, pk=None):
 
             # Guardar las nuevas imágenes subidas en Paso 1
             for image_file in request.FILES.getlist('imagenes_deploy'):
-                ImagenDeploy.objects.create(kaizen=Kaizen_instance, imagen=image_file)
+                ImagenDeploy.objects.create(kaizen=kaizen_instance, imagen=image_file)
 
             for image_file in request.FILES.getlist('imagenes_descripcion'):
-                ImagenDescripcion.objects.create(kaizen=Kaizen_instance, imagen=image_file)
+                ImagenDescripcion.objects.create(kaizen=kaizen_instance, imagen=image_file)
 
             for image_file in request.FILES.getlist('imagenes_definir'):
-                ImagenDefinir.objects.create(kaizen=Kaizen_instance, imagen=image_file)
+                ImagenDefinir.objects.create(kaizen=kaizen_instance, imagen=image_file)
 
             for image_file in request.FILES.getlist('imagenes_estandar'):
-                ImagenEstandar.objects.create(kaizen=Kaizen_instance, imagen=image_file)
+                ImagenEstandar.objects.create(kaizen=kaizen_instance, imagen=image_file)
             
             for image_file in request.FILES.getlist('imagenes_expansion'):
-                ImagenExpansion.objects.create(kaizen=Kaizen_instance, imagen=image_file)
+                ImagenExpansion.objects.create(kaizen=kaizen_instance, imagen=image_file)
             
 
 
@@ -134,13 +135,13 @@ def Kaizen_view(request, pk=None):
 
             # Si el formulario es nuevo, enviar el correo
             if es_nuevo:
-                emails = [miembro.email for miembro in Kaizen_instance.miembros_equipo.all()]
-                nombre = Kaizen_instance.Nombre_Kaizen
-                id_analisis = Kaizen_instance.id
-                categoria = Kaizen_instance.categoria
-                subcategoria = Kaizen_instance.subcategoria
-                area = Kaizen_instance.area
-                subarea = Kaizen_instance.subarea
+                emails = [miembro.email for miembro in kaizen_instance.miembros_equipo.all()]
+                nombre = kaizen_instance.Nombre_Kaizen
+                id_analisis = kaizen_instance.id
+                categoria = kaizen_instance.categoria
+                subcategoria = kaizen_instance.subcategoria
+                area = kaizen_instance.area
+                subarea = kaizen_instance.subarea
                 mensaje = f"""
                 Has sido asignado a un nuevo proyecto de análisis "Kaizen".
 
@@ -170,7 +171,7 @@ def Kaizen_view(request, pk=None):
 
             # Mensaje de éxito y redirigir con el ID
             messages.success(request, 'Se ha guardado con éxito. Puedes continuar.')
-            return redirect('kaizen', pk=Kaizen_instance.pk)
+            return redirect('kaizen', pk=kaizen_instance.pk)
 
 
 
@@ -179,22 +180,22 @@ def Kaizen_view(request, pk=None):
 
     else:
         # Si el método es GET (cargar la página por primera vez)
-        if Kaizen_instance:
-            areas_seleccionadas = Kaizen_instance.areas_aplicacion.split(',') if Kaizen_instance.areas_aplicacion else []
-            form = KaizenForm(instance=Kaizen_instance, initial={
+        if kaizen_instance:
+            areas_seleccionadas = kaizen_instance.areas_aplicacion.split(',') if kaizen_instance.areas_aplicacion else []
+            form = KaizenForm(instance=kaizen_instance, initial={
                 'areas_aplicacion': areas_seleccionadas,
             })
         else:
             form = KaizenForm()
 
     # Mostrar el paso 1 solo si ya existe la instancia
-    mostrar_paso1 = Kaizen_instance is not None
+    mostrar_paso1 = kaizen_instance is not None
 
     # Obtener todos los miembros del equipo desde la base de datos
     opciones_miembros = MiembroEquipo.objects.all()
 
     # Obtener los "5 Porqués" asociados al Kaizen
-    porques = Porque.objects.filter(kaizen=Kaizen_instance) if Kaizen_instance else []
+    porques = Porque.objects.filter(kaizen=kaizen_instance) if kaizen_instance else []
 
     context = {
         'form': form,
@@ -204,14 +205,14 @@ def Kaizen_view(request, pk=None):
         'opciones_miembros': opciones_miembros,
         'mostrar_paso1': mostrar_paso1,
         'subcategorias_datos': subcategorias_datos,
-        'Kaizen': Kaizen_instance,
-        'kaizen_id': Kaizen_instance.id if Kaizen_instance else None,
+        'Kaizen': kaizen_instance,
+        'kaizen_id': kaizen_instance.id if kaizen_instance else None,
         'porques': porques,
-        'imagenes_deploy': ImagenDeploy.objects.filter(kaizen=Kaizen_instance),
-        'imagenes_descripcion': ImagenDescripcion.objects.filter(kaizen=Kaizen_instance),
-        'imagenes_definir': ImagenDefinir.objects.filter(kaizen=Kaizen_instance),
-        'imagenes_estandar': ImagenEstandar.objects.filter(kaizen=Kaizen_instance),
-        'imagenes_expansion': ImagenExpansion.objects.filter(kaizen=Kaizen_instance),
+        'imagenes_deploy': ImagenDeploy.objects.filter(kaizen=kaizen_instance),
+        'imagenes_descripcion': ImagenDescripcion.objects.filter(kaizen=kaizen_instance),
+        'imagenes_definir': ImagenDefinir.objects.filter(kaizen=kaizen_instance),
+        'imagenes_estandar': ImagenEstandar.objects.filter(kaizen=kaizen_instance),
+        'imagenes_expansion': ImagenExpansion.objects.filter(kaizen=kaizen_instance),
     }
 
     return render(request, 'Kaizen/kaizen.html', context)

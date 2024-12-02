@@ -20,7 +20,7 @@
         <div class="container mt-5">
             <div class="card shadow-sm">
                 <div class="card-header bg-primary text-white">
-                    <h2 class="mb-0">Asociar un "5 Por qué" Existente a {{ kaizen.nombre }}</h2>
+                    <h2 class="mb-0">Asociar un "5 Por qué" Existente a {{ kaizen.Nombre_MP }}</h2>
                 </div>
                 <div class="card-body">
                     <form method="post">
@@ -38,12 +38,10 @@
                         </div>
                         <div class="d-flex justify-content-between">
                             <button type="submit" class="btn btn-primary">Asociar</button>
-                            <a href="{% url 'kaizen_detail' kaizen.id %}" class="btn btn-primary">Cancelar</a>
+                            <a href="{% url 'kaizen' kaizen.id %}" class="btn btn-primary">Cancelar</a>
                         </div>
                     </form>
                 </div>
             </div>
         </div>
-    </form>
-</div>
 {% endblock %}

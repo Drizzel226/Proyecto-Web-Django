@@ -286,7 +286,7 @@ def asociar_porque_existentek(request, kaizen_id):
             porque.kaizen = kaizen  # Asociar el "5 Porqué" al Kaizen
             porque.save()
             messages.success(request, '5 Porqué asociado correctamente.')
-            return redirect('kaizen_detail', pk=kaizen_id)  # Redirigir de vuelta al Kaizen
+            return redirect('kaizen', pk=kaizen_id)  # Redirigir de vuelta al Kaizen
         else:
             messages.error(request, 'Por favor selecciona un "5 Porqué" válido.')
     else:
