@@ -1233,8 +1233,6 @@
                             <td class="columna-acciones">
                                 <div class="botones-acciones">
                                     <a href="{% url 'porque' porque.id %}" class="btn btn-primary">Editar</a>
-                                    
-                                    <!-- Botón para quitar el "5 Porqué" con JavaScript, sin recargar la página -->
                                     <button type="button" class="btn btn-primary" onclick="quitarPorque({{ porque.id }})">Quitar</button>
                                 </div>
                             </td>
@@ -1246,10 +1244,20 @@
                         {% endfor %}
                     </tbody>
                 </table>
-                <br>
-                
-                <!-- Campo oculto para almacenar los IDs de "5 Porqués" a eliminar -->
+
                 <input type="hidden" name="porques_a_eliminar" id="porques_a_eliminar" value="">
+
+                <script>
+                    let porquesParaEliminar = [];
+                    function quitarPorque(id) {
+                        if (!porquesParaEliminar.includes(id)) {
+                            porquesParaEliminar.push(id);
+                        }
+                        document.getElementById('porques_a_eliminar').value = porquesParaEliminar.join(',');
+                        const row = document.getElementById(`porque-row-${id}`);
+                        if (row) row.style.display = 'none';
+                    }
+                </script>
                 <div><h1></h1></div>
                 <table id="AccionesTable">
                     <tr>

@@ -1216,27 +1216,27 @@
                             <th>Área</th>
                             <th>KPI ICEO</th>
                             <th>Miembros del Equipo</th>
-                            <th>Acciones</th>
+                            <th class="columna-acciones">Acciones</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody id="porques-table-body">
                         {% for porque in porques %}
-                        <tr>
+                        <tr id="porque-row-{{ porque.id }}">
                             <td>{{ porque.id }}</td>
-                            <td>{{ porque.categoria|default:"None" }}</td>
-                            <td>{{ porque.subcategoria|default:"None" }}</td>
-                            <td>{{ porque.area|default:"None" }}</td>
-                            <td>{{ porque.kpi_iceo|default:"None" }}</td>
+                            <td>{{ porque.categoria }}</td>
+                            <td>{{ porque.subcategoria }}</td>
+                            <td>{{ porque.area }}</td>
+                            <td>{{ porque.kpi_iceo }}</td>
                             <td>
                                 {% for miembro in porque.miembros_equipo.all %}
                                     {{ miembro.nombre }}{% if not forloop.last %}, {% endif %}
                                 {% endfor %}
                             </td>
-                            <td>
-                                <a href="{% url 'porque' porque.id %}" class="btn btn-primary">Editar</a>
-                                <button class="btn btn-primary" onclick="quitarPorque({{ porque.id }})">Quitar</button>
-                            
-
+                            <td class="columna-acciones">
+                                <div class="botones-acciones">
+                                    <a href="{% url 'porque' porque.id %}" class="btn btn-primary">Editar</a>
+                                    <button type="button" class="btn btn-primary" onclick="quitarPorque({{ porque.id }})">Quitar</button>
+                                </div>
                             </td>
                         </tr>
                         {% empty %}
@@ -1246,29 +1246,18 @@
                         {% endfor %}
                     </tbody>
                 </table>
-                
-                
-                <!-- Campo oculto para almacenar los IDs de "5 Porqués" a eliminar -->
+
                 <input type="hidden" name="porques_a_eliminar" id="porques_a_eliminar" value="">
 
                 <script>
-                    // Array para almacenar los IDs de los "5 Porqués" que se quieren quitar
                     let porquesParaEliminar = [];
-                
                     function quitarPorque(id) {
-                        // Agrega el ID a la lista de eliminaciones si no está ya presente
                         if (!porquesParaEliminar.includes(id)) {
                             porquesParaEliminar.push(id);
                         }
-                
-                        // Actualiza el campo oculto con los IDs
                         document.getElementById('porques_a_eliminar').value = porquesParaEliminar.join(',');
-                
-                        // Oculta la fila correspondiente al "5 Porqué" que se quitó
                         const row = document.getElementById(`porque-row-${id}`);
-                        if (row) {
-                            row.style.display = 'none'; // Oculta la fila de la tabla
-                        }
+                        if (row) row.style.display = 'none';
                     }
                 </script>
 
