@@ -85,12 +85,28 @@ def visuKai(request):
     miembro = Roles.objects.filter(email=request.user.email).first()
     es_auditor = (miembro.rol in [2, 4, 6, 7] if miembro else False) or request.user.is_superuser
 
-    paginator = Paginator(datos, 10)
+    # Implementar rango dinámico para la paginación
+    paginator = Paginator(datos, 10)  # 10 elementos por página
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
 
+    total_pages = paginator.num_pages
+    current_page = page_obj.number
+
+    # Generar rango reducido de páginas
+    if total_pages > 5:
+        if current_page <= 3:
+            page_range = range(1, 6)  # Mostrar primeras 5 páginas
+        elif current_page >= total_pages - 2:
+            page_range = range(total_pages - 4, total_pages + 1)  # Mostrar últimas 5 páginas
+        else:
+            page_range = range(current_page - 2, current_page + 3)  # Mostrar páginas cercanas
+    else:
+        page_range = paginator.page_range
+
     return render(request, "visuKai/visualizacionKai.html", {
         "page_obj": page_obj,
+        "page_range": page_range,  # Rango reducido
         "es_auditor": es_auditor,
     })
 
@@ -127,5 +143,3 @@ def actualizar_checkbox(request):
             return JsonResponse({'error': 'Registro no encontrado'}, status=404)
     
     return JsonResponse({'error': 'Método no permitido'}, status=405)
-
-

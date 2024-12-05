@@ -5,7 +5,9 @@
 {% block content %}
 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
     <h1>Visualización 5 Por qué</h1>
-    <a href="{% url 'porque' %}" class="btn-verde btn-lg">Agregar</a>
+    <a href="{% url 'porque' %}" class="btn-verde btn-lg boton-moderno">
+        <i class="fas fa-plus-circle"></i> Agregar
+    </a>
 </div>
 
 <div style="overflow-x: auto;">
@@ -17,7 +19,7 @@
                 <th>Subcategoría</th>
                 <th>Área</th>
                 <th>Máquina</th>
-                <th>Máquina</th>
+                <th>Subárea</th>
                 <th>Miembros Equipo</th>
                 <th>Pilar</th>
                 <th>Impacto</th>
@@ -61,7 +63,9 @@
                 <td>{{ dato.fecha_inicio|default_if_none:"-" }}</td>
                 <td>{{ dato.fecha_cierre|default_if_none:"-" }}</td>
                 <td>
-                    <a href="{% url 'porque' pk=dato.pk %}" class="btn-verde">Editar</a>
+                    <a href="{% url 'porque' pk=dato.pk %}" class="boton-editar">
+                        <i class="fas fa-edit"></i> Editar
+                    </a>
                 </td>
                 <td>
                     <input type="checkbox" name="checkbox_{{ dato.id }}" value="True" {% if dato.paso_4 %}checked{% endif %} disabled>
@@ -70,7 +74,9 @@
                 <td>{{ dato.dias }}</td>
                 {% if es_auditor %}
                     <td>
-                        <a href="{% url 'porque_vista' pk=dato.pk %}" class="btn-verde">Auditar</a>
+                        <a href="{% url 'porque_vista' pk=dato.pk %}" class="boton-auditar">
+                            <i class="fas fa-clipboard-check"></i> Auditar
+                        </a>
                     </td>
                 {% endif %}
                 <td>{{ dato.ups }}%</td>
@@ -87,24 +93,168 @@
         <ul class="pagination">
             {% if page_obj.has_previous %}
                 <li>
-                    <a class="pagination-button" href="?page={{ page_obj.previous_page_number }}" aria-label="Anterior">
-                        <span>&#x276E;</span> <!-- Flecha izquierda -->
+                    <a class="pagination-button prev" href="?page={{ page_obj.previous_page_number }}" aria-label="Anterior">
+                        <i class="fas fa-chevron-left"></i> <!-- Flecha izquierda -->
                     </a>
                 </li>
             {% endif %}
 
-            <span class="pagination-span">{{ page_obj.start_index }} - {{ page_obj.end_index }}</span>
+            <!-- Mostrar siempre la primera página -->
+            {% if 1 not in page_range %}
+                <li>
+                    <a class="pagination-button" href="?page=1">1</a>
+                </li>
+            {% endif %}
+
+            <!-- Agregar puntos suspensivos si hay un salto grande -->
+            {% if page_obj.number > 3 %}
+                <li class="dots">...</li>
+            {% endif %}
+
+            <!-- Mostrar páginas cercanas al número actual -->
+            {% for num in page_range %}
+                <li>
+                    <a class="pagination-button {% if num == page_obj.number %}active{% endif %}" href="?page={{ num }}">
+                        {{ num }}
+                    </a>
+                </li>
+            {% endfor %}
+
+            <!-- Agregar puntos suspensivos si hay un salto grande hacia las últimas páginas -->
+            {% if page_obj.number < page_obj.paginator.num_pages|add:"-2" %}
+                <li class="dots">...</li>
+            {% endif %}
+
+            <!-- Mostrar siempre la última página -->
+            {% if page_obj.paginator.num_pages not in page_range %}
+                <li>
+                    <a class="pagination-button" href="?page={{ page_obj.paginator.num_pages }}">{{ page_obj.paginator.num_pages }}</a>
+                </li>
+            {% endif %}
 
             {% if page_obj.has_next %}
                 <li>
-                    <a class="pagination-button" href="?page={{ page_obj.next_page_number }}" aria-label="Siguiente">
-                        <span>&#x276F;</span> <!-- Flecha derecha -->
+                    <a class="pagination-button next" href="?page={{ page_obj.next_page_number }}" aria-label="Siguiente">
+                        <i class="fas fa-chevron-right"></i> <!-- Flecha derecha -->
                     </a>
                 </li>
             {% endif %}
         </ul>
     </nav>
 </div>
+
+<!-- Estilos para botones mejorados -->
+<style>
+    /* Botones generales */
+    .boton-moderno {
+        background-color: #4CAF50; /* Verde */
+        color: white;
+        padding: 10px 20px;
+        border-radius: 5px;
+        text-decoration: none;
+        font-weight: bold;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        transition: all 0.3s ease;
+        box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+    }
+    .boton-moderno:hover {
+        background-color: #45a049;
+        transform: scale(1.05);
+    }
+    .boton-editar {
+        background-color: #28a745; /* Verde */
+        color: white;
+        padding: 5px 10px;
+        border-radius: 4px;
+        text-decoration: none;
+        font-size: 14px;
+        font-weight: 600;
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        transition: all 0.3s ease;
+    }
+    .boton-editar:hover {
+        background-color: #218838;
+    }
+    .boton-auditar {
+        background-color: #FF5722; /* Naranja */
+        color: white;
+        padding: 5px 10px;
+        border-radius: 4px;
+        text-decoration: none;
+        font-size: 14px;
+        font-weight: 600;
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        transition: all 0.3s ease;
+    }
+    .boton-auditar:hover {
+        background-color: #E64A19;
+    }
+
+    /* Estilos de paginación */
+    .pagination {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 20px;
+    }
+
+    .pagination ul {
+        display: flex;
+        gap: 8px;
+        list-style: none;
+        padding: 0;
+    }
+
+    .pagination-button {
+        background-color: #f5f5f5; /* Fondo neutral */
+        color: #333; /* Texto oscuro */
+        padding: 10px 15px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        text-decoration: none;
+        font-weight: bold;
+        font-size: 14px;
+        transition: all 0.3s ease;
+    }
+
+    .pagination-button:hover {
+        background-color: #007BFF; /* Azul para hover */
+        color: white;
+        border-color: #007BFF;
+    }
+
+    .pagination-button.active {
+        background-color: #28a745; /* Verde para página activa */
+        color: white;
+        border-color: #28a745;
+    }
+
+    .pagination-button.prev,
+    .pagination-button.next {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+    }
+
+    .pagination-button.prev i,
+    .pagination-button.next i {
+        font-size: 16px; /* Aumenta el tamaño del ícono */
+    }
+
+    .dots {
+        padding: 10px;
+        color: #999;
+        font-size: 16px;
+    }
+</style>
+
+<script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 
 <script>
     function actualizaCheckbox(id, estado) {

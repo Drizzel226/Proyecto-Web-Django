@@ -84,12 +84,28 @@ def visu(request):
     miembro = Roles.objects.filter(email=request.user.email).first()
     es_auditor = (miembro.rol in [1, 4, 5, 7] if miembro else False) or request.user.is_superuser
 
-    paginator = Paginator(datos, 10)
+    # Implementación de paginación dinámica
+    paginator = Paginator(datos, 10)  # 10 elementos por página
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
 
+    # Generar rango de páginas para paginación reducida
+    total_pages = paginator.num_pages
+    current_page = page_obj.number
+
+    if total_pages > 4:
+        if current_page <= 3:
+            page_range = range(1, 4)  # Mostrar primeras 5 páginas
+        elif current_page >= total_pages - 2:
+            page_range = range(total_pages - 2, total_pages + 1)  # Mostrar últimas 5 páginas
+        else:
+            page_range = range(current_page - 1, current_page + 2)  # Mostrar páginas alrededor de la actual
+    else:
+        page_range = paginator.page_range  # Mostrar todas las páginas si son pocas
+
     return render(request, "visu5/visualizacion5.html", {
         "page_obj": page_obj,
+        "page_range": page_range,  # Pasar rango reducido a la plantilla
         "es_auditor": es_auditor,
     })
 
