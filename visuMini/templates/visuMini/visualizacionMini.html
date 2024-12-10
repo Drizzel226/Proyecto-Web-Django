@@ -10,6 +10,22 @@
     </a>
 </div>
 
+<!-- Formulario de búsqueda -->
+<form method="get" action="" style="margin-bottom: 20px;">
+    <div style="display: flex; gap: 10px;">
+        <input
+            type="text"
+            name="q"
+            placeholder="Buscar por ID"
+            value="{{ query|default_if_none:'' }}"
+            style="padding: 10px; border: 1px solid #ddd; border-radius: 5px; width: 200px;"
+        >
+        <button type="submit" class="boton-moderno" style="padding: 10px 20px;">
+            Buscar
+        </button>
+    </div>
+</form>
+
 <div style="overflow-x: auto;">
     <table class="tabla-datos">
         <thead>
@@ -92,42 +108,36 @@
 </div>
 
 <!-- Controles de paginación -->
+<!-- Controles de paginación -->
 <div class="pagination">
     <nav aria-label="Page navigation">
         <ul class="pagination">
+            <!-- Botón "Anterior" -->
             {% if page_obj.has_previous %}
                 <li>
-                    <a class="pagination-button prev" href="?page={{ page_obj.previous_page_number }}" aria-label="Anterior">
+                    <a class="pagination-button prev" href="?{% if query %}q={{ query }}&{% endif %}page={{ page_obj.previous_page_number }}" aria-label="Anterior">
                         <i class="fas fa-chevron-left"></i>
                     </a>
                 </li>
             {% endif %}
 
-            {% if 1 not in page_range %}
-                <li>
-                    <a class="pagination-button" href="?page=1">1</a>
-                </li>
-                <li class="dots">...</li>
-            {% endif %}
-
+            <!-- Números de página dinámicos -->
             {% for num in page_range %}
-                <li>
-                    <a class="pagination-button {% if num == page_obj.number %}active{% endif %}" href="?page={{ num }}">
-                        {{ num }}
-                    </a>
-                </li>
+                {% if num %}
+                    <li>
+                        <a class="pagination-button {% if num == page_obj.number %}active{% endif %}" href="?{% if query %}q={{ query }}&{% endif %}page={{ num }}">
+                            {{ num }}
+                        </a>
+                    </li>
+                {% else %}
+                    <li class="dots">...</li>
+                {% endif %}
             {% endfor %}
 
-            {% if page_obj.paginator.num_pages not in page_range %}
-                <li class="dots">...</li>
-                <li>
-                    <a class="pagination-button" href="?page={{ page_obj.paginator.num_pages }}">{{ page_obj.paginator.num_pages }}</a>
-                </li>
-            {% endif %}
-
+            <!-- Botón "Siguiente" -->
             {% if page_obj.has_next %}
                 <li>
-                    <a class="pagination-button next" href="?page={{ page_obj.next_page_number }}" aria-label="Siguiente">
+                    <a class="pagination-button next" href="?{% if query %}q={{ query }}&{% endif %}page={{ page_obj.next_page_number }}" aria-label="Siguiente">
                         <i class="fas fa-chevron-right"></i>
                     </a>
                 </li>
@@ -135,6 +145,7 @@
         </ul>
     </nav>
 </div>
+
 
 <!-- Estilos para botones mejorados -->
 <style>

@@ -40,73 +40,91 @@ def visuMini(request):
     puntaje_maximo_por_pregunta = 5
     puntaje_total = numero_de_preguntas * puntaje_maximo_por_pregunta
 
-    datos = Miniproyecto.objects.all().order_by('-id')
+    # Obtener el parámetro de búsqueda desde la URL
+    query = request.GET.get('q', None)  # Buscar por ID si existe un parámetro 'q'
+
+    if query:
+        # Filtrar por ID
+        try:
+            datos = Miniproyecto.objects.filter(id=query)
+        except ValueError:
+            datos = Miniproyecto.objects.none()  # Manejar caso donde 'q' no sea un número
+    else:
+        # Mostrar todos los datos si no hay búsqueda
+        datos = Miniproyecto.objects.all().order_by('-id')
+
     visualizaciones = VisuMiniModel.objects.all()
 
     for dato in datos:
         visualizacion = visualizaciones.filter(MiniProyecto_id=dato.id).first()
         if visualizacion:
-            # Condición para marcar 'paso_' automáticamente
             Estandarizacion_completa = dato.Estandarizacion and dato.Fecha_compromiso3
             Expansion_completa = dato.Expansion and dato.Fecha_compromiso4
             if Estandarizacion_completa or Expansion_completa:
                 dato.paso_4 = True
-                # Calcular "OT" como porcentaje solo si `paso_4` es True
                 dato.ot = calcula_ot(dato.fecha_inicio)
 
-                # Calcular `dias` solo si `paso_4` es True y `dias` es None
                 if dato.fecha_inicio and visualizacion.dias is None:
                     hoy = date.today()
                     visualizacion.dias = (hoy - dato.fecha_inicio).days
-                    visualizacion.save()  # Guardar el valor de `dias` en la base de datos
+                    visualizacion.save()
             else:
                 dato.paso_4 = False
-                dato.ot = 0  # Establecer a 0 cuando 'paso_4' es False
-                visualizacion.dias = None  # Limpiar `dias` si `paso_4` es False
+                dato.ot = 0
+                visualizacion.dias = None
                 visualizacion.save()
 
-            dato.dias = visualizacion.dias  # Asigna el valor de `dias` de visualizacion a `dato`
-            
-            # Calcular el porcentaje UPS y asignarlo al dato
+            dato.dias = visualizacion.dias
             puntaje_obtenido = dato.puntaje if dato.puntaje is not None else 0
             dato.ups = calcular_ups(puntaje_obtenido, puntaje_total)
-
-            # Calcular el porcentaje OTIF como el promedio de OT y UPS
             dato.otif = calcular_otif(dato.ot, dato.ups)
-
         else:
             dato.paso_4 = False
             dato.ot = 0
             dato.dias = ""
-            dato.ups = 0 
-            dato.otif = 0 
+            dato.ups = 0
+            dato.otif = 0
 
-    # Verificar si el usuario autenticado es un auditor
     miembro = Roles.objects.filter(email=request.user.email).first()
     es_auditor = (miembro.rol in [2, 4, 6, 7] if miembro else False) or request.user.is_superuser
 
-    # Implementación de paginación reducida
-    paginator = Paginator(datos, 10)  # 10 elementos por página
+    paginator = Paginator(datos, 10)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
 
     total_pages = paginator.num_pages
     current_page = page_obj.number
 
-    if total_pages > 5:
-        if current_page <= 3:
-            page_range = range(1, 4)  # Mostrar primeras 5 páginas
-        elif current_page >= total_pages - 1:
-            page_range = range(total_pages - 3, total_pages + 1)  # Mostrar últimas 5 páginas
-        else:
-            page_range = range(current_page - 1, current_page + 2)  # Mostrar páginas cercanas
-    else:
-        page_range = paginator.page_range
+    # Generar rango de páginas dinámico
+    page_range = []
+    if total_pages > 1:
+        # Siempre incluir la primera página
+        page_range.append(1)
+
+        # Agregar "..." si hay un salto grande entre la primera página y el rango actual
+        if current_page > 3:
+            page_range.append(None)
+
+        # Agregar las páginas cercanas al número actual
+        if current_page - 1 > 1:  # Asegurar que el número anterior no sea 1
+            page_range.append(current_page - 1)
+        if current_page != 1 and current_page != total_pages:  # Asegurar que no se duplique el primero o último
+            page_range.append(current_page)
+        if current_page + 1 < total_pages:  # Asegurar que el siguiente número no sea el último
+            page_range.append(current_page + 1)
+
+        # Agregar "..." si hay un salto grande entre el rango actual y la última página
+        if current_page < total_pages - 2:
+            page_range.append(None)
+
+        # Siempre incluir la última página
+        page_range.append(total_pages)
 
     return render(request, "visuMini/visualizacionMini.html", {
         "page_obj": page_obj,
-        "page_range": page_range,  # Rango reducido
+        "page_range": page_range,
         "es_auditor": es_auditor,
+        "query": query,
     })
 
 # Vista para actualizar el checkbox mediante AJAX

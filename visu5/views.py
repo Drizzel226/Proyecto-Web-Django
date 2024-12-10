@@ -39,9 +39,22 @@ def visu(request):
     puntaje_maximo_por_pregunta = 5
     puntaje_total = numero_de_preguntas * puntaje_maximo_por_pregunta
 
-    datos = Porque.objects.all().order_by('-id')
+    # Obtener el parámetro de búsqueda desde la URL
+    query = request.GET.get('q', None)  # Buscar por ID si existe un parámetro 'q'
+
+    if query:
+        # Filtrar por ID
+        try:
+            datos = Porque.objects.filter(id=query)
+        except ValueError:
+            datos = Porque.objects.none()  # Manejar caso donde 'q' no sea un número
+    else:
+        # Mostrar todos los datos si no hay búsqueda
+        datos = Porque.objects.all().order_by('-id')
+
     visualizaciones = Visu5Model.objects.all()
 
+    # Procesar los datos y calcular porcentajes
     for dato in datos:
         visualizacion = visualizaciones.filter(porque_id=dato.id).first()
         if visualizacion:
@@ -52,61 +65,65 @@ def visu(request):
                 dato.paso_4 = True
                 # Calcular "OT" como porcentaje solo si `paso_4` es True
                 dato.ot = calcular_ot(dato.fecha_inicio)
-                
-                # Solo calcular `dias` una vez si aún no tiene valor en `visualizacion.dias`
+
                 if dato.fecha_inicio and visualizacion.dias is None:
                     hoy = date.today()
                     visualizacion.dias = (hoy - dato.fecha_inicio).days
-                    visualizacion.save()  # Guardar el valor de `dias` en la base de datos
+                    visualizacion.save()
             else:
                 dato.paso_4 = False
-                dato.ot = 0  # Establecer a 0 cuando 'paso_4' es False
-                visualizacion.dias = None  # Limpia el valor de `dias` si `paso_4` es False
+                dato.ot = 0
+                visualizacion.dias = None
                 visualizacion.save()
 
-            dato.dias = visualizacion.dias  # Asigna el valor de `dias` de visualizacion a `dato`
-            
-            # Calcular el porcentaje UPS y asignarlo al dato
+            dato.dias = visualizacion.dias
             puntaje_obtenido = dato.puntaje if dato.puntaje is not None else 0
             dato.ups = calcular_ups(puntaje_obtenido, puntaje_total)
-
-            # Calcular el porcentaje OTIF como el promedio de OT y UPS
             dato.otif = calcular_otif(dato.ot, dato.ups)
-
         else:
             dato.paso_4 = False
             dato.ot = 0
             dato.dias = ""
-            dato.ups = 0 
-            dato.otif = 0 
+            dato.ups = 0
+            dato.otif = 0
 
-    # Verificar si el usuario autenticado es un auditor
     miembro = Roles.objects.filter(email=request.user.email).first()
     es_auditor = (miembro.rol in [1, 4, 5, 7] if miembro else False) or request.user.is_superuser
 
-    # Implementación de paginación dinámica
-    paginator = Paginator(datos, 10)  # 10 elementos por página
+    paginator = Paginator(datos, 10)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
 
-    # Generar rango de páginas para paginación reducida
     total_pages = paginator.num_pages
     current_page = page_obj.number
 
-    if total_pages > 4:
-        if current_page <= 3:
-            page_range = range(1, 4)  # Mostrar primeras 5 páginas
-        elif current_page >= total_pages - 2:
-            page_range = range(total_pages - 2, total_pages + 1)  # Mostrar últimas 5 páginas
-        else:
-            page_range = range(current_page - 1, current_page + 2)  # Mostrar páginas alrededor de la actual
-    else:
-        page_range = paginator.page_range  # Mostrar todas las páginas si son pocas
+    # Generar rango dinámico para paginación
+    page_range = []
+    if total_pages > 1:
+        # Siempre incluir la primera página
+        page_range.append(1)
+
+        # Agregar "..." si hay un salto grande entre la primera página y el rango actual
+        if current_page > 3:
+            page_range.append(None)  # Usamos `None` para representar "..."
+
+        # Agregar las páginas cercanas al número actual
+        start = max(current_page - 1, 2)  # No menos de la segunda página
+        end = min(current_page + 1, total_pages - 1)  # No más de la penúltima página
+        page_range.extend(range(start, end + 1))
+
+        # Agregar "..." si hay un salto grande entre el rango actual y la última página
+        if current_page < total_pages - 2:
+            page_range.append(None)
+
+        # Siempre incluir la última página
+        page_range.append(total_pages)
 
     return render(request, "visu5/visualizacion5.html", {
         "page_obj": page_obj,
-        "page_range": page_range,  # Pasar rango reducido a la plantilla
+        "page_range": page_range,
         "es_auditor": es_auditor,
+        "query": query,
     })
 
 # Vista para actualizar el checkbox mediante AJAX
@@ -119,28 +136,25 @@ def actualizar_checkbox(request):
 
         try:
             visualizacion = Visu5Model.objects.get(porque_id=porque_id)
-            
-            # Solo actualizar si paso_4 cambia de False a True por primera vez
+
             if not visualizacion.paso_4 and estado:
                 visualizacion.paso_4 = True
                 fecha_inicio = Porque.objects.get(id=porque_id).fecha_inicio
 
-                # Calcular `dias` solo una vez en base a fecha_inicio
-                if visualizacion.dias is None:  # Solo calcula si `dias` es None
+                if visualizacion.dias is None:
                     visualizacion.dias = (date.today() - fecha_inicio).days
                 visualizacion.porcentaje = calcular_ot(fecha_inicio)
             elif not estado:
-                # Resetear `paso_4`, `porcentaje` y `dias` si se desmarca el checkbox
                 visualizacion.paso_4 = False
-                visualizacion.porcentaje = 0  # Opcional: resetear el porcentaje si se desmarca el checkbox
-                visualizacion.dias = None  # Dejar en None o resetear si se desmarca `paso_4`
+                visualizacion.porcentaje = 0
+                visualizacion.dias = None
 
             visualizacion.save()
-            return JsonResponse({'message': 'Estado del checkbox, porcentaje y días actualizado correctamente'})
-        
+            return JsonResponse({'message': 'Estado actualizado correctamente'})
+
         except Visu5Model.DoesNotExist:
             return JsonResponse({'error': 'Registro no encontrado'}, status=404)
-    
+
     return JsonResponse({'error': 'Método no permitido'}, status=405)
 
 # Vista para el dashboard (sin cambios)

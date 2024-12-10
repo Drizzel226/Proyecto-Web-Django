@@ -36,78 +36,83 @@ def calcular_otif(ot, ups):
 
 # Vista principal para mostrar los datos de "Visualización Kaizen"
 def visuKai(request):
-    numero_de_preguntas = 12  # Define el número de preguntas para el cálculo de puntaje
+    numero_de_preguntas = 12
     puntaje_maximo_por_pregunta = 5
     puntaje_total = numero_de_preguntas * puntaje_maximo_por_pregunta
 
-    datos = Kaizen.objects.all().order_by('-id')
+    # Obtener y limpiar el parámetro de búsqueda
+    query = request.GET.get('q', "").strip()  # Usamos "" como valor predeterminado
+
+    if query:
+        try:
+            datos = Kaizen.objects.filter(id=query)
+        except ValueError:
+            datos = Kaizen.objects.none()  # Si `query` no es un número válido, no devolvemos nada
+    else:
+        datos = Kaizen.objects.all().order_by('-id')
+
     visualizaciones = VisuKaiModel.objects.all()
 
+    # Procesar los datos y calcular porcentajes
     for dato in datos:
         visualizacion = visualizaciones.filter(Kaizen_id=dato.id).first()
         if visualizacion:
-            # Condición para marcar 'paso_' automáticamente
             Estandarizacion_completa = dato.Estandarizacion and dato.Fecha_compromiso3
             Expansion_completa = dato.Expansion and dato.Fecha_compromiso4
             if Estandarizacion_completa or Expansion_completa:
                 dato.paso_4 = True
-                # Calcular "OT" como porcentaje solo si `paso_4` es True
                 dato.ot = calcula_ot(dato.fecha_inicio)
 
-                # Calcular `dias` solo si `paso_4` es True y `dias` es None
                 if dato.fecha_inicio and visualizacion.dias is None:
-                    hoy = date.today()
-                    visualizacion.dias = (hoy - dato.fecha_inicio).days
-                    visualizacion.save()  # Guardar el valor de `dias` en la base de datos
+                    visualizacion.dias = (date.today() - dato.fecha_inicio).days
+                    visualizacion.save()
             else:
                 dato.paso_4 = False
-                dato.ot = 0  # Establecer a 0 cuando 'paso_4' es False
-                visualizacion.dias = None  # Limpiar `dias` si `paso_4` es False
+                dato.ot = 0
+                visualizacion.dias = None
                 visualizacion.save()
 
-            dato.dias = visualizacion.dias  # Asigna el valor de `dias` de visualizacion a `dato`
-            
-            # Calcular el porcentaje UPS y asignarlo al dato
+            dato.dias = visualizacion.dias
             puntaje_obtenido = dato.puntaje if dato.puntaje is not None else 0
             dato.ups = calcular_ups(puntaje_obtenido, puntaje_total)
-
-            # Calcular el porcentaje OTIF como el promedio de OT y UPS
             dato.otif = calcular_otif(dato.ot, dato.ups)
-
         else:
             dato.paso_4 = False
             dato.ot = 0
             dato.dias = ""
-            dato.ups = 0 
-            dato.otif = 0 
+            dato.ups = 0
+            dato.otif = 0
 
-    # Verificar si el usuario autenticado es un auditor
     miembro = Roles.objects.filter(email=request.user.email).first()
     es_auditor = (miembro.rol in [2, 4, 6, 7] if miembro else False) or request.user.is_superuser
 
-    # Implementar rango dinámico para la paginación
-    paginator = Paginator(datos, 10)  # 10 elementos por página
+    paginator = Paginator(datos, 10)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
 
     total_pages = paginator.num_pages
     current_page = page_obj.number
 
-    # Generar rango reducido de páginas
-    if total_pages > 5:
-        if current_page <= 3:
-            page_range = range(1, 6)  # Mostrar primeras 5 páginas
-        elif current_page >= total_pages - 2:
-            page_range = range(total_pages - 4, total_pages + 1)  # Mostrar últimas 5 páginas
-        else:
-            page_range = range(current_page - 2, current_page + 3)  # Mostrar páginas cercanas
-    else:
-        page_range = paginator.page_range
+    page_range = []
+    if total_pages > 1:
+        page_range.append(1)
+        if current_page > 3:
+            page_range.append(None)
+        if current_page - 1 > 1:
+            page_range.append(current_page - 1)
+        if current_page != 1 and current_page != total_pages:
+            page_range.append(current_page)
+        if current_page + 1 < total_pages:
+            page_range.append(current_page + 1)
+        if current_page < total_pages - 2:
+            page_range.append(None)
+        page_range.append(total_pages)
 
     return render(request, "visuKai/visualizacionKai.html", {
         "page_obj": page_obj,
-        "page_range": page_range,  # Rango reducido
+        "page_range": page_range,
         "es_auditor": es_auditor,
+        "query": query,  # Siempre pasamos la consulta actual para que se mantenga en la paginación
     })
 
 # Vista para actualizar el checkbox mediante AJAX
