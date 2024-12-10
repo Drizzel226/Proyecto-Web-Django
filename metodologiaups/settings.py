@@ -27,6 +27,7 @@ INSTALLED_APPS = [
     'visu5',
     'visuMini',
     'visuKai',
+    'HAPM',
     'social_django',  # Asegúrate de que social_django esté instalado y agregado
 ]
 
