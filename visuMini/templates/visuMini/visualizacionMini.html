@@ -88,13 +88,21 @@
                     </a>
                 </td>
                 <td>
-                    <input type="checkbox" name="checkbox_{{ dato.id }}" value="True" {% if dato.paso_4 %}checked{% endif %} disabled>
+                    <input 
+                        type="checkbox" 
+                        name="checkbox_{{ dato.id }}" 
+                        value="True" 
+                        {% if dato.paso_4 %}checked{% endif %} 
+                        disabled>
                 </td>                
                 <td>{{ dato.ot }}%</td>
                 <td>{{ dato.dias }}</td>
                 {% if es_auditor %}
                     <td>
-                        <a href="{% url 'miniproyecto_vista' pk=dato.pk %}" class="boton-auditar">
+                        <a href="{% url 'miniproyecto_vista' pk=dato.pk %}" 
+                        id="auditar-btn-{{ dato.id }}" 
+                        class="boton-auditar"
+                        {% if not dato.paso_4 %}disabled style="pointer-events: none; opacity: 0.5;"{% endif %}>
                             <i class="fas fa-clipboard-check"></i> Auditar
                         </a>
                     </td>
@@ -107,7 +115,6 @@
     </table>
 </div>
 
-<!-- Controles de paginación -->
 <!-- Controles de paginación -->
 <div class="pagination">
     <nav aria-label="Page navigation">
@@ -149,6 +156,14 @@
 
 <!-- Estilos para botones mejorados -->
 <style>
+    .boton-auditar[disabled] {
+        pointer-events: none;
+        opacity: 0.5;
+        background-color: #d6d6d6;
+        color: #999;
+        cursor: not-allowed;
+    }
+    
     .boton-moderno {
         background-color: #4CAF50;
         color: white;
