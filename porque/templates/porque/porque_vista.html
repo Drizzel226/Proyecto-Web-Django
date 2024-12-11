@@ -6,7 +6,7 @@
 
 {% block content %}
 <div class="form-container">
-    <h1 id="analisis-5w" class="text-center">Auditoria 5 POR QUÉ</h1>
+    <h1 id="analisis-5w" class="text-center">5 POR QUÉ</h1>
 
     {% if messages %}
     <div class="messages">
@@ -36,6 +36,8 @@
     <form method="post" class="analisis-5w-form" id="form" enctype="multipart/form-data">
         {% csrf_token %}
 
+
+        
 <!-- Sección Paso 0: Datos iniciales -->
 <div id="seccion1" class="recuadro-paso">
     <h2 class="text-primary">Paso 0: Datos Iniciales</h2>
@@ -43,67 +45,97 @@
     <div class="form-row">
         <div class="form-group col-md-6">
             <label for="categoria">Categoría</label>
-            <input type="text" id="categoria" name="categoria" class="form-control" value="{{ form.categoria.value }}" disabled>
+            <input type="text" id="categoria" name="categoria" class="form-control" readonly value="{{ form.categoria.value|default_if_none:'' }}">
+
         </div>
 
         <div class="form-group col-md-6">
             <label for="subcategoria">Subcategoría</label>
-            <input type="text" id="subcategoria" name="subcategoria" class="form-control" value="{{ form.subcategoria.value }}" disabled>
+            <select id="subcategoria" name="subcategoria" class="form-control">
+                <option value="">Seleccione una subcategoría</option>
+                {% for subcategoria in subcategorias_datos %}
+                    <option value="{{ subcategoria.subcategoria }}" {% if form.subcategoria.value == subcategoria.subcategoria %}selected{% endif %}>
+                        {{ subcategoria.subcategoria }}
+                    </option>
+                {% endfor %}
+            </select>
+                                                
         </div>
     </div>
 
     <div class="form-row">
         <div class="form-group col-md-6">
             <label for="area">Área</label>
-            <input type="text" id="area" name="area" class="form-control" value="{{ form.area.value }}" disabled>
+            <select id="area" name="area" class="form-control">
+                <option value="">Seleccione un área</option>
+                {% for opcion in opciones_area %}
+                    <option value="{{ opcion }}" {% if form.area.value == opcion %}selected{% endif %}>{{ opcion }}</option>
+                {% endfor %}
+            </select>
         </div>
 
         <div class="form-group col-md-6">
             <label for="subarea">Subárea</label>
-            <input type="text" id="subarea" name="subarea" class="form-control" value="{{ form.subarea.value }}" disabled>
+            <select id="subarea" name="subarea" class="form-control">
+                <option value="">Seleccione una línea</option>
+                {% for opcion in opciones_subarea %}
+                    <option value="{{ opcion }}" {% if form.subarea.value == opcion %}selected{% endif %}>{{ opcion }}</option>
+                {% endfor %}
+            </select>
         </div>
     </div>
 
     <div class="form-row">
         <div class="form-group col-md-6">
             <label for="maquina">Máquina</label>
-            <input type="text" id="maquina" name="maquina" class="form-control" value="{{ form.maquina.value }}" disabled>
+            <select id="maquina" name="maquina" class="form-control">
+                <option value="">Seleccione una máquina</option>
+                {% for opcion in opciones_maquina %}
+                    <option value="{{ opcion }}" {% if form.maquina.value == opcion %}selected{% endif %}>{{ opcion }}</option>
+                {% endfor %}
+            </select>
         </div>
 
         <div class="form-group col-md-6">
             <label for="miembros_equipo">Miembros del equipo</label>
-            <select id="miembros_equipo" name="miembros_equipo" class="form-control select2" multiple disabled>
+            <select id="miembros_equipo" name="miembros_equipo" class="form-control select2" multiple>
                 {% for miembro in opciones_miembros %}
-                    <option value="{{ miembro.id }}" {% if miembro.id in form.miembros_equipo.value %}selected{% endif %}>
+                    <option value="{{ miembro.id }}" data-email="{{ miembro.email }}" {% if miembro.id in form.miembros_equipo.value %}selected{% endif %}>
                         {{ miembro.nombre }}
                     </option>
                 {% endfor %}
-            </select>            
+            </select>
         </div>
     </div>
 
     <div class="form-row">
         <div class="form-group col-md-6">
             <label for="pilar">Pilar</label>
-            <input type="text" id="pilar" name="pilar" class="form-control" value="{{ form.pilar.value }}" disabled>
+            <input type="text" id="pilar" name="pilar" class="form-control" readonly value="{{ form.pilar.value|default_if_none:''  }}">
         </div>
 
         <div class="form-group col-md-6">
             <label for="impacto">Impacto</label>
-            <input type="text" id="impacto" name="impacto" class="form-control" value="{{ form.impacto.value }}" disabled>
+            <input type="text" id="impacto" name="impacto" class="form-control" 
+                   value="{{ form.impacto.value|default_if_none:'' }}" 
+                   placeholder="Ej: Minutos, Opi, rendimiento...">
         </div>
     </div>
 
     <div class="form-row">
         <div class="form-group col-md-6">
             <label for="kpi_iceo">KPI ICEO</label>
-            <input type="text" id="kpi_iceo" name="kpi_iceo" class="form-control" value="{{ form.kpi_iceo.value }}" disabled>
+            <input type="text" id="kpi_iceo" name="kpi_iceo" class="form-control" readonly value="{{ form.kpi_iceo.value|default_if_none:''}}">
         </div>
 
         <div class="form-group col-md-6">
             <label for="kpi_secundario">KPI Secundario (KAI)</label>
-            <input type="text" id="kpi_secundario" name="kpi_secundario" class="form-control" value="{{ form.kpi_secundario.value }}" disabled>
-
+            <select id="kpi_secundario" name="kpi_secundario" class="form-control">
+                <option value="">Seleccione un KPI secundario</option>
+                <option {% if form.kpi_secundario.value == "kpi1" %}selected{% endif %}>Eficiencia Global de Equipos (OEE)</option>
+                <option {% if form.kpi_secundario.value == "kpi2" %}selected{% endif %}>Tasa de Defectos</option>
+                <option {% if form.kpi_secundario.value == "kpi3" %}selected{% endif %}>Tiempo Medio Entre Fallos (MTBF)</option>
+            </select>
         </div>
     </div>
 
@@ -111,16 +143,15 @@
         {% if not form.instance.pk %}
         <div class="form-group col-md-6">
             <label for="fecha_inicio">Fecha Inicio</label>
-            <input type="date" id="fecha_inicio" name="fecha_inicio" class="form-control" value="{{ form.fecha_inicio.value }}" disabled>
+            <input type="date" id="fecha_inicio" name="fecha_inicio" class="form-control" value="{{ form.fecha_inicio.value }}" readonly>
         </div>
         {% endif %}
         
         <div class="form-group col-md-6">
             <label for="fecha_cierre">Fecha Estimada de Cierre</label>
-            <input type="date" id="fecha_cierre" name="fecha_cierre" class="form-control" value="{{ form.fecha_cierre.value|date:'Y-m-d' }}" disabled>
+            <input type="date" id="fecha_cierre" name="fecha_cierre" class="form-control" value="{{ form.fecha_cierre.value|date:'Y-m-d' }}">
         </div>
     </div>
-
 
 
     <script>
@@ -161,6 +192,7 @@
 </div>
 
 
+
 <!-- Sección Paso 1: Descripción del Problema (visible después del Paso 0) -->
 
 <div id="paso1-section" class="recuadro-paso mt-4" style="border: 1px solid #ff0000;">
@@ -171,36 +203,36 @@
     </div>
     <div id="contenido-paso1">
         <div><h1></h1></div>
-        <div class="form-row">
-            <div class="form-group col-md-12">
+
+        <div class="form-row" style="display: flex; gap: 15px;">
+            <div class="form-group" style="flex: 1;">
                 {{ form.que_ocurre.label_tag }}
                 {{ form.que_ocurre }}
             </div>
-        </div>
-        <div class="form-row">
-            <div class="form-group col-md-12">
+            <div class="form-group" style="flex: 1;">
                 {{ form.como_ocurre.label_tag }}
                 {{ form.como_ocurre }}
             </div>
         </div>
-        <div class="form-row">
-            <div class="form-group col-md-12">
+
+        <div class="form-row" style="display: flex; gap: 15px;">
+            <div class="form-group" style="flex: 1;">
                 {{ form.donde_ocurre.label_tag }}
                 {{ form.donde_ocurre }}
             </div>
-        </div>
-        <div class="form-row">
-            <div class="form-group col-md-12">
+            <div class="form-group" style="flex: 1;">
                 {{ form.cuando_ocurre.label_tag }}
                 {{ form.cuando_ocurre }}
             </div>
         </div>
-        <div class="form-row">
-            <div class="form-group col-md-12">
+
+        <div class="form-row" style="display: flex; gap: 15px;">
+            <div class="form-group" style="flex: 1;">
                 {{ form.quien_presente.label_tag }}
                 {{ form.quien_presente }}
             </div>
         </div>
+
 
         <!-- Señal antes de que ocurra el problema -->
         <h2 class="text-danger">Señal antes de que ocurra el problema</h2>
@@ -222,10 +254,90 @@
                 {{ form.falla_funcional.label_tag }}
                 {{ form.falla_funcional }}
             </div>
-            <div class="form-group col-md-6">
-                {{ form.imagen_falla_funcional.label_tag }}
-                {{ form.imagen_falla_funcional }}
-            </div>
+            
+                <!-- Campo para seleccionar y cargar nuevas imágenes -->
+                {{ form.Imagen_FallaFun }}
+                    
+                <!-- Contenedor de imágenes ya cargadas para "Antes" (Imágenes desde la base de datos) -->
+                <div id="imagenes-FallaFun-container">
+                    {% for imagen in Imagen_FallaFun %}
+                        <div class="image-preview-container" data-image-id="{{ imagen.id }}" style="position: relative; display: inline-block; margin: 5px;">
+                            <!-- Icono de eliminación -->
+                            <span class="close-icon" onclick="removeImage('{{ imagen.id }}', 'FallaFun')">✖</span>
+                            <!-- Imagen en miniatura, clic para ver en modal -->
+                            <img src="{{ imagen.imagen.url }}" alt="Imagen Falla Funcional" class="small-image" onclick="openModal('{{ imagen.imagen.url }}')">
+                        </div>
+                    {% endfor %}
+                </div>                
+
+                <!-- Contenedor para previsualizar nuevas imágenes seleccionadas (Imágenes que aún no están en la base de datos) -->
+                <div id="preview-fallafun-container" class="form-row" style="display: flex; gap: 10px; flex-wrap: wrap; margin-top: 10px;"></div>
+
+                <!-- Campo oculto para almacenar IDs de imágenes a eliminar -->
+                <input type="hidden" id="delete_images_FallaFun" name="delete_images_FallaFun">
+
+                <!-- Contenedor del Modal para ver la imagen en tamaño completo -->
+                <div id="imageModal" class="modal" onclick="closeModal()">
+                    <span class="close" onclick="closeModal()">✖</span>
+                    <img class="modal-content" id="fullImage">
+                </div>
+                
+
+                <!-- Estilos CSS -->
+                <style>
+                    .close-icon {
+                        position: absolute;
+                        top: 5px;
+                        right: 5px;
+                        color: #ff0000;
+                        font-size: 20px;
+                        font-weight: bold;
+                        cursor: pointer;
+                        background-color: white;
+                        border-radius: 50%;
+                        padding: 2px 5px;
+                        z-index: 10;
+                    }
+
+                    .small-image {
+                        max-width: 100px;
+                        max-height: 100px;
+                        cursor: pointer;
+                        border: 1px solid #ccc;
+                        padding: 5px;
+                        object-fit: cover;
+                    }
+
+                    .modal {
+                        display: none;
+                        position: fixed;
+                        z-index: 1000;
+                        padding-top: 60px;
+                        left: 0;
+                        top: 0;
+                        width: 100%;
+                        height: 100%;
+                        overflow: auto;
+                        background-color: rgba(0,0,0,0.9);
+                    }
+
+                    .modal-content {
+                        margin: auto;
+                        display: block;
+                        max-width: 80%;
+                        max-height: 80%;
+                    }
+
+                    .close {
+                        position: absolute;
+                        top: 15px;
+                        right: 35px;
+                        color: #ffffff;
+                        font-size: 40px;
+                        font-weight: bold;
+                        cursor: pointer;
+                    }
+                </style> 
         </div>
     </div>
 </div>
@@ -254,12 +366,34 @@
                         {{ form.principio_funcionamiento }}
                     </div>
                 </div>
-                <div class="form-row">
-                    <div class="form-group col-md-12">
-                        {{ form.imagen_funcionamiento.label_tag }}
-                        {{ form.imagen_funcionamiento }}
-                    </div>
+                <!-- Campo para seleccionar y cargar nuevas imágenes -->
+                {{ form.Imagen_Funcionamiento }}
+                                    
+                <!-- Contenedor de imágenes ya cargadas para "Funcionamiento" (Imágenes desde la base de datos) -->
+                <div id="imagenes-Funcionamiento-container">
+                    {% for imagen in Imagen_Funcionamiento %}
+                        <div class="image-preview-container" data-image-id="{{ imagen.id }}" style="position: relative; display: inline-block; margin: 5px;">
+                            <!-- Icono de eliminación -->
+                            <span class="close-icon" onclick="removeImage('{{ imagen.id }}', 'Funcionamiento')">✖</span>
+                            <!-- Imagen en miniatura, clic para ver en modal -->
+                            <img src="{{ imagen.imagen.url }}" alt="Imagen Funcionamiento" class="small-image" onclick="openModal('{{ imagen.imagen.url }}')">
+                        </div>
+                    {% endfor %}
+                </div>                
+
+                <!-- Contenedor para previsualizar nuevas imágenes seleccionadas (Imágenes que aún no están en la base de datos) -->
+                <div id="preview-funcionamiento-container" class="form-row" style="display: flex; gap: 10px; flex-wrap: wrap; margin-top: 10px;"></div>
+
+                <!-- Campo oculto para almacenar IDs de imágenes a eliminar -->
+                <input type="hidden" id="delete_images_Funcionamiento" name="delete_images_Funcionamiento">
+
+                <!-- Contenedor del Modal para ver la imagen en tamaño completo -->
+                <div id="imageModal" class="modal" onclick="closeModal()">
+                    <span class="close" onclick="closeModal()">✖</span>
+                    <img class="modal-content" id="fullImage">
                 </div>
+
+
             </div>
         </div>
 
@@ -314,12 +448,119 @@
                         {{ form.modo_falla_paso2 }}
                     </div>
                 </div>
-                <div class="form-row">
-                    <div class="form-group col-md-12">
-                        {{ form.imagen_falla.label_tag }}
-                        {{ form.imagen_falla }}
-                    </div>
+                
+
+                <!-- Campo para seleccionar y cargar nuevas imágenes -->
+                {{ form.Imagen_Falla }}
+                                                    
+                <!-- Contenedor de imágenes ya cargadas para "Falla" (Imágenes desde la base de datos) -->
+                <div id="imagenes-Falla-container">
+                    {% if Imagen_Falla %}
+                        {% for imagen in Imagen_Falla %}
+                            <div class="image-preview-container" data-image-id="{{ imagen.id }}" style="position: relative; display: inline-block; margin: 5px;">
+                                <span class="close-icon" onclick="removeImage('{{ imagen.id }}', 'Falla')">✖</span>
+                                <img src="{{ imagen.imagen.url }}" alt="Imagen Falla" class="small-image" onclick="openModal('{{ imagen.imagen.url }}')">
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        <p>No hay imágenes disponibles.</p>
+                    {% endif %}
                 </div>
+                    
+                              
+
+                <!-- Contenedor para previsualizar nuevas imágenes seleccionadas (Imágenes que aún no están en la base de datos) -->
+                <div id="preview-falla-container" class="form-row" style="display: flex; gap: 10px; flex-wrap: wrap; margin-top: 10px;"></div>
+
+                <!-- Campo oculto para almacenar IDs de imágenes a eliminar -->
+                <input type="hidden" id="delete_images_Falla" name="delete_images_Falla">
+
+                <!-- Contenedor del Modal para ver la imagen en tamaño completo -->
+                <div id="imageModal" class="modal" onclick="closeModal()">
+                    <span class="close" onclick="closeModal()">✖</span>
+                    <img class="modal-content" id="fullImage">
+                </div>
+                
+
+                <script>
+                    // Función para eliminar una imagen existente en el servidor
+                    function removeImage(imageId, campo) {
+                        // Oculta la imagen y el botón de eliminar
+                        const imageContainer = document.querySelector(`#imagenes-${campo}-container span[onclick="removeImage('${imageId}', '${campo}')"]`).parentElement;
+                        imageContainer.style.display = "none";
+                
+                        // Añadir el ID de la imagen al campo oculto para ser eliminada
+                        let deleteImagesField = document.getElementById(`delete_images_${campo}`);
+                        deleteImagesField.value += imageId + ",";
+                    }
+                    
+                    // Abre el modal y muestra la imagen en tamaño completo
+                    function openModal(imageUrl) {
+                        const modal = document.getElementById("imageModal");
+                        const fullImage = document.getElementById("fullImage");
+                        fullImage.src = imageUrl; // Asigna la fuente de imagen en tamaño completo
+                        modal.style.display = "block";
+                    }
+                
+                    // Cierra el modal
+                    function closeModal() {
+                        document.getElementById("imageModal").style.display = "none";
+                    }
+                
+                    // Función para previsualizar imágenes seleccionadas
+                    function previewImages(input, previewContainerId) {
+                        const previewContainer = document.getElementById(previewContainerId);
+                        previewContainer.innerHTML = '';  // Limpiar previsualizaciones anteriores
+                
+                        Array.from(input.files).forEach(file => {
+                            const reader = new FileReader();
+                
+                            reader.onload = function(e) {
+                                // Crear contenedor de previsualización
+                                const imagePreview = document.createElement("div");
+                                imagePreview.classList.add("image-preview-container");
+                                imagePreview.style.position = "relative";
+                                imagePreview.style.display = "inline-block";
+                                imagePreview.style.margin = "5px";
+                
+                                // Agregar botón de eliminación para la previsualización
+                                const closeIcon = document.createElement("span");
+                                closeIcon.classList.add("close-icon");
+                                closeIcon.innerHTML = "✖";
+                                closeIcon.onclick = () => imagePreview.remove();  // Eliminar previsualización
+                
+                                // Agregar imagen de previsualización
+                                const img = document.createElement("img");
+                                img.src = e.target.result;
+                                img.classList.add("small-image");
+                                img.style.maxWidth = "100px";
+                                img.style.maxHeight = "100px";
+                                img.style.border = "1px solid #ccc";
+                                img.style.padding = "5px";
+                                img.style.objectFit = "cover";
+                
+                                imagePreview.appendChild(closeIcon);
+                                imagePreview.appendChild(img);
+                                previewContainer.appendChild(imagePreview);
+                            }
+                
+                            reader.readAsDataURL(file);  // Leer archivo como URL de datos
+                        });
+                    }
+
+                    // Configuración de eventos 'change' para cada campo de imágenes
+                    document.querySelector('input[name="Imagen_FallaFun"]').addEventListener('change', function() {
+                        previewImages(this, 'preview-fallafun-container');
+                    });
+                    document.querySelector('input[name="Imagen_Funcionamiento"]').addEventListener('change', function() {
+                        previewImages(this, 'preview-funcionamiento-container');
+                    });
+                    document.querySelector('input[name="Imagen_Falla"]').addEventListener('change', function() {
+                        previewImages(this, 'preview-falla-container');
+                    });
+                    
+                </script>
+
             </div>
         </div>
 
@@ -806,27 +1047,7 @@
     </script>
 </div>
 
-<style>
-    /* Estilos específicos para #AccionesTable */
-    #AccionesTable {
-        width: 90%;
-        border-collapse: collapse;
-        font-family: Arial, sans-serif;
-        margin: 0 auto; /* Centra la tabla */
-    }
-    #AccionesTable th, #AccionesTable td {
-        border: 1px solid #ccc; /* Borde gris claro */
-        padding: 10px;
-        text-align: left;
-    }
-    #AccionesTable th {
-        background-color: #f2f2f2; /* Fondo gris suave para los encabezados */
-        font-weight: bold; /* Texto en negrita para los encabezados */
-    }
-    #AccionesTable tbody tr:nth-child(even) {
-        background-color: #fafafa; /* Color de fondo para filas alternas */
-    }
-</style>
+
 
 <!-- Sección Paso 4: Contramedidas y Seguimiento -->
 <div id="paso4-section" class="recuadro-paso mt-4" style="border: 1px solid #00C851;">
@@ -838,13 +1059,39 @@
     <div id="contenido-paso4">
         <div class="sub-section" style="margin-bottom: 20px;">
             <div><h1></h1></div>
-            
+            <style>
+                /* Estilos específicos para la tabla en #paso4-section */
+                #paso4-section #AccionesTable {
+                    width: 97%;
+                    border-collapse: collapse;
+                    font-family: Arial, sans-serif;
+                    margin: 0 auto; /* Centra la tabla */
+                }
+
+                #paso4-section #AccionesTable th, 
+                #paso4-section #AccionesTable td {
+                    border: 1px solid #ccc; /* Borde gris claro */
+                    padding: 10px;
+                    text-align: left;
+                }
+
+                #paso4-section #AccionesTable th {
+                    background-color: #f2f2f2; /* Fondo gris suave para los encabezados */
+                    font-weight: bold; /* Texto en negrita para los encabezados */
+                }
+
+                #paso4-section #AccionesTable tbody tr:nth-child(even) {
+                    background-color: #fafafa; /* Color de fondo para filas alternas */
+                }
+
+            </style>
             <!-- Subcategoría Acciones Correctivas -->
             <div class="sub-header" style="background-color: #00C851; color: white; padding: 10px 15px; border-radius: 5px;">
                 <h3 style="margin: 0;">Acciones Correctivas</h3>
             </div>
             
             <div class="sub-content" style="padding: 10px; border: 1px solid #00C851; border-radius: 5px;">
+                <button type="button" id="addAccionCorrectiva" class="btn btn-primary mt-2" style="margin-left: 6px; margin-bottom: 8px;">Agregar Acción Correctiva</button>
                 <div class="form-row">
                     <table id="AccionesTable">
                         <tr>
@@ -930,6 +1177,7 @@
             </div>
             
             <div class="sub-content" style="padding: 10px; border: 1px solid #00C851; border-radius: 5px;">
+                <button type="button" id="addAccionPreventiva" class="btn btn-primary mt-2" style="margin-left: 6px; margin-bottom: 8px;">Agregar Acción Preventiva</button>
 
                 
                 <!-- Contenedor de la tabla centrado -->
@@ -1037,16 +1285,55 @@
                     </table>
                 </div>
             </div>
-            <br>
-            <!-- Ícono con popover que mostrará la imagen -->
-            <div class="popover-container">
+        </div>
+        <!-- Ícono con popover que mostrará la imagen -->
+        <div class="popover-container">
+            <div class="popover-icon">
                 <i class="fas fa-question-circle"></i>
-                <div class="popover-content">
-                    <img src="{% static 'images/Referencia.png' %}" alt="Descripción de la imagen">
-                </div>
+            </div>
+            <div class="popover-content">
+                <img src="{% static 'images/Referencia.png' %}" alt="Descripción de la imagen">
             </div>
         </div>
+
     </div>
+    <style>
+        /* Contenedor principal centrado */
+        .popover-container {
+            position: relative;
+            display: flex;
+            justify-content: center; /* Centra el ícono horizontalmente */
+            align-items: center;     /* Centra el ícono verticalmente si es necesario */
+            text-align: center;
+        }
+        
+        /* Estilo específico para el ícono */
+        .popover-icon {
+            display: inline-block;
+            cursor: pointer;
+        }
+        
+        /* Popover (contenido) */
+        .popover-content {
+            display: none;
+            position: absolute;
+            bottom: 100%; /* Aparece arriba del ícono */
+            left: 50%;
+            transform: translateX(-50%);
+            width: 600px; /* Ajusta el tamaño de la imagen */
+            padding: 5px;
+            background-color: white;
+            border: 1px solid #ddd;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            z-index: 10;
+        }
+        
+        /* Mostrar el popover solo cuando se hace hover sobre el ícono */
+        .popover-icon:hover + .popover-content {
+            display: block;
+        }
+        
+    </style>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             let rowCountCorrectivas = 1;
@@ -1132,23 +1419,50 @@
 
 
 
-
-
-        <!-- Sección Paso 5: Estandarización y Expansión -->
+<!-- Sección Paso 5: Estandarización y Expansión -->
 <div id="paso5-section" class="recuadro-paso mt-4" style="border: 1px solid #D86B20;">
     <div class="paso-header" style="background-color: #D86B20; color: white; padding: 10px 15px; border-radius: 5px;">
         <h2 class="collapsible" style="cursor: pointer; margin: 0;" onclick="toggleVisibility('contenido-paso5')">
             <span style="margin-right: 10px;">&#x25BC;</span> Paso 5: Estandarización y Expansión
         </h2>
     </div>
-    <div><h1></h1></div>
+    
     <div id="contenido-paso5">
+        <div><h1></h1></div>
+        <style>
+            /* Estilos específicos para la tabla en #paso5-section */
+            #paso5-section #AccionesTable {
+                width: 97%;
+                border-collapse: collapse;
+                font-family: Arial, sans-serif;
+                margin: 0 auto; /* Centra la tabla */
+            }
+
+            #paso5-section #AccionesTable th, 
+            #paso5-section #AccionesTable td {
+                border: 1px solid #ccc; /* Borde gris claro */
+                padding: 10px;
+                text-align: left;
+            }
+
+            #paso5-section #AccionesTable th {
+                background-color: #f2f2f2; /* Fondo gris suave para los encabezados */
+                font-weight: bold; /* Texto en negrita para los encabezados */
+            }
+
+            #paso5-section #AccionesTable tbody tr:nth-child(even) {
+                background-color: #fafafa; /* Color de fondo para filas alternas */
+            }
+
+        </style>
         <!-- Bloque 1: Estandarización -->
         <div class="sub-section" style="margin-bottom: 20px;">
             <div class="sub-header" style="background-color: #D86B20; color: white; padding: 10px 15px; border-radius: 5px;">
                 <h3 style="margin: 0;">Estandarización</h3>
             </div>
             <div class="sub-content" style="padding: 10px; border: 1px solid #D86B20; border-radius: 5px;">
+                <!-- Botón para agregar filas en Estandarización -->
+                <button type="button" id="addEstandarizacion" class="btn btn-primary mt-2" style="margin-left: 6px; margin-bottom: 8px;">Agregar Acción de Estandarización</button>
                 <div class="form-row" style="display: flex; justify-content: center;">
                     <table id="AccionesTable" >
                         <thead>
@@ -1163,16 +1477,16 @@
                             <tr id="estandarizacion-row1">
                                 <td>{{ form.Estandarizacion }}</td>
                                 <td>
-                                    <select id="Responsable3_1" name="Responsable3_1" class="select2">
+                                    <select id="Responsable3" name="Responsable3" class="select2">
                                         {% for miembro in opciones_miembros %}
-                                            <option value="{{ miembro.id }}" data-email="{{ miembro.email }}" {% if miembro.id in form.Responsable3_1.value %}selected{% endif %}>
+                                            <option value="{{ miembro.id }}" data-email="{{ miembro.email }}" {% if miembro.id in form.Responsable3.value %}selected{% endif %}>
                                                 {{ miembro.nombre }}
                                             </option>
                                         {% endfor %}
                                     </select>
                                 </td>
                                 <td>
-                                    <input type="date" id="Fecha_compromiso3_1" name="Fecha_compromiso3_1" class="form-control" value="{{ form.Fecha_compromiso3_1.value|date:'Y-m-d' }}">
+                                    <input type="date" id="Fecha_compromiso3" name="Fecha_compromiso3" class="form-control" value="{{ form.Fecha_compromiso3.value|date:'Y-m-d' }}">
                                 </td>
                             </tr>
 
@@ -1235,6 +1549,8 @@
                 <h3 style="margin: 0;">Expansión</h3>
             </div>
             <div class="sub-content" style="padding: 10px; border: 1px solid #D86B20; border-radius: 5px;">
+                <!-- Botón para agregar filas en Expansión -->
+                <button type="button" id="addExpansion" class="btn btn-primary mt-2" style="margin-left: 6px; margin-bottom: 8px;">Agregar Acción de Expansión</button>
                 <div class="form-row" style="display: flex; justify-content: center;">
                     <table id="AccionesTable">
                         <thead>
@@ -1248,16 +1564,16 @@
                             <tr id="expansion-row1">
                                 <td>{{ form.Expansion }}</td>
                                 <td>
-                                    <select id="Responsable4_1" name="Responsable4_1" class="select2">
+                                    <select id="Responsable4" name="Responsable4" class="select2">
                                         {% for miembro in opciones_miembros %}
-                                            <option value="{{ miembro.id }}" data-email="{{ miembro.email }}" {% if miembro.id in form.Responsable4_1.value %}selected{% endif %}>
+                                            <option value="{{ miembro.id }}" data-email="{{ miembro.email }}" {% if miembro.id in form.Responsable4.value %}selected{% endif %}>
                                                 {{ miembro.nombre }}
                                             </option>
                                         {% endfor %}
                                     </select>
                                 </td>
                                 <td>
-                                    <input type="date" id="Fecha_compromiso4_1" name="Fecha_compromiso4_1" class="form-control" value="{{ form.Fecha_compromiso4_1.value|date:'Y-m-d' }}">
+                                    <input type="date" id="Fecha_compromiso4" name="Fecha_compromiso4" class="form-control" value="{{ form.Fecha_compromiso4.value|date:'Y-m-d' }}">
                                 </td>
                             </tr>
 
@@ -1319,7 +1635,7 @@
             <div class="sub-header" style="background-color: #D86B20; color: white; padding: 10px 15px; border-radius: 5px;">
                 <h3 style="margin: 0;">Expansión a...</h3>
             </div>
-
+            <div><h1></h1></div>
             <div class="form-group">
                 <label for="areas_aplicacion">¿A qué áreas podría aplicar la mejora realizada?</label>
                 {{ form.areas_aplicacion }}
@@ -1329,6 +1645,7 @@
             
         </div>
     </div>
+
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             let rowCountEstandarizacion = 1;
@@ -1394,250 +1711,18 @@
                 document.getElementById('addExpansion').style.display = 'none';
             }
         });
-        function actualizarTotal() {
-            const total = Object.values(puntajes).reduce((sum, score) => sum + score, 0);
-            totalPuntajeElement.textContent = total;
-            document.getElementById('puntaje-total-input').value = total;
-            console.log("Puntaje total actualizado:", total);  // Añade esta línea para debug
-        }
     </script>
     
 </div>
 
 
+<!-- Este es el cierre del "if" que se abrió al principio -->
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<form method="post" action="{% url 'porque_vista' pk=porque_instance.pk %}" id="form-evaluacion">
-    {% csrf_token %}
-    
-    <div class="evaluation-box floating-box">
-        <h2>Auditoria 5 Por qué</h2>
-        <div id="evaluation-content">
-            <h3 id="current-step"></h3>
-            <p id="current-question"></p>
-            <div id="score-options" class="rating-container">
-                {% for value, label in ratings %}
-                    <label class="rating-button">
-                        <input type="radio" name="score" value="{{ value }}">
-                        <span class="button-face">{{ value }}</span>
-                        <span class="button-label">{{ label }}</span>
-                    </label>
-                {% endfor %}
-            </div>
-                      
-            <div class="navigation-buttons">
-                <button id="prev-question" class="btn btn-secondary" disabled>&larr; Anterior</button>
-                <button id="next-question" class="btn btn-secondary">Siguiente &rarr;</button>
-            </div>
-            <h4>Total Puntaje: <span id="total-puntaje">0</span></h4>
-            <input type="hidden" name="puntaje_total" id="puntaje-total-input">
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary" name="seccion1">Guardar y Continuar</button>
         </div>
-
-        <!-- Botón para enviar el formulario -->
-        <button type="submit" class="btn btn-primary">Guardar Puntaje</button>
-    </div>
-</form>
-
-<style>
-    .floating-box {
-        position: fixed;
-        top: 20px;
-        right: 20px;
-        width: 400px;
-        max-height: 600px;
-        padding: 20px;
-        background-color: #f1f1f1;
-        border: 1px solid #ccc;
-        box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-        z-index: 1000;
-        border-radius: 8px;
-        overflow-y: auto; /* Permite scroll si el contenido es extenso */
-    }
-
-    .rating-container {
-        display: flex;
-        justify-content: center; /* Cambiado de space-between a center */
-        margin-top: 20px;
-        gap: 20px; /* Aumentado de 10px a 20px para más espacio entre botones */
-        text-align: center; /* Asegura que todo el contenido esté centrado */
-    }
-    
-    .rating-button {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        width: 70px; /* Ancho fijo para cada botón */
-        cursor: pointer;
-    }
-    
-    .button-face {
-        width: 50px;
-        height: 50px;
-        border-radius: 50%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        background-color: #e0e0e0;
-        color: #333;
-        font-weight: bold;
-        margin: 0 auto; /* Centra el círculo horizontalmente */
-        transition: background-color 0.3s ease, color 0.3s ease;
-    }
-    
-    .button-label {
-        margin-top: 8px;
-        font-size: 14px;
-        text-align: center;
-        width: 100%; /* Asegura que el texto use todo el ancho disponible */
-    }
-    .rating-button input {
-        display: none;
-    }
-    .button-face {
-        width: 50px;
-        height: 50px;
-        border-radius: 50%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        background-color: #e0e0e0;
-        color: #333;
-        font-weight: bold;
-        transition: background-color 0.3s ease, color 0.3s ease;
-    }
-    .rating-button:hover .button-face {
-        background-color: #d0d0d0;
-    }
-    .rating-button input:checked + .button-face {
-        background-color: #4CAF50;
-        color: white;
-    }
-    .button-label {
-        margin-top: 8px;
-        font-size: 14px;
-        text-align: center;
-    }
-
-    .navigation-buttons {
-        display: flex;
-        justify-content: space-between;
-        gap: 10px;
-        margin-top: 20px;
-    }
-
-    .btn {
-        padding: 10px;
-        border-radius: 5px;
-    }
-    .btn-secondary {
-        background-color: #6c757d;
-        color: #fff;
-        border: none;
-        cursor: pointer;
-    }
-    .btn-secondary:disabled {
-        background-color: #ddd;
-        cursor: not-allowed;
-    }
-    .btn-primary {
-        background-color: #4CAF50;
-        color: #fff;
-        border: none;
-        cursor: pointer;
-        width: 100%;
-        margin-top: 15px;
-    }
-</style>
-
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const preguntas = {{ preguntas|safe }};
-        let currentIndex = 0;
-        const puntajes = {};
-        const currentStepElement = document.getElementById('current-step');
-        const currentQuestionElement = document.getElementById('current-question');
-        const scoreOptions = document.querySelectorAll('input[name="score"]');
-        const totalPuntajeElement = document.getElementById('total-puntaje');
-        const puntajeTotalInput = document.getElementById('puntaje-total-input');
-        const nextButton = document.getElementById('next-question');
-        const prevButton = document.getElementById('prev-question');
-
-        function mostrarPregunta() {
-            const { paso, pregunta } = preguntas[currentIndex];
-            currentStepElement.textContent = paso;
-            currentQuestionElement.textContent = pregunta;
-
-            // Seleccionar la opción de puntaje actual si existe
-            scoreOptions.forEach(option => {
-                option.checked = puntajes[currentIndex] === parseInt(option.value);
-            });
-
-            // Actualizar la visibilidad de los botones
-            nextButton.style.display = currentIndex === preguntas.length - 1 ? 'none' : 'inline-block';
-            prevButton.disabled = currentIndex === 0;
-        }
-
-        function actualizarPuntaje() {
-            const selectedOption = document.querySelector('input[name="score"]:checked');
-            if (selectedOption) {
-                puntajes[currentIndex] = parseInt(selectedOption.value);
-                actualizarTotal();
-            }
-        }
-
-        function actualizarTotal() {
-            const total = Object.values(puntajes).reduce((sum, score) => sum + score, 0);
-            totalPuntajeElement.textContent = total;
-            puntajeTotalInput.value = total;
-        }
-
-        scoreOptions.forEach(option => {
-            option.addEventListener('change', actualizarPuntaje);
-        });
-
-        nextButton.addEventListener('click', function(event) {
-            event.preventDefault();
-            actualizarPuntaje();
-
-            if (currentIndex < preguntas.length - 1) {
-                currentIndex++;
-                mostrarPregunta();
-            }
-        });
-
-        prevButton.addEventListener('click', function(event) {
-            event.preventDefault();
-
-            if (currentIndex > 0) {
-                currentIndex--;
-                mostrarPregunta();
-            }
-        });
-
-        mostrarPregunta();
-    });
-</script>
-
-
-
-
-
-
-        
+    </form>
+</div>
 
 
 

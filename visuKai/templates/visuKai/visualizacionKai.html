@@ -100,7 +100,7 @@
                 <td>{{ dato.dias }}</td>
                 {% if es_auditor %}
                     <td>
-                        <a href="{% url 'miniproyecto_vista' pk=dato.pk %}" 
+                        <a href="{% url 'kaizen_vista' pk=dato.pk %}" 
                         id="auditar-btn-{{ dato.id }}" 
                         class="boton-auditar"
                         {% if not dato.paso_4 %}disabled style="pointer-events: none; opacity: 0.5;"{% endif %}>

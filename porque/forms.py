@@ -8,6 +8,7 @@ class PorqueForm(forms.ModelForm):
     )
     Imagen_FallaFun = forms.FileField(widget=forms.ClearableFileInput(attrs={'multiple': True}), required=False)
     Imagen_Funcionamiento = forms.FileField(widget=forms.ClearableFileInput(attrs={'multiple': True}), required=False)
+    Imagen_Falla = forms.FileField(widget=forms.ClearableFileInput(attrs={'multiple': True}), required=False)
 
     class Meta:
         model = Porque

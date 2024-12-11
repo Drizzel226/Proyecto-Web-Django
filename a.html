@@ -1,102 +1,210 @@
-                <!-- Formulario de subida de imágenes -->
-                <form id="uploadForm" method="post" enctype="multipart/form-data">
-                    <div class="form-group">
-                        <label for="image">Subir Imágenes:</label>
-                        <input type="file" id="image" name="image" class="form-control" accept="image/*" multiple onchange="handleFiles(this.files)">
-                    </div>
-                </form>
-                
-                <!-- Contenedor para el área de edición de imágenes -->
-                <div id="editor" style="border: 1px solid #ccc; width: 100%; height: 400px; position: relative; overflow: hidden; background-color: #f9f9f9; display: flex; align-items: center; justify-content: center; margin-top: 15px;">
-                    <!-- Las imágenes subidas aparecerán aquí -->
-                </div>
-                <!-- Librerías para Interact.js -->
-                <script src="https://cdn.jsdelivr.net/npm/interactjs@1.10.11/dist/interact.min.js"></script>
-        
-                <!-- Estilos personalizados para el editor de imágenes -->
-                <style>
-                    #editor img {
-                        position: absolute;
-                        cursor: move;
-                        border: 1px solid #ccc;
-                    }
-                </style>
-                
-                <!-- JavaScript para manejar la subida y edición de imágenes -->
-                <script>
-                    // Función para manejar la subida de archivos
-                    function handleFiles(files) {
-                        const editor = document.getElementById('editor');
-                        editor.innerHTML = ''; // Limpia el editor antes de añadir nuevas imágenes
-                        
-                        Array.from(files).forEach(file => {
-                            const reader = new FileReader();
-                            
-                            reader.onload = function(event) {
-                                // Crear una imagen y añadirla al editor
-                                const img = document.createElement('img');
-                                img.src = event.target.result;
-                                img.classList.add('draggable');
-                                img.style.position = 'absolute';
-                                img.style.top = '10px';
-                                img.style.left = '10px';
-                
-                                // Cargar la imagen y establecer sus dimensiones originales
-                                img.onload = function() {
-                                    img.style.width = img.naturalWidth + "px"; // Ancho original de la imagen
-                                    img.style.height = img.naturalHeight + "px"; // Altura original de la imagen
-                                };
-                
-                                editor.appendChild(img);
-                                
-                                // Configurar Interact.js para movimiento y escalado
-                                interact(img).draggable({
-                                    onmove: dragMoveListener
-                                }).resizable({
-                                    edges: { left: true, right: true, bottom: true, top: true },
-                                    listeners: {
-                                        move (event) {
-                                            let { x, y } = event.target.dataset;
-                
-                                            x = (parseFloat(x) || 0) + event.deltaRect.left;
-                                            y = (parseFloat(y) || 0) + event.deltaRect.top;
-                
-                                            Object.assign(event.target.style, {
-                                                width: `${event.rect.width}px`,
-                                                height: `${event.rect.height}px`,
-                                                transform: `translate(${x}px, ${y}px)`
-                                            });
-                
-                                            Object.assign(event.target.dataset, { x, y });
-                                        }
-                                    },
-                                    modifiers: [
-                                        interact.modifiers.restrictSize({
-                                            min: { width: 50, height: 50 },
-                                            max: { width: 1000, height: 1000 }
-                                        })
-                                    ]
-                                });
-                            };
-                
-                            reader.readAsDataURL(file);
-                        });
-                    }
-                
-                    // Función para el movimiento con Interact.js
-                    function dragMoveListener(event) {
-                        const target = event.target;
-                        const x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx;
-                        const y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy;
-                
-                        target.style.transform = `translate(${x}px, ${y}px)`;
-                        target.setAttribute('data-x', x);
-                        target.setAttribute('data-y', y);
-                    }
-                
-                    // Función para mostrar y ocultar la sección
-                    function toggleVisibility(id) {
-                        const content = document.getElementById(id);
-                        content.style.display = content.style.display === 'none' ? 'block' : 'none';
-                    }
-                </script>
+<form method="post" action="{% url 'porque_vista' pk=porque_instance.pk %}" id="form-evaluacion">
+    {% csrf_token %}
+    
+    <div class="evaluation-box floating-box">
+        <h2>Auditoria 5 Por qué</h2>
+        <div id="evaluation-content">
+            <h3 id="current-step"></h3>
+            <p id="current-question"></p>
+            <div id="score-options" class="rating-container">
+                {% for value, label in ratings %}
+                    <label class="rating-button">
+                        <input type="radio" name="score" value="{{ value }}">
+                        <span class="button-face">{{ value }}</span>
+                        <span class="button-label">{{ label }}</span>
+                    </label>
+                {% endfor %}
+            </div>
+                      
+            <div class="navigation-buttons">
+                <button id="prev-question" class="btn btn-secondary" disabled>&larr; Anterior</button>
+                <button id="next-question" class="btn btn-secondary">Siguiente &rarr;</button>
+            </div>
+            <h4>Total Puntaje: <span id="total-puntaje">0</span></h4>
+            <input type="hidden" name="puntaje_total" id="puntaje-total-input">
+        </div>
+
+        <!-- Botón para enviar el formulario -->
+        <button type="submit" class="btn btn-primary">Guardar Puntaje</button>
+    </div>
+</form>
+
+<style>
+    .floating-box {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        width: 400px;
+        max-height: 600px;
+        padding: 20px;
+        background-color: #f1f1f1;
+        border: 1px solid #ccc;
+        box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+        z-index: 1000;
+        border-radius: 8px;
+        overflow-y: auto; /* Permite scroll si el contenido es extenso */
+    }
+
+    .rating-container {
+        display: flex;
+        justify-content: center; /* Cambiado de space-between a center */
+        margin-top: 20px;
+        gap: 20px; /* Aumentado de 10px a 20px para más espacio entre botones */
+        text-align: center; /* Asegura que todo el contenido esté centrado */
+    }
+    
+    .rating-button {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 70px; /* Ancho fijo para cada botón */
+        cursor: pointer;
+    }
+    
+    .button-face {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: #e0e0e0;
+        color: #333;
+        font-weight: bold;
+        margin: 0 auto; /* Centra el círculo horizontalmente */
+        transition: background-color 0.3s ease, color 0.3s ease;
+    }
+    
+    .button-label {
+        margin-top: 8px;
+        font-size: 14px;
+        text-align: center;
+        width: 100%; /* Asegura que el texto use todo el ancho disponible */
+    }
+    .rating-button input {
+        display: none;
+    }
+    .button-face {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: #e0e0e0;
+        color: #333;
+        font-weight: bold;
+        transition: background-color 0.3s ease, color 0.3s ease;
+    }
+    .rating-button:hover .button-face {
+        background-color: #d0d0d0;
+    }
+    .rating-button input:checked + .button-face {
+        background-color: #4CAF50;
+        color: white;
+    }
+    .button-label {
+        margin-top: 8px;
+        font-size: 14px;
+        text-align: center;
+    }
+
+    .navigation-buttons {
+        display: flex;
+        justify-content: space-between;
+        gap: 10px;
+        margin-top: 20px;
+    }
+
+    .btn {
+        padding: 10px;
+        border-radius: 5px;
+    }
+    .btn-secondary {
+        background-color: #6c757d;
+        color: #fff;
+        border: none;
+        cursor: pointer;
+    }
+    .btn-secondary:disabled {
+        background-color: #ddd;
+        cursor: not-allowed;
+    }
+    .btn-primary {
+        background-color: #4CAF50;
+        color: #fff;
+        border: none;
+        cursor: pointer;
+        width: 100%;
+        margin-top: 15px;
+    }
+</style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const preguntas = {{ preguntas|safe }};
+        let currentIndex = 0;
+        const puntajes = {};
+        const currentStepElement = document.getElementById('current-step');
+        const currentQuestionElement = document.getElementById('current-question');
+        const scoreOptions = document.querySelectorAll('input[name="score"]');
+        const totalPuntajeElement = document.getElementById('total-puntaje');
+        const puntajeTotalInput = document.getElementById('puntaje-total-input');
+        const nextButton = document.getElementById('next-question');
+        const prevButton = document.getElementById('prev-question');
+
+        function mostrarPregunta() {
+            const { paso, pregunta } = preguntas[currentIndex];
+            currentStepElement.textContent = paso;
+            currentQuestionElement.textContent = pregunta;
+
+            // Seleccionar la opción de puntaje actual si existe
+            scoreOptions.forEach(option => {
+                option.checked = puntajes[currentIndex] === parseInt(option.value);
+            });
+
+            // Actualizar la visibilidad de los botones
+            nextButton.style.display = currentIndex === preguntas.length - 1 ? 'none' : 'inline-block';
+            prevButton.disabled = currentIndex === 0;
+        }
+
+        function actualizarPuntaje() {
+            const selectedOption = document.querySelector('input[name="score"]:checked');
+            if (selectedOption) {
+                puntajes[currentIndex] = parseInt(selectedOption.value);
+                actualizarTotal();
+            }
+        }
+
+        function actualizarTotal() {
+            const total = Object.values(puntajes).reduce((sum, score) => sum + score, 0);
+            totalPuntajeElement.textContent = total;
+            puntajeTotalInput.value = total;
+        }
+
+        scoreOptions.forEach(option => {
+            option.addEventListener('change', actualizarPuntaje);
+        });
+
+        nextButton.addEventListener('click', function(event) {
+            event.preventDefault();
+            actualizarPuntaje();
+
+            if (currentIndex < preguntas.length - 1) {
+                currentIndex++;
+                mostrarPregunta();
+            }
+        });
+
+        prevButton.addEventListener('click', function(event) {
+            event.preventDefault();
+
+            if (currentIndex > 0) {
+                currentIndex--;
+                mostrarPregunta();
+            }
+        });
+
+        mostrarPregunta();
+    });
+</script>
