@@ -138,7 +138,7 @@ def HAPM_view(request, pk=None):
 
             # Mensaje de éxito y redirigir con el ID
             messages.success(request, 'Se ha guardado con éxito. Puedes continuar.')
-            return redirect('hapm', pk=hapm_instance.pk)
+            return redirect('HAPM', pk=hapm_instance.pk)
 
         else:
             # Si el formulario no es válido, mostrar errores
