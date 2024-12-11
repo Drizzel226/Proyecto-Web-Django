@@ -442,7 +442,7 @@
             document.querySelector('input[name="Imagen_FallaFun"]').addEventListener('change', function() {
                 previewImages(this, 'preview-antes-container');
             });
-            document.querySelector('input[name="Imagen_Funcionamiento"]').addEventListener('change', function() {
+            document.querySelector('input[name="Imagen_Falla"]').addEventListener('change', function() {
                 previewImages(this, 'preview-antes-container');
             });
         </script> 
@@ -468,6 +468,7 @@
             </div>
             <div class="sub-content" style="padding: 10px; border: 1px solid #e6007e; border-radius: 5px;">
                 <div class="form-row">
+                    <br>
                     <div class="form-group col-md-12">
                         {{ form.principio_funcionamiento.label_tag }}
                         {{ form.principio_funcionamiento }}
@@ -493,6 +494,95 @@
 
                 <!-- Campo oculto para almacenar IDs de imágenes a eliminar -->
                 <input type="hidden" id="delete_images_Funcionamiento" name="delete_images_Funcionamiento">
+
+                <!-- Contenedor del Modal para ver la imagen en tamaño completo -->
+                <div id="imageModal" class="modal" onclick="closeModal()">
+                    <span class="close" onclick="closeModal()">✖</span>
+                    <img class="modal-content" id="fullImage">
+                </div>
+
+
+            </div>
+        </div>
+
+        <!-- Bloque 2: Restablecimiento de condiciones básicas y verificación de herramientas -->
+        <div class="sub-section" style="margin-bottom: 20px;">
+            <div class="sub-header" style="background-color: #e6007e; color: white; padding: 10px 15px; border-radius: 5px;">
+                <h3 style="margin: 0;">Restablecimiento de condiciones básicas y verificación de herramientas</h3>
+            </div>
+            <div class="sub-content" style="padding: 10px; border: 1px solid #e6007e; border-radius: 5px;">
+                <br>
+                <div class="form-group" style="flex: 1;">
+                    {{ form.condiciones_basicas.label_tag }}
+                    {{ form.condiciones_basicas }}
+                </div>
+                <div class="form-group">
+                    <label>{{ form.tarjetas_atrasadas.label }}</label>
+                    <div class="d-inline-block">
+                        {{ form.tarjetas_atrasadas }}
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>{{ form.lila_asociado.label }}</label>
+                    <div>
+                        {{ form.lila_asociado }}
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>{{ form.ejecuto_lila.label }}</label>
+                    <div>
+                        {{ form.ejecuto_lila }}
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>{{ form.mantenimiento_no_ejecutado.label }}</label>
+                    <div>
+                        {{ form.mantenimiento_no_ejecutado }}
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>{{ form.materiales_calidad.label }}</label>
+                    <div>
+                        {{ form.materiales_calidad }}
+                    </div>
+                </div>                        
+            </div>
+        </div>
+
+        <!-- Bloque 3: Modo de Falla -->
+        <div class="sub-section" style="margin-bottom: 20px;">
+            <div class="sub-header" style="background-color: #e6007e; color: white; padding: 10px 15px; border-radius: 5px;">
+                <h3 style="margin: 0;">Modo de Falla</h3>
+            </div>
+            <div class="sub-content" style="padding: 10px; border: 1px solid #e6007e; border-radius: 5px;">
+                <div class="form-row">
+                    <div class="form-group col-md-12">
+                        {{ form.modo_falla_paso2.label_tag }}
+                        {{ form.modo_falla_paso2 }}
+                    </div>
+                </div>
+                
+
+                <!-- Campo para seleccionar y cargar nuevas imágenes -->
+                {{ form.Imagen_Falla }}
+                                    
+                <!-- Contenedor de imágenes ya cargadas para "Falla" (Imágenes desde la base de datos) -->
+                <div id="imagenes-Falla-container">
+                    {% for imagen in Imagen_Falla %}
+                        <div class="image-preview-container" data-image-id="{{ imagen.id }}" style="position: relative; display: inline-block; margin: 5px;">
+                            <!-- Icono de eliminación -->
+                            <span class="close-icon" onclick="removeImage('{{ imagen.id }}', 'Falla')">✖</span>
+                            <!-- Imagen en miniatura, clic para ver en modal -->
+                            <img src="{{ imagen.imagen.url }}" alt="Imagen Falla" class="small-image" onclick="openModal('{{ imagen.imagen.url }}')">
+                        </div>
+                    {% endfor %}
+                </div>                
+
+                <!-- Contenedor para previsualizar nuevas imágenes seleccionadas (Imágenes que aún no están en la base de datos) -->
+                <div id="preview-Falla-container" class="form-row" style="display: flex; gap: 10px; flex-wrap: wrap; margin-top: 10px;"></div>
+
+                <!-- Campo oculto para almacenar IDs de imágenes a eliminar -->
+                <input type="hidden" id="delete_images_Falla" name="delete_images_Falla">
 
                 <!-- Contenedor del Modal para ver la imagen en tamaño completo -->
                 <div id="imageModal" class="modal" onclick="closeModal()">
@@ -585,67 +675,10 @@
                     document.querySelector('input[name="Imagen_Funcionamiento"]').addEventListener('change', function() {
                         previewImages(this, 'preview-funcionamiento-container');
                     });
+                    document.querySelector('input[name="Imagen_Falla"]').addEventListener('change', function() {
+                        previewImages(this, 'preview-Falla-container');
+                    });
                 </script>
-            </div>
-        </div>
-
-        <!-- Bloque 2: Restablecimiento de condiciones básicas y verificación de herramientas -->
-        <div class="sub-section" style="margin-bottom: 20px;">
-            <div class="sub-header" style="background-color: #e6007e; color: white; padding: 10px 15px; border-radius: 5px;">
-                <h3 style="margin: 0;">Restablecimiento de condiciones básicas y verificación de herramientas</h3>
-            </div>
-            <div class="sub-content" style="padding: 10px; border: 1px solid #e6007e; border-radius: 5px;">
-                <div class="form-group">
-                    <label>{{ form.tarjetas_atrasadas.label }}</label>
-                    <div class="d-inline-block">
-                        {{ form.tarjetas_atrasadas }}
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label>{{ form.lila_asociado.label }}</label>
-                    <div>
-                        {{ form.lila_asociado }}
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label>{{ form.ejecuto_lila.label }}</label>
-                    <div>
-                        {{ form.ejecuto_lila }}
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label>{{ form.mantenimiento_no_ejecutado.label }}</label>
-                    <div>
-                        {{ form.mantenimiento_no_ejecutado }}
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label>{{ form.materiales_calidad.label }}</label>
-                    <div>
-                        {{ form.materiales_calidad }}
-                    </div>
-                </div>                        
-            </div>
-        </div>
-
-        <!-- Bloque 3: Modo de Falla -->
-        <div class="sub-section" style="margin-bottom: 20px;">
-            <div class="sub-header" style="background-color: #e6007e; color: white; padding: 10px 15px; border-radius: 5px;">
-                <h3 style="margin: 0;">Modo de Falla</h3>
-            </div>
-            <div class="sub-content" style="padding: 10px; border: 1px solid #e6007e; border-radius: 5px;">
-                <div class="form-row">
-                    <div class="form-group col-md-12">
-                        {{ form.modo_falla_paso2.label_tag }}
-                        {{ form.modo_falla_paso2 }}
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="form-group col-md-12">
-                        {{ form.imagen_falla.label_tag }}
-                        {{ form.imagen_falla }}
-                    </div>
-                </div>
             </div>
         </div>
 

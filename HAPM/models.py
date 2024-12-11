@@ -35,6 +35,7 @@ class Hapm(models.Model):
     # Paso 2
     principio_funcionamiento = models.TextField("Comprender el principio de funcionamiento de la máquina o proceso, incluyendo estándares y parámetros de trabajo", blank=True, null=True)
     imagen_funcionamiento = models.ImageField(upload_to='imagenes_funcionamiento/', blank=True, null=True)
+
     condiciones_basicas = models.TextField("Verificar condiciones básicas definidas e identificar desviaciones que impacten en el problema", blank=True, null=True)
 
     RESPUESTA_CHOICES = [
@@ -89,7 +90,6 @@ class Hapm(models.Model):
     )
 
     modo_falla_paso2 = models.TextField("El modo de falla corresponde al evento o situación que causa la falla funcional. Ej: presión inestable por válvula rota, inspector detecta elemento extraño pero no lo rechaza, inspector no detecta elemento extraño, sulfatación de sensor de seguridad, etc.", blank=True, null=True)
-    imagen_falla = models.ImageField(upload_to='imagenes_falla/', blank=True, null=True)
 
 
     # PASO 3
@@ -543,10 +543,16 @@ class ImagenFallaFun(models.Model):
     def __str__(self):
         return f"Imagen Antes para {self.hapm}"
 
-
 class ImagenFuncionamiento(models.Model):
     hapm = models.ForeignKey(Hapm, related_name='Imagen_Funcionamiento', on_delete=models.CASCADE)
     imagen = models.ImageField(upload_to='Imagen_Funcionamiento/')
+    
+    def __str__(self):
+        return f"Imagen Antes para {self.hapm}"
+    
+class ImagenFalla(models.Model):
+    hapm = models.ForeignKey(Hapm, related_name='Imagen_Falla', on_delete=models.CASCADE)
+    imagen = models.ImageField(upload_to='Imagen_Falla/')
     
     def __str__(self):
         return f"Imagen Antes para {self.hapm}"

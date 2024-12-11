@@ -9,6 +9,7 @@ class HapmForm(forms.ModelForm):
     )
     Imagen_FallaFun = forms.FileField(widget=forms.ClearableFileInput(attrs={'multiple': True}), required=False)
     Imagen_Funcionamiento = forms.FileField(widget=forms.ClearableFileInput(attrs={'multiple': True}), required=False)
+    Imagen_Falla = forms.FileField(widget=forms.ClearableFileInput(attrs={'multiple': True}), required=False)
 
     class Meta:
         model = Hapm
@@ -191,7 +192,6 @@ class HapmForm(forms.ModelForm):
             'materiales_calidad': forms.RadioSelect(),
             
             
-            'imagen_falla': forms.ClearableFileInput(attrs={'class': 'form-control'}),
             'modo_falla_paso2': forms.Textarea(attrs={'class': 'form-control'}),
 
             'modo_falla_paso3': forms.Textarea(attrs={'class': 'form-control'}),
