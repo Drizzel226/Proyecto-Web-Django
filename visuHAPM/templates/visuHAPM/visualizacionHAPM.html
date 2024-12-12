@@ -1,0 +1,266 @@
+{% extends 'miapp/base.html' %}
+
+{% block title %}Análisis HAPM{% endblock %}
+
+{% block content %}
+<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+    <h1>Visualización HAPM</h1>
+    <a href="{% url 'HAPM' %}" class="btn-verde btn-lg boton-moderno">
+        <i class="fas fa-plus-circle"></i> Agregar
+    </a>
+</div>
+
+<!-- Formulario de búsqueda -->
+<form method="get" action="" style="margin-bottom: 20px;">
+    <div style="display: flex; gap: 10px;">
+        <input
+            type="text"
+            name="q"
+            placeholder="Buscar por ID"
+            value="{{ query|default_if_none:'' }}"
+            style="padding: 10px; border: 1px solid #ddd; border-radius: 5px; width: 200px;"
+        >
+        <button type="submit" class="boton-moderno" style="padding: 10px 20px;">
+            Buscar
+        </button>
+    </div>
+</form>
+
+<div style="overflow-x: auto;">
+    <table class="tabla-datos">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Categorías</th>
+                <th>Subcategoría</th>
+                <th>Área</th>
+                <th>Máquina</th>
+                <th>Subárea</th>
+                <th>Miembros Equipo</th>
+                <th>Pilar</th>
+                <th>Impacto</th>
+                <th>KPI ICEO</th>
+                <th>KPI Secundario</th>
+                <th>Fecha Inicio</th>
+                <th>Fecha Cierre</th>
+                <th>Editar</th>
+                <th>Paso 5</th>
+                <th>OT</th>
+                <th>Días</th>
+                {% if es_auditor %}
+                    <th>Auditar</th>
+                {% endif %}
+                <th>%UPS</th>
+                <th>%OTIF</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for dato in page_obj %}
+            <tr>
+                <td>{{ dato.id }}</td>
+                <td>{{ dato.categoria|default_if_none:"-" }}</td>
+                <td>{{ dato.subcategoria|default_if_none:"-" }}</td>
+                <td>{{ dato.area|default_if_none:"-" }}</td>
+                <td>{{ dato.subarea|default_if_none:"-" }}</td>
+                <td>{{ dato.maquina|default_if_none:"-" }}</td>
+                <td>
+                    {% if dato.miembros_equipo.all %}
+                        {% for miembro in dato.miembros_equipo.all %}
+                            {{ miembro.nombre }}{% if not forloop.last %}, {% endif %}
+                        {% endfor %}
+                    {% else %}
+                        -
+                    {% endif %}
+                </td>
+                <td>{{ dato.pilar|default_if_none:"-" }}</td>
+                <td>{{ dato.impacto|default_if_none:"-" }}</td>
+                <td>{{ dato.kpi_iceo|default_if_none:"-" }}</td>
+                <td>{{ dato.kpi_secundario|default_if_none:"-" }}</td>
+                <td>{{ dato.fecha_inicio|default_if_none:"-" }}</td>
+                <td>{{ dato.fecha_cierre|default_if_none:"-" }}</td>
+                <td>
+                    <a href="{% url 'HAPM' pk=dato.pk %}" class="boton-editar">
+                        <i class="fas fa-edit"></i> Editar
+                    </a>
+                </td>
+                <td>
+                    <input
+                        type="checkbox"
+                        name="checkbox_{{ dato.id }}"
+                        value="True"
+                        {% if dato.paso_4 %}checked{% endif %}
+                        disabled
+                    >
+                </td>                
+                <td>{{ dato.ot }}%</td>
+                <td>{{ dato.dias }}</td>
+                {% if es_auditor %}
+                    <td>
+                        <a href="{% url 'porque_vista' pk=dato.pk %}" 
+                        id="auditar-btn-{{ dato.id }}" 
+                        class="boton-auditar"
+                        {% if not dato.paso_4 %}disabled style="pointer-events: none; opacity: 0.5;"{% endif %}>
+                            <i class="fas fa-clipboard-check"></i> Auditar
+                        </a>
+                    </td>
+                {% endif %}
+                <td>{{ dato.ups }}%</td>
+                <td>{{ dato.otif }}%</td>  
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<!-- Controles de paginación -->
+<div class="pagination">
+    <nav aria-label="Page navigation">
+        <ul class="pagination">
+            {% if page_obj.has_previous %}
+                <li>
+                    <a class="pagination-button prev" href="?{% if query %}q={{ query }}&{% endif %}page={{ page_obj.previous_page_number }}" aria-label="Anterior">
+                        <i class="fas fa-chevron-left"></i>
+                    </a>
+                </li>
+            {% endif %}
+
+            {% for num in page_range %}
+                {% if num %}
+                    <li>
+                        <a class="pagination-button {% if num == page_obj.number %}active{% endif %}" href="?{% if query %}q={{ query }}&{% endif %}page={{ num }}">
+                            {{ num }}
+                        </a>
+                    </li>
+                {% else %}
+                    <li class="dots">...</li>
+                {% endif %}
+            {% endfor %}
+
+            {% if page_obj.has_next %}
+                <li>
+                    <a class="pagination-button next" href="?{% if query %}q={{ query }}&{% endif %}page={{ page_obj.next_page_number }}" aria-label="Siguiente">
+                        <i class="fas fa-chevron-right"></i>
+                    </a>
+                </li>
+            {% endif %}
+        </ul>
+    </nav>
+</div>
+
+
+
+<!-- Estilos para botones mejorados -->
+<style>
+    .boton-auditar[disabled] {
+        pointer-events: none;
+        opacity: 0.5;
+        background-color: #d6d6d6;
+        color: #999;
+        cursor: not-allowed;
+    }
+        
+    .boton-moderno {
+        background-color: #4CAF50;
+        color: white;
+        padding: 10px 20px;
+        border-radius: 5px;
+        text-decoration: none;
+        font-weight: bold;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        transition: all 0.3s ease;
+        box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+    }
+    .boton-moderno:hover {
+        background-color: #45a049;
+        transform: scale(1.05);
+    }
+    .boton-editar {
+        background-color: #28a745;
+        color: white;
+        padding: 5px 10px;
+        border-radius: 4px;
+        text-decoration: none;
+        font-size: 14px;
+        font-weight: 600;
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        transition: all 0.3s ease;
+    }
+    .boton-editar:hover {
+        background-color: #218838;
+    }
+    .boton-auditar {
+        background-color: #FF5722;
+        color: white;
+        padding: 5px 10px;
+        border-radius: 4px;
+        text-decoration: none;
+        font-size: 14px;
+        font-weight: 600;
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        transition: all 0.3s ease;
+    }
+    .boton-auditar:hover {
+        background-color: #E64A19;
+    }
+    .pagination {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 20px;
+    }
+    .pagination ul {
+        display: flex;
+        gap: 8px;
+        list-style: none;
+        padding: 0;
+    }
+    .pagination-button {
+        background-color: #f1f1f1;
+        color: #333;
+        padding: 10px 15px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        text-decoration: none;
+        font-weight: bold;
+        transition: all 0.3s ease;
+    }
+    .pagination-button:hover {
+        background-color: #007BFF;
+        color: white;
+    }
+    .pagination-button.active {
+        background-color: #28a745;
+        color: white;
+    }
+    .dots {
+        padding: 10px;
+        font-size: 16px;
+        color: #999;
+    }
+</style>
+
+<script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+
+<script>
+    function actualizaCheckbox(id, estado) {
+        fetch("{% url 'actualizar_checkbox' %}", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': '{{ csrf_token }}'
+            },
+            body: JSON.stringify({ 'id': id, 'estado': estado })
+        }).then(response => response.json())
+          .then(data => {
+              console.log(data.message);
+          });
+    }
+</script>
+
+{% endblock %}

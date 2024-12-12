@@ -4,8 +4,8 @@ from django.shortcuts import render
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.core.paginator import Paginator
-from MiniProyecto.models import Miniproyecto
-from .models import VisuMiniModel
+from HAPM.models import Hapm
+from .models import VisuHAPMModel
 from visu5.models import Roles
 
 # Función para calcular el porcentaje de "On Time" basado en días transcurridos
@@ -34,29 +34,28 @@ def calcular_ups(puntaje_obtenido, puntaje_total):
 def calcular_otif(ot, ups):
     return round((ot + ups) / 2, 2)
 
-# Vista principal para mostrar los datos de "Visualización Mini Proyecto"
-def visuMini(request):
-    numero_de_preguntas = 12  # Define el número de preguntas para el cálculo de puntaje
+# Vista principal para mostrar los datos de "Visualización Hapm"
+def visuHAPM(request):
+    numero_de_preguntas = 12
     puntaje_maximo_por_pregunta = 5
     puntaje_total = numero_de_preguntas * puntaje_maximo_por_pregunta
 
-    # Obtener el parámetro de búsqueda desde la URL
-    query = request.GET.get('q', None)  # Buscar por ID si existe un parámetro 'q'
+    # Obtener y limpiar el parámetro de búsqueda
+    query = request.GET.get('q', "").strip()  # Usamos "" como valor predeterminado
 
     if query:
-        # Filtrar por ID
         try:
-            datos = Miniproyecto.objects.filter(id=query)
+            datos = Hapm.objects.filter(id=query)
         except ValueError:
-            datos = Miniproyecto.objects.none()  # Manejar caso donde 'q' no sea un número
+            datos = Hapm.objects.none()  # Si `query` no es un número válido, no devolvemos nada
     else:
-        # Mostrar todos los datos si no hay búsqueda
-        datos = Miniproyecto.objects.all().order_by('-id')
+        datos = Hapm.objects.all().order_by('-id')
 
-    visualizaciones = VisuMiniModel.objects.all()
+    visualizaciones = VisuHAPMModel.objects.all()
 
+    # Procesar los datos y calcular porcentajes
     for dato in datos:
-        visualizacion = visualizaciones.filter(MiniProyecto_id=dato.id).first()
+        visualizacion = visualizaciones.filter(Hapm_id=dato.id).first()
         if visualizacion:
             Estandarizacion_completa = dato.Estandarizacion and dato.Fecha_compromiso3
             Expansion_completa = dato.Expansion and dato.Fecha_compromiso4
@@ -65,8 +64,7 @@ def visuMini(request):
                 dato.ot = calcula_ot(dato.fecha_inicio)
 
                 if dato.fecha_inicio and visualizacion.dias is None:
-                    hoy = date.today()
-                    visualizacion.dias = (hoy - dato.fecha_inicio).days
+                    visualizacion.dias = (date.today() - dato.fecha_inicio).days
                     visualizacion.save()
             else:
                 dato.paso_4 = False
@@ -95,36 +93,26 @@ def visuMini(request):
     total_pages = paginator.num_pages
     current_page = page_obj.number
 
-    # Generar rango de páginas dinámico
     page_range = []
     if total_pages > 1:
-        # Siempre incluir la primera página
         page_range.append(1)
-
-        # Agregar "..." si hay un salto grande entre la primera página y el rango actual
         if current_page > 3:
             page_range.append(None)
-
-        # Agregar las páginas cercanas al número actual
-        if current_page - 1 > 1:  # Asegurar que el número anterior no sea 1
+        if current_page - 1 > 1:
             page_range.append(current_page - 1)
-        if current_page != 1 and current_page != total_pages:  # Asegurar que no se duplique el primero o último
+        if current_page != 1 and current_page != total_pages:
             page_range.append(current_page)
-        if current_page + 1 < total_pages:  # Asegurar que el siguiente número no sea el último
+        if current_page + 1 < total_pages:
             page_range.append(current_page + 1)
-
-        # Agregar "..." si hay un salto grande entre el rango actual y la última página
         if current_page < total_pages - 2:
             page_range.append(None)
-
-        # Siempre incluir la última página
         page_range.append(total_pages)
 
-    return render(request, "visuMini/visualizacionMini.html", {
+    return render(request, "visuHAPM/visualizacionHAPM.html", {
         "page_obj": page_obj,
         "page_range": page_range,
         "es_auditor": es_auditor,
-        "query": query,
+        "query": query,  # Siempre pasamos la consulta actual para que se mantenga en la paginación
     })
 
 # Vista para actualizar el checkbox mediante AJAX
@@ -132,16 +120,16 @@ def visuMini(request):
 def actualizar_checkbox(request):
     if request.method == 'POST':
         data = json.loads(request.body)
-        MiniProyecto_id = data.get('id')
+        Hapm_id = data.get('id')
         estado = data.get('estado')
 
         try:
-            visualizacion = VisuMiniModel.objects.get(MiniProyecto_id=MiniProyecto_id)
+            visualizacion = VisuHAPMModel.objects.get(Hapm_id=Hapm_id)
             
             # Solo actualizar si paso_4 cambia de False a True por primera vez
             if not visualizacion.paso_4 and estado:
                 visualizacion.paso_4 = True
-                fecha_inicio = Miniproyecto.objects.get(id=MiniProyecto_id).fecha_inicio
+                fecha_inicio = Hapm.objects.get(id=Hapm_id).fecha_inicio
 
                 # Calcular `dias` solo una vez en base a fecha_inicio
                 if visualizacion.dias is None:  # Solo calcula si `dias` es None
@@ -156,8 +144,7 @@ def actualizar_checkbox(request):
             visualizacion.save()
             return JsonResponse({'message': 'Estado del checkbox, porcentaje y días actualizado correctamente'})
         
-        except VisuMiniModel.DoesNotExist:
+        except VisuHAPMModel.DoesNotExist:
             return JsonResponse({'error': 'Registro no encontrado'}, status=404)
     
     return JsonResponse({'error': 'Método no permitido'}, status=405)
-
