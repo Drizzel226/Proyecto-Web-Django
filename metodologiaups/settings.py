@@ -21,14 +21,17 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'miapp',
+
     'porque',
     'MiniProyecto',
     'Kaizen',
     'HAPM',
+
     'visu5',
     'visuMini',
     'visuKai',
     'visuHAPM',
+    
     'social_django',  # Asegúrate de que social_django esté instalado y agregado
 ]
 

@@ -182,3 +182,97 @@ def HAPM_view(request, pk=None):
     }
 
     return render(request, 'HAPM/HAPM.html', context)
+
+
+
+
+
+from django.views.decorators.csrf import csrf_exempt
+from django.http import JsonResponse
+import json
+from .models import Hapm
+
+@csrf_exempt
+def actualizar_estado(request, accion_id):
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body)
+            nuevo_estado = data.get("estado", "Pendiente")  # Obtén el estado de la solicitud
+
+            # Obtén la acción por su ID
+            accion = Hapm.objects.get(id=accion_id)
+            accion.estado = nuevo_estado  # Actualiza el estado
+            accion.save()  # Guarda el cambio en la base de datos
+
+            # Devuelve una respuesta JSON confirmando el éxito
+            return JsonResponse({"success": True, "estado": nuevo_estado})
+        except Hapm.DoesNotExist:
+            return JsonResponse({"success": False, "error": "Acción no encontrada"}, status=404)
+        except json.JSONDecodeError:
+            return JsonResponse({"success": False, "error": "Error de JSON"}, status=400)
+    else:
+        return JsonResponse({"success": False, "error": "Método no permitido"}, status=405)
+    
+
+
+
+from django.shortcuts import get_object_or_404, redirect, render
+from django.contrib import messages
+from .models import Hapm
+from .forms import HapmForm
+
+def HAPM_vista(request, pk=None):
+    hapm_instance = get_object_or_404(Hapm, pk=pk) if pk else None
+
+    if request.method == 'POST':
+        puntaje_total = request.POST.get('puntaje_total', '0')
+        try:
+            puntaje_total = int(puntaje_total)
+        except ValueError:
+            puntaje_total = 0
+
+        if hapm_instance:
+            hapm_instance.puntaje = puntaje_total
+            hapm_instance.save()
+            messages.success(request, f'Formulario guardado exitosamente con el puntaje: {hapm_instance.puntaje}')
+            return redirect('HAPM_vista', pk=hapm_instance.pk)
+        else:
+            messages.error(request, 'La instancia no existe.')
+    else:
+        form = HapmForm(instance=hapm_instance)
+
+    # Preparar los datos para las preguntas de evaluación
+    preguntas = [
+        {'paso': 'Paso 0', 'pregunta': ' Se indica el Pilar + Indicador (KPI) / Disparador asociado (KAI)'},
+        {'paso': 'PASO 0', 'pregunta': 'Se indica el impacto (pérdida)'},
+        {'paso': 'PASO 0', 'pregunta': 'Se especifican los campos mandatorios (fecha, área subárea, integrantes, etc.)'},
+        {'paso': 'PASO 1', 'pregunta': 'Se describe correctamente el problema: Qué, Cómo, Cuándo,  Dónde, Quién'},
+        {'paso': 'PASO 1', 'pregunta': 'El problema describe correctamente la falla funcional o defecto (lo que es evidente a la vista y que genera la desviación)'},
+        {'paso': 'PASO 2', 'pregunta': 'Se describen correctamente los modos de falla / defecto (puntos de partida del análisis 5 PQ)'},
+        {'paso': 'PASO 3', 'pregunta': 'Se encuentra definida la causa raíz del problema planteado'},
+        {'paso': 'PASO 3', 'pregunta': 'Se ha definido la causa dentro de las 5M (Máquina, Método, Hombre, Materiales, Medio Ambiente)'},
+        {'paso': 'PASO 4', 'pregunta': 'Se indican medidas correctivas / Se indican medidas preventivas'},
+        {'paso': 'PASO 4', 'pregunta': 'Se indican responsables en cada caso / Se indican fechas de compromiso'},
+        {'paso': 'PASO 4', 'pregunta': 'Se cumplen fechas de cierre?'},
+        {'paso': 'PASO 5', 'pregunta': '¿Se genera algún nuevo estándar tras este análisis?'},
+    ]
+
+    ratings = [
+        (1, 'Muy insatisfecho'),
+        (2, 'Insatisfecho'),
+        (3, 'Neutral'),
+        (4, 'Satisfecho'),
+        (5, 'Muy Satisfecho')
+    ]
+
+    context = {
+        'form': form,
+        'modo_vista': True,
+        'hapm_instance': hapm_instance,
+        'preguntas': preguntas,
+        'ratings': ratings,
+        'Imagen_FallaFun': ImagenFallaFun.objects.filter(hapm=hapm_instance),
+        'Imagen_Funcionamiento': ImagenFuncionamiento.objects.filter(hapm=hapm_instance),
+        'Imagen_Falla': ImagenFalla.objects.filter(hapm=hapm_instance),
+    }
+    return render(request, 'HAPM/HAPM_vista.html', context)

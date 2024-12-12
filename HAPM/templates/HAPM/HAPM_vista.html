@@ -2,11 +2,11 @@
 {% load static %}
 
 
-{% block title %}5 POR QUÉ{% endblock %}
+{% block title %}HAPM{% endblock %}
 
 {% block content %}
 <div class="form-container">
-    <h1 id="analisis-5w" class="text-center">5 POR QUÉ</h1>
+    <h1 id="analisis-5w" class="text-center">HAPM</h1>
 
     {% if messages %}
     <div class="messages">
@@ -40,7 +40,7 @@
         
 <!-- Sección Paso 0: Datos iniciales -->
 <div id="seccion1" class="recuadro-paso">
-    <h2 class="text-primary">Paso 0: Datos Iniciales</h2>
+    <h1 class="text-primary">Datos Iniciales</h1>
     
     <div class="form-row">
         <div class="form-group col-md-6">
@@ -234,111 +234,218 @@
         </div>
 
 
-        <!-- Señal antes de que ocurra el problema -->
-        <h2 class="text-danger">Señal antes de que ocurra el problema</h2>
-        <div class="form-row">
-            <div class="form-group col-md-6">
-                {{ form.senal_antes.label_tag }}
-                {{ form.senal_antes }}
-            </div>
-            <div class="form-group col-md-6">
-                {{ form.descripcion_senal.label_tag }}
-                {{ form.descripcion_senal }}
-            </div>
-        </div>
 
-        <!-- Falla funcional -->
-        <h2 class="text-danger">Falla funcional</h2>
-        <div class="form-row">
-            <div class="form-group col-md-12">
-                {{ form.falla_funcional.label_tag }}
-                {{ form.falla_funcional }}
-            </div>
-            
-                <!-- Campo para seleccionar y cargar nuevas imágenes -->
-                {{ form.Imagen_FallaFun }}
+        <!-- BLOQUE 2 -->
+        <div class="sub-header" style="background-color: #ff0000; color: white; padding: 10px 15px; border-radius: 5px;">
+            <h3 style="margin: 0;">Despliegue Modo de Falla</h3>
+        </div>
+        
+        <div class="sub-content" style="padding: 10px; border: 1px solid #ff0000; border-radius: 5px;">
+            <br>
+            <!-- Campo para seleccionar y cargar nuevas imágenes -->
+            {{ form.Imagen_FallaFun }}
                     
-                <!-- Contenedor de imágenes ya cargadas para "Antes" (Imágenes desde la base de datos) -->
-                <div id="imagenes-FallaFun-container">
-                    {% for imagen in Imagen_FallaFun %}
-                        <div class="image-preview-container" data-image-id="{{ imagen.id }}" style="position: relative; display: inline-block; margin: 5px;">
-                            <!-- Icono de eliminación -->
-                            <span class="close-icon" onclick="removeImage('{{ imagen.id }}', 'FallaFun')">✖</span>
-                            <!-- Imagen en miniatura, clic para ver en modal -->
-                            <img src="{{ imagen.imagen.url }}" alt="Imagen Falla Funcional" class="small-image" onclick="openModal('{{ imagen.imagen.url }}')">
-                        </div>
-                    {% endfor %}
-                </div>                
+            <!-- Contenedor de imágenes ya cargadas para "Antes" (Imágenes desde la base de datos) -->
+            <div id="imagenes-FallaFun-container">
+                {% for imagen in Imagen_FallaFun %}
+                    <div class="image-preview-container" data-image-id="{{ imagen.id }}" style="position: relative; display: inline-block; margin: 5px;">
+                        <!-- Icono de eliminación -->
+                        <span class="close-icon" onclick="removeImage('{{ imagen.id }}', 'FallaFun')">✖</span>
+                        <!-- Imagen en miniatura, clic para ver en modal -->
+                        <img src="{{ imagen.imagen.url }}" alt="Imagen Falla Funcional" class="small-image" onclick="openModal('{{ imagen.imagen.url }}')">
+                    </div>
+                {% endfor %}
+            </div>                
 
-                <!-- Contenedor para previsualizar nuevas imágenes seleccionadas (Imágenes que aún no están en la base de datos) -->
-                <div id="preview-fallafun-container" class="form-row" style="display: flex; gap: 10px; flex-wrap: wrap; margin-top: 10px;"></div>
+            <!-- Contenedor para previsualizar nuevas imágenes seleccionadas (Imágenes que aún no están en la base de datos) -->
+            <div id="preview-antes-container" class="form-row" style="display: flex; gap: 10px; flex-wrap: wrap; margin-top: 10px;"></div>
 
-                <!-- Campo oculto para almacenar IDs de imágenes a eliminar -->
-                <input type="hidden" id="delete_images_FallaFun" name="delete_images_FallaFun">
+            <!-- Campo oculto para almacenar IDs de imágenes a eliminar -->
+            <input type="hidden" id="delete_images_FallaFun" name="delete_images_FallaFun">
 
-                <!-- Contenedor del Modal para ver la imagen en tamaño completo -->
-                <div id="imageModal" class="modal" onclick="closeModal()">
-                    <span class="close" onclick="closeModal()">✖</span>
-                    <img class="modal-content" id="fullImage">
+            <!-- Contenedor del Modal para ver la imagen en tamaño completo -->
+            <div id="imageModal" class="modal" onclick="closeModal()">
+                <span class="close" onclick="closeModal()">✖</span>
+                <img class="modal-content" id="fullImage">
+            </div>
+
+            <br>
+          
+            <div class="form-row" style="display: flex; gap: 15px;">
+                <div class="form-group" style="flex: 1;">
+                    {{ form.modo_falla.label_tag }}
+                    {{ form.modo_falla }}
                 </div>
-                
-
-                <!-- Estilos CSS -->
-                <style>
-                    .close-icon {
-                        position: absolute;
-                        top: 5px;
-                        right: 5px;
-                        color: #ff0000;
-                        font-size: 20px;
-                        font-weight: bold;
-                        cursor: pointer;
-                        background-color: white;
-                        border-radius: 50%;
-                        padding: 2px 5px;
-                        z-index: 10;
-                    }
-
-                    .small-image {
-                        max-width: 100px;
-                        max-height: 100px;
-                        cursor: pointer;
-                        border: 1px solid #ccc;
-                        padding: 5px;
-                        object-fit: cover;
-                    }
-
-                    .modal {
-                        display: none;
-                        position: fixed;
-                        z-index: 1000;
-                        padding-top: 60px;
-                        left: 0;
-                        top: 0;
-                        width: 100%;
-                        height: 100%;
-                        overflow: auto;
-                        background-color: rgba(0,0,0,0.9);
-                    }
-
-                    .modal-content {
-                        margin: auto;
-                        display: block;
-                        max-width: 80%;
-                        max-height: 80%;
-                    }
-
-                    .close {
-                        position: absolute;
-                        top: 15px;
-                        right: 35px;
-                        color: #ffffff;
-                        font-size: 40px;
-                        font-weight: bold;
-                        cursor: pointer;
-                    }
-                </style> 
+            </div>
+        
         </div>
+
+
+        <!-- BLOQUE 3 -->
+        <div class="sub-header" style="background-color: #ff0000; color: white; padding: 10px 15px; border-radius: 5px;">
+            <h3 style="margin: 0;">Acción al Detectar el Modo de Falla</h3>
+        </div>
+        
+        <div class="sub-content" style="padding: 10px; border: 1px solid #ff0000; border-radius: 5px;">
+            <div class="form-row" style="display: flex; gap: 15px;">
+                <div class="form-group" style="flex: 1;">
+                    {{ form.que_accion.label_tag }}
+                    {{ form.que_accion }}
+                </div>
+            </div>
+        </div>
+ 
+        <!-- Estilos CSS -->
+        <style>
+            .close-icon {
+                position: absolute;
+                top: 5px;
+                right: 5px;
+                color: #ff0000;
+                font-size: 20px;
+                font-weight: bold;
+                cursor: pointer;
+                background-color: white;
+                border-radius: 50%;
+                padding: 2px 5px;
+                z-index: 10;
+            }
+
+            .small-image {
+                max-width: 100px;
+                max-height: 100px;
+                cursor: pointer;
+                border: 1px solid #ccc;
+                padding: 5px;
+                object-fit: cover;
+            }
+
+            .modal {
+                display: none;
+                position: fixed;
+                z-index: 1000;
+                padding-top: 60px;
+                left: 0;
+                top: 0;
+                width: 100%;
+                height: 100%;
+                overflow: auto;
+                background-color: rgba(0,0,0,0.9);
+            }
+
+            .modal-content {
+                margin: auto;
+                display: block;
+                max-width: 80%;
+                max-height: 80%;
+            }
+
+            .close {
+                position: absolute;
+                top: 15px;
+                right: 35px;
+                color: #ffffff;
+                font-size: 40px;
+                font-weight: bold;
+                cursor: pointer;
+            }
+        </style>
+
+        <!-- JavaScript -->
+        <script>
+            // Función para eliminar una imagen existente en el servidor
+            function removeImage(imageId, campo) {
+                const imageContainer = document.querySelector(`#imagenes-${campo}-container .image-preview-container[data-image-id="${imageId}"]`);
+                if (imageContainer) {
+                    imageContainer.style.display = "none";
+                    let deleteImagesField = document.getElementById(`delete_images_${campo}`);
+                    deleteImagesField.value += imageId + ",";
+                }
+            }
+
+            // Abre el modal y muestra la imagen en tamaño completo
+            function openModal(imageUrl) {
+                const modal = document.getElementById("imageModal");
+                const fullImage = document.getElementById("fullImage");
+                fullImage.src = imageUrl;
+                modal.style.display = "block";
+            }
+
+            // Cierra el modal
+            function closeModal() {
+                document.getElementById("imageModal").style.display = "none";
+            }
+
+            // Función para previsualizar imágenes seleccionadas y permitir su eliminación
+            function previewImages(input, previewContainerId) {
+                const previewContainer = document.getElementById(previewContainerId);
+                previewContainer.innerHTML = '';  // Limpiar previsualizaciones anteriores
+
+                // Crear una copia de los archivos seleccionados en una lista para manipularla
+                let files = Array.from(input.files);
+                
+                // Mapear archivos con identificadores únicos
+                files = files.map((file, index) => ({
+                    id: `file_${Date.now()}_${index}`,  // Genera un ID único basado en el tiempo y el índice
+                    file: file
+                }));
+
+                files.forEach(fileObj => {
+                    const reader = new FileReader();
+
+                    reader.onload = function(e) {
+                        // Crear contenedor de previsualización
+                        const imagePreview = document.createElement("div");
+                        imagePreview.classList.add("image-preview-container");
+                        imagePreview.style.position = "relative";
+                        imagePreview.style.display = "inline-block";
+                        imagePreview.style.margin = "5px";
+
+                        // Agregar botón de eliminación para la previsualización
+                        const closeIcon = document.createElement("span");
+                        closeIcon.classList.add("close-icon");
+                        closeIcon.innerHTML = "✖";
+                        closeIcon.onclick = () => {
+                            imagePreview.remove();
+                            files = files.filter(f => f.id !== fileObj.id);  // Eliminar el archivo de la lista usando el ID único
+                            resetFileInput(input, files.map(f => f.file));  // Actualizar el campo de selección
+                        };
+
+                        // Agregar imagen de previsualización
+                        const img = document.createElement("img");
+                        img.src = e.target.result;
+                        img.classList.add("small-image");
+                        img.style.maxWidth = "100px";
+                        img.style.maxHeight = "100px";
+                        img.style.border = "1px solid #ccc";
+                        img.style.padding = "5px";
+                        img.style.objectFit = "cover";
+                        img.onclick = () => openModal(e.target.result);  // Agrega onclick para abrir el modal
+
+                        imagePreview.appendChild(closeIcon);
+                        imagePreview.appendChild(img);
+                        previewContainer.appendChild(imagePreview);
+                    };
+
+                    reader.readAsDataURL(fileObj.file);  // Leer archivo como URL de datos
+                });
+            }
+
+            // Función para reiniciar el campo de selección de archivos
+            function resetFileInput(input, files) {
+                const dataTransfer = new DataTransfer();
+                files.forEach(file => dataTransfer.items.add(file));
+                input.files = dataTransfer.files;
+            }
+
+            // Configuración de eventos 'change' para cada campo de imágenes
+            document.querySelector('input[name="Imagen_FallaFun"]').addEventListener('change', function() {
+                previewImages(this, 'preview-antes-container');
+            });
+            document.querySelector('input[name="Imagen_Falla"]').addEventListener('change', function() {
+                previewImages(this, 'preview-antes-container');
+            });
+        </script> 
     </div>
 </div>
         
@@ -361,6 +468,7 @@
             </div>
             <div class="sub-content" style="padding: 10px; border: 1px solid #e6007e; border-radius: 5px;">
                 <div class="form-row">
+                    <br>
                     <div class="form-group col-md-12">
                         {{ form.principio_funcionamiento.label_tag }}
                         {{ form.principio_funcionamiento }}
@@ -403,6 +511,11 @@
                 <h3 style="margin: 0;">Restablecimiento de condiciones básicas y verificación de herramientas</h3>
             </div>
             <div class="sub-content" style="padding: 10px; border: 1px solid #e6007e; border-radius: 5px;">
+                <br>
+                <div class="form-group" style="flex: 1;">
+                    {{ form.condiciones_basicas.label_tag }}
+                    {{ form.condiciones_basicas }}
+                </div>
                 <div class="form-group">
                     <label>{{ form.tarjetas_atrasadas.label }}</label>
                     <div class="d-inline-block">
@@ -452,25 +565,21 @@
 
                 <!-- Campo para seleccionar y cargar nuevas imágenes -->
                 {{ form.Imagen_Falla }}
-                                                    
+                                    
                 <!-- Contenedor de imágenes ya cargadas para "Falla" (Imágenes desde la base de datos) -->
                 <div id="imagenes-Falla-container">
-                    {% if Imagen_Falla %}
-                        {% for imagen in Imagen_Falla %}
-                            <div class="image-preview-container" data-image-id="{{ imagen.id }}" style="position: relative; display: inline-block; margin: 5px;">
-                                <span class="close-icon" onclick="removeImage('{{ imagen.id }}', 'Falla')">✖</span>
-                                <img src="{{ imagen.imagen.url }}" alt="Imagen Falla" class="small-image" onclick="openModal('{{ imagen.imagen.url }}')">
-                            </div>
-                        {% endfor %}
-                    {% else %}
-                        <p>No hay imágenes disponibles.</p>
-                    {% endif %}
-                </div>
-                    
-                              
+                    {% for imagen in Imagen_Falla %}
+                        <div class="image-preview-container" data-image-id="{{ imagen.id }}" style="position: relative; display: inline-block; margin: 5px;">
+                            <!-- Icono de eliminación -->
+                            <span class="close-icon" onclick="removeImage('{{ imagen.id }}', 'Falla')">✖</span>
+                            <!-- Imagen en miniatura, clic para ver en modal -->
+                            <img src="{{ imagen.imagen.url }}" alt="Imagen Falla" class="small-image" onclick="openModal('{{ imagen.imagen.url }}')">
+                        </div>
+                    {% endfor %}
+                </div>                
 
                 <!-- Contenedor para previsualizar nuevas imágenes seleccionadas (Imágenes que aún no están en la base de datos) -->
-                <div id="preview-falla-container" class="form-row" style="display: flex; gap: 10px; flex-wrap: wrap; margin-top: 10px;"></div>
+                <div id="preview-Falla-container" class="form-row" style="display: flex; gap: 10px; flex-wrap: wrap; margin-top: 10px;"></div>
 
                 <!-- Campo oculto para almacenar IDs de imágenes a eliminar -->
                 <input type="hidden" id="delete_images_Falla" name="delete_images_Falla">
@@ -480,56 +589,62 @@
                     <span class="close" onclick="closeModal()">✖</span>
                     <img class="modal-content" id="fullImage">
                 </div>
-                
 
+                <!-- JavaScript -->
                 <script>
                     // Función para eliminar una imagen existente en el servidor
                     function removeImage(imageId, campo) {
-                        // Oculta la imagen y el botón de eliminar
-                        const imageContainer = document.querySelector(`#imagenes-${campo}-container span[onclick="removeImage('${imageId}', '${campo}')"]`).parentElement;
-                        imageContainer.style.display = "none";
-                
-                        // Añadir el ID de la imagen al campo oculto para ser eliminada
-                        let deleteImagesField = document.getElementById(`delete_images_${campo}`);
-                        deleteImagesField.value += imageId + ",";
+                        const imageContainer = document.querySelector(`#imagenes-${campo}-container .image-preview-container[data-image-id="${imageId}"]`);
+                        if (imageContainer) {
+                            imageContainer.style.display = "none";
+                            let deleteImagesField = document.getElementById(`delete_images_${campo}`);
+                            deleteImagesField.value += imageId + ",";
+                        }
                     }
-                    
+
                     // Abre el modal y muestra la imagen en tamaño completo
                     function openModal(imageUrl) {
                         const modal = document.getElementById("imageModal");
                         const fullImage = document.getElementById("fullImage");
-                        fullImage.src = imageUrl; // Asigna la fuente de imagen en tamaño completo
+                        fullImage.src = imageUrl;
                         modal.style.display = "block";
                     }
-                
+
                     // Cierra el modal
                     function closeModal() {
                         document.getElementById("imageModal").style.display = "none";
                     }
-                
-                    // Función para previsualizar imágenes seleccionadas
+
+                    // Función para previsualizar imágenes seleccionadas y permitir su eliminación
                     function previewImages(input, previewContainerId) {
                         const previewContainer = document.getElementById(previewContainerId);
                         previewContainer.innerHTML = '';  // Limpiar previsualizaciones anteriores
-                
-                        Array.from(input.files).forEach(file => {
+
+                        let files = Array.from(input.files);
+                        
+                        files = files.map((file, index) => ({
+                            id: `file_${Date.now()}_${index}`,  // Genera un ID único basado en el tiempo y el índice
+                            file: file
+                        }));
+
+                        files.forEach(fileObj => {
                             const reader = new FileReader();
-                
                             reader.onload = function(e) {
-                                // Crear contenedor de previsualización
                                 const imagePreview = document.createElement("div");
                                 imagePreview.classList.add("image-preview-container");
                                 imagePreview.style.position = "relative";
                                 imagePreview.style.display = "inline-block";
                                 imagePreview.style.margin = "5px";
-                
-                                // Agregar botón de eliminación para la previsualización
+
                                 const closeIcon = document.createElement("span");
                                 closeIcon.classList.add("close-icon");
                                 closeIcon.innerHTML = "✖";
-                                closeIcon.onclick = () => imagePreview.remove();  // Eliminar previsualización
-                
-                                // Agregar imagen de previsualización
+                                closeIcon.onclick = () => {
+                                    imagePreview.remove();
+                                    files = files.filter(f => f.id !== fileObj.id);
+                                    resetFileInput(input, files.map(f => f.file));
+                                };
+
                                 const img = document.createElement("img");
                                 img.src = e.target.result;
                                 img.classList.add("small-image");
@@ -538,29 +653,32 @@
                                 img.style.border = "1px solid #ccc";
                                 img.style.padding = "5px";
                                 img.style.objectFit = "cover";
-                
+                                img.onclick = () => openModal(e.target.result);
+
                                 imagePreview.appendChild(closeIcon);
                                 imagePreview.appendChild(img);
                                 previewContainer.appendChild(imagePreview);
-                            }
-                
-                            reader.readAsDataURL(file);  // Leer archivo como URL de datos
+                            };
+
+                            reader.readAsDataURL(fileObj.file);
                         });
                     }
 
-                    // Configuración de eventos 'change' para cada campo de imágenes
-                    document.querySelector('input[name="Imagen_FallaFun"]').addEventListener('change', function() {
-                        previewImages(this, 'preview-fallafun-container');
-                    });
+                    // Función para reiniciar el campo de selección de archivos
+                    function resetFileInput(input, files) {
+                        const dataTransfer = new DataTransfer();
+                        files.forEach(file => dataTransfer.items.add(file));
+                        input.files = dataTransfer.files;
+                    }
+
+                    // Configuración de eventos 'change' para el campo de imágenes "Imagen_Funcionamiento"
                     document.querySelector('input[name="Imagen_Funcionamiento"]').addEventListener('change', function() {
                         previewImages(this, 'preview-funcionamiento-container');
                     });
                     document.querySelector('input[name="Imagen_Falla"]').addEventListener('change', function() {
-                        previewImages(this, 'preview-falla-container');
+                        previewImages(this, 'preview-Falla-container');
                     });
-                    
                 </script>
-
             </div>
         </div>
 
@@ -1715,13 +1833,12 @@
     
 </div>
 
-
-
     </form>
 </div>
 
 
-<form method="post" action="{% url 'porque_vista' pk=porque_instance.pk %}" id="form-evaluacion">
+
+<form method="post" action="{% url 'HAPM_vista' pk=hapm_instance.pk %}" id="form-evaluacion">
     {% csrf_token %}
     
     <div class="evaluation-box floating-box">
@@ -1931,7 +2048,6 @@
         mostrarPregunta();
     });
 </script>
-
 
 
 <!-- Incluir Select2 y jQuery -->
