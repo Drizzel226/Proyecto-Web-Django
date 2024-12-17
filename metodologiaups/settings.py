@@ -26,11 +26,13 @@ INSTALLED_APPS = [
     'MiniProyecto',
     'Kaizen',
     'HAPM',
+    'ORR',
 
     'visu5',
     'visuMini',
     'visuKai',
     'visuHAPM',
+    'visuORR',
     
     'social_django',  # Asegúrate de que social_django esté instalado y agregado
 ]

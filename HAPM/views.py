@@ -115,7 +115,7 @@ def HAPM_view(request, pk=None):
                 area = hapm_instance.area
                 subarea = hapm_instance.subarea
                 mensaje = f"""
-                Has sido asignado a un nuevo proyecto de análisis "5 Por Qué".
+                Has sido asignado a un nuevo proyecto de análisis "HAPM".
 
                 Detalles:
                 - ID del Análisis: {id_analisis}

@@ -26,12 +26,14 @@ urlpatterns = [
     path('MiniProyecto/', include('MiniProyecto.urls')),
     path('Kaizen/', include('Kaizen.urls')),
      path('HAPM/', include('HAPM.urls')),
+     path('ORR/', include('ORR.urls')),
 
 
      path('visu5/', include('visu5.urls')),
     path('visuMini/', include('visuMini.urls')),
     path('visuKai/', include('visuKai.urls')),
     path('visuHAPM/', include('visuHAPM.urls')),
+   # path('visuORR/', include('visuORR.urls')),
 
 
     path('social-auth/', include('social_django.urls', namespace='social')),

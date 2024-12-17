@@ -1,6 +1,6 @@
 from django import forms
 from .models import Hapm, MiembroEquipo
-from porque.models import MiembroEquipo
+
 
 class HapmForm(forms.ModelForm):
     miembros_equipo = forms.ModelMultipleChoiceField(
