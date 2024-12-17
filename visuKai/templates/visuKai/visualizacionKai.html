@@ -46,7 +46,7 @@
                 <th>Fecha Inicio</th>
                 <th>Fecha Cierre</th>
                 <th>Editar</th>
-                <th>Paso 5</th>
+                <th>Paso 4</th>
                 <th>OT</th>
                 <th>Días</th>
                 {% if es_auditor %}
@@ -103,7 +103,7 @@
                         <a href="{% url 'kaizen_vista' pk=dato.pk %}" 
                         id="auditar-btn-{{ dato.id }}" 
                         class="boton-auditar"
-                        {% if not dato.paso_4 %}disabled style="pointer-events: none; opacity: 0.5;"{% endif %}>
+                        {% if not dato.paso_5 %}disabled style="pointer-events: none; opacity: 0.5;"{% endif %}>
                             <i class="fas fa-clipboard-check"></i> Auditar
                         </a>
                     </td>

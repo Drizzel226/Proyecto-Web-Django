@@ -4,6 +4,7 @@ from porque.models import Porque
 class Visu5Model(models.Model):
     porque = models.OneToOneField(Porque, on_delete=models.CASCADE)  # Relación 1 a 1 con Porque
     paso_4 = models.BooleanField(default=False)
+    paso_5 = models.BooleanField(default=False)
     porcentaje = models.IntegerField(default=0)  
     dias = models.IntegerField(null=True, blank=True)  # Asegurarse de que el valor inicial sea un número
 

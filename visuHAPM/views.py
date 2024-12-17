@@ -57,9 +57,9 @@ def visuHAPM(request):
     for dato in datos:
         visualizacion = visualizaciones.filter(Hapm_id=dato.id).first()
         if visualizacion:
-            Estandarizacion_completa = dato.Estandarizacion and dato.Fecha_compromiso3
-            Expansion_completa = dato.Expansion and dato.Fecha_compromiso4
-            if Estandarizacion_completa or Expansion_completa:
+            Correctiva_completa = dato.Accion_correctiva and dato.Fecha_compromiso1
+            Preventiva_completa = dato.Accion_Preventiva and dato.Fecha_compromiso2
+            if Correctiva_completa or Preventiva_completa:
                 dato.paso_4 = True
                 dato.ot = calcula_ot(dato.fecha_inicio)
 
@@ -82,6 +82,21 @@ def visuHAPM(request):
             dato.dias = ""
             dato.ups = 0
             dato.otif = 0
+
+    for dato in datos:
+        visualizacion = visualizaciones.filter(Hapm_id=dato.id).first()
+        if visualizacion:
+            # Paso 5: Condición para activar Auditar
+            Estandarizacion_completa = dato.Estandarizacion and dato.Fecha_compromiso3
+            Expansion_completa = dato.Expansion and dato.Fecha_compromiso4
+            if Estandarizacion_completa or Expansion_completa:
+                dato.paso_5 = True
+                if dato.fecha_inicio and visualizacion.dias is None:
+                    hoy = date.today()
+                    visualizacion.dias = (hoy - dato.fecha_inicio).days
+                    visualizacion.save()
+            else:
+                dato.paso_5 = False
 
     miembro = Roles.objects.filter(email=request.user.email).first()
     es_auditor = (miembro.rol in [2, 4, 6, 7] if miembro else False) or request.user.is_superuser

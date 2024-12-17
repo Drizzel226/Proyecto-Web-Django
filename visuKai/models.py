@@ -4,6 +4,7 @@ from Kaizen.models import Kaizen
 class VisuKaiModel(models.Model):
     Kaizen = models.OneToOneField(Kaizen, on_delete=models.CASCADE)  # Relación 1 a 1 con Miniproyecto
     paso_4 = models.BooleanField(default=False)
+    paso_5 = models.BooleanField(default=False)
     porcentaje = models.IntegerField(default=0)  
     dias = models.IntegerField(null=True, blank=True)  # Asegurarse de que el valor inicial sea un número
 
