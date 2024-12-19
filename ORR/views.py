@@ -289,7 +289,7 @@ def Orr_vista(request, pk=None):
             orr_instance.puntaje = puntaje_total
             orr_instance.save()
             messages.success(request, f'Formulario guardado exitosamente con el puntaje: {orr_instance.puntaje}')
-            return redirect('orr_vista', pk=orr_instance.pk)
+            return redirect('Orr_vista', pk=orr_instance.pk)
         else:
             messages.error(request, 'La instancia no existe.')
     else:
